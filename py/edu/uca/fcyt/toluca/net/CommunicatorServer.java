@@ -4,7 +4,7 @@ import java.io.IOException;
 
 
 import org.apache.log4j.Logger;
-import org.jdom.Element;
+
 
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
@@ -51,10 +51,7 @@ public class CommunicatorServer extends Communicator{
 		eventDispatcher.setRoom(roomServer);
 		roomServer.addRoomListener(this);
 	}
-	public void receiveXmlPackage(Element xmlPackage) {
-		
-	//	System.out.println("Se resive un packohiiiiiiiii");
-	}
+	
 	public void connectionFailed()
 	{
 		logger.info("Fallo la coneccion de "+getTrucoPlayer());

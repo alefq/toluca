@@ -5,13 +5,9 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
+
+
 import py.edu.uca.fcyt.toluca.event.*;
 /**
  * <p>
@@ -21,36 +17,36 @@ import py.edu.uca.fcyt.toluca.event.*;
 public class TrucoPlay
 {
 	
-    public TrucoCard getCardAux() {
-        return cardAux;
-    }
-    public void setCardAux(TrucoCard cardAux) {
-        this.cardAux = cardAux;
-    }
-    public int getTableIdAux() {
-        return tableIdAux;
-    }
-    public void setTableIdAux(int tableIdAux) {
-        this.tableIdAux = tableIdAux;
-    }
-    public int getTypeAux() {
-        return typeAux;
-    }
-    public void setTypeAux(int typeAux) {
-        this.typeAux = typeAux;
-    }
-    public String getUserAux() {
-        return userAux;
-    }
-    public void setUserAux(String userAux) {
-        this.userAux = userAux;
-    }
-    public int getValueAux() {
-        return valueAux;
-    }
-    public void setValueAux(int valueAux) {
-        this.valueAux = valueAux;
-    }
+//    public TrucoCard getCardAux() {
+//        return cardAux;
+//    }
+//    public void setCardAux(TrucoCard cardAux) {
+//        this.cardAux = cardAux;
+//    }
+//    public int getTableIdAux() {
+//        return tableIdAux;
+//    }
+//    public void setTableIdAux(int tableIdAux) {
+//        this.tableIdAux = tableIdAux;
+//    }
+//    public int getTypeAux() {
+//        return typeAux;
+//    }
+//    public void setTypeAux(int typeAux) {
+//        this.typeAux = typeAux;
+//    }
+//    public String getUserAux() {
+//        return userAux;
+//    }
+//    public void setUserAux(String userAux) {
+//        this.userAux = userAux;
+//    }
+//    public int getValueAux() {
+//        return valueAux;
+//    }
+//    public void setValueAux(int valueAux) {
+//        this.valueAux = valueAux;
+//    }
 	//tipos de jugadas
 	/** Juego de tipo cantar <I>"Envido"</I>.
 	 */
@@ -156,7 +152,7 @@ public class TrucoPlay
 	}
 	
 	/** Constructor de jugada de tipo cantar o acto(cerrarse)algo.
-	 * @param tp Player que jugará.
+	 * @param tp Player que jugarï¿½.
 	 * @param type Tipo de canto o acto a realizar.
 	 */
 	
@@ -257,144 +253,144 @@ public class TrucoPlay
 	{
 		return value;
 	}
-	public Document toXml()
-	{
-		Element ROOT;
-		if (type == TrucoPlay.PLAYER_CONFIRMADO)
-			ROOT = new Element("TrucoGameInfo");
-		else
-			ROOT = new Element("TrucoPlay");
-			
-		Element TABLE=new Element("Table");
-		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
-		ROOT.addContent(TABLE);
-		
-		Element TIPO =new Element("Type");
-		TIPO.setAttribute("id",String.valueOf(type));
-		ROOT.addContent(TIPO);
-		
-		Element PLAYER =new Element("Player");
-		PLAYER.setAttribute("name",getPlayer().getName());
-		ROOT.addContent(PLAYER);
-		
-		Element CARTA=new Element("Carta");
-		if(getCard()!=null)
-		{
-			CARTA.setAttribute("kind",String.valueOf(getCard().getKind()));
-			CARTA.setAttribute("value",String.valueOf(getCard().getValue()));
-			ROOT.addContent(CARTA);
-		}
-		else
-		{
-			CARTA.setAttribute("kind",String.valueOf("2"));
-			CARTA.setAttribute("value",String.valueOf("4"));
-			ROOT.addContent(CARTA);
-		}
-		Element VALUE=new Element("Value");
-		VALUE.setAttribute("val",String.valueOf(getValue()));
-		ROOT.addContent(VALUE);
-		
-		Document doc=new Document(ROOT);
-		return doc;
-	}
-	TrucoCard cardAux;
-	int typeAux;
-	
-	int tableIdAux;
-	String userAux;
-	
-	int valueAux;
-	public void xmlReadTrucoPlay(Object o)
-	{
-		String aux;
-		if (o instanceof Element)
-		{
-			Element element = (Element) o;
-			aux=element.getName();
-			if(aux.compareTo("Type")==0)
-			{
-				typeAux=Integer.parseInt(element.getAttributeValue("id"));
-			}
-			if(aux.compareTo("Table")==0)
-			{
-				//System.out.println("MESSAGE:"+element.getText());
-				tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
-			}
-			
-			if(aux.compareTo("Player")==0)
-			{
-				//System.out.println("PLAYER:"+element.getText());
-				userAux=element.getAttributeValue("name");
-			}
-			if(aux.compareTo("Carta")==0)
-			{
-				String kind=element.getAttributeValue("kind");
-				String value=element.getAttributeValue("value");
-				cardAux=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
-			}
-			if(aux.compareTo("Value")==0)
-			{
-				
-				valueAux=Integer.parseInt(element.getAttributeValue("val"));
-			}
-			List children = element.getContent();
-			Iterator iterator = children.iterator();
-			while (iterator.hasNext())
-			{
-				Object child = iterator.next();
-				xmlReadTrucoPlay(child);
-			}
-			if(aux.compareTo("TrucoPlay")==0)
-			{
-				TrucoPlay tp=new TrucoPlay(tableIdAux,new TrucoPlayer(userAux),(byte)typeAux,cardAux,valueAux);
-				
-				System.out.println("Tabla :"+ tp.getTableNumber());
-				System.out.println("Truco Player : "+tp.getPlayer().getName());
-				System.out.println("TYPE  : "+tp.getType());
-				System.out.println("LA CARTA   PALO = "+tp.getCard().getKind()+" El valor es "+tp.getCard().getValue());
-				System.out.println("El valor es " + getValue());
-			}
-		}
-	}
-	public static void main(String[] args)
-	{
-		System.out.println("Hola CIT");
-		
-		
-		TrucoPlayer p=new TrucoPlayer("Dani",10);
-		
-		
-		TrucoCard cars [] = new TrucoCard[3];
-		cars[0]=new TrucoCard(2,3);
-		cars[1]=new TrucoCard(2,4);
-		cars[2]=new TrucoCard(2,5);
-		/*
-	   TrucoEvent prueba=new TrucoEvent(5,10,p,TrucoEvent.JUGAR_CARTA,cars[0]);
-		 */
-		
-		//TrucoPlay prueba=new TrucoPlay(p,(byte)5,cars[1]);
-		TrucoPlay prueba=new TrucoPlay(15,p,(byte)10,cars[2],31);
-		Document doc = prueba.toXml();
-		
-		try
-		{
-			
-			XMLOutputter serializer = new XMLOutputter("  ", true);
-			
-			serializer.output(doc, System.out);
-			
-		}
-		catch (IOException e)
-		{
-			System.out.println(e);
-		}
-		List children = doc.getContent();
-		Iterator iterator = children.iterator();
-		Object child = iterator.next();
-		Element element = (Element) child;
-		String aux=element.getName();
-		prueba.xmlReadTrucoPlay(child);
-	}
+//	public Document toXml()
+//	{
+//		Element ROOT;
+//		if (type == TrucoPlay.PLAYER_CONFIRMADO)
+//			ROOT = new Element("TrucoGameInfo");
+//		else
+//			ROOT = new Element("TrucoPlay");
+//			
+//		Element TABLE=new Element("Table");
+//		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
+//		ROOT.addContent(TABLE);
+//		
+//		Element TIPO =new Element("Type");
+//		TIPO.setAttribute("id",String.valueOf(type));
+//		ROOT.addContent(TIPO);
+//		
+//		Element PLAYER =new Element("Player");
+//		PLAYER.setAttribute("name",getPlayer().getName());
+//		ROOT.addContent(PLAYER);
+//		
+//		Element CARTA=new Element("Carta");
+//		if(getCard()!=null)
+//		{
+//			CARTA.setAttribute("kind",String.valueOf(getCard().getKind()));
+//			CARTA.setAttribute("value",String.valueOf(getCard().getValue()));
+//			ROOT.addContent(CARTA);
+//		}
+//		else
+//		{
+//			CARTA.setAttribute("kind",String.valueOf("2"));
+//			CARTA.setAttribute("value",String.valueOf("4"));
+//			ROOT.addContent(CARTA);
+//		}
+//		Element VALUE=new Element("Value");
+//		VALUE.setAttribute("val",String.valueOf(getValue()));
+//		ROOT.addContent(VALUE);
+//		
+//		Document doc=new Document(ROOT);
+//		return doc;
+//	}
+//	TrucoCard cardAux;
+//	int typeAux;
+//	
+//	int tableIdAux;
+//	String userAux;
+//	
+//	int valueAux;
+//	public void xmlReadTrucoPlay(Object o)
+//	{
+//		String aux;
+//		if (o instanceof Element)
+//		{
+//			Element element = (Element) o;
+//			aux=element.getName();
+//			if(aux.compareTo("Type")==0)
+//			{
+//				typeAux=Integer.parseInt(element.getAttributeValue("id"));
+//			}
+//			if(aux.compareTo("Table")==0)
+//			{
+//				//System.out.println("MESSAGE:"+element.getText());
+//				tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+//			}
+//			
+//			if(aux.compareTo("Player")==0)
+//			{
+//				//System.out.println("PLAYER:"+element.getText());
+//				userAux=element.getAttributeValue("name");
+//			}
+//			if(aux.compareTo("Carta")==0)
+//			{
+//				String kind=element.getAttributeValue("kind");
+//				String value=element.getAttributeValue("value");
+//				cardAux=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+//			}
+//			if(aux.compareTo("Value")==0)
+//			{
+//				
+//				valueAux=Integer.parseInt(element.getAttributeValue("val"));
+//			}
+//			List children = element.getContent();
+//			Iterator iterator = children.iterator();
+//			while (iterator.hasNext())
+//			{
+//				Object child = iterator.next();
+//				xmlReadTrucoPlay(child);
+//			}
+//			if(aux.compareTo("TrucoPlay")==0)
+//			{
+//				TrucoPlay tp=new TrucoPlay(tableIdAux,new TrucoPlayer(userAux),(byte)typeAux,cardAux,valueAux);
+//				
+//				System.out.println("Tabla :"+ tp.getTableNumber());
+//				System.out.println("Truco Player : "+tp.getPlayer().getName());
+//				System.out.println("TYPE  : "+tp.getType());
+//				System.out.println("LA CARTA   PALO = "+tp.getCard().getKind()+" El valor es "+tp.getCard().getValue());
+//				System.out.println("El valor es " + getValue());
+//			}
+//		}
+//	}
+//	public static void main(String[] args)
+//	{
+//		System.out.println("Hola CIT");
+//		
+//		
+//		TrucoPlayer p=new TrucoPlayer("Dani",10);
+//		
+//		
+//		TrucoCard cars [] = new TrucoCard[3];
+//		cars[0]=new TrucoCard(2,3);
+//		cars[1]=new TrucoCard(2,4);
+//		cars[2]=new TrucoCard(2,5);
+//		/*
+//	   TrucoEvent prueba=new TrucoEvent(5,10,p,TrucoEvent.JUGAR_CARTA,cars[0]);
+//		 */
+//		
+//		//TrucoPlay prueba=new TrucoPlay(p,(byte)5,cars[1]);
+//		TrucoPlay prueba=new TrucoPlay(15,p,(byte)10,cars[2],31);
+//		Document doc = prueba.toXml();
+//		
+//		try
+//		{
+//			
+//			XMLOutputter serializer = new XMLOutputter("  ", true);
+//			
+//			serializer.output(doc, System.out);
+//			
+//		}
+//		catch (IOException e)
+//		{
+//			System.out.println(e);
+//		}
+//		List children = doc.getContent();
+//		Iterator iterator = children.iterator();
+//		Object child = iterator.next();
+//		Element element = (Element) child;
+//		String aux=element.getName();
+//		prueba.xmlReadTrucoPlay(child);
+//	}
 	public TrucoEvent toTrucoEvent()
 	{
 		TrucoEvent ev = new TrucoEvent();
