@@ -31,7 +31,7 @@ public class Game {
         return numberOfPlayers;
     }
     
-    public void setNumberOfPlayers(int numberOfPlayer) {
+    public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
 }
