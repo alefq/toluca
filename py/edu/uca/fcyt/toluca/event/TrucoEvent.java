@@ -291,7 +291,7 @@ public class TrucoEvent
 				typeevent = FIN_DE_MANO;
 				break;
 			case 110:
-				System.out.println("Vino el Player Confirmado: " + tp.getPlayer());
+				//System.out.println("Vino el Player Confirmado: " + tp.getPlayer());
 				typeevent = 110;
 				break;
 			default :
@@ -299,7 +299,7 @@ public class TrucoEvent
 				new Throwable("No se conoce el tipo del Truco Play: " + type).printStackTrace(System.out);
 				break;
 		}
-		System.out.println("evento "+type +" a "+typeevent+"!");
+		//System.out.println("evento "+type +" a "+typeevent+"!");
 		tp.setType(typeevent);
 		tp.setCard(carta);
 		tp.setValue(value);
@@ -377,7 +377,7 @@ public class TrucoEvent
 	
 	public TrucoPlay getTrucoPlay()
 	{
-		// TODO Hacer el SWITCH gigantesco, probar y ya está
+		// TODO Hacer el SWITCH gigantesco, probar y ya estï¿½
 		TrucoPlay tp = null;
 		switch(type)
 		{

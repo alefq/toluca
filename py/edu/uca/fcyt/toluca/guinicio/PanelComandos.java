@@ -147,11 +147,11 @@ public class PanelComandos extends JPanel{
      */
     protected void botonUnirseActionPerformed(ActionEvent e) {
         int numeroDeFila = getTableGame().getSelectedRow();
-        System.out.println("numeroDeFila=" + numeroDeFila);
+        //System.out.println("numeroDeFila=" + numeroDeFila);
         if (numeroDeFila >= 0) {
             numeroDeFila = getTableGame().getNumeroDeMesa(numeroDeFila);
-            System.out.println("////////////// JOINNN /////////////");
-            System.out.println("Se presiono el join..." + numeroDeFila);
+           // System.out.println("////////////// JOINNN /////////////");
+            //System.out.println("Se presiono el join..." + numeroDeFila);
             roomClient.joinTableRequest(numeroDeFila);
         }        
     }

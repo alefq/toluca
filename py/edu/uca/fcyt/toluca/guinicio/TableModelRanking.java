@@ -78,7 +78,7 @@ public class TableModelRanking extends AbstractTableModel{
 			cont++;
 			if(row.getUser().equals(name))
 			{
-				System.out.println("Se encontro "+name+ " en el renglon "+cont);
+				//System.out.println("Se encontro "+name+ " en el renglon "+cont);
 				seguir=false;
 			}
 			

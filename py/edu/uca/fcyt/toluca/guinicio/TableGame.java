@@ -35,7 +35,7 @@ public class TableGame extends JTable{
      * @param table
      */
     public void insertarFila(Table table) {
-        System.out.println(getClass().getName()+" tableNumber"+table.getTableNumber());
+        //System.out.println(getClass().getName()+" tableNumber"+table.getTableNumber());
     	tableModelGame.insertRow(new RowGame(table.getTableNumber()));
     }
 

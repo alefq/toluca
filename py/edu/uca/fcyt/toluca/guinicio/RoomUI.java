@@ -235,7 +235,7 @@ public class RoomUI extends JApplet {
         //String at = getParameter("img");
         //  dir = (at != null) ? at : "/images";
         String imagedir = getParameter("IMAGEDIR");
-        System.out.println("La dire de imagenes es " + imagedir);
+        //System.out.println("La dire de imagenes es " + imagedir);
     }
 
     protected static ImageIcon createAppletImageIcon(String path,

@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/13 22:48:22 $
- * @version $Revision: 1.3 $ 
+ * Last modified: $Date: 2004/09/16 01:12:53 $
+ * @version $Revision: 1.4 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -386,7 +386,7 @@ public class RoomUING extends JApplet {
         roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
         getChatPanel().setCpc(roomClient);
         
-        System.out.println("El chatpanel del roomui es "+chatPanel);
+        //System.out.println("El chatpanel del roomui es "+chatPanel);
         roomClient.setChatPanel(getChatPanel());
         roomClient.setMainTable(getTableGame());
         roomClient.setRankTable(getTableRanking());

@@ -75,7 +75,7 @@ public class TableModelGame extends AbstractTableModel{
 			RowGame row=(RowGame) datos.get(i);
 			if(row.getTableNumber()==tableId)
 			{
-				System.out.println(getClass().getName()+"Se encontro la tabla se sienta en "+chair);
+				//System.out.println(getClass().getName()+"Se encontro la tabla se sienta en "+chair);
 				row.setJugador(chair,trucoPlayer);
 				rowUpdate=i;
 			}
