@@ -44,6 +44,7 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TableEvent event)
 	{
+		System.out.println("se resive un tableevent");
 		switch(event.getEvent())
 		{
 			case TableEvent.EVENT_gameFinished:break;
@@ -66,6 +67,7 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TrucoEvent event)
 	{
+		System.out.println(" se resive un trucoEvent de tipo "+event.getType());
 		switch(event.getType())
 		{
 			case TrucoEvent.CANTO_ENVIDO:break;
@@ -84,7 +86,7 @@ public abstract class EventDispatcher {
 			case TrucoEvent.FLOR:break;
 			case TrucoEvent.INICIO_DE_JUEGO:infoGame(event);break;
 			case TrucoEvent.INICIO_DE_MANO:infoGame(event);break;
-			case TrucoEvent.JUGAR_CARTA:break;
+			case TrucoEvent.JUGAR_CARTA:tirarCarta(event);break;
 			case TrucoEvent.ME_VOY_AL_MAZO:break;
 			case TrucoEvent.NO_QUIERO:break;
 			case TrucoEvent.PASO_ENVIDO:break;
@@ -113,34 +115,35 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TrucoPlay event)
 	{
+		System.out.println("Se resive un trucoPlay de tipo "+event.getType());
 		switch(event.getType())
 		{
-			case TrucoPlay.CANTO_ENVIDO:break;
-			case TrucoPlay.CANTO_FLOR:break;
-			case TrucoPlay.CARTAS_REPARTIDAS:break;
-			case TrucoPlay.CERRARSE:break;
-			case TrucoPlay.CON_FLOR_ME_ACHICO:break;
-			case TrucoPlay.CONTRA_FLOR:break;
-			case TrucoPlay.CONTRA_FLOR_ALRESTO:break;
-			case TrucoPlay.ENVIDO:break;
-			case TrucoPlay.FALTA_ENVIDO:break;
-			case TrucoPlay.FIN_DE_JUEGO:break;
-			case TrucoPlay.FIN_DE_MANO:break;
-			case TrucoPlay.FLOR:break;
-			case TrucoPlay.INICIO_DE_JUEGO:break;
-			case TrucoPlay.INICIO_DE_MANO:break;
-			case TrucoPlay.JUGAR_CARTA:break;
-			case TrucoPlay.ME_VOY_AL_MAZO:break;
-			case TrucoPlay.NO_QUIERO:break;
-			case TrucoPlay.PASO_ENVIDO:break;
-			case TrucoPlay.PASO_FLOR:break;
+			case TrucoPlay.CANTO_ENVIDO:play(event);break;
+			case TrucoPlay.CANTO_FLOR:play(event);break;
+			case TrucoPlay.CARTAS_REPARTIDAS:play(event);break;
+			case TrucoPlay.CERRARSE:play(event);break;
+			case TrucoPlay.CON_FLOR_ME_ACHICO:play(event);break;
+			case TrucoPlay.CONTRA_FLOR:play(event);break;
+			case TrucoPlay.CONTRA_FLOR_ALRESTO:play(event);break;
+			case TrucoPlay.ENVIDO:play(event);break;
+			case TrucoPlay.FALTA_ENVIDO:play(event);break;
+			case TrucoPlay.FIN_DE_JUEGO:play(event);break;
+			case TrucoPlay.FIN_DE_MANO:play(event);break;
+			case TrucoPlay.FLOR:play(event);break;
+			case TrucoPlay.INICIO_DE_JUEGO:play(event);break;
+			case TrucoPlay.INICIO_DE_MANO:play(event);break;
+			case TrucoPlay.JUGAR_CARTA:play(event);break;
+			case TrucoPlay.ME_VOY_AL_MAZO:play(event);break;
+			case TrucoPlay.NO_QUIERO:play(event);break;
+			case TrucoPlay.PASO_ENVIDO:play(event);break;
+			case TrucoPlay.PASO_FLOR:play(event);break;
 			case TrucoPlay.PLAYER_CONFIRMADO:break;
-			case TrucoPlay.QUIERO:break;
-			case TrucoPlay.REAL_ENVIDO:break;
-			case TrucoPlay.RETRUCO:break;
-			case TrucoPlay.SIN_MENSAJES:break;
-			case TrucoPlay.TRUCO:break;
-			case TrucoPlay.VALE_CUATRO:break;
+			case TrucoPlay.QUIERO:play(event);break;
+			case TrucoPlay.REAL_ENVIDO:play(event);break;
+			case TrucoPlay.RETRUCO:play(event);break;
+			case TrucoPlay.SIN_MENSAJES:play(event);break;
+			case TrucoPlay.TRUCO:play(event);break;
+			case TrucoPlay.VALE_CUATRO:play(event);break;
 		}
 	}
 	
@@ -201,4 +204,7 @@ public abstract class EventDispatcher {
 	public abstract void receiveCards(TrucoEvent event);
 	
 	public abstract void infoGame(TrucoEvent event);
+	public abstract void tirarCarta(TrucoEvent event);
+	public abstract void play(TrucoPlay event);
+	//public abstract void playInfo(Tryuc)
 }

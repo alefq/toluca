@@ -62,7 +62,7 @@ class TrListener implements TrucoListener
 	{
 		//System.out.println("Void play method in " + this.getClass().getName());
 		//Aca llega cuando se "Confirma" un jugador desde el serva
-		new Throwable("Nada implementado :-(").printStackTrace(System.out);
+		//new Throwable("Nada implementado :-(").printStackTrace(System.out);
 		//playResponse(event);
 	}
 	

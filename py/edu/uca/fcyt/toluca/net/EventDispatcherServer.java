@@ -9,6 +9,8 @@ import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.TableBeanRepresentation;
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -31,7 +33,7 @@ public class EventDispatcherServer extends EventDispatcher{
 		this.communicatorServer=communicatorServer;
 	}
 	public void loginRequested(RoomEvent event) {
-		logger.debug("Se resivio un login Requested");
+		logger.debug("Se recibio un login Requested");
 		try {
 			((RoomServer)room).login(event.getUser(),event.getPassword(),communicatorServer);
 		} catch (LoginFailedException e) {
@@ -255,6 +257,31 @@ public class EventDispatcherServer extends EventDispatcher{
 	 */
 	public void infoGame(TrucoEvent event) {
 		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#play(py.edu.uca.fcyt.toluca.game.TrucoPlay)
+	 */
+	public void play(TrucoPlay event) {
+
+		logger.debug("SE recibe un play de "+event.getPlayer().getName());
+		logger.debug("TAbla : "+event.getTableNumber());
+		logger.debug("type : "+event.getType());
+		logger.debug("carta Palo: "+event.getCard().getKind() +" val "+event.getCard().getValue());
+		logger.debug("value > "+event.getValue());
+		
+		TableServer tableServer=room.getTableServer(event.getTableNumber());
+		TrucoGame trucoGame=tableServer.getTrucoGame();
+		TrucoPlayer playerCliente=event.getPlayer();
+		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
+		event.setPlayer(playerServidor);//es indispensable la traduccion de referencias
+		trucoGame.play(event);
+		
+		
+	}
+
+	public void tirarCarta(TrucoEvent event) {
+			
 		
 	}
 }

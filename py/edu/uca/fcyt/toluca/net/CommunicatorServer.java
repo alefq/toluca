@@ -12,6 +12,7 @@ import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -142,6 +143,8 @@ public class CommunicatorServer extends Communicator{
 	
 	public void play(TrucoEvent event) {
 		logger.info("Play"+getTrucoPlayer().getName());
+
+		super.sendXmlPackage(event);
 		
 	}
 	
@@ -151,7 +154,9 @@ public class CommunicatorServer extends Communicator{
 	}
 	
 	public void turn(TrucoEvent event) {
-		logger.info("Turn "+getTrucoPlayer().getName());
+		logger.info("Turn "+getTrucoPlayer().getName()+ " event type> "+event.getType());
+		
+		
 		
 	}
 	
@@ -181,6 +186,7 @@ public class CommunicatorServer extends Communicator{
 	public void gameStarted(TrucoEvent event) {
 	
 		logger.info("gameStarted");
+		//super.sendXmlPackage(event)
 	}
 	
 	public void endOfGame(TrucoEvent event) {

@@ -15,6 +15,8 @@ import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 
 
 
@@ -98,7 +100,51 @@ public class CommunicatorClient extends Communicator{
 		
 	}
 	
+	//METODOS CORRESPONDIENTES AL TRUCO_GAME
 	
+	public void play(TrucoEvent event) {
+		System.out.println("El trucoplayer de este comm es  "+getTrucoPlayer());
+		System.out.println("El play hizo "+event.getPlayer());
+		if(event.getPlayer().getName().equals(getTrucoPlayer().getName()))
+		{
+			
+		
+		System.out.println(getClass().getName()+"se va a hacer un play al server");
+		TrucoPlay trucoPlay= event.toTrucoPlay();
+		
+		logger.debug("SE resive un play de "+trucoPlay.getPlayer().getName());
+		logger.debug("TAbla : "+trucoPlay.getTableNumber());
+		logger.debug("type : "+trucoPlay.getType());
+		logger.debug("carta Palo: "+trucoPlay.getCard().getKind() +" val "+trucoPlay.getCard().getValue());
+		logger.debug("value > "+trucoPlay.getValue());
+		super.sendXmlPackage(trucoPlay);
+		}
+	}
+	
+	public void playResponse(TrucoEvent event) {
+	
+		logger.debug("playResponse");
+	}
+	
+	public void turn(TrucoEvent event) {
+	
+		logger.debug("Turn");
+	}
+	
+	public void endOfHand(TrucoEvent event) {
+	
+		
+	}
+	
+	public void cardsDeal(TrucoEvent event) {
+	
+		
+	}
+	
+	public void handStarted(TrucoEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

@@ -17,6 +17,7 @@ import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 
@@ -114,6 +115,7 @@ public class EventDispatcherClient extends EventDispatcher{
 		if(trucoPlayer==null)
 		{
 			trucoPlayer=event.getPlayer();
+			commClient.setTrucoPlayer(trucoPlayer);
 			((RoomClient)room).loginCompleted(trucoPlayer);
 		}
 		
@@ -402,6 +404,57 @@ public class EventDispatcherClient extends EventDispatcher{
 		}
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
 		trucoGameClient.recibirCartas(playerClient,event.getCards());
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#play(py.edu.uca.fcyt.toluca.game.TrucoPlay)
+	 */
+	public void play(TrucoPlay event) {
+		/*System.out.println(" se resivio un play con un trucoplay desc:");
+		
+		System.out.println("SE resive un play de "+event.getPlayer().getName());
+		System.out.println("TAbla : "+event.getTableNumber());
+		System.out.println("type : "+event.getType());
+		System.out.println("carta Palo: "+event.getCard().getKind() +" val "+event.getCard().getValue());
+		System.out.println("value > "+event.getValue());
+		
+		Table table=room.getTable(event.getTableNumber());
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		
+		TrucoPlayer playerServer=event.getPlayer();
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		event.setPlayer(playerClient);
+		trucoGameClient.play(event);*/
+		
+		
+		System.out.println(" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHH BUENO; NO TIENE QUE PASAR ESTO");
+	}
+
+	
+	public void tirarCarta(TrucoEvent event) {
+
+		System.out.println("Se quire tirar carta");
+		
+		Table table=room.getTable(event.getTableNumber());
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		
+		TrucoPlayer playerServer=event.getPlayer();
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		
+		TrucoCard cartaServer=event.getCard();
+		TrucoCard cartaClient=trucoGameClient.getCard(cartaServer.getKind(),cartaServer.getValue());
+		
+		System.out.println(" Player cliente : "+playerClient);
+		System.out.println(" carta cliente: "+cartaClient);
+		
+		if (!trucoPlayer.getName().equals(playerClient.getName()))
+		{
+			//System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName());
+			TrucoPlay tp = new TrucoPlay(playerClient,TrucoPlay.JUGAR_CARTA,cartaClient);
+			trucoGameClient.play(tp);
+		}
+		
+		trucoGameClient.playResponse(playerClient,cartaClient);
 	}
 
 }
