@@ -28,6 +28,8 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 import py.edu.uca.fcyt.toluca.sound.PlaySound;
 import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableException;
+
 import py.edu.uca.fcyt.toluca.table.TableServer;
 
 /**
@@ -373,30 +375,16 @@ public class EventDispatcherClient extends EventDispatcher {
         TrucoPlayer playerClient = room.getPlayer(playerServer.getName());
 
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "La silla de
-        // "+playerClient.getName()+" es "+table.getChair(playerClient));
+ 
+        
         try
         {
-            TrucoPlayer trucoP=table.getPlayer(chair);
-            /*
-             *Esto se hace para resolver el problema en el cual 2 usuarios al mismo tiempo se quieren sentar en una silla
-             *En el gui a los 2 se le da como sentados y se envia el request al servidor.
-             *El servidor envia la respuesta y al llegar al cliente que alguien esta sentado en la silla n
-             *se produce un TableException ya que en mi gui, yo estoy sentado.
-             *Aca se fuerza para que se levante y manda lo que está en el server
-             *  
-             * */
-            if(trucoP!=null)
-            {
-                table.standPlayer(chair);
-                table.showSystemMessage("Alguien se sento antes, te ganaron, sorry. Sentate en otra silla");
-            }
-        }
-        catch(ArrayIndexOutOfBoundsException e)
-        {
-            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"ArrayIndexOutOfBoundsException:  "+e.getMessage());
-        }
-        
         table.sitPlayer(playerClient, chair);
+        }
+        catch(TableException e)
+        {
+            table.showSystemMessage("Alguien se sentó antes que vos. Sentate en otra silla");
+        }
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "ya se hizo el
         // table.sitPlayer");
         ((RoomClient) room).setearPlayerTable(playerClient, table, chair);
@@ -862,5 +850,7 @@ public class EventDispatcherClient extends EventDispatcher {
         System.out.println("Se recibe la respuesta "+intervalo);
         RoomClient roomClient=(RoomClient) room;
         roomClient.testConexionReceive(intervalo);
+        
+        
     }
 }

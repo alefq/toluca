@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,8 +20,9 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 
 import java.awt.GridLayout;
+import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 /** Panel principal de juego */
-class TrucoTable extends JPanel implements ComponentListener {
+public class TrucoTable extends JPanel implements ComponentListener {
     public static final int BUTTON_INICIAR_OK = 0;
 
     public static final int BUTTON_HECHAR = 1;
@@ -54,6 +56,8 @@ class TrucoTable extends JPanel implements ComponentListener {
 
 	private JPanel jPmedio = null;
 	private JPanel jPbotonesJugadas = null;
+	private JPanel jPanel = null;
+	private ConexionTestPanel conexionTestPanel = null;
     /**
      * Construye un TrucoTable con ptListener como listener de eventos de la
      * mesa
@@ -73,8 +77,8 @@ class TrucoTable extends JPanel implements ComponentListener {
         this.add(getChatPanel(), java.awt.BorderLayout.SOUTH);
         this.add(getJpLeftPanel(), java.awt.BorderLayout.WEST);
         this.add(getJpCantos(), java.awt.BorderLayout.NORTH);
-        this.add(getScore(), java.awt.BorderLayout.EAST);
         this.add(getJPmedio(), java.awt.BorderLayout.CENTER);
+        this.add(getJPanel(), java.awt.BorderLayout.EAST);
     }
 
     /**
@@ -329,4 +333,34 @@ class TrucoTable extends JPanel implements ComponentListener {
     public JLabel getJlSaying() {
         return jlSaying;
     }
-  }
+	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */    
+	private JPanel getJPanel() {
+		if (jPanel == null) {
+			jPanel = new JPanel();
+			jPanel.setLayout(new BorderLayout());
+			jPanel.add(getScore(), java.awt.BorderLayout.CENTER);
+			jPanel.add(getConexionTestPanel(), java.awt.BorderLayout.SOUTH);
+		}
+		return jPanel;
+	}
+	/**
+	 * This method initializes conexionTestPanel	
+	 * 	
+	 * @return py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel	
+	 */    
+	private ConexionTestPanel getConexionTestPanel() {
+		if (conexionTestPanel == null) {
+			conexionTestPanel = new ConexionTestPanel();
+			conexionTestPanel.setBorder(BorderFactory.createEtchedBorder());
+		}
+		return conexionTestPanel;
+	}
+	public void actualizarConexionStatus(float ms)
+	{
+	    getConexionTestPanel().actualizar(ms);
+	}
+    }

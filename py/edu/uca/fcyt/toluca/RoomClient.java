@@ -620,5 +620,13 @@ public class RoomClient extends Room implements ChatPanelContainer,
     public void testConexionReceive(long milisegundos)
     {
         getRoomUING().actualizarTestConexion(milisegundos);
+        
+        for (int i = 0; i < tables.length; i++) {
+            
+            if(tables[i]!=null)
+            {
+                tables[i].getJTrucoTable().actualizarConexionStatus(milisegundos);
+            }
+        }
     }
 } // end RoomClient

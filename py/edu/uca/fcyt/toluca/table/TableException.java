@@ -4,7 +4,7 @@ package py.edu.uca.fcyt.toluca.table;
  * Excepción arrojada cuando se intenta realizar 
  * alguna acción inválida en la mesa
  */
-class TableException extends RuntimeException 
+public class TableException extends RuntimeException 
 {
 	public TableException(String title)
 	{

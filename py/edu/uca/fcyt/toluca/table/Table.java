@@ -29,6 +29,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
 
 /**
@@ -87,6 +88,7 @@ public class Table implements PTableListener, ChatPanelContainer,
     private TTextAnimator ttAnimator;
 
     private TableFrame tFrame;
+    
 
     // manejador de eventos de mesa
     protected TableEventManager tEventMan;
@@ -796,7 +798,7 @@ public class Table implements PTableListener, ChatPanelContainer,
     /**
      * Retorna la mesa de juego
      */
-    protected TrucoTable getJTrucoTable() {
+    public TrucoTable getJTrucoTable() {
         return trucoTable;
     }
 
@@ -1063,5 +1065,6 @@ public class Table implements PTableListener, ChatPanelContainer,
             primerTurno = 2;
     }
 
+    
 }
 
