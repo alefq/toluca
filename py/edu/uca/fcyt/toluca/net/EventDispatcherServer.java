@@ -111,13 +111,18 @@ public class EventDispatcherServer extends EventDispatcher{
 			logger.debug("La solicitud fue de "+event.getPlayer());
 			
 			TableServer tableServer= room.getTableServer(event.getTableNumber());
-			
-			
-			RoomEvent e=new RoomEvent();
-			e.setType(RoomEvent.TYPE_TABLE_JOIN_REQUESTED);
-			e.setPlayer(communicatorServer.getTrucoPlayer());
-			e.setTableServer(tableServer);
-			((RoomServer)room).joinTable(e);
+			if(tableServer.getTrucoGame()==null)
+			{
+				RoomEvent e=new RoomEvent();
+				e.setType(RoomEvent.TYPE_TABLE_JOIN_REQUESTED);
+				e.setPlayer(communicatorServer.getTrucoPlayer());
+				e.setTableServer(tableServer);
+				((RoomServer)room).joinTable(e);
+			}
+			else
+			{
+				logger.info("No se puede unir a una mesa que ya tiene juego");
+			}
 	
 	}
 	/* (non-Javadoc)

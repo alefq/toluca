@@ -104,7 +104,7 @@ public class CommunicatorServer extends Communicator{
 	public void tableJoined(RoomEvent event) {
 		//if(getTrucoPlayer().getName().equals(event.getPlayer().getName()))
 		//	event.getTableServer().addTableServerListener(this);
-		
+		logger.info("Se unio a la tabla "+event.getTableNumber() + " el player "+event.getPlayer());
 		super.sendXmlPackage(event);
 		
 	}
@@ -135,7 +135,12 @@ public class CommunicatorServer extends Communicator{
 		TableServer tableServer=event.getTableServer();
 		trucoGame.setTableNumber(tableServer.getTableNumber());
 		trucoGame.addTrucoListener(this);
-		super.sendXmlPackage(event);
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
+		
+		
+		
 		
 	}
 	public void signSent(TableEvent event) {
@@ -146,8 +151,11 @@ public class CommunicatorServer extends Communicator{
 	
 	public void play(TrucoEvent event) {
 		logger.info("Play"+getTrucoPlayer().getName());
-
-		super.sendXmlPackage(event);
+		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
+		
 		
 	}
 	
@@ -166,7 +174,10 @@ public class CommunicatorServer extends Communicator{
 	public void endOfHand(TrucoEvent event) {
 	
 		logger.info("End of Hand");
-		super.sendXmlPackage(event);
+		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
 	}
 	
 	public void cardsDeal(TrucoEvent event) {
@@ -178,25 +189,37 @@ public class CommunicatorServer extends Communicator{
 //		{
 //			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
 //		}
-		super.sendXmlPackage(event);
+		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
 		
 	}
 	
 	public void handStarted(TrucoEvent event) {
 	
 		logger.debug("************************EMPEZO LA MANO");
-		super.sendXmlPackage(event);
+		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
 	}
 	
 	public void gameStarted(TrucoEvent event) {
 	
 		logger.info("*******************************gameStarted");
-		super.sendXmlPackage(event);
+		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
 	}
 	
 	public void endOfGame(TrucoEvent event) {
 	
 		logger.info("End of game");
-		super.sendXmlPackage(event);
+		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+		
+		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+			super.sendXmlPackage(event);
 	}
 }

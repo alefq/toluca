@@ -270,6 +270,7 @@ public class EventDispatcherClient extends EventDispatcher {
         table.addPlayer(playerCreador);
 
         table.initResources();
+        
         if (mostrar)
         {            
             table.getJFrame().setVisible(true);
@@ -302,7 +303,7 @@ public class EventDispatcherClient extends EventDispatcher {
 
         table.addPlayer(playerClient);
         if (playerClient.getName().equals(trucoPlayer.getName())) {
-            //table.initResources();
+            table.initResources();
             table.getJFrame().setVisible(true);
         }
 
@@ -447,14 +448,13 @@ public class EventDispatcherClient extends EventDispatcher {
      */
     public void gameStarted(TableEvent event) {
 
-        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Llego un
-        // gameStarted de TableEvent ");
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Llego un gameStarted de TableEvent ");
         TableServer tableServer = event.getTableServer();
         Table table = room.getTable(tableServer.getTableNumber());
 
         TrucoTeam[] trucoTeam = table.createTeams();
-        TrucoGameClient trucoGameClient = new TrucoGameClient(trucoTeam[0],
-                trucoTeam[1]);
+        TrucoGameClient trucoGameClient = new TrucoGameClient(trucoTeam[0],trucoTeam[1]);
+        trucoGameClient.setTableNumber(tableServer.getTableNumber());
         trucoGameClient.addTrucoListener(commClient);
 
         //es muy importante el orden de los faroles altera el valor del
@@ -501,18 +501,14 @@ public class EventDispatcherClient extends EventDispatcher {
     }
 
     public void infoGame(TrucoEvent event) {
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
-        // "****************************INFO DE
-        // JUEGO******************************");
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Info del juego
-        // type "+event.getType());
+        		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,    "****************************INFO DE JUEGO******************************");
+        		
+      		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Info del juego  type "+event.getType());
 
-        //		if(event.getType()==TrucoEvent.INICIO_DE_JUEGO)
-        //			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "SE EMPIEZA UN
-        // JUEGO");
-        //		if(event.getType()==TrucoEvent.INICIO_DE_MANO)
-        //			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "SE EMPIEZA LA
-        // MANO");
+        if(event.getType()==TrucoEvent.INICIO_DE_JUEGO)
+        	logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "SE EMPIEZA UN JUEGO");
+        if(event.getType()==TrucoEvent.INICIO_DE_MANO)
+        	logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "SE EMPIEZA LA MANO");
 
         if (event.getType() == TrucoEvent.FIN_DE_JUEGO) {
             logeador
@@ -522,11 +518,10 @@ public class EventDispatcherClient extends EventDispatcher {
         }
         Table table = room.getTable(event.getTableNumber());
         TrucoGameClient trucoGameClient = (TrucoGameClient) table.getTGame();
-        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Table "
-                + table.getTableNumber());
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Hands
-        // "+event.getNumberOfHand());
-        if (event.getPlayer() != null) {
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Table "  + table.getTableNumber());
+       	logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Hands "+event.getNumberOfHand());
+        
+       	if (event.getPlayer() != null) {
 
             TrucoPlayer trucoPlayer = room.getPlayer(event.getPlayer()
                     .getName());
@@ -607,8 +602,7 @@ public class EventDispatcherClient extends EventDispatcher {
 
     public void tirarCarta(TrucoEvent event) {
 
-        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se quire tirar
-        // carta");
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se quire tirar carta table "+event.getTableNumber());
 
         Table table = room.getTable(event.getTableNumber());
         TrucoGameClient trucoGameClient = (TrucoGameClient) table.getTGame();
@@ -620,8 +614,7 @@ public class EventDispatcherClient extends EventDispatcher {
         TrucoCard cartaClient = trucoGameClient.getCard(cartaServer.getKind(),
                 cartaServer.getValue());
 
-        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Player cliente
-        // : "+playerClient);
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Player cliente : "+playerClient);
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " carta cliente:
         // "+cartaClient);
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "TrucoPlayer :
