@@ -215,6 +215,17 @@ public class TrucoStatusTable{
         {
             return flores.florMayor(equipoMano);
         }
+        public boolean mostraraFlor (int jugador,int equiMano){
+            if (estado[jugador].jugoTresCartas())
+                return true;
+            if (resultadoEnvido(equiMano) != jugador)
+                return false;
+            if (jugador >= 0 && jugador < cJugadores){
+                return estado[jugador].mostraraFlor();
+            }
+            System.out.println("Error en TST-mostraraFlor: Avisar a la gente de TrucoGame");
+            return false;
+        }
 //--------------------------------------------------------------------------------------------------------
 //        Seccion Envido
 //--------------------------------------------------------------------------------------------------------
@@ -264,10 +275,22 @@ public class TrucoStatusTable{
         {
             return envidos.envidoMayor(equipoMano);
         }
-        
+        public boolean mostroEnvido (int jugador){
+            if (jugador >= 0 && jugador < cJugadores){
+                return estado[jugador].mostroEnvido();
+            }
+            System.out.println("Error en TST-mostroEnvido: Avisar a la gente de TrucoGame");
+            return false;
+        }
         public boolean jugoTresCartas(int jugador){
             return (estado[jugador].jugoTresCartas());
-            
+        }
+        public boolean jugoSusCartasDeEnvido(int jugador){
+            if (jugador >= 0 && jugador < cJugadores){
+                return (estado[jugador].jugoTresCartas());
+            }
+            System.out.println("Error en TST-jugo Sus Cartas de Envido: Avisar a la gente de TrucoGame");
+            return false;
         }
 }
 	

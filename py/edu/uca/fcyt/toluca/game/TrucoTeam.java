@@ -9,18 +9,25 @@ package py.edu.uca.fcyt.toluca.game;
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.game.*;
 
-/**
- *
- * @author  Julio Rey
+/** Clase que representa a un equipo de Truco.
+ * @author Julio Rey
  */
 public class TrucoTeam extends Team{
     
-    /** Creates a new instance of TrucoTeam */
+    /** Constructor de instancia de TrucoTeam.
+     * @param name String que representa el nombre identificador del TrucoTeam.
+     */
     public TrucoTeam(String name) {
         super(name);
     }
+    /** Constructor de Instancia del TrucoTeam.
+     */    
     public TrucoTeam(){
     }
+    /** Retorna el numero del TrucoPlayer.
+     * @return int que representa el numero de ese equipo.
+     * @param pl TrucoPlayer de quien se devolverá su numero.
+     */    
     public int getNumberOfPlayer(TrucoPlayer pl){
         for (int i=0; i<playersList.size(); i++){
     		if ((Player)(playersList.get(i))==pl)
@@ -28,5 +35,26 @@ public class TrucoTeam extends Team{
     	}
     	return -1;
     }
+    /** Retorna el Player de numero i.
+     * @param numberOfPlayer numero de TrucoPlayer a ser retornado.
+     * @return TrucoPlayer que es el integrante numero i del TrucoTeam.
+     */    
+    public TrucoPlayer getTrucoPlayerNumber (int numberOfPlayer){
+        return (TrucoPlayer)super.getPlayerNumber(numberOfPlayer);
+    }
+    /** Verifica si es integrante del TrucoTeam.
+     * @return <B>true</B> si es integrante, <B>false</B> si no es integrante.
+     * @param tPl TrucoPlayer a ser verificado si es integrante.
+     */    
+    public boolean isPlayerTrucoTeam(TrucoPlayer tPl){
+        return super.isPlayerTeam(tPl);
+    }
+    /** Adherir nuevo TrucoPlayer al Equipo.
+     * @param tPl TrucoPlayer a ser adherido a la lista de TrucoPlayers del equipo.
+     */    
+    public void addPlayer (TrucoPlayer tPl){
+        super.addPlayer(tPl);        
+    }
+    
     
 }

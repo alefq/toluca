@@ -82,11 +82,14 @@ public class StatusMano {
      */    
     public int jugarCarta(int jugador,TrucoCard cual)
     {
+        
         if(jugador>=0 && jugador<cjugadores && cartasJugadas[ronda][jugador]==null){ //nro de jugador valido y que no halla carta alli
             cartasJugadas[ronda][jugador]=cual;
             nCartasJugadas++;
-        }else 
+        }else {
+            if (cartasJugadas[ronda][jugador]!=null)
             return 0;          
+        }
         return 5;
     }
     

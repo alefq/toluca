@@ -49,8 +49,6 @@ public class StatusPlayer{
     }
     
     public boolean jugoTresCartas (){
-        
-        System.out.println("cartas jugadas" + cantidadDeCartasJugadas);
         if(cantidadDeCartasJugadas==3)
             return true;
         else
@@ -109,8 +107,6 @@ public class StatusPlayer{
      * @return  */
     private boolean contar_tanto(TrucoCard[] cuales, int cuanto)
     {
-        
-        System.out.println("verificando en contar tanto");
         if (son_mismo_palo(cuales[0],cuales[1]) && valor_envido(cuales[0]) + valor_envido(cuales[1])+20 == cuanto){
             return true;
         }
@@ -120,7 +116,6 @@ public class StatusPlayer{
         if (son_mismo_palo(cuales[1],cuales[2]) && valor_envido(cuales[1]) + valor_envido(cuales[2])+20 == cuanto){
             return true;
         }
-        System.out.println("resultado falso;");
         return false;                                
     }
     /** devuelve el envido mayor del jugador
@@ -137,7 +132,6 @@ public class StatusPlayer{
     {
          //System.out.println ("conte " + contar_tanto(cartas) +"\n y me preguntaron " + cuanto );
         if(cuanto>=20 && contar_tanto(cartas,cuanto)){	
-            System.out.println ("paso la primera purueba");
             return true;}
         else{
             if(cuanto<20)
@@ -146,6 +140,34 @@ public class StatusPlayer{
                         return true;
             return false;
         }
+    }
+    public boolean mostroEnvido (){
+        if (!seCerro)
+            return true;
+        if (jugoSusCartasDeEnvido())
+            return true;
+        return false;
+    }
+    public boolean jugoSusCartasDeEnvido(){
+        int valueOfEnvido= getValueOfEnvido();
+        if (valueOfEnvido >= 20){
+            for (int i=0; i<3; i++){
+                if (son_mismo_palo(cartas[i],cartas[(i+1)%3])){
+                    int valorAct = valor_envido(cartas[i])+valor_envido(cartas[(i+1)%3])+20;
+                    if (valorAct==valueOfEnvido){
+                        if (cartas[i].isFlipped() && cartas[(i+1)%3].isFlipped())
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+        for (int i=0; i<3; i++){
+            int valorAct = valor_envido(cartas[i]);
+            if (valorAct ==valueOfEnvido && cartas[i].isFlipped())
+                return true;
+        }
+        return false;
     }
     public int getValueOfEnvido (){
         int valueOfEnvido=-1;
@@ -192,7 +214,6 @@ public class StatusPlayer{
             if(!cartas[i].isFlipped())
                 return cartas[i];
         }
-        System.out.println("puede que halla jugadotodas sus cartas");
         return null;
     }
     public TrucoCard getCardNoPlayingForEnvido(){
@@ -245,20 +266,59 @@ public class StatusPlayer{
      */    
     public int puedeJugarCarta(TrucoCard cual)
     {//Busca la carta y verifica si la carta no se jugo ya
-        System.out.println("puedeJugarCarta - sp palo " + cual.getKind() + " nro:" +cual.getValue());
         if(!seCerro){           
-        for(int i=0;i<3;i++){
-            System.out.println("verificando - sp palo " + cartas[i].getKind() + " nro:" +cartas[i].getValue());
-            if(cartas[i]==cual && cartas[i].isFlipped()==false){
-                System.out.println("puedeJugarCarta - Puede Jugar - sp");
-                return 1;}
-            else if(cartas[i]==cual && cartas[i].isFlipped()==true){
-                System.out.println("puedeJugarCarta - NO PUEDE JUGAR- sp");
-                return 0;}
-        }   
-        System.out.println("puedeJugarCarta - No encontro la carta- sp");
+            for(int i=0;i<3;i++){
+                if(cartas[i]==cual && cartas[i].isFlipped()==false)
+                    return 1;
+                else if(cartas[i]==cual && cartas[i].isFlipped()==true){
+                    return 0;}
+            }       
         }
-        System.out.println("puedeJugarCarta - Se cerro?- sp");
         return -1;
+    }
+    public boolean mostraraFlor (){
+        if (cantidadDeCartasJugadas == 3)/*ya mostro*/
+            return true;
+        if (cantidadDeCartasJugadas == 0)/*no puede mostrar*/
+            return false;
+        if (jugoSusCartasDeEnvido() && cantidadDeCartasJugadas == 2)
+            return false;
+
+        int valueOfEnvido= getValueOfEnvido();
+        if (valueOfEnvido >= 20){
+            for (int i=0; i<3; i++){
+                if (son_mismo_palo(cartas[i],cartas[(i+1)%3])){
+                    int valorAct = valor_envido(cartas[i])+valor_envido(cartas[(i+1)%3])+20;
+                    if (valorAct==valueOfEnvido){
+                        if (!cartas[i].isFlipped() && cartas[(i+1)%3].isFlipped()){
+                            if (cantidadDeCartasJugadas == 2)
+                                return true;
+                            if (cantidadDeCartasJugadas == 1)
+                                return false;
+                        }
+                        if (cartas[i].isFlipped() && !cartas[(i+1)%3].isFlipped()){
+                            if (cantidadDeCartasJugadas == 2)
+                                return true;
+                            if (cantidadDeCartasJugadas == 1) 
+                                return false;
+                        }
+                        if (!cartas[i].isFlipped() && !cartas[(i+1)%3].isFlipped()){
+                            if (valueOfEnvido != 20)
+                                return true;
+                            return false;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        for (int i=0; i<3; i++){
+            int valorAct = valor_envido(cartas[i]);
+            if (cartas[i].isFlipped())
+                return false;
+        }
+        if (cantidadDeCartasJugadas == 2)
+            return true;
+        return false;
     }
 }

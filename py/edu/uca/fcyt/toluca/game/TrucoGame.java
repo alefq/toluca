@@ -9,9 +9,9 @@ import java.util.*;
 import py.edu.uca.fcyt.toluca.event.*;
 import py.edu.uca.fcyt.game.*;
 
-/**
- *
- * @authors  Julio Rey || Christian Benitez
+/** Clase que representa y administra un juego de Truco.
+ * @authors Julio Rey || Christian Benitez
+ * @version 1.0
  */
 public class TrucoGame extends Game {
     
@@ -32,8 +32,10 @@ public class TrucoGame extends Game {
     
     
     /** Constructor con dos equipos, asi crea un TrucoGame
+     * @param tm1 Equipo 1 que jugará el TrucoGame.
+     * @param tm2 Equipo 1 que jugará el TrucoGame.
      */    
-    public TrucoGame(TrucoTeam tm1, TrucoTeam tm2) throws InvalidPlayExcepcion{ //contructor con los teams 
+    public TrucoGame(TrucoTeam tm1, TrucoTeam tm2){ //contructor con los teams 
         
         listenerlist = new LinkedList(); //instancia de la lista de Trucolistener
         teams[0] = tm1;
@@ -43,8 +45,7 @@ public class TrucoGame extends Game {
     }
     /** Dispara el inicio del juego
      */    
-    public void startGame() throws InvalidPlayExcepcion{
-        try{
+    public void startGame(){
             numberOfPlayers = teams[0].getNumberOfPlayers()*2;
             playersPreparados = new boolean[numberOfPlayers];
             newGame();
@@ -52,10 +53,6 @@ public class TrucoGame extends Game {
             for (int i=0; i<numberOfPlayers; i++)
                 playersPreparados[i] = true;
             startHandConfirmated();
-        }
-        catch(InvalidPlayExcepcion e){
-            throw e;
-        }
     }
     /** nuevo Juego
      */    
@@ -63,18 +60,25 @@ public class TrucoGame extends Game {
         points[0] = 0; //cerando el puntaje
         points[1] = 0; 
     }
-    /** adherir un nuevo TrucoListener al juego
+    /** adherir un nuevo TrucoListener al juego.
+     * @param tl Oyente que se adhiere a la lista.
      */    
     public void addTrucoListener(TrucoListener tl){
         listenerlist.add(tl);
     }
-    /** configurar los equipos que jugaran el TrucoGame
+    /** configurar los equipos que jugarán el TrucoGame.
+     * @param team_1 Equipo 1 que jugará el TrucoGame.
+     * @param team_2 Equipo dos que jugará el TrucoGame
      */    
     public void setTeam(TrucoTeam team_1, TrucoTeam team_2){//insertar los teams que partciparan del juego de truco
         teams[0] = team_1;
         teams[1] = team_2;
     }
-    public void dealtCards(TrucoPlayer tp, TrucoCard[] card)throws InvalidPlayExcepcion{//reparte las cartas a los jugadores
+    /** Envia las cartas a los jugadores.
+     * @param tp TrucoPlayer a quien irá las cartas.
+     * @param card carta a ser enviadas.
+     */    
+    public void dealtCards(TrucoPlayer tp, TrucoCard[] card){//reparte las cartas a los jugadores
         for (int i=0; i<listenerlist.size(); i++){
             if (((TrucoListener)listenerlist.get(i)).getAssociatedPlayer()==tp){
                 TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,(byte)0,card);
@@ -84,16 +88,21 @@ public class TrucoGame extends Game {
         }
         throw (new InvalidPlayExcepcion("TrucoGame.dealCards(Player,Card[]) no se encontro el player" + tp.getName()));
     }
-    /** retorna el Equipo nro i
+    /** Retorna el Equipo que es Numero i.
+     * @param i numero de Team (o 0 o 1)
+     * @return Retorna un Equipo(TrucoTeam).
      */    
     public TrucoTeam getTeam(int i){ //retorna el team numero i
         if (i == 0 || i == 1)
             return teams[i];
         return null;
     }
-    /** retorna el puntaje del equipo Team
+    /** Retorna el puntaje Total de uno de los Teams.
+     * @param tm TrucoTeam de quien se retorna el Puntaje.
+     * @return El valor del puntaje de un TrucoTeam.
+     * @throws InvalidPlayExcepcion tira en caso de que el TrucoTeam no participe en el TrucoGame.
      */    
-    public int getGameTotalPoints(Team tm) throws InvalidPlayExcepcion{ //el puntaje del team tm
+    public int getGameTotalPoints(TrucoTeam tm) throws InvalidPlayExcepcion{ //el puntaje del team tm
         if (teams[0] == tm)
              return points[0];
         if (teams[1] == tm)
@@ -102,8 +111,10 @@ public class TrucoGame extends Game {
      //   return 0;
     }
     /** configurar el puntaje del equipo
+     * @param tm Team a configurar su puntaje.
+     * @param pts Puntaje a ser configurado.
      */    
-    public void setGameTotalPoints(Team tm, int pts){ //inserta puntaje
+    public void setGameTotalPoints(TrucoTeam tm, int pts){ //inserta puntaje
         if (teams[0] == tm){
            points[0] = pts;
            return;
@@ -113,7 +124,9 @@ public class TrucoGame extends Game {
             return;
         }
     }
-    /** metodo para realizar una jugada
+    /** Metodo para realizar una jugada TrucoPlay.
+     * @param tp Jugada a ser realizada (TrucoPlay).
+     * @throws InvalidPlayExcepcion Excepcion en caso de dectarse que no es posible hacer esa jugada.
      */    
     public void play (TrucoPlay tp) throws InvalidPlayExcepcion{ //play trucoGame
         
@@ -126,13 +139,16 @@ public class TrucoGame extends Game {
             throw e;
         }
     }
-    /** verifica si es valido hacer la jugada
-     * @param tp
+    /** Retorna Verdadero si posible realizar una jugada.
+     * @param tp Jugada a verificar si es posible ser realizada.
+     * @return Retorna si es válido la jugada.
      */    
     public boolean esPosibleJugar(TrucoPlay tp){
         return trucoHand.esPosibleJugar(tp);
     }
-    /** enviar mensajes a todos los oyentes del cambio de turno
+    /** Enviar mensajes a todos los oyentes del cambio de turno.
+     * @param pl TrucoPlayer a quien se le asigna el turno.
+     * @param type Tipo de Turno a ser asignado.
      */    
     public void fireTurnEvent(TrucoPlayer pl,byte type){ //avisar quien juega con type el tipo de turno, ronda de cartas, ronda de envidos o flores etc
         
@@ -141,7 +157,9 @@ public class TrucoGame extends Game {
             ((TrucoListener)(listenerlist.get(i))).turn(event);
         }
     }
-    /** enviar mensaje de jugada a todos los oyentes del juego
+    /** Enviar mensaje de jugada a todos los oyentes del juego.
+     * @param pl TrucoPlayer que realizo la jugada.
+     * @param type Tipo de Jugada que realizó.
      */    
     public void firePlayEvent(TrucoPlayer pl, byte type){ //eventos de juego sin carta o canto
         TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type);
@@ -149,7 +167,10 @@ public class TrucoGame extends Game {
             ((TrucoListener)(listenerlist.get(i))).play(event);
         }
     }
-    /** enviar mensaje de jugada a todos los oyentes del juego
+    /** Enviar mensaje de jugada a todos los oyentes del juego.
+     * @param pl TrucoPlayer que realizó la jugada.
+     * @param card Carta que jugó el Player.
+     * @param type Tipo de jugada que realizó.
      */    
     public  void firePlayEvent(TrucoPlayer pl, TrucoCard card,byte type){ //eventos de juego con carta
         System.out.println("se envia el mensaje");
@@ -158,7 +179,10 @@ public class TrucoGame extends Game {
             ((TrucoListener)(listenerlist.get(i))).play(event);
         }
     }
-    /** enviar mensaje de jugada a todos los oyentes del juego
+    /** Enviar mensaje de jugada a todos los oyentes del juego.
+     * @param pl Player que realizó la jugada.
+     * @param type Tipo de jugada que realizó.
+     * @param value Valor del canto (para jugadas de canto de valor Envido o Flor).
      */    
     public void firePlayEvent (TrucoPlayer pl, byte type, int value){//eventos de canto de tanto
     	TrucoEvent event = new TrucoEvent(this,numberOfHand,pl, type, value);
@@ -169,26 +193,23 @@ public class TrucoGame extends Game {
     /*public void fireEventType(byte type){
         TrucoEvent event = new TrucoEvent(this,numberOfHand,type);
     }*/
-    /** enviar mensaje a todos los oyentes sobre el final de la mano
+    /** Enviar mensaje a todos los oyentes sobre el final de la mano
      */    
-    public void fireEndOfHandEvent() throws InvalidPlayExcepcion{
-        points[0] = points[0] + trucoHand.getPointsOfTeam(0);
-        points[1] = points[1] + trucoHand.getPointsOfTeam(1);
-        teams[0].setPoints(points[0]);
-        teams[1].setPoints(points[1]);
+    public void fireEndOfHandEvent(){
         TrucoEvent event = new TrucoEvent(this,numberOfHand);
         for(int i=0; i<listenerlist.size();i++){
             ((TrucoListener)(listenerlist.get(i))).endOfHand(event);
         }   
-        if(points[0] >= 30 || points[1] >= 30){
-            fireEndOfGameEvent();
-        }
-        else{
-            
-            newHand();
-        }
     }
-    /** enviar mensaje a todos los oyentes sobre el final del juego
+    public void EndOfHandEvent(){
+        points[0] = points[0] + trucoHand.getPointsOfTeam(0);
+        points[1] = points[1] + trucoHand.getPointsOfTeam(1);
+        teams[0].setPoints(points[0]);
+        teams[1].setPoints(points[1]);
+        newHand();
+
+    }
+    /** Enviar mensaje a todos los oyentes sobre el final del juego.
      */    
     public void fireEndOfGameEvent(){
         TrucoEvent event = new TrucoEvent(this,numberOfHand);
@@ -197,7 +218,8 @@ public class TrucoGame extends Game {
             }   
     }
     
-    /** enviar las cartas a cada jugador
+    /** Enviar las cartas a cada jugador.
+     * @deprecated No esta disponible.
      */    
     public void fireCardsDealt(){
         TrucoEvent event = new TrucoEvent(this,TrucoEvent.CARTAS_REPARTIDAS);
@@ -205,16 +227,16 @@ public class TrucoGame extends Game {
                 ((TrucoListener)(listenerlist.get(i))).play(event);
             }   
     }
-    /** enviar mensaje a todos los oyentes sobre el el comienzo de la mano
+    /** Enviar mensaje a todos los oyentes sobre el el comienzo de la mano.
      */    
     public void fireHandStarted(){
-    	TrucoPlayer tp = teams[(numberOfHand+1)%2].getPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
+    	TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
         TrucoEvent event = new TrucoEvent(this,numberOfHand,tp);
         for(int i=0; i<listenerlist.size();i++){
             ((TrucoListener)(listenerlist.get(i))).handStarted(event);
         }
     }
-    /** enviar mensaje a todos los oyentes sobre el el comienzo del juego
+    /** Enviar mensaje a todos los oyentes sobre el el comienzo del juego.
      */    
     public void fireGameStarted(){
         TrucoEvent event = new TrucoEvent(this,numberOfHand);
@@ -222,6 +244,10 @@ public class TrucoGame extends Game {
             ((TrucoListener)(listenerlist.get(i))).gameStarted(event);
         }
     }
+    /** Para dejarse en espera a que inicie la siguiente mano.
+     * @param tPlayer Player que esta preparado.
+     * @ Una vez que todos los TrucoPlayers hallan preparado, empieza la siguiente mano.
+     */    
     public void startHand(TrucoPlayer tPlayer){
         int i; //
         System.out.println("cantidad de players preparados="+cantidadDePlayersPreparados);
@@ -254,6 +280,9 @@ public class TrucoGame extends Game {
     }
     private void startHandConfirmated(){
         
+        if(points[0] >= 30 || points[1] >= 30){
+            
+        }
         numberOfHand++;
         fireHandStarted();/*para que se preparen los jugadores*/
         trucoHand = new TrucoHand(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
@@ -270,37 +299,23 @@ public class TrucoGame extends Game {
             ///System.out.println("despues va repartir las cartas" + reparteCartas + "numero de players" + getNumberOfPlayers());
 
     }
-    /** configuar el puntaje
-     * @param
-     */    
-    public void setPoints(){
-    }
-    /** obtener el puntaje de un equipo especifico
-     */    
-    public int getPoints(Team team){
-        return 0;
-    }
-    /** retorna el numero de jugadores de la mesa
-     * @return
+    /** Retorna el numero de jugadores del TrucoGame.
+     * @return Cantidad de Jugadores.
      */    
     public int getNumberOfPlayers(){
         return (numberOfPlayers);
     }
-    /** retorna el numero de mano
+    /** Retorna el numero de mano actual del TrucoGame.
+     * @return El numero de mano actual del TrucoGame.
      */    
     public int getNumberOfHand(){
         return numberOfHand;
     }
-    
-    /** (deprecated)
-     */    
-    public int getPieTeam(int i){
-        return (trucoHand.getPieTeam(i));
-    }
-    /** retorna cuantos puntos se juegan en caso de faltear
+    /** Retorna cuantos puntos se juegan en caso de faltear.
+     * @return retorna el valor del puntaje
      */
  
-    public int getFaltear(){ /*retorna los puntos que se jugar en falta envido*/
+    public int getFaltear(){ 
     	int i=0;	
     	if(points[1] > points[0])
     		i=1;
@@ -308,16 +323,19 @@ public class TrucoGame extends Game {
     		return (30-points[i]);
     	return (15-points[i]);
     }
-    /** (en construccion)
+    /** Retorna la cantidad de puntos que se juegan, en caso de jugar Al Resto.
+     * @return Retorna la cantidad de puntos.
      */    
-    public int alResto(int team){
-    	if(team==0)
+    public int alResto(){
+    	if (points[0]>points[1])
     		return (30-points[0]);
-    	if(team == 1)
-    		return (30-points[1]);
-    	return 0;
+        return (30-points[1]);
     }
     /*obtener el mejor envido que puede cantar el player*/
+    /** Retorna el Valor del Envido que puede cantar un Player.
+     * @param tp TrucoPlayer a ser retornado su valor de Envido.
+     * @return el valor del envido del TrucoPlayer.
+     */    
     public int getValueOfEnvido(TrucoPlayer tp) {
         
             return trucoHand.getValueOfEnvido(tp);

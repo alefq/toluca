@@ -140,23 +140,9 @@ public class TrucoEvent {
    public Player getPlayer (){
         return player;
     }
-   
-   /** Getter for property value.
-    * @return Value of property value.
-    *
-    */
-   public int getValue() {
+   public int getValue (){
        return value;
    }
-   
-   /** Setter for property value.
-    * @param value New value of property value.
-    *
-    */
-   public void setValue(int value) {
-       this.value = value;
-   }
-   
    /*public Document xmlCreateSendCards()
    {
 		Element ROOT =new Element ("SendCards");
