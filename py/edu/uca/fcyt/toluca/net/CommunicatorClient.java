@@ -120,6 +120,11 @@ public class CommunicatorClient extends Communicator {
             }
         }
     }
+    
+    public void tableCreated(RoomEvent re) {
+        
+    }
+    
     private void cabecera(Document doc) {//saca la cabeza del paquete y envia el paquete al lector correspondiente
         
         List children = doc.getContent();
