@@ -82,4 +82,20 @@ public class TrucoPlayer {
     {
     	return new String(getName()+ " "+getRating());
     }
+    
+    /* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equalsO(Object obj) {
+		boolean ret = false;		
+		if(obj instanceof TrucoPlayer)
+		{
+			String este = getName() + " - " + getRating();
+			TrucoPlayer tp = (TrucoPlayer) obj;
+			String elOtro = tp.getName() + " - " + tp.getRating();
+			ret = este.equals(elOtro);
+		} ret = super.equals(obj);
+		
+		return ret;
+	}
 }

@@ -267,14 +267,15 @@ public class EventDispatcherClient extends EventDispatcher {
         // room
         Table table = null;
         boolean mostrar = false;
-        if (playerCreador.getName().equals(trucoPlayer.getName())) {//CREO EL
+        if (playerCreador.getName().equals(trucoPlayer.getName())) {
+        	//CREO EL
             // PLAYER
             // QUE ACABA
             // DE
-            // RESIVIR
+            // RECIBIR
             // EL MSG
 
-            table = new Table(trucoPlayer, true);
+            table = new Table(playerCreador, true);
             mostrar = true;
         } else {//fue otro el que creo
             table = new Table(trucoPlayer, false);
@@ -647,7 +648,8 @@ public class EventDispatcherClient extends EventDispatcher {
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "TrucoPlayer :
         // "+trucoPlayer);
 
-        if (trucoPlayer != playerClient) {
+        //TODO: ver por que no anda mas el tema del igual entre objetos como era antes
+        if (!trucoPlayer.getName().equals(playerClient.getName())) {
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
             // getClass().getName()+"tirarCarta: playerCliente no es igual a
             // trucoPlayer");
@@ -698,7 +700,8 @@ public class EventDispatcherClient extends EventDispatcher {
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
         // "*************************************************************");
 
-        if (trucoPlayer != playerClient) {
+        //TODO: ver por que no anda mas el tema del igual entre objetos como era antes
+        if (!trucoPlayer.getName().equals( playerClient.getName())) {
             //	logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " se le hace
             // un play porque los players son diferentes");
             TrucoEvent ev = new TrucoEvent(trucoGameClient, event.getHand(),
@@ -739,7 +742,8 @@ public class EventDispatcherClient extends EventDispatcher {
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
         // "*************************************************************");
 
-        if (trucoPlayer != playerClient) {
+        //TODO: ver por que no anda mas el tema del igual entre objetos como era antes
+        if (!trucoPlayer.getName().equals( playerClient.getName())) {
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " se le hace
             // un play porque los players son diferentes");
             TrucoEvent ev = new TrucoEvent(trucoGameClient, event.getHand(),

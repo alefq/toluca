@@ -135,7 +135,7 @@ public class EventDispatcherServer extends EventDispatcher{
 	 */
 	public void playerSitRequest(TableEvent event) {
 
-		logger.debug("Se resive un playerSitRequest");
+		logger.debug("Se recibe un playerSitRequest");
 		logger.debug(event.getPlayer()[0]);
 		logger.debug("TableNumber"+event.getTableBeanRepresentation().getId());
 		logger.debug("Silla "+ event.getValue());

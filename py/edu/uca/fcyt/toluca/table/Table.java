@@ -328,16 +328,17 @@ public class Table implements PTableListener, ChatPanelContainer,
 		//System.out.println("Mesa de " + getPlayer() + ": sentando a " +
 		// player + " en la mesa " + chair);
 		Face face;
-
 		pManager.sitPlayer(player, chair);
-		if (player == actualPlayer)
+		
+		if (player.getName().equals(actualPlayer.getName())){
+			actualPlayer = player;			
 			pManager.setActualPlayer(player);
-
+		} 		
+		
 		if (fManager != null) {
 			face = fManager.getFace(chair);
 			face.setName(player.getName());
-			face
-					.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
+			face.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
 		}
 
 		//		System.out.println("----------------- TABLA DE: " +
@@ -347,11 +348,11 @@ public class Table implements PTableListener, ChatPanelContainer,
 		//		System.out.println("isSitted: " + pManager.isSitted(actualPlayer));
 
 		if (jtTable != null)
-			jtTable.buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(pManager
-					.evenTeams()
-					&& (pManager.getActualChair() == 0)
-					&& pManager.isSitted(actualPlayer));
-
+//			jtTable.buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(pManager
+//					.evenTeams()
+//					&& (pManager.getActualChair() == 0)
+//					&& pManager.isSitted(actualPlayer));
+			jtTable.enableAction(pManager, actualPlayer);
 		// avisa que le player se sent� correctamente
 		tEventMan.firePlayerSit();
 	}

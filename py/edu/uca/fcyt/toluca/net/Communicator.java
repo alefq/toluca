@@ -97,7 +97,6 @@ implements RoomListener,TrucoListener,TableListener
 		
 		if(bean instanceof RoomEvent)
 		{
-//		    Object obj = getBolemObject();
 			eventDispatcher.dispatchEvent((RoomEvent)bean);
 		}
 		if(bean instanceof TableEvent)

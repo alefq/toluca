@@ -12,31 +12,40 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import py.edu.uca.fcyt.game.ChatPanel;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
-/** Panel principal de juego*/
-class JTrucoTable extends JPanel implements ComponentListener 
-{
+/** Panel principal de juego */
+class JTrucoTable extends JPanel implements ComponentListener {
 	public static final int BUTTON_INICIAR_OK = 0;
+
 	public static final int BUTTON_HECHAR = 1;
+
 	public static final int BUTTON_AYUDA = 2;
 
 	// paneles
-	protected JPanel jpPlayers; 	// panel de jugadores
-	protected ChatPanel jpChat;		// panel de chat
-	protected JPanel jpLeftPanel;	// panel izquierdo
-	protected Score score;			// panel de puntajes
-	protected JPlayers jpWatchers;	// observadores
+	protected JPanel jpPlayers; // panel de jugadores
+
+	protected ChatPanel jpChat; // panel de chat
+
+	protected JPanel jpLeftPanel; // panel izquierdo
+
+	protected Score score; // panel de puntajes
+
+	protected JPlayers jpWatchers; // observadores
+
 	protected PlayTable pTable;
+
 	protected JButton[] buttons;
+
 	protected JLabel jlSaying;
+
 	protected Actions actions;
 
 	/**
-	 * Construye un JTrucoTable con ptListener
-	 * como listener de eventos de la mesa
+	 * Construye un JTrucoTable con ptListener como listener de eventos de la
+	 * mesa
 	 */
-	public JTrucoTable(Table table)
-	{
+	public JTrucoTable(Table table) {
 		// crea los componentes
 		pTable = new PlayTable(table);
 		jpLeftPanel = new JPanel();
@@ -47,7 +56,7 @@ class JTrucoTable extends JPanel implements ComponentListener
 
 		// agrega
 		jpPlayers.add(jlSaying = new JLabel("Canto: "));
-//		jpChat.add(new JLabel("Chat"));
+		//		jpChat.add(new JLabel("Chat"));
 
 		score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
 		score.add(new JLabel(" ------ Puntaje ------ "));
@@ -61,80 +70,74 @@ class JTrucoTable extends JPanel implements ComponentListener
 		add(jpChat, BorderLayout.SOUTH);
 		add(score, BorderLayout.EAST);
 
-		if (table.isHost())
-		{
-			buttons = new JButton[]
-			{
-				new JButton("Iniciar"),
-				new JButton("Echar"),
-				new JButton("Ayuda")
-			};
+		if (table.isHost()) {
+			buttons = new JButton[] { new JButton("Iniciar"),
+					new JButton("Echar"), new JButton("Ayuda") };
+		} else {
+			buttons = new JButton[] { new JButton("Iniciar"),
+					new JButton("Ayuda") };
 		}
-		else
-		{
-			buttons = new JButton[]
-			{
-				new JButton("Iniciar"),
-				new JButton("Ayuda")
-			};
-		}
-		
+
 		buttons[0].setEnabled(false);
 
 		JLabel obs = new JLabel("       Personas        ");
-		obs.setPreferredSize(new Dimension(100,30));
+		obs.setPreferredSize(new Dimension(100, 30));
 
 		jpLeftPanel.setLayout(new BoxLayout(jpLeftPanel, BoxLayout.Y_AXIS));
 		jpLeftPanel.add(obs);
 		jpLeftPanel.add(jpWatchers);
 		jpLeftPanel.add(actions = new Actions(buttons, table, table));
-		jpLeftPanel.setPreferredSize(new Dimension(125,200));
+		jpLeftPanel.setPreferredSize(new Dimension(125, 200));
 
-//		pTable.setBorder(new EtchedBorder());
+		//		pTable.setBorder(new EtchedBorder());
 		jpChat.setBorder(new EtchedBorder());
 		jpLeftPanel.setBorder(new EtchedBorder());
 		jpPlayers.setBorder(new EtchedBorder());
 		score.setBorder(new EtchedBorder());
-//		resizeComponents();
+		//		resizeComponents();
 
 		JPanel aux;
 		addComponentListener(this);
 	}
 
 	/** retorna el PlayTable asociado a la mesa */
-	public PlayTable getPlayTable()
-	{
+	public PlayTable getPlayTable() {
 		return pTable;
 	}
-	
-	public void componentResized(ComponentEvent e) 
-	{
+
+	public void componentResized(ComponentEvent e) {
 		resizeComponents();
 	}
-	
+
 	public void componentMoved(ComponentEvent e) {
 		// TODO: Add your code here
 	}
 
-	public void componentShown(ComponentEvent e) 
-	{
-//		resizeComponents();
+	public void componentShown(ComponentEvent e) {
+		//		resizeComponents();
 	}
 
 	public void componentHidden(ComponentEvent e) {
 		// TODO: Add your code here
 	}
 
-
-	private void resizeComponents()
-	{
+	private void resizeComponents() {
 	}
-	
-	public JButton getJButton(String text)
-	{
+
+	public JButton getJButton(String text) {
 		for (int i = 0; i < buttons.length; i++)
-			if (buttons[i].getText().equals(text)) return buttons[i];
-		
+			if (buttons[i].getText().equals(text))
+				return buttons[i];
+
 		return null;
+	}
+
+	/**
+	 * @param manager
+	 */
+	public void enableAction(PlayerManager manager, TrucoPlayer actualPlayer) {
+		boolean ena = manager.evenTeams() && (manager.getActualChair() == 0)
+				&& manager.isSitted(actualPlayer);
+		buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(ena);
 	}
 }

@@ -310,7 +310,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "el chatpanel
         // del room es "+chatPanel);
         setRoomPlayer(player);
-        player.setFullName(player.getName());        
+//        player.setFullName(player.getName());        
         getRoomUING().loginCompleted(player);
     } // end loginCompleted /** lock-begin */
 
