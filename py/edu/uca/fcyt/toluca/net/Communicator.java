@@ -352,47 +352,12 @@ implements RoomListener, TableListener,TrucoListener
 			   System.out.println("Player:"+user);
 			  System.out.println("Tanto"+tanto);
 			 }
-	} */
+	} 
     }
-    public void xmlReadTurno(Object o)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-/*		String aux;
-	if (o instanceof Element) {
-	    Element element = (Element) o;
-	    aux=element.getName();
-	    if(aux.compareTo("Type")==0) {
-	     type=Integer.parseInt(element.getAttributeValue("id"));
-	    }
-			 if(aux.compareTo("Game")==0) {
-		//System.out.println("MESSAGE:"+element.getText());
-		gameID=Integer.parseInt(element.getAttributeValue("id"));
-	    }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			 if(aux.compareTo("Player")==0) {
-		//System.out.println("PLAYER:"+element.getText());
-		user=element.getAttributeValue("name");
-	    }
- 
-	    List children = element.getContent();
-	    Iterator iterator = children.iterator();
-	    while (iterator.hasNext()) {
-		Object child = iterator.next();
-		xmlReadTurno(child);
-	    }
-	    if(aux.compareTo("Turno")==0) {
-				System.out.println("Leyento paquete turno");
-				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
-	       System.out.println("Tipo:"+type);
-			   System.out.println("Game:"+gameID);
-			   System.out.println("Hand:"+hand);
-			   System.out.println("Player:"+user);
- 
-			 }
-	}
+    
+    
+	
+	/*
 	}
 	public void xmlReadTerminalMessage(Object o)
 	{

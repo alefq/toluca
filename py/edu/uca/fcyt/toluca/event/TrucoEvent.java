@@ -177,9 +177,13 @@ public Document xmlCreateSendCards()
    {
 		Element ROOT =new Element ("SendCards");
 		
-		Element PLAYER= new Element ("TrucoPlayer");
-		PLAYER.setAttribute("name",player.getName());
-		ROOT.addContent(PLAYER);
+		// Excepcionaba cuante se trataba generar el paquete.
+		// Solución temporal?
+		if (player != null) {
+			Element PLAYER= new Element ("TrucoPlayer");
+			PLAYER.setAttribute("name",player.getName());
+			ROOT.addContent(PLAYER);
+		}
 
 		Element TABLE = new Element("Table");
 		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
@@ -252,9 +256,15 @@ public Document xmlCreateSendCards()
 		HAND.setAttribute("number",String.valueOf(hand));
 		ROOT.addContent(HAND);
 
-		Element PLAYER =new Element("Player");
-		PLAYER.setAttribute("name",player.getName());
-		ROOT.addContent(PLAYER);
+		// Hago este if porque excepcionaba en el serva.
+		// Hay que ver si esto es realmente lo que hay
+		// que hacer. El npe da cuando se intenta crear
+		// un paquete para el gameStarted.
+		if (player != null) {
+			Element PLAYER =new Element("Player");
+			PLAYER.setAttribute("name",player.getName());
+			ROOT.addContent(PLAYER);
+		}
 
 		Document doc= new Document(ROOT);
 		return doc;

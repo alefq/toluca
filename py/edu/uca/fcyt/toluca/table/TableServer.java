@@ -75,11 +75,16 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         
         // se crea el TrucoGame con los teams creados
         tGame = new TrucoGame(tTeams[0], tTeams[1]);
-        tGame.addTrucoListener(this);
+        tGame.addTrucoListener(this);  
+
+		//primero disparamos el evento, asi los cc se registran
+		// como listeners del tgame
+		fireGameStarted(
+		new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
+		);
+
+        //empieza realmente el juego y se disparan los eventos correspondientes
         tGame.startGame();
-        fireGameStarted(
-        new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
-        );
         
     }
     
@@ -163,6 +168,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }
+    
     protected void fireGameStarted(TableEvent te) {
         Iterator iter = tableListeners.listIterator();
         

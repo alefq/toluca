@@ -67,10 +67,9 @@ class TrListener implements TrucoListener
 		name = Util.getEventName(type);
 		//si name da null quiere decir q no fue ninguna jugada que se cante. ale
 		
-		System.out.println();
 		System.out.println
 		(
-			"Play for player " + getAssociatedPlayer().getName() + ": " + name
+			"\nPlay for player " + getAssociatedPlayer().getName() + ": " + name
 		);
 		
 		switch (type)
@@ -78,8 +77,9 @@ class TrListener implements TrucoListener
 			case TrucoEvent.JUGAR_CARTA:
 				card = event.getCard();
 				cManager.playCard(pos, card);
-
-				if (table.getPlayer() == player) 
+				// Somos la estirpe guaraní
+			if (table.getPlayer() == player) 
+			//if (getAssociatedPlayer() == player) 
 					cManager.showCards(null);
 				else if (endOfHand)
 					cManager.pushPause(pos, 250);
@@ -140,7 +140,7 @@ class TrListener implements TrucoListener
 		byte play;
 		int valEnvido;
 		
-		System.out.println("Turn for player " + getAssociatedPlayer().getName());
+		System.out.println("Turn for player " + event.getPlayer().getName());
 		
 		// obtiene el TrucoGame de la mesa y el jugador actual
 		tGame = table.getTGame();
@@ -227,7 +227,9 @@ class TrListener implements TrucoListener
 			if (sign != Sign.NONE) table.addSign(sign);
 		}
 		
-		getCManager().showCards(cards);
+		// TODO Agregado por PS y AA porque así parecería que tiene que ser
+		if (event.getPlayer() == getAssociatedPlayer())	
+			getCManager().showCards(cards);
 	}
 
 	public void handStarted(TrucoEvent event)

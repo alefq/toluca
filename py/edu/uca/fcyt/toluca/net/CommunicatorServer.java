@@ -481,10 +481,12 @@ extends Communicator {
         super.sendXmlPackage(doc);
     }
     public void cardsDeal(TrucoEvent event){
+    	System.err.println("Vienen las CARTAS carajo");
         Document doc=event.toXml();
         super.sendXmlPackage(doc);
     }
     public void handStarted(TrucoEvent event){
+    	System.err.println("Se disparo un hand started en " + this.getClass());
         Document doc=event.toXml();
         super.sendXmlPackage(doc);
     }

@@ -30,12 +30,13 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
 	    //porque Table inicia el juego y se crea en el serva el TrucoGame (no estoy seguro. Ale)
             for (int i=0; i<numberOfPlayers; i++)
                 playersPreparados[i] = true;
-            startHandConfirmatedClient();//fletes
+            //TODO Aca comentamos el startHandConfirmatedClient para probar porque no se deben disparar los eventos automáticamente
+            //startHandConfirmatedClient();//fletes
     }
     /** Enviar mensaje a todos los oyentes sobre el final del juego.
      *
      */
-     void recibirCartas (TrucoPlayer tp,TrucoCard cards[]){
+     public void recibirCartas (TrucoPlayer tp,TrucoCard cards[]){
         trucoHandCli.recibirCartas(tp,cards);
         dealtCards(tp,cards);
     }
@@ -52,7 +53,7 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
                 startHand(event.getPlayer());
                 break;
             case TrucoEvent.INICIO_DE_JUEGO:
-                startHandConfirmatedClient();
+                //startHandConfirmatedClient();
                 break;
             case TrucoEvent.INICIO_DE_MANO:
                 startHandConfirmatedClient();
@@ -62,13 +63,15 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
     }
 
     public void turn (TrucoEvent event){
-	new Exception("Nada implementado aun :-(   ").printStackTrace();
+		//new Exception("Nada implementado aun :-(   ").printStackTrace();
+		fireTurnEvent(event.getPlayer(), TrucoEvent.JUGAR_CARTA);
     }
     public void endOfHand(TrucoEvent event){
 	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void cardsDeal(TrucoEvent event){
-	new Exception("Nada implementado aun :-(   ").printStackTrace();
+    	System.err.println("event.getTypeEvent(): " + event.getTypeEvent());
+		new Exception("En cardsDeal. Acá se tendrían que recibir las cartas").printStackTrace(System.err);				
     }
     public void handStarted(TrucoEvent event){
 	new Exception("Nada implementado aun :-(   ").printStackTrace();
@@ -129,7 +132,8 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
             numberOfHand++;
             fireHandStarted();/*para que se preparen los jugadores*/
             trucoHandCli = new TrucoHandClient(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
-            trucoHandCli.startHand();
+            //TODO comentamos el starthand porque tiene que venir por que tiene que venir en un evento
+            //trucoHandCli.startHand();
         }
     }
 }

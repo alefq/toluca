@@ -179,7 +179,10 @@ public class TrucoHand {
               cardsToPlayer = statusTable.getPlayerCards((2*i+1)); // " '" """"2
               game.dealCards(pl,cardsToPlayer); //" """ 3*/
             }
-            game.fireCardsDealt();
+            // COMMENTED-out porque daba una excepción:
+            // Teoría de PS: No hace falta. Llamada al pedo que no va a volver
+            // Teoría de AA: Está mal el tipo del evento nomás.
+            //game.fireCardsDealt();
         }
         catch (InvalidPlayExcepcion e){
               throw e;
@@ -1175,7 +1178,7 @@ public class TrucoHand {
           numero=teams[1].getNumberOfPlayer(tp);
           return numero*2+1;
       }
-      System.out.println("opa, error grave - getNumberOfPlayer  - Avisar a la gente de TrucoGame+no se encontro"+tp.getName());
+      //System.out.println("opa, error grave - getNumberOfPlayer  - Avisar a la gente de TrucoGame+no se encontro"+tp.getName());
       return -1;
         
     }

@@ -59,7 +59,7 @@ public class StatusPlayerClient{
      * @param Cual Es la carta que se recibe
      */    
     public void agregarCarta(TrucoCard Cual){
-        new Exception("repartija de cartas").printStackTrace(System.out);
+        //new Exception("repartija de cartas").printStackTrace(System.out);
         cartas[cCartas]=Cual;
         cCartas++;
     }

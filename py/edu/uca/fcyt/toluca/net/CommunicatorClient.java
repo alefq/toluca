@@ -240,6 +240,8 @@ public class CommunicatorClient extends Communicator {
             }
         }
     }
+    
+        
     int valueAux;
     public void xmlReadTrucoPlay(Object o) {
         String aux;
@@ -342,7 +344,7 @@ public class CommunicatorClient extends Communicator {
         }
         
         if (aux.compareTo("Turno") == 0) {
-            super.xmlReadTurno(child);
+            xmlReadTurno(child);
         }
         if (aux.compareTo("TerminalMessage") == 0) {
             //super.xmlReadTerminalMessage(child);
@@ -380,6 +382,63 @@ public class CommunicatorClient extends Communicator {
             xmlReadTrucoPlay(child);
         }
     }
+    
+    
+    // TODO ESTE NO SE LLAMA NUNCA NI SIRVE PARA UN CARAJO APARENTE
+    // LO DEJAMOS PORSI
+	TrucoPlayer elPlayerDeAca2;
+	TrucoGameClient elGameDeAca;
+	public void xmlReadTurno(Object o)
+	{
+		// Chau excepción Feltística
+		//new Exception("Nada implementado aun :-(     ").printStackTrace();
+		String aux;
+		if (o instanceof Element) {
+			Element element = (Element) o;
+			aux = element.getName();
+			if (aux.compareTo("Type") == 0) {
+				type = Integer.parseInt(element.getAttributeValue("id"));
+			}
+			if (aux.compareTo("Game") == 0) {
+				//System.out.println("MESSAGE:"+element.getText());
+				gameID = Integer.parseInt(element.getAttributeValue("id"));
+				elGameDeAca = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+			}
+			if (aux.compareTo("Hand") == 0) {
+				hand = Integer.parseInt(element.getAttributeValue("number"));
+			}
+			if (aux.compareTo("Player") == 0) {
+				//System.out.println("PLAYER:"+element.getText());
+				user = element.getAttributeValue("name");
+				elPlayerDeAca2 = pieza.getPlayer(user);
+			} 
+	
+			List children = element.getContent();
+			Iterator iterator = children.iterator();
+			while (iterator.hasNext()) {
+				Object child = iterator.next();
+				xmlReadTurno(child);
+			}
+			if (aux.compareTo("Turno") == 0) {
+				System.out.println("Leyento paquete turno");
+				// TODO Quiloooooooombo armamos acá con el gameNumber y tableNumber
+				TrucoEvent te =
+					new TrucoEvent(
+						elGameDeAca,
+						hand,
+						elPlayerDeAca2,
+						(byte) type);
+				elGameDeAca.turn(te);
+				System.out.println("Tipo:" + type);
+				System.out.println("Game:" + gameID);
+				System.out.println("Hand:" + hand);
+				System.out.println("Player:" + elPlayerDeAca2.getName());
+	
+			}
+		}
+	}
+	
+    
     TrucoCard cardAux;
     public void xmlReadCard(Object o) {
         String aux;
@@ -437,6 +496,8 @@ public class CommunicatorClient extends Communicator {
             }
         }
     }
+    
+    TrucoPlayer elPlayerDeAca3;
     public void xmlReadCanto(Object o) {
         String aux;
         if (o instanceof Element) {
@@ -455,6 +516,7 @@ public class CommunicatorClient extends Communicator {
             if (aux.compareTo("Player") == 0) {
                 //System.out.println("PLAYER:"+element.getText());
                 userAux = element.getAttributeValue("name");
+                elPlayerDeAca3 = pieza.getPlayer(userAux);
             }
             List children = element.getContent();
             Iterator iterator = children.iterator();
@@ -463,27 +525,43 @@ public class CommunicatorClient extends Communicator {
                 xmlReadCanto(child);
             }
             if (aux.compareTo("Canto") == 0) {
-                TrucoEvent te =
-                new TrucoEvent(
-                tableIdAux,
-                handAux,
-                mi_jugador,
-                (byte) typeAux);
+                TrucoEvent te = null;
+                //TODO A LO CHANCHO HASTA ARREGLAR CC
+                if (typeAux != 50) {
+                   te =
+                    new TrucoEvent(
+         	         tableIdAux,
+            	     handAux,
+                	 mi_jugador,
+                		(byte) typeAux);
+                } else {
+					te =
+					 new TrucoEvent(
+					  tableIdAux,
+					  handAux,
+					  elPlayerDeAca3,
+						 (byte) typeAux);
+                }
                 System.out.println("Tabla :" + te.getTableNumber());
                 System.out.println("HAND : " + te.getNumberOfHand());
                 System.out.println(
                 "Truco Player : " + te.getTrucoPlayer().getName());
                 System.out.println("TYPE  : " + te.getTypeEvent());
-                                /*	try {
-                                                    String tableid=String.valueOf(tableIdAux);
-                                                    Table tabela = (Table)getTables().get(tableid);
-                                                        TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
-                                                        trucoGame.play(te);
-                                        } catch (java.lang.NullPointerException e) {
-                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
-                                                        e.printStackTrace();
-                                                                throw e;
-                                        }*/
+                // TODO ACA DESCOMENTAMOS CODIGO PARA PROBAR 
+            	try {
+                    String tableid=String.valueOf(tableIdAux);
+                    Table tabela = (Table)getTables().get(tableid);
+                    TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
+                    if (te.getTypeEvent() != 50) {
+						trucoGame.play(te);
+                    } else {
+                    	trucoGame.turn(te);	
+                    }
+                } catch (java.lang.NullPointerException e) {
+                    System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+                    e.printStackTrace();
+                    throw e;
+                }
             }
         }
     }
@@ -501,6 +579,7 @@ public class CommunicatorClient extends Communicator {
         
     }
     
+	TrucoPlayer elPlayerDeAca = null;
     public void xmlreadSendCardsAlg(Object o) {
         String aux;
         if (o instanceof Element) {
@@ -509,6 +588,7 @@ public class CommunicatorClient extends Communicator {
             if (aux.compareTo("TrucoPlayer") == 0) {
                 //System.out.println("PLAYER:"+element.getText());
                 userAux = element.getAttributeValue("name");
+                elPlayerDeAca = pieza.getPlayer(userAux);
             }
             if (aux.compareTo("Table") == 0) {
                 //System.out.println("MESSAGE:"+element.getText());
@@ -537,20 +617,17 @@ public class CommunicatorClient extends Communicator {
             }
             if (aux.compareTo("SendCards") == 0) {
                 //Chatpanel.showChatMessage(user,message);
-                TrucoEvent te =
-                new TrucoEvent(
-                tableIdAux,
-                handAux,
-                mi_jugador,
-                TrucoEvent.ENVIAR_CARTAS,
-                cartas);
-                System.out.println(
-                "tableID: "
-                + (te.getTableNumber())
-                + "\nHand"
-                + te.getNumberOfHand()
-                + "\nPlayer :"
-                + (te.getPlayer()).getName());
+                TrucoEvent te = new TrucoEvent(tableIdAux,
+                						handAux,
+                						mi_jugador,
+                						TrucoEvent.ENVIAR_CARTAS,
+                						cartas);
+                System.out.println("tableID: "
+							                + (te.getTableNumber())
+							                + "\nHand"
+							                + te.getNumberOfHand()
+							                + "\nPlayer :"
+							                + (te.getPlayer()).getName());
                 TrucoCard[] cartasIMP = new TrucoCard[3];
                 System.out.println("*******Cartas*********");
                 cartasIMP = te.getCards();
@@ -563,19 +640,17 @@ public class CommunicatorClient extends Communicator {
                     
                 }
                 
-                //ESTO HAY QUE DESCOMENTAR PARA QUE ANDE COMENTADO
-                                /*	try {
-                                            String tableid=String.valueOf(tableIdAux);
-                                                    Table tabela = (Table)getTables().get(tableid);
-                                                        TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
-                                                        trucoGame.play(te);
-                                 
-                                                } catch (java.lang.NullPointerException e) {
-                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
-                                                        e.printStackTrace();
-                                                throw e;
-                                        }*/
-                
+            	try {
+	                String tableid=String.valueOf(tableIdAux);
+                    Table tabela = (Table)getTables().get(tableid);
+                    TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
+                    //ucoGame.play(te);
+                    trucoGame.recibirCartas(elPlayerDeAca, cartasIMP);	     
+                } catch (java.lang.NullPointerException e) {
+                    System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
+                    e.printStackTrace();
+	                throw e;
+                }
             }
         }
     }
@@ -588,7 +663,9 @@ public class CommunicatorClient extends Communicator {
         "player: " + event.getPlayer() + ", carta: " + event.getCard());
         TrucoPlay tp;
         //No se porque usan el campo "hand" para guardar el tipo de juego :-?
-        if (event.getNumberOfHand() == TrucoEvent.ENVIAR_CARTAS)
+        
+        // Acá, en vez de getTypeEvent decía getHandNumber
+        if (event.getTypeEvent() == TrucoEvent.ENVIAR_CARTAS)
             tp = new TrucoPlay(event.getPlayer(), TrucoEvent.ENVIAR_CARTAS);
         else if (event.getTypeEvent() == TrucoEvent.JUGAR_CARTA)
             tp =
