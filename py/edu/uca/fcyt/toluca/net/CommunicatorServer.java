@@ -72,18 +72,21 @@ extends Communicator {
         // Enviar el paquete al Cliente
         
         //te.xmlCreateGameStarted("Hola", "Hola");
-        
+
+
+/*  esto pasó al table server        
         TrucoGame tGame;
         TrucoTeam tTeams[];
-        
         System.out.println("Requesting game start...");
-        
         tTeams = te.getTableServer().createTeams();
-        
         // se crea el TrucoGame con los teams creados
         tGame = new TrucoGame(tTeams[0], tTeams[1]);
-        tGame.addTrucoListener(this);
         tGame.addTrucoListener(te.getTableServer());
+    */    
+	
+		TrucoGame tGame = te.getTableServer().getTrucoGame();
+		tGame.addTrucoListener(this);
+		
         Document doc = te.xmlCreateGameStarted("0", "1");
         
         super.sendXmlPackage(doc);
@@ -381,7 +384,7 @@ extends Communicator {
             aux=element.getName();
             if(aux.compareTo("Table")==0) {
                 int tableid=Integer.parseInt(element.getAttributeValue("id"));
-                System.out.println("LLego un game Start Request al "+tableid);
+                System.out.println("LLego un game Start Request al TABLE " + tableid);
                 //ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
                 try {
                     TableServer tabela = (TableServer)getTables().get(String.valueOf(tableid));
@@ -490,10 +493,12 @@ extends Communicator {
         Document doc=event.toXml();
         super.sendXmlPackage(doc);
     }
+    
     public void endOfGame(TrucoEvent event){
         Document doc=event.toXml();
         super.sendXmlPackage(doc);
     }
+    
     public TrucoPlayer getAssociatedPlayer(){return player;}
     public void setRoom(RoomServer pieza) {
         this.pieza = pieza;
@@ -569,6 +574,7 @@ extends Communicator {
      *
      */
     public void gameStartRequested() {
+    	System.out.println("En el CS.  Esto no se debería ejecutar.  recibi un GameStartRequested");
     }
     
     public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
@@ -631,12 +637,13 @@ extends Communicator {
         // Agregamos al Hash de Tablas
         System.out.println("getTables nulo: " + (getTables() == null));
         getTables().put(String.valueOf(ev.getTableNumber()), ts);
-        System.out.println("Se creo una tabla. soy: " + getClass().getName());
+        System.out.println("Se agregó una tabla. soy: " + getClass().getName());
         Document doc;
         doc = xmlCreateTableCreated(ev);
         System.out.println("Antes de mandar el XML en el CREATE TABLE DEL SERVA");
         super.sendXmlPackage(doc);
     }
+    
     String tableid;
     public void xmlReadTableJoinRequest(Object o) {
         String aux;
