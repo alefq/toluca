@@ -403,9 +403,9 @@ implements ChatPanelContainer, TableListener {
         if (new File(props).exists()) {
             Properties ret = new Properties();
             //TODO: NO SE LO QUE FELTES QUISO HACER ACA. PERO ESTO ES PARA QUE ANDE PROVISORIO, MMM
-			ret.put(DbOperations.DBURL,"jdbc:firebirdsql:192.168.16.5/3050:/opt/interbase/data/TOLUCA.GDB");
-			ret.put(DbOperations.USER_NAME, "sysdba");
-			ret.put(DbOperations.PASSWORD, "asdf");
+//			ret.put(DbOperations.DBURL,"jdbc:firebirdsql:localhost/3050:/opt/firebird/data/TOLUCA.GDB");
+//			ret.put(DbOperations.USER_NAME, "sysdba");
+//			ret.put(DbOperations.PASSWORD, "asdf");
 
             FileInputStream fis;
             try {
