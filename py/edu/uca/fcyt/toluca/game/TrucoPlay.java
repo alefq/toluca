@@ -21,6 +21,36 @@ import py.edu.uca.fcyt.toluca.event.*;
 public class TrucoPlay
 {
 	
+    public TrucoCard getCardAux() {
+        return cardAux;
+    }
+    public void setCardAux(TrucoCard cardAux) {
+        this.cardAux = cardAux;
+    }
+    public int getTableIdAux() {
+        return tableIdAux;
+    }
+    public void setTableIdAux(int tableIdAux) {
+        this.tableIdAux = tableIdAux;
+    }
+    public int getTypeAux() {
+        return typeAux;
+    }
+    public void setTypeAux(int typeAux) {
+        this.typeAux = typeAux;
+    }
+    public String getUserAux() {
+        return userAux;
+    }
+    public void setUserAux(String userAux) {
+        this.userAux = userAux;
+    }
+    public int getValueAux() {
+        return valueAux;
+    }
+    public void setValueAux(int valueAux) {
+        this.valueAux = valueAux;
+    }
 	//tipos de jugadas
 	/** Juego de tipo cantar <I>"Envido"</I>.
 	 */
