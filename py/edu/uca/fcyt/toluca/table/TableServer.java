@@ -16,13 +16,12 @@ import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
-
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
 /**
  *
  * @author  PABLO JAVIER
  */
-public class TableServer
-implements TrucoListener, ChatPanelContainer {
+public class TableServer  implements TrucoListener, ChatPanelContainer {
     
     /** Holds value of property host. */
     private TrucoPlayer host;
@@ -34,7 +33,8 @@ implements TrucoListener, ChatPanelContainer {
     
     /** Holds value of property tableNumber. */
     private int tableNumber;
-    
+    private TrucoGame tGame;
+        
     private static int nextTableNumber = 0;
     
     /** Creates a new instance of TableServer */
@@ -66,6 +66,16 @@ implements TrucoListener, ChatPanelContainer {
     }
     
     public void startGame() {
+
+		//TrucoGame tGame;
+		TrucoTeam tTeams[];
+       
+		System.out.println("Requesting game start...");
+		tTeams = createTeams();
+
+		// se crea el TrucoGame con los teams creados
+		tGame = new TrucoGame(tTeams[0], tTeams[1]);
+		tGame.addTrucoListener(this);
          
         fireGameStarted(
             new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
@@ -233,4 +243,7 @@ implements TrucoListener, ChatPanelContainer {
         return String.valueOf(getTableNumber());
     }
     
+    public TrucoGame getTrucoGame() {
+    	return tGame;
+    }
 }
