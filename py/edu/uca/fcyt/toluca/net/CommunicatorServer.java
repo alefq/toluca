@@ -83,6 +83,7 @@ extends Communicator {
         // se crea el TrucoGame con los teams creados
         tGame = new TrucoGame(tTeams[0], tTeams[1]);
         tGame.addTrucoListener(this);
+        tGame.addTrucoListener(te.getTableServer());
         Document doc = te.xmlCreateGameStarted("0", "1");
         
         super.sendXmlPackage(doc);

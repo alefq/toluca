@@ -66,8 +66,7 @@ implements TrucoListener, ChatPanelContainer {
     }
     
     public void startGame() {
-        
- 
+         
         fireGameStarted(
             new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
             );
