@@ -78,21 +78,23 @@ public class TableRanking extends JTable{
      * @param player
      */
     public void addPlayer(TrucoPlayer player) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo "+player);
+        TableModelRanking model=(TableModelRanking) getModel();
+        model.insertRow(new RowRanking(player.getName(),new Integer(player.getRating())));
     }
 
     /**
      * @param player
      */
     public void removeplayer(TrucoPlayer player) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");        
     }
 
     /**
      * @param player
      */
     public void modifyplayer(TrucoPlayer player) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");        
     }
 	
 }

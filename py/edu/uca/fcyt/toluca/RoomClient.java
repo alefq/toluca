@@ -49,7 +49,9 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     public RoomClient(RoomUING rui, String username, String password) {
         super();
+        System.out.println("Se crea el roomClient");
         cc = new CommunicatorClient(this);
+        addRoomListener(cc);
         new Thread(cc).start();
         fireLoginRequested(username, password);
         this.rui = rui;
@@ -282,6 +284,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         re.setUser(username);
         re.setPassword(password);
         Iterator iter = roomListeners.listIterator();
+        
         while (iter.hasNext()) {
             RoomListener ltmp = (RoomListener) iter.next();
             ltmp.loginRequested(re);
@@ -290,18 +293,20 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     public void loginCompleted(TrucoPlayer player) {
         /** lock-end */
-        System.out.println("Login completed???");
+        
         chatPanel = new ChatPanel(this, player);
         rui.addChatPanel(chatPanel);
         setRoomPlayer(player);
+        player.setFullName(player.getName());
+        rui.setOwner(player);
     } // end loginCompleted /** lock-begin */
 
     /*
      * Ingresa al Player en la Tabla Principal como Observador
      */
     public void joinTable(RoomEvent re) {
-        Vector col = new Vector();
-        col = (Vector) re.getPlayerss();
+        //Vector col = new Vector();
+        //col = (Vector) re.getPlayerss();
         int tableNumber = re.getTableNumber();
 
         mainTable.addObserver(re.getPlayer(), re.getTableNumber());

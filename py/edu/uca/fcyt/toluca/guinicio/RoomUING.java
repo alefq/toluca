@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/11 15:37:14 $
- * @version $Revision: 1.1 $ 
+ * Last modified: $Date: 2004/09/13 18:19:06 $
+ * @version $Revision: 1.2 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -24,6 +24,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  * 
@@ -377,7 +378,7 @@ public class RoomUING extends JApplet {
 
     public void login() {
 
-        // El login lo escribo por n-ésima vez - CVS urgeeeeente!
+        // El login lo escribo por n-ï¿½sima vez - CVS urgeeeeente!
         py.edu.uca.fcyt.util.LoginDialog ld = new py.edu.uca.fcyt.util.LoginDialog(
                 JOptionPane.getRootFrame(), true);
         ld.show();
@@ -409,5 +410,9 @@ public class RoomUING extends JApplet {
      */
     public void setChatPanel(ChatPanel chatPanel) {
         this.chatPanel = chatPanel;
+    }
+    public void setOwner(TrucoPlayer trucoPlayer)
+    {
+    	panelTitle.setNombre(trucoPlayer.getFullName());
     }
 } //  @jve:decl-index=0:visual-constraint="10,30"

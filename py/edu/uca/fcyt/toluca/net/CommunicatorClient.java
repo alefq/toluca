@@ -4,12 +4,19 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JButton;
+
 
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 
 
 
@@ -26,11 +33,13 @@ public class CommunicatorClient extends Communicator{
 	 */
 	public CommunicatorClient(RoomClient client) {
 		
-		// TODO Auto-generated constructor stub
+		this();
+		eventDispatcher.setRoom(client);
 	}
 	static Logger logger = Logger.getLogger(CommunicatorClient.class);
 	public CommunicatorClient()
 	{
+		super(new EventDispatcherClient());
 		int retinit = init();
 	}
 	public int init()
@@ -54,13 +63,23 @@ public class CommunicatorClient extends Communicator{
 		}
 		return ret;
 	}
-	/*public static void main(String[] args) {
-		PropertyConfigurator.configure("logConfigure.txt");
+	public void loginRequested(RoomEvent ev) {
+		
+		System.out.println("Se va a enviar un roomEvent loginRequested");
+		super.sendXmlPackage(ev);
+		
+		
+	}
+	
+	public static void main(String[] args) {
+		DOMConfigurator.configure(System.getProperty("user.dir")
+                + System.getProperty("file.separator") + "log.xml");
 		CommunicatorClient comm=new CommunicatorClient();
-		RoomEvent evento= new RoomEvent(RoomEvent.EVENT_REQUEST_LOGIN,"danic");
+		
 		comm.sendXmlPackage(new JButton("Hello, world"));
 		
 		while(true)
 				;
-	}*/
+	}
+	
 }

@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.toluca;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
@@ -22,12 +23,12 @@ implements ChatPanelContainer {
     
     
     protected String name;
-    protected Hashtable players; // of type Player??
+    protected HashMap players; // of type Player??
     protected Vector roomListeners; // of type Vector
     protected Hashtable tables; // of type Table
     
     public Room() {
-        players = new Hashtable();
+        players = new HashMap();
         tables = new Hashtable();
         roomListeners = new Vector();
     }
@@ -173,11 +174,11 @@ implements ChatPanelContainer {
             System.out.println("Voy a agregar en el servidor: " + player.getName());            
         }
         players.put(player.getName(), player); //se carga al vector de jugadores
-        System.out.println("Va a imprimr el hash de players by Cricco");
-        py.edu.uca.fcyt.util.HashUtils.imprimirHash(players);
+        //System.out.println("Va a imprimr el hash de players by Cricco");
+        //py.edu.uca.fcyt.util.HashUtils.imprimirHash(players);
     }
     
-    public Hashtable getHashPlayers(){return players;}
+    public HashMap getHashPlayers(){return players;}
     
     public Hashtable getHashTable(){return tables;}
         

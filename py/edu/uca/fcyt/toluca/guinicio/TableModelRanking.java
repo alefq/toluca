@@ -14,7 +14,7 @@ public class TableModelRanking extends AbstractTableModel{
 	public TableModelRanking()
 	{
 		datos=new ArrayList();
-		insertPrueba();
+		//insertPrueba();
 	}
 	private void insertPrueba()
 	{

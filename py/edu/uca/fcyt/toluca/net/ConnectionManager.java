@@ -54,10 +54,10 @@ public class ConnectionManager implements XmlPackagesServerListener {
     }
     
     public void SessionStarted(XmlPackagesSession xps) {
-        logger.info("Se creo una sesión!");
+        logger.info("Se creo una sesiï¿½on");
         vecSesiones.add(xps);
         CommunicatorServer cts = (CommunicatorServer)xps;
-      
+        cts.setRoomServer(roomServer);
     }
     
     

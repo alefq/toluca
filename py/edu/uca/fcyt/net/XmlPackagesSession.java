@@ -14,7 +14,7 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 
-import javax.swing.JButton;
+
 
 
 
@@ -80,6 +80,7 @@ public abstract class XmlPackagesSession implements Runnable
 						Object result = d.readObject();
 				
 						inputStream.close();
+						logger.debug("Se resive un objeto");
 						receiveObject(result);		
 				
 					rawPacket = "";
@@ -101,7 +102,7 @@ public abstract class XmlPackagesSession implements Runnable
 		logger.debug("enviando el paquete xml");
 		ByteArrayOutputStream outStream=new ByteArrayOutputStream();
 		XMLEncoder e=new XMLEncoder(new BufferedOutputStream(outStream));
-		e.writeObject(new JButton("Hello, world"));
+		e.writeObject(bean);
 		e.close();
 		
 		sendXmlPackage(new String (outStream.toByteArray()));

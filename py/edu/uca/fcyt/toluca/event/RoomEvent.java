@@ -8,6 +8,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Vector;
 
 import py.edu.uca.fcyt.game.ChatMessage;
@@ -103,7 +104,7 @@ public class RoomEvent {
 	 * </p>
 	 *
 	 */
-	private Collection Players; // of type Player
+	private HashMap players;
     
 	/**
 	 * <p>
@@ -206,7 +207,7 @@ public class RoomEvent {
 	public RoomEvent(){
 		//codigo agregado por el CIT MASTER
 	   tables = new Vector();
-	   this.Players = new Vector();
+	   this.players = new HashMap();
 	}
     
 	
@@ -232,18 +233,15 @@ public class RoomEvent {
 	public String getUser() {
 		return username;
 	}
-	public Collection getPlayerss() {       
-		return Players;
+	public HashMap getPlayers() {       
+		return players;
 	} 
     
     
 	
-	public void setPlayerss(Collection _Players) {       
-		setPlayers(_Players);
-	} 
 
-	public void setPlayers(Collection _Players) {       
-		Players = _Players;
+	public void setPlayers(HashMap _players) {       
+		players = _players;
 	} 
     
     
@@ -251,9 +249,8 @@ public class RoomEvent {
 	public void addPlayers(TrucoPlayer player) {        /** lock-end */
         
 		try {
-			if (! Players.contains(player))
-				Players.add(player);
-            
+			
+				players.put(player.getName(),player);           
 		} catch (java.lang.NullPointerException npe) {
 			System.out.println("El collection de players no esta instaciado");
 			throw npe;
@@ -261,7 +258,7 @@ public class RoomEvent {
 	}
     
 	public void removePlayers(TrucoPlayer _Players) {      
-		Players.remove(_Players);
+		players.remove(_Players);
 	}
     
 	

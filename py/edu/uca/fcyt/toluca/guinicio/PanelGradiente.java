@@ -29,6 +29,7 @@ public class PanelGradiente extends JComponent{
 	 */
 	public void setNombre(String nombre) {
 		this.nombre = "Bienvenido "+nombre;
+		repaint();
 	}
 	public PanelGradiente(ImageIcon logo,Color startColor,int incremento,String nombre,double largo)
 	{
@@ -73,7 +74,7 @@ public class PanelGradiente extends JComponent{
 	    int x = 0;
 	    if(logo!=null)
 	    	x+=logo.getIconWidth();
-	    System.out.println(" Alto = "+r.height + " ancho "+r.width);
+	    //System.out.println(" Alto = "+r.height + " ancho "+r.width);
 	    
 	    
 	    //int xComienzo=r.width-g.getFontMetrics().charsWidth(nombre.toCharArray(),0,nombre.length());
@@ -84,7 +85,7 @@ public class PanelGradiente extends JComponent{
 	    int yLinea=r.height/2+logo.getIconHeight()/2-ancho;
 	    while (x>=logo.getIconWidth()) {
 	     g.setColor(c);
-	     System.out.println(x);
+	    // System.out.println(x);
 	     g.fillRect(x, yLinea, inc, ancho);
 	    c = c.darker();
 	    

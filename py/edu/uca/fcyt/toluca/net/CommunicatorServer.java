@@ -3,6 +3,11 @@ package py.edu.uca.fcyt.toluca.net;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 
+import py.edu.uca.fcyt.toluca.RoomServer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+
+
 
 
 
@@ -13,9 +18,28 @@ import org.jdom.Element;
  */
 public class CommunicatorServer extends Communicator{
 	static Logger logger = Logger.getLogger(CommunicatorServer.class);
+	private RoomServer roomServer;
+	
 	public CommunicatorServer()
 	{
 		super();
+		setEventDispatcher(new EventDispatcherServer(this));
+		
+	}
+	
+	/**
+	 * @return Returns the roomServer.
+	 */
+	public RoomServer getRoomServer() {
+		return roomServer;
+	}
+	/**
+	 * @param roomServer The roomServer to set.
+	 */
+	public void setRoomServer(RoomServer roomServer) {
+		this.roomServer = roomServer;
+		eventDispatcher.setRoom(roomServer);
+		roomServer.addRoomListener(this);
 	}
 	public void receiveXmlPackage(Element xmlPackage) {
 		
@@ -23,6 +47,30 @@ public class CommunicatorServer extends Communicator{
 	}
 	public void connectionFailed()
 	{
-		System.out.println("Fallo la coneccion");
+		logger.info("Fallo la coneccion de "+getTrucoPlayer());
+		
+		
 	}
+	public void playerJoined(TrucoPlayer player) {
+
+		logger.debug("Player joined");
+		
+		RoomEvent event=new RoomEvent();
+		event.setType(RoomEvent.TYPE_PLAYER_JOINED);
+		event.setPlayer(player);
+		super.sendXmlPackage(event);
+	}
+	public void loginCompleted(RoomEvent event)
+	{
+		logger.debug("Login completed");
+		super.sendXmlPackage(event);
+	}
+	
+	
+	
+	
+	
+	
+	
+
 }

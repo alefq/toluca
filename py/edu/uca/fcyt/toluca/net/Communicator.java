@@ -12,6 +12,7 @@ import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 
@@ -20,19 +21,49 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
  *
  * 
  */
-public class Communicator extends XmlPackagesSession
+public abstract class  Communicator extends XmlPackagesSession
 implements RoomListener,TrucoListener,TableListener
 {
-
-	static Logger logger = Logger.getLogger(Communicator.class);
-	
-	
-	
-	//METODOS QUE HAY QUE escribir DEL XmlPackagesSession
+	private TrucoPlayer trucoPlayer;
+	/**
+	 * @return Returns the trucoPlayer.
+	 */
+	public TrucoPlayer getTrucoPlayer() {
+		return trucoPlayer;
+	}
+	/**
+	 * @param trucoPlayer The trucoPlayer to set.
+	 */
+	public void setTrucoPlayer(TrucoPlayer trucoPlayer) {
+		this.trucoPlayer = trucoPlayer;
+	}
+	public Communicator(EventDispatcher eventDispatcher)
+	{
+		this();
+		this.eventDispatcher=eventDispatcher;
+	}
 	public Communicator()
 	{
 		super();
 	}
+	/**
+	 * @return Returns the eventDispatcher.
+	 */
+	public EventDispatcher getEventDispatcher() {
+		return eventDispatcher;
+	}
+	/**
+	 * @param eventDispatcher The eventDispatcher to set.
+	 */
+	public void setEventDispatcher(EventDispatcher eventDispatcher) {
+		this.eventDispatcher = eventDispatcher;
+	}
+	static Logger logger = Logger.getLogger(Communicator.class);
+	
+	protected EventDispatcher eventDispatcher;
+	
+	//METODOS QUE HAY QUE escribir DEL XmlPackagesSession
+	
 	public int init() {
 		
 		return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
@@ -59,9 +90,28 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.net.XmlPackagesSession#receiveObject(java.lang.Object)
 	 */
 	public void receiveObject(Object bean) {
-		// TODO Auto-generated method stub
+			
+		
+		if(bean instanceof RoomEvent)
+		{
+			eventDispatcher.dispatchEvent((RoomEvent)bean);
+		}
+		if(bean instanceof TableEvent)
+		{
+			eventDispatcher.dispatchEvent((TableEvent)bean);
+		}
+		if(bean instanceof TrucoEvent)
+		{
+			eventDispatcher.dispatchEvent((TrucoEvent)bean);
+		}
+		if(bean instanceof TrucoPlay)
+		{
+			eventDispatcher.dispatchEvent((TrucoPlay)bean);
+		}
 		
 	}
+	
+	
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#tableCreated(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */

@@ -14,15 +14,20 @@ import py.edu.uca.fcyt.game.*;
 import java.util.*;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
+import org.apache.log4j.xml.DOMConfigurator;
+
 /**
  * <p>
  *
  * </p>
  */
 public class RoomServer extends Room
+
 implements ChatPanelContainer
 {
-	
+	static Logger logger = Logger.getLogger(RoomServer.class);	
 	///////////////////////////////////////
 	// attributes
 	
@@ -34,12 +39,7 @@ implements ChatPanelContainer
 	 */
 	private java.util.Properties properties;
 	
-	/**
-	 * <p>
-	 * Represents ...
-	 * </p>
-	 */
-	private Vector vPlayers;
+	
 	
 	/**
 	 * <p>
@@ -81,11 +81,13 @@ implements ChatPanelContainer
 	public  RoomServer()
 	{
 		// your code here
-		System.out.println("Soy un room server y voy a instanciar un connection manager.");
+		logger.info("Se creo el RoomServer");
+		logger.info("Instanciando el ConnectionManager");
+		
 		connManager = new ConnectionManager(this);
 		dbOperations = new DbOperations(null, null, null, this);
 		vTables = new Vector();
-		vPlayers = new Vector();
+		//vPlayers = new Vector();
 	} // end RoomServer
 	
 	
@@ -100,7 +102,7 @@ implements ChatPanelContainer
 	public void createTable(TrucoPlayer player)
 	{
 		// your code here
-		System.out.println("Dentor del create table del room server: " + player.getName());
+		logger.debug("Dentor del create table del room server: " + player.getName());
 		TableServer tableServer= new TableServer(player);
 		
 		//tableServer.addPlayer(player);Comentado porque en el constructor del TableServer
@@ -125,7 +127,7 @@ implements ChatPanelContainer
 		//
 		getHashTable().put(new Integer(table.getTableNumber()),table);//Agregado por Cricco 
 		
-		System.out.println("dentro del firetalbe created del room server" );
+		logger.debug("dentro del firetalbe created del room server" );
 		//Vector players = table.getPlayers();
 		Vector playerstmp = new Vector();
 		playerstmp.add(table.getHost());
@@ -135,7 +137,7 @@ implements ChatPanelContainer
 		re.setType(RoomEvent.TYPE_TABLE_CREATED);
 		//re.setTableNumber(-108);
 		re.addTables(table);
-		re.setPlayers(playerstmp);
+		//re.setPlayers(playerstmp);
 		
 		re.setTableNumber(table.getTableNumber());
 		Iterator iter = roomListeners.listIterator();
@@ -232,7 +234,7 @@ implements ChatPanelContainer
 			}
 		}
 		players.remove(player);
-		vPlayers.remove(player);
+		//vPlayers.remove(player);
 		firePlayerLeft(player);
 	} 
 	public void firePlayerLeft(TrucoPlayer player)
@@ -290,8 +292,9 @@ implements ChatPanelContainer
 			
 			//jogador = new Player("CIT", 108);
 			jogador = dbOperations.authenticatePlayer(username, password);
-			System.out.println("Se creo el jugador: " +  jogador.getName());
+			logger.debug("Se creo el jugador: " +  jogador.getName());
 			
+			cs.setTrucoPlayer(jogador);
 			firePlayerJoined(jogador);
 			fireLoginCompleted(jogador);
 			//firePlayerJoined(jogador);
@@ -319,6 +322,8 @@ implements ChatPanelContainer
 	 */
 	public static void main(String[] args)
 	{
+		DOMConfigurator.configure(System.getProperty("user.dir")
+                + System.getProperty("file.separator") + "log.xml");
 		new RoomServer();
 	} // end main
 	
@@ -330,10 +335,7 @@ implements ChatPanelContainer
 	 * @return a Vector with ...
 	 * </p>
 	 */
-	public Vector getVPlayers()
-	{
-		return vPlayers;
-	} // end getVPlayers
+	
 	
 	/**
 	 * <p>
@@ -345,10 +347,7 @@ implements ChatPanelContainer
 	 * @param _vPlayers ...
 	 * </p>
 	 */
-	public void setVPlayers(Vector _vPlayers)
-	{
-		vPlayers = _vPlayers;
-	} // end setVPlayers
+	
 	
 	/**
 	 * <p>
@@ -453,19 +452,20 @@ implements ChatPanelContainer
 		}*/
 		/*Agrego el jugador a la lista de jugadores.*/
 		addPlayer(jogador);
-	
-		System.out.println("Dentro de fire user joined (Room Server) , jugador = " + jogador.getName());
+		
+		logger.debug("Dentro de fire user joined (Room Server) , jugador = " + jogador.getName());
 		RoomEvent re = new RoomEvent();
 		re.setType(RoomEvent.TYPE_PLAYER_JOINED);
 		if (jogador == null)
-			System.out.println("jogador es null carajo");
+			logger.debug("jogador es null carajo");
 		
 		//Vector v = new Vector();
-		getVPlayers().add(jogador);
-		re.setPlayers(getVPlayers());
+		//getVPlayers().add(jogador);
+		//re.setPlayers(getVPlayers());
 		
 		Iterator iter = roomListeners.listIterator();
 		int i = 0;
+		
 		while(iter.hasNext())
 		{
 			System.out.println("Player join iterando: " + i++);
@@ -478,7 +478,7 @@ implements ChatPanelContainer
 	
 	/**
 	 * <p>
-	 * Se ejecuta cuando un Jugador se autenticó correctameente.
+	 * Se ejecuta cuando un Jugador se autenticï¿½ correctameente.
 	 * Recorre el vector de listeners y ejecuta en cada uno de los objetos del
 	 * mismo, el metodo fireTableCreated.
 	 * </p>
@@ -490,38 +490,37 @@ implements ChatPanelContainer
 		
 		try
 		{
-			System.out.println("Dentro de fire login completed , jugador = " + jogador.getName());
+			logger.debug("Dentro de fire login completed , jugador = " + jogador.getName());
 			RoomEvent re = new RoomEvent();
 			re.setType(RoomEvent.TYPE_LOGIN_COMPLETED);
 			
-			/*El jugador que se logueo.*/
-			Vector v = new Vector();
-			v.add(jogador);
-			re.setPlayers(v);
-			System.out.println("antes de obtener el room listener");
+			
+			re.setPlayers(getHashPlayers());
+			re.setTabless(getVTables());
+			
 			RoomListener ltmp = (RoomListener) pendingConnections.get(jogador.getName());
-			System.out.println("despues de obtener el Roomlistener");
+			
 			try
 			{
 				
 				ltmp.loginCompleted(re);
 			} catch (NullPointerException e)
 			{
-				System.out.println("cagamos, no hay listener");
+				logger.debug("No hay listener adherido");
 				throw e;
 			}
 			
 			
-			System.out.println("despues de disparar loginCompleted");
+			logger.debug("Se disparo login Completed");
 			pendingConnections.remove(jogador.getName());
 			
 		} catch (java.lang.NullPointerException npe)
 		{
-			System.out.println("Null pointer exceptiooooon en room server");
+			logger.debug("Null pointer exceptiooooon en room server");
 			if (jogador == null)
-				System.out.println("jogador es nulo!");
+				logger.debug("jogador es nulo!");
 			else
-				System.out.println("nombre del jogador:" + jogador.getName());
+				logger.debug("nombre del jogador:" + jogador.getName());
 			npe.printStackTrace(System.out);
 		}
 		/*
@@ -553,7 +552,7 @@ implements ChatPanelContainer
 		while(iter.hasNext())
 		{
 			RoomListener ltmp = (RoomListener)iter.next();
-			System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+			logger.debug(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
 			ltmp.chatMessageSent(this, jogador, htmlMessage);
 		}
 	}
