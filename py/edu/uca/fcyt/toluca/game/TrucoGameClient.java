@@ -33,7 +33,7 @@ public class TrucoGameClient extends TrucoGame
 		//porque Table inicia el juego y se crea en el serva el TrucoGame (no estoy seguro. Ale)
 		for (int i=0; i<numberOfPlayers; i++)
 			playersPreparados[i] = true;
-		//TODO Aca comentamos el startHandConfirmatedClient para probar porque no se deben disparar los eventos automáticamente
+		//TODO Aca comentamos el startHandConfirmatedClient para probar porque no se deben disparar los eventos automï¿½ticamente
 		//startHandConfirmatedClient();//fletes
 	}
 	/** Enviar mensaje a todos los oyentes sobre el final del juego.
@@ -70,6 +70,10 @@ public class TrucoGameClient extends TrucoGame
 				break;
 			case TrucoEvent.JUGAR_CARTA:
 				break;
+			case TrucoEvent.FIN_DE_JUEGO:
+				super.fireEndOfGameEvent();
+				break;
+				
 			default:
 			  /*  TrucoPlay tp = event.toTrucoPlay();
 				System.out.println("Se recibio un TrucoEvent para ser TrucoPlay"+ tp.getType());
@@ -96,7 +100,7 @@ public class TrucoGameClient extends TrucoGame
 	public void cardsDeal(TrucoEvent event)
 	{
 		System.out.println("event.getTypeEvent(): " + event.getTypeEvent());
-		new Exception("En cardsDeal. Acá se tendrían que recibir las cartas").printStackTrace(System.out);
+		new Exception("En cardsDeal. Acï¿½ se tendrï¿½an que recibir las cartas").printStackTrace(System.out);
 	}
 	public void handStarted(TrucoEvent event)
 	{
@@ -178,7 +182,7 @@ public class TrucoGameClient extends TrucoGame
 			numberOfHand++;
 			fireHandStarted();/*para que se preparen los jugadores*/
 			trucoHandCli = new TrucoHandClient(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
-			trucoHand = trucoHandCli;		// Truco Julístico para evitar el STRESS. Muy feo, pero cumple el objetivo: EVITAR STRESS
+			trucoHand = trucoHandCli;		// Truco Julï¿½stico para evitar el STRESS. Muy feo, pero cumple el objetivo: EVITAR STRESS
 			//TODO comentamos el starthand porque tiene que venir por que tiene que venir en un evento
 		}
 	}

@@ -26,7 +26,7 @@ class TableEventManager
     /** Registra un listener de eventos TableListener */
     public void addListener(TableListener t) 
     {
-        Util.verifParam(t != null, "Parámetro 't' nulo");
+        Util.verifParam(t != null, "Parï¿½metro 't' nulo");
         tableListeners.add(t);
     }
 
@@ -291,7 +291,7 @@ class TableEventManager
      */
     public void fireSignSendRequest(TrucoPlayer dest, int sign)
     {
-    	System.out.println(table.getPlayer().getName() + " tiro seña " + Sign.getName(sign));
+		table.setCursor(Cursor.WAIT_CURSOR);
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
@@ -312,6 +312,7 @@ class TableEventManager
      */
     public void fireSignSent(TrucoPlayer dest)
     {
+		table.setCursor(Cursor.DEFAULT_CURSOR);
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {

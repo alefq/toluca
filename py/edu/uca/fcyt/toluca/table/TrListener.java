@@ -37,7 +37,7 @@ class TrListener implements TrucoListener
 	/** Registra un listener de eventos TrucoListener */
 	public void addListener(TrucoListener t)
 	{
-		Util.verifParam(t != null, "Parámetro 't' nulo");
+		Util.verifParam(t != null, "Parï¿½metro 't' nulo");
 		trucoListeners.add(t);
 	}
 	
@@ -101,7 +101,7 @@ class TrListener implements TrucoListener
 			case TrucoEvent.JUGAR_CARTA:
 				card = event.getCard();
 				cManager.playCard(pos, card);
-				// Somos la estirpe guaraní
+				// Somos la estirpe guaranï¿½
 				if (table.getPlayer() == player)
 					//if (getAssociatedPlayer() == player)
 					cManager.showCards(null);
@@ -121,7 +121,7 @@ class TrListener implements TrucoListener
 				
 			case TrucoEvent.CANTO_ENVIDO:
 				if (event.getValue() == -1)
-					System.out.println("Canto envido inváldo!");
+					System.out.println("Canto envido invï¿½ldo!");
 				else
 				{
 					String val = Integer.toString(event.getValue());
@@ -303,12 +303,12 @@ class TrListener implements TrucoListener
 		
 		if (event.getPlayer() == getAssociatedPlayer())
 		{
-			// carga las señas
+			// carga las seï¿½as
 			for (int i = 0; i < 3; i++)
 			{
 				sign = Sign.getSign(cards[i]);
 				if (sign != Sign.NONE) table.addSign(sign);
-				System.out.println(table.getPlayer().getName() + " con seña " + Sign.getName(sign));
+				System.out.println(table.getPlayer().getName() + " con seï¿½a " + Sign.getName(sign));
 			}
 			getCManager().showCards(cards);
 		}
@@ -353,7 +353,17 @@ class TrListener implements TrucoListener
 	{
 		System.out.println("End of game for player " + table.getPlayer());
 		table.getJTrucoTable().getJButton("Ayuda").setEnabled(true);
-		table.initialize();
+
+		if (table.getJTrucoTable() != null)
+			table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled
+			(
+				table.getPManager().evenTeams() &&
+				(table.getPManager().getActualChair() == 0) &&
+				table.getPManager().isSitted(getAssociatedPlayer())
+			);
+
+		table.getJTrucoTable().getJButton("Ok").setText("Iniciar");
+
 		table.getTEventMan().fireGameFinished();
 	}
 	
@@ -370,8 +380,8 @@ class TrListener implements TrucoListener
 		Face face;
 		
 		// verificaciones
-		Util.verifParam(player != null, "Parámetro 'player' nulo");
-		Util.verifParam(text != null, "Parámetro 'text' nulo");
+		Util.verifParam(player != null, "Parï¿½metro 'player' nulo");
+		Util.verifParam(text != null, "Parï¿½metro 'text' nulo");
 		
 		if (player != getAssociatedPlayer())
 		{
@@ -385,7 +395,7 @@ class TrListener implements TrucoListener
 			face.pushText(null, false, 100);
 		}
 		
-//		// muestra el mensaje también en el chat si está jugando
+//		// muestra el mensaje tambiï¿½n en el chat si estï¿½ jugando
 //		if (!(table.getStatus() == Table.WATCH))
 //			table.getJTrucoTable().jpChat.showChatMessage
 //			(

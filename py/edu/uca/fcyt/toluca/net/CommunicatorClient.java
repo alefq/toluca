@@ -77,7 +77,8 @@ public class CommunicatorClient extends Communicator
 		try
 		{
 			//setSocket(new Socket("interno.roshka.com.py", 6767));
-			setSocket(new Socket("localhost", 6767));
+			setSocket(new Socket("192.168.16.147", 6767));
+			//setSocket(new Socket("localhost", 6767));
 			//setSocket(new Socket("localhost", 6767));
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 		} catch (UnknownHostException e)
@@ -152,7 +153,7 @@ public class CommunicatorClient extends Communicator
 							}
 							if(aux.compareTo("SignSent")==0){
 								System.out.println("El player es : "+signjugador);
-								System.out.println("La seña es: "+signAux);
+								System.out.println("La seï¿½a es: "+signAux);
 								System.out.println("La table : "+signTable);
 							
 								TrucoPlayer jug=pieza.getPlayer(signjugador);
@@ -267,7 +268,7 @@ public class CommunicatorClient extends Communicator
 				//Chatpanel.showChatMessage(user,message);
 				System.out.println("Player: " + user);
 				System.out.println("Mensaje: " + message);
-				// Aca vemos para quién puta es el mensaje
+				// Aca vemos para quiï¿½n puta es el mensaje
 				String origen = element.getAttributeValue("origin");
 				System.out.println("El origen es: " + origen);
 				if (origen.equalsIgnoreCase("room"))
@@ -441,7 +442,7 @@ public class CommunicatorClient extends Communicator
 								TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
 								trucoGame.play(te);
 				} catch (java.lang.NullPointerException e) {
-								System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+								System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Mï¿½todo xmlReadCantarTanto ");
 								e.printStackTrace(System.out);
 										throw e;
 				}*/
@@ -605,7 +606,7 @@ public class CommunicatorClient extends Communicator
 	
 	public void xmlReadTurno(Object o)
 	{
-		// Chau excepción Feltística
+		// Chau excepciï¿½n Feltï¿½stica
 		//new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 		String aux;
 		if (o instanceof Element)
@@ -645,7 +646,7 @@ public class CommunicatorClient extends Communicator
 			if (aux.compareTo("Turno") == 0)
 			{
 				System.out.println("Leyento paquete turno");
-				// TODO Quiloooooooombo armamos acá con el gameNumber y tableNumber
+				// TODO Quiloooooooombo armamos acï¿½ con el gameNumber y tableNumber
 				TrucoEvent te =
 				new TrucoEvent(
 				elGameDeAca,
@@ -829,7 +830,7 @@ public class CommunicatorClient extends Communicator
 					
 				} catch (java.lang.NullPointerException e)
 				{
-					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Mï¿½todo xmlReadCantarTanto ");
 					e.printStackTrace(System.out);
 					throw e;
 				}
@@ -840,6 +841,7 @@ public class CommunicatorClient extends Communicator
 	public void xmlReadInfoGame(Object o)
 	{
 		String aux;
+		System.out.println("leyendo pacochi de infogame ");
 		if (o instanceof Element)
 		{
 			Element element = (Element) o;
@@ -872,6 +874,7 @@ public class CommunicatorClient extends Communicator
 			}
 			if (aux.compareTo("InfoGame") == 0)
 			{
+				
 				TrucoEvent te = null;
 				//TODO A LO CHANCHO HASTA ARREGLAR CC
 				if (typeAux != 50)
@@ -914,7 +917,7 @@ public class CommunicatorClient extends Communicator
 					
 				} catch (java.lang.NullPointerException e)
 				{
-					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Mï¿½todo xmlReadCantarTanto ");
 					e.printStackTrace(System.out);
 					throw e;
 				}
@@ -1022,7 +1025,7 @@ public class CommunicatorClient extends Communicator
 					
 				} catch (java.lang.NullPointerException e)
 				{
-					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Mï¿½todo xmlreadSendCardsAlg ");
 					e.printStackTrace(System.out);
 					throw e;
 				}
@@ -1063,7 +1066,7 @@ public class CommunicatorClient extends Communicator
 		TrucoPlay tp;
 		//No se porque usan el campo "hand" para guardar el tipo de juego :-?
  
-		// Acá, en vez de getTypeEvent decía getHandNumber
+		// Acï¿½, en vez de getTypeEvent decï¿½a getHandNumber
 		if (event.getTypeEvent() == TrucoEvent.ENVIAR_CARTAS)
 			tp = new TrucoPlay(event.getPlayer(), TrucoEvent.ENVIAR_CARTAS);
 		else if (event.getTypeEvent() == TrucoEvent.JUGAR_CARTA)
@@ -1074,7 +1077,7 @@ public class CommunicatorClient extends Communicator
 			event.getCard());
 		else {
 			new Exception(
-			//TODO PENSAR EN UN MÉTODO ESTÁTICO QUE TE DEVUELVA UN TP DADO UN TE O SI NO EN UNIFICAR LOS NROS.
+			//TODO PENSAR EN UN Mï¿½TODO ESTï¿½TICO QUE TE DEVUELVA UN TP DADO UN TE O SI NO EN UNIFICAR LOS NROS.
 			"Aca posiblemente debe ir un cacho de _switch_ para cada jugada")
 			.printStackTrace(
 			System.out);
@@ -1577,7 +1580,7 @@ public class CommunicatorClient extends Communicator
 	
 	public void gameStartRequest(TableEvent te)
 	{
-		System.out.println("Imprimí ya algo en gameStartRequest del CC");
+		System.out.println("Imprimï¿½ ya algo en gameStartRequest del CC");
 		Document doc = te.toXml();
 		super.sendXmlPackage(doc);
 		
@@ -1630,7 +1633,7 @@ public class CommunicatorClient extends Communicator
 								TrucoGame truco=new TrucoGame(team1,team2);
 								tabela.startGame(truco);
 								} catch (java.lang.NullPointerException e) {
-								System.e.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT EN EL Método xmlReadGameStarted");
+								System.e.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT EN EL Mï¿½todo xmlReadGameStarted");
 								e.printStackTrace(System.out);
 								throw e;
 								}*/

@@ -54,9 +54,9 @@ public class Table implements
 	private boolean host;				// es o no el host
 	private PlayerManager pManager;	// manejador de jugadores
 	private TrucoPlayer actualPlayer; // jugador actual
-	private int tableNumber;			// número de mesa
+	private int tableNumber;			// nï¿½mero de mesa
 	private FaceManager fManager;		// FaceManager asociado
-	private Vector signs;				// vector de señas
+	private Vector signs;				// vector de seï¿½as
 	private Animator animator;			// animador de objetos
 	private Vector aPlays;	// jugadas habilitadas
 	protected int envidoPoints;
@@ -106,16 +106,16 @@ public class Table implements
 		tGame = null;
 
 		ttAnimator.clearAll();
-		//ttAnimator.showPresentation();
+		ttAnimator.showPresentation();
 
-		// establece el texto del botón
+		// establece el texto del botï¿½n
 		jtTable.buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Iniciar");
 		jtTable.buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
 		
 		// inicializa el estado actual
 		status = Table.SIT;
 		
-		// remueve manejador de cartas de la animación
+		// remueve manejador de cartas de la animaciï¿½n
 		animator.removeAnim(cManager);
 		
 		// remueve manejador de caritas
@@ -208,7 +208,7 @@ public class Table implements
 	
 	/**
 	 * Elimina al jugador 'player' de la mesa.
-	 * @return 	Verdadero si estaba en la mesa y se lo eliminó,
+	 * @return 	Verdadero si estaba en la mesa y se lo eliminï¿½,
 	 *			de lo contrario falso.
 	 */
 	public boolean removePlayer(TrucoPlayer player)
@@ -303,7 +303,7 @@ public class Table implements
 		fManager.pushGeneralPause(rem);
 		fManager.showFaces();
 		
-		// limpia las señas cargadas
+		// limpia las seï¿½as cargadas
 		signs.clear();
 		
 		// manda al frente en el orden correcto
@@ -311,7 +311,7 @@ public class Table implements
 		animator.toTop(ttAnimator);
 		animator.toTop(tFrame);
 
-		// avista que el juego inició correctamente
+		// avista que el juego iniciï¿½ correctamente
 		tEventMan.fireGameStarted();
 	}
 	
@@ -349,12 +349,12 @@ public class Table implements
 				pManager.isSitted(actualPlayer)
 			);
 		
-		// avisa que le player se sentó correctamente
+		// avisa que le player se sentï¿½ correctamente
 		tEventMan.firePlayerSit();
 	}
 	
 	/**
-	 * Para a un jugador de la silla en donde está sentado
+	 * Para a un jugador de la silla en donde estï¿½ sentado
 	 */
 	public void standPlayer(int chair)
 	{
@@ -372,7 +372,7 @@ public class Table implements
 			jtTable.buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(pManager.evenTeams());
 		}
 		
-		// avisa que el player se levantó correctamente
+		// avisa que el player se levantï¿½ correctamente
 		tEventMan.firePlayerStanded(p);
 	}
 	
@@ -413,14 +413,14 @@ public class Table implements
 					Card card;
 					
 					if (status == PLAYCANTO)
-						// si hay que responder algún canto,
+						// si hay que responder algï¿½n canto,
 						// no jugar la carta
 						card = null;
 					else
-						// retorna la carta jugada si se jugó
+						// retorna la carta jugada si se jugï¿½
 						card = cManager.playCardIfClick(x, y);
 					
-					// si no se jugó...
+					// si no se jugï¿½...
 					if (card != null)
 					{
 						setCursor(Cursor.WAIT_CURSOR);
@@ -447,9 +447,9 @@ public class Table implements
 			}
 
 			
-				// abrir las cartas de algún jugador si
-				// se presionó en ellas, si tampoco
-				// ocurrió esto...
+				// abrir las cartas de algï¿½n jugador si
+				// se presionï¿½ en ellas, si tampoco
+				// ocurriï¿½ esto...
 				pos = cManager.getClickCards(x, y);
 				if (pos == -1)
 				{
@@ -463,22 +463,22 @@ public class Table implements
 	
 	/**
 	 * Sienta o para al jugador actual en/de una
-	 * silla si ésta fue seleccionada
+	 * silla si ï¿½sta fue seleccionada
 	 */
 	protected boolean sitIfClick(int x, int y)
 	{
 		int pos;
 		
-		// carga la posición clickeada
+		// carga la posiciï¿½n clickeada
 		pos = fManager.getPosIfClick(x, y);
 		
-		// si existe dicha posición...
+		// si existe dicha posiciï¿½n...
 		if (pos != -1)
 		{
 			TrucoPlayer player;
 			int chair, actualChair;
 			
-			// obtiene la silla en esa posición
+			// obtiene la silla en esa posiciï¿½n
 			chair = pManager.getChair(pos);
 			
 			// obtiene el player sentado en esa silla
@@ -497,7 +497,7 @@ public class Table implements
 			// obtiene la silla actual
 			actualChair = pManager.getChair(actualPlayer);
 			
-			// si el TrucoPlayer actual ya está sentado ret. con falso
+			// si el TrucoPlayer actual ya estï¿½ sentado ret. con falso
 			if (actualChair != -1)
 			{
 				tEventMan.firePlayerStandRequest(actualChair);
@@ -534,35 +534,35 @@ public class Table implements
 	}
 	
 	/**
-	 * Muestra las señas a un cierto
-	 * jugador si se clickeó en él
+	 * Muestra las seï¿½as a un cierto
+	 * jugador si se clickeï¿½ en ï¿½l
 	 */
 	protected boolean sendSignsIfClick(int x, int y)
 	{
 		int pos;
 		TrucoPlayer player;
 		
-		// obtiene la posición de jugador al
-		// cual se debe enviar las señas
+		// obtiene la posiciï¿½n de jugador al
+		// cual se debe enviar las seï¿½as
 		pos = fManager.getPosIfClick(x, y);
 		
 		// si no se hizo click en ninguno, salir con falso
 		if (pos == -1) return false;
 		
-		// si es la posición del contrincante, salir
+		// si es la posiciï¿½n del contrincante, salir
 		if (pos % 2 == 0) return false;
 		
-		// obtiene el jugador sentado en esa posición
+		// obtiene el jugador sentado en esa posiciï¿½n
 		player = pManager.getPlayer(pManager.getChair(pos + 1));
 		
-		// si no hay señas, informa a todos los
-		// TableListeners registrados la seña "seca"
+		// si no hay seï¿½as, informa a todos los
+		// TableListeners registrados la seï¿½a "seca"
 		if (signs.size() == 0) tEventMan.fireSignSendRequest
 		(
 			player, Sign.SECA
 		);
 		// si las hay informa a todos los
-		// TableListeners registrados las señas
+		// TableListeners registrados las seï¿½as
 		else for (int i = 0; i < signs.size(); i++)
 			tEventMan.fireSignSendRequest
 			(
@@ -573,7 +573,7 @@ public class Table implements
 	}
 	
 	/**
-	 * Muestra la seña emitida por un cierto jugador
+	 * Muestra la seï¿½a emitida por un cierto jugador
 	 */
 	public void showSign(TableEvent event)
 	{
@@ -583,32 +583,29 @@ public class Table implements
 		src = event.getPlayer(0);
 		dest = event.getPlayer(1);
 		
-		// si el destinatario no soy yo, salir
-		if (dest != actualPlayer) return;
-		
-		// muestra la seña
-		fManager.showSign
+		// muestra la seï¿½a
+		if (dest == actualPlayer) fManager.showSign
 		(
 			pManager.getPos(src) - 1, event.getValue()
 		);
 		
-		// avisa que la seña fue enviada correctamente
+		// avisa que la seï¿½a fue enviada correctamente
 		tEventMan.fireSignSent(event.getPlayer(1));
 	}
 	
 	/**
-	 * Agrega una seña a emitir posteriormente
+	 * Agrega una seï¿½a a emitir posteriormente
 	 */
 	protected void addSign(int sign)
 	{
 		// verificaciones
-		Util.verifParam(Sign.isSign(sign), "Seña inválida");
+		Util.verifParam(Sign.isSign(sign), "Seï¿½a invï¿½lida");
 		
 		signs.add(new Integer(sign));
 	}
 	
 	/**
-	 * Limpia las señas
+	 * Limpia las seï¿½as
 	 */
 	protected void clearSigns()
 	{ signs.clear(); }
@@ -622,13 +619,13 @@ public class Table implements
 	{
 		int pos;
 		
-		// si el mensaje comienza con una barra, va sólo para
+		// si el mensaje comienza con una barra, va sï¿½lo para
 		// el chat
 		if (htmlMessage.startsWith("\\"))
 		{
 			htmlMessage = htmlMessage.substring(1, htmlMessage.length());
 		}
-		else if (pManager.isSitted(player))
+		else if (pManager.isSitted(player) && fManager != null)
 		{
 			pos = pManager.getPos(player);
 			fManager.pushText
@@ -638,8 +635,8 @@ public class Table implements
 		}
 		
 		// muestra el mensaje de chat y
-		// aviza que llegó correctamente
-		jtTable.jpChat.showChatMessage
+		// aviza que llegï¿½ correctamente
+		if (jtTable != null) jtTable.jpChat.showChatMessage
 		(
 			player, htmlMessage
 		);
@@ -667,7 +664,7 @@ public class Table implements
 	
 	/**
 	 * Retorna el puntaje de un equipo
-	 * @param index		índice del equipo
+	 * @param index		ï¿½ndice del equipo
 	 */
 	protected int getPoints(int index)
 	{
@@ -766,7 +763,7 @@ public class Table implements
 	
 	/**
 	 * Muestra las cartas de un player
-	 * @param chair		Silla donde está el player
+	 * @param chair		Silla donde estï¿½ el player
 	 */
 	private void showPlayed(int pos)
 	{
@@ -823,6 +820,24 @@ public class Table implements
 		TrucoTeam tTeams[];
 		TrucoPlayer player;
 		
+		if (tGame != null)
+		{ 
+			tTeams = new TrucoTeam[]
+			{
+				tGame.getTeam(0),
+				tGame.getTeam(1)
+			};
+			
+			for (int i = 0; i < 2; i++)
+			{
+				System.out.println("TEAM: " + i);
+				for (int j = 0; j < tTeams[i].getNumberOfPlayers(); j++)
+					System.out.println("PLAYER: " + tTeams[i].getPlayerNumber(j));
+			}
+			
+			return tTeams;
+		}
+			
 		// se crean los teams
 		tTeams = new TrucoTeam[]
 		{
@@ -831,7 +846,7 @@ public class Table implements
 		};
 		
 		// se agregan los players a los teams
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < pManager.getPlayerCount(); i++)
 		{
 			player = pManager.getPlayer(i);
 			if (player != null)

@@ -92,6 +92,16 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         TrucoTeam tTeams[];
         TrucoPlayer player;
         
+		if (tGame != null)
+		{ 
+			tTeams = new TrucoTeam[]
+			{
+				tGame.getTeam(0),
+				tGame.getTeam(1)
+			};
+			return tTeams;
+		}
+        
         // se crean los teams
         tTeams = new TrucoTeam[] {
             new TrucoTeam("Rojo"),
@@ -99,7 +109,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         };
         
         // se agregan los players a los teams
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < pManager.getPlayerCount(); i++) {
             player = pManager.getPlayer(i);
             if (player != null) {
                 tTeams[i % 2].addPlayer(player);
@@ -114,6 +124,8 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     }
     
     public void endOfGame(TrucoEvent event) {
+		pManager = new PlayerManager(6);
+		tGame = null;
     }
     
     public void endOfHand(TrucoEvent event) {
@@ -262,7 +274,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	{
 		pManager.standPlayer(event.getValue());
 
-		// avisa que el player se levantó correctamente
+		// avisa que el player se levantï¿½ correctamente
 		for (int i = 0; i < tableListeners.size(); i++)
 			((TableListener) tableListeners.get(i)).playerStanded(event);
 	}

@@ -37,8 +37,8 @@ public class TrucoGame extends Game
 	
 	
 	/** Constructor con dos equipos, asi crea un TrucoGame
-	 * @param tm1 Equipo 1 que jugará el TrucoGame.
-	 * @param tm2 Equipo 1 que jugará el TrucoGame.
+	 * @param tm1 Equipo 1 que jugarï¿½ el TrucoGame.
+	 * @param tm2 Equipo 1 que jugarï¿½ el TrucoGame.
 	 */
 	public TrucoGame(TrucoTeam tm1, TrucoTeam tm2)
 	{ //contructor con los teams
@@ -75,9 +75,9 @@ public class TrucoGame extends Game
 	{
 		listenerlist.add(tl);
 	}
-	/** configurar los equipos que jugarán el TrucoGame.
-	 * @param team_1 Equipo 1 que jugará el TrucoGame.
-	 * @param team_2 Equipo dos que jugará el TrucoGame
+	/** configurar los equipos que jugarï¿½n el TrucoGame.
+	 * @param team_1 Equipo 1 que jugarï¿½ el TrucoGame.
+	 * @param team_2 Equipo dos que jugarï¿½ el TrucoGame
 	 */
 	public void setTeam(TrucoTeam team_1, TrucoTeam team_2)
 	{//insertar los teams que partciparan del juego de truco
@@ -85,7 +85,7 @@ public class TrucoGame extends Game
 		teams[1] = team_2;
 	}
 	/** Envia las cartas a los jugadores.
-	 * @param tp TrucoPlayer a quien irá las cartas.
+	 * @param tp TrucoPlayer a quien irï¿½ las cartas.
 	 * @param card carta a ser enviadas.
 	 */
 	public void dealtCards(TrucoPlayer tp, TrucoCard[] card)
@@ -164,7 +164,7 @@ public class TrucoGame extends Game
 	}
 	/** Retorna Verdadero si posible realizar una jugada.
 	 * @param tp Jugada a verificar si es posible ser realizada.
-	 * @return Retorna si es válido la jugada.
+	 * @return Retorna si es vï¿½lido la jugada.
 	 */
 	public boolean esPosibleJugar(TrucoPlay tp)
 	{
@@ -197,7 +197,7 @@ public class TrucoGame extends Game
 	}
 	/** Enviar mensaje de jugada a todos los oyentes del juego.
 	 * @param pl TrucoPlayer que realizo la jugada.
-	 * @param type Tipo de Jugada que realizó.
+	 * @param type Tipo de Jugada que realizï¿½.
 	 */
 	public void firePlayEvent(TrucoPlayer pl, byte type)
 	{ //eventos de juego sin carta o canto
@@ -205,15 +205,15 @@ public class TrucoGame extends Game
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			//			((TrucoListener)(listenerlist.get(i))).play(event);
-			// 			Se cambió la llamada en intento desesperado por hacer funcionar esto
+			// 			Se cambiï¿½ la llamada en intento desesperado por hacer funcionar esto
 			//			((TrucoListener)(listenerlist.get(i))).playResponse(event);
 			((TrucoListener)(listenerlist.get(i))).play(event);
 		}
 	}
 	/** Enviar mensaje de jugada a todos los oyentes del juego.
-	 * @param pl TrucoPlayer que realizó la jugada.
-	 * @param card Carta que jugó el Player.
-	 * @param type Tipo de jugada que realizó.
+	 * @param pl TrucoPlayer que realizï¿½ la jugada.
+	 * @param card Carta que jugï¿½ el Player.
+	 * @param type Tipo de jugada que realizï¿½.
 	 */
 	public  void firePlayEvent(TrucoPlayer pl, TrucoCard card,byte type)
 	{ //eventos de juego con carta
@@ -227,8 +227,8 @@ public class TrucoGame extends Game
 		}
 	}
 	/** Enviar mensaje de jugada a todos los oyentes del juego.
-	 * @param pl Player que realizó la jugada.
-	 * @param type Tipo de jugada que realizó.
+	 * @param pl Player que realizï¿½ la jugada.
+	 * @param type Tipo de jugada que realizï¿½.
 	 * @param value Valor del canto (para jugadas de canto de valor Envido o Flor).
 	 */
 	public void firePlayEvent(TrucoPlayer pl, byte type, int value)
@@ -243,7 +243,7 @@ public class TrucoGame extends Game
 	
 	/** Enviar mensaje de jugada a todos los oyentes del juego.
 	 * @param pl TrucoPlayer que realizo la jugada.
-	 * @param type Tipo de Jugada que realizó.
+	 * @param type Tipo de Jugada que realizï¿½.
 	 */
 	public void firePlayResponseEvent(TrucoPlayer pl, byte type)
 	{ //eventos de juego sin carta o canto
@@ -251,15 +251,15 @@ public class TrucoGame extends Game
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			//			((TrucoListener)(listenerlist.get(i))).play(event);
-			//			Se cambió la llamada en intento desesperado por hacer funcionar esto
+			//			Se cambiï¿½ la llamada en intento desesperado por hacer funcionar esto
 			((TrucoListener)(listenerlist.get(i))).playResponse(event);
 			//			((TrucoListener)(listenerlist.get(i))).play(event);
 		}
 	}
 	/** Enviar mensaje de jugada a todos los oyentes del juego.
-	 * @param pl TrucoPlayer que realizó la jugada.
-	 * @param card Carta que jugó el Player.
-	 * @param type Tipo de jugada que realizó.
+	 * @param pl TrucoPlayer que realizï¿½ la jugada.
+	 * @param card Carta que jugï¿½ el Player.
+	 * @param type Tipo de jugada que realizï¿½.
 	 */
 	public  void firePlayResponseEvent(TrucoPlayer pl, TrucoCard card,byte type)
 	{ //eventos de juego con carta
@@ -273,8 +273,8 @@ public class TrucoGame extends Game
 		}
 	}
 	/** Enviar mensaje de jugada a todos los oyentes del juego.
-	 * @param pl Player que realizó la jugada.
-	 * @param type Tipo de jugada que realizó.
+	 * @param pl Player que realizï¿½ la jugada.
+	 * @param type Tipo de jugada que realizï¿½.
 	 * @param value Valor del canto (para jugadas de canto de valor Envido o Flor).
 	 */
 	public void firePlayResponseEvent(TrucoPlayer pl, byte type, int value)
@@ -344,6 +344,9 @@ public class TrucoGame extends Game
 	 */
 	public void fireHandStarted()
 	{
+		System.out.println("el equipo es null"+teams[0]==null );
+		System.out.println(teams[1]==null);
+		System.out.println("numero de players de los equipos ="+teams[0].getNumberOfPlayers()+"y"+teams[0].getNumberOfPlayers());
 		TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,TrucoEvent.INICIO_DE_MANO);
 		for(int i=0; i<listenerlist.size();i++)
@@ -403,7 +406,7 @@ public class TrucoGame extends Game
 	}
 	protected void startHandConfirmated()
 	{
-		
+		System.out.println("enviando starthand a todos!!");
 		if(points[0] >= 30 || points[1] >= 30)
 		{
 			fireEndOfGameEvent();
