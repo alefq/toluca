@@ -14,14 +14,13 @@ import java.awt.BorderLayout;
 import py.edu.uca.fcyt.toluca.table.*;
 import py.edu.uca.fcyt.toluca.net.*;
 import py.edu.uca.fcyt.toluca.event.*;
-
 import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
-import py.edu.uca.fcyt.toluca.game.*;
+
 /**
- * <p>
  *
- * </p>
+ * @author  Interfaz de Inicio
  */
 public class RoomClient extends Room
                         implements ChatPanelContainer {
@@ -31,7 +30,7 @@ public class RoomClient extends Room
     private RankingTable rankTable;
     private RoomUI rui;
     private CommunicatorClient cc;
-    
+    private TrucoPlayer roomPlayer;
     ///////////////////////////////////////
     // operations
     
@@ -44,7 +43,13 @@ public class RoomClient extends Room
    //init();
     }
     
+    public void setRoomPlayer(TrucoPlayer player){
+        roomPlayer = player;
+    }
     
+    public TrucoPlayer getRoomPlayer(){
+        return roomPlayer;
+    }
     
     public void setMainTable(JButtonTable mainTable) {
         this.mainTable = mainTable;
@@ -55,23 +60,18 @@ public class RoomClient extends Room
     }
 
     public void setRankingTable(RankingTable rankTable) {
+        System.out.println("rank");
         this.rankTable = rankTable;
     }
 
-    /**
-     * <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param table ...
-     * </p>
-     *
-     */
-   
     public void addTable(Table table) {        /** lock-end */
          // mainTable.insertarFila(); /* Agregamos una fila a la tabla */
         
     } // end addTable        /** lock-begin */
+    
+    public void removeTable(Table table){
+        mainTable.eliminarFila(table.getTableNumber());
+    }
     
     /**
      * <p>
@@ -105,12 +105,7 @@ public class RoomClient extends Room
     /**
      * <p>
      * Informa a todos los <i>listeners</i> registrados que se esta intentando
-     * ingresar a una tabla
-     * </p>
-     * <p>
-     *
-     * </p>
-     * <p>
+     * ingresar a una tabla.
      *
      * @param tableNumber El numero de tabla a la que queremos unirnos
      * </p>
@@ -119,7 +114,6 @@ public class RoomClient extends Room
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_JOIN_REQUESTED);
         re.setTableNumber(tableNumber);
-        
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -134,16 +128,11 @@ public class RoomClient extends Room
     /**
      * <p>
      * Informa a todos los <i>listeners</i> registrados que se esta intentando
-     * crear una tabla nueva en el Room
-     * </p>
-     * <p>
-     *
-     * </p>
-     *
+     * crear una tabla nueva en el Room.
      */
     private void fireTableCreateRequested() {        /** lock-end */
         RoomEvent re = new RoomEvent();
-        re.setUser("Fernando");
+        re.setUser(roomPlayer.getName());
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -151,106 +140,32 @@ public class RoomClient extends Room
         }
     } // end fireTableCreateRequested        /** lock-begin */
     
-    
-    /** <p>
-     * En este metodo no sabemos que se hace?
-     * </p><p>
-     *
-     * @param player ...
-     * </p><p>
-     * @param htmlMessage ...
-     * </p><p>
-     *
-     * </p>
-     *
-     */
-    
     public void sendChatMessage(TrucoPlayer player, String htmlMessage) {
         fireChatMessageRequested(player, htmlMessage);
     }
     
-     /**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param username ...
- * </p><p>
- * @param password ...
- * </p>
- */ 
     public void showChatMessage(TrucoPlayer player, String htmlMessage) {
         /** lock-end */
         chatPanel.showChatMessage(player, htmlMessage);
     } // end showChatMessage        /** lock-begin */
     
-      /**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param username ...
- * </p><p>
- * @param password ...
- * </p>
- */
     public void addPlayer(TrucoPlayer player) {
         super.addPlayer(player);
-        System.out.println("Gol de Cerro!!");
+        System.out.println("Gooool!! Carajo");
         if (rankTable == null) System.out.println("Nulooooo!!!");
         rankTable.addPlayer(player);
     }
     
-     /**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param username ...
- * </p><p>
- * @param password ...
- * </p>
- */ 
     public void removePlayer(TrucoPlayer player) {        /** lock-end */
         super.removePlayer(player);
-        rankTable.removeplayer( player.getName() );
+        rankTable.removeplayer( player);
     } // end removePlayer        /** lock-begin */
     
-      /**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param username ...
- * </p><p>
- * @param password ...
- * </p>
- */
     public void modifyPlayer(TrucoPlayer player) {        /** lock-end */
         super.modifyPlayer(player);  
-        rankTable.modifyplayer(player.getName(), player.getRating() );
+        rankTable.modifyplayer(player);
     }
     
-    /**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param username ...
- * </p><p>
- * @param password ...
- * </p>
- */
     private void fireLoginRequested(String username, String password) {        /** lock-end */
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_LOGIN_REQUESTED);
@@ -263,34 +178,20 @@ public class RoomClient extends Room
         }
     } // end fireLoginRequested        /** lock-begin */
 
-/**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param player ...
- * </p>
- */
+
     public void loginCompleted(TrucoPlayer player) {        /** lock-end */
-        System.out.println("Se ejecuta Login completed------------------");
+        System.out.println("Login completed???");
         chatPanel = new ChatPanel(this, player);
         rui.addChatPanel(chatPanel);
-        //addPlayer(player);
+        roomPlayer = player;
+        addPlayer(player);
     } // end loginCompleted        /** lock-begin */
 
     public void joinTable(RoomEvent re) {
         
     }
 
-/**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p>
- */
+
     public void loginFailed() {        /** lock-end */
         JOptionPane.showMessageDialog(new JButton() , new JLabel() + ": Login Failed!");
     }
@@ -314,9 +215,6 @@ public class RoomClient extends Room
             System.out.println("Se settea el rank table a no null");
         this.rankTable = rankTable;
     }
-    
-    
- // end loginFailed        /** lock-begin */
 
 } // end RoomClient
 

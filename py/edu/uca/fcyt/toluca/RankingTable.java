@@ -17,20 +17,23 @@ public class RankingTable extends JPanel {
         
 	RankingTable(){
             System.out.println("Se instancia el RankingTable");
-            encabezado.add(new String(""));
+            encabezado.add(new String("Nivel"));
             encabezado.add(new String("Jugador"));
             encabezado.add(new String("Ranking"));        
             
             System.out.println("Se instancia el RankingTableModel-i");
             rtm = new RankingTableModelv2(/*jugadores, encabezado*/);
-            System.out.println("Se termina de instanciar");
+            System.out.println("Se termina de instanciar1324123123");
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             JTable jtable = new JTable(rtm);
+         
+            TableColumn nivelColumn = jtable.getColumn("Nivel");
+            nivelColumn.setPreferredWidth(30);
             
             jtable.setDefaultRenderer(jtable.getColumnClass(0), new RankingTable.RankingCellRenderer());
             JScrollPane scroll = new JScrollPane(jtable);
             add( scroll );
-            setSize( 100,50 );
+            setPreferredSize( new Dimension(200,190) );
             setVisible(true);
 	}
 
@@ -38,12 +41,12 @@ public class RankingTable extends JPanel {
             rtm.addPlayer(player);
 	}
 
-	void removeplayer(String Nombre){
-            //rtm.removeplayer(Nombre);	
+	void removeplayer(TrucoPlayer player){
+            rtm.removePlayer(player);	
 	}
 
-	void modifyplayer(String Nombre, int Rating){
-            //rtm.modifyplayer(Nombre,Rating);
+	void modifyplayer(TrucoPlayer player){
+            rtm.modifyPlayer(player);
 	}
 	
         public class RankingCellRenderer implements TableCellRenderer {
@@ -73,6 +76,7 @@ public class RankingTable extends JPanel {
              * @param	column	        the column index of the cell being drawn
              *
              */
+            
             public Component getTableCellRendererComponent(JTable table, Object value, 
                                                 boolean isSelected, boolean hasFocus, 
                                                 int row, int column) {

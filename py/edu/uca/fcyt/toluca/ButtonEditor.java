@@ -6,9 +6,14 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.util.Vector;
 
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
+/**
+ *
+ * @author  Interfaz de Inicio
+ */
 public class ButtonEditor extends AbstractCellEditor
-						  implements TableCellEditor {
+			  implements TableCellEditor {
 	
   protected JButton button;
   protected JLabel  etiqueta;
@@ -19,9 +24,12 @@ public class ButtonEditor extends AbstractCellEditor
   String valueCopy;
   
 
-  
-  public ButtonEditor() {
-    super();
+  public ButtonEditor(/*Player player*/) {
+    
+      super();
+      System.out.println("entre al button editor");
+   // label = player.getName();
+    label = "nombre";
     button = new JButton();
     etiqueta = new JLabel();
     tableList = new Vector();
@@ -30,22 +38,25 @@ public class ButtonEditor extends AbstractCellEditor
       public void actionPerformed(ActionEvent e) {
         fireEditingStopped();
       }
+      
     });
+    System.out.println(" al button editor");
 
   }
 
   public Component getTableCellEditorComponent(JTable table, Object value,
                    boolean isSelected, int row, int column) {
   
+    System.out.println("En el buttonEditor value es=" + value.getClass());
     Component comp = etiqueta;
     Integer fila = new Integer(row);
     
     System.out.println("fila= " +fila);
     System.out.println("value=" +value);
 
-	valueCopy = value.toString();
+    valueCopy = value.toString();
 	
-	if (isSelected) {
+    if (isSelected) {
       button.setForeground(table.getSelectionForeground());
       button.setBackground(table.getSelectionBackground());
     } else {
@@ -53,8 +64,6 @@ public class ButtonEditor extends AbstractCellEditor
       button.setBackground(table.getBackground());
     }
  
-      label = "nombre";
-	
 	/*
 	 * controla si un jugador ya esta jugando en una mesa
 	 * si no estaba jugando ahi, se le agrega
@@ -69,7 +78,8 @@ public class ButtonEditor extends AbstractCellEditor
 	 * si presionó alguno de los botones de "Jugar"
      */
     if( column>1 && column<8){
-    	
+        
+        //table.addPlayer((Player) value, row, column);
     	if (!isInTable) {
             etiqueta.setText(label);
             comp = etiqueta;
@@ -78,27 +88,29 @@ public class ButtonEditor extends AbstractCellEditor
             comp = button;
         }
     }
-
+    
 	/* 
 	 * si presiono "Observar"
 	 * se controla que quien quiere observar, no este jugando
 	 */
 	if( column==1 ){
+            //table.addPlayer((Player) value, row, column);
+            
+            String aux = new String();
 
-		String aux = new String();
-
-		if(!isInTable){
-			aux = table.getValueAt(row,8).toString();
-			aux = aux.concat(", ");
-			aux = aux.concat("nombre");
+            if(!isInTable){
+            	aux = table.getValueAt(row,8).toString();
+		aux = aux.concat(", ");
+		aux = aux.concat("nombre");
 			
-			table.setValueAt(aux, row,8);
-			label = "Observar";
-			button.setText("Observar");
-            comp = button;
-		}
+		table.setValueAt(aux, row,8);
+		label = "Observar";
+		button.setText("Observar");
+            
+                comp = button;
+            }
 	}
-	
+    
     isPushed = true;
     return comp;
   }

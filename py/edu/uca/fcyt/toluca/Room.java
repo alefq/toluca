@@ -9,16 +9,18 @@ import javax.swing.*;
 
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.toluca.event.*;
+import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.game.*;
 
-public abstract class Room
-implements ChatPanelContainer {
+/**
+ *
+ * @author  Interfaz de Inicio
+ */
+public abstract class Room implements ChatPanelContainer {
     
     
     protected String name;
-    
     protected Vector players; // of type Player??
-    
     protected Vector roomListeners; // of type Vector
     protected Vector table; // of type Table
     
@@ -45,6 +47,7 @@ implements ChatPanelContainer {
         fireTableCreated();
     }
     
+    
     /**
      * <p>
      * Recorre el vector de listeners y ejecuta en cada uno de los objetos del
@@ -54,7 +57,7 @@ implements ChatPanelContainer {
      */
     private void fireTableCreated() {
         RoomEvent re = new RoomEvent();
-        re.setType(4);
+        re.setType(RoomEvent.TYPE_TABLE_CREATED);
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -140,7 +143,7 @@ implements ChatPanelContainer {
     private void fireTableJoined() {        /** lock-end */
         
         RoomEvent re = new RoomEvent();
-        re.setType(6);
+        re.setType(RoomEvent.TYPE_TABLE_JOINED);
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -188,14 +191,17 @@ implements ChatPanelContainer {
      * </p>
      */
     public void modifyPlayer(TrucoPlayer player) {        /** lock-end */
-        
-    }
-    
+        for(int i=0; i<players.size(); i++){
+            if( players.get(i) == player){
+                players.setElementAt(player, i);
+                i = players.size()+10;
+            }
+        }
+    } // end modifyPlayer        /** lock-begin */
+
     public String getOrigin() {
         return "room";
     }
-    
- // end modifyPlayer        /** lock-begin */
     
 } // end Room
 
