@@ -395,4 +395,12 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.TableListener#tableDestroyed(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void tableDestroyed(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }

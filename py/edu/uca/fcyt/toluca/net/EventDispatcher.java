@@ -67,6 +67,7 @@ public abstract class EventDispatcher {
 			case TableEvent.EVENT_signSent:signSend(event);break;
 			case TableEvent.EVENT_tableLocked:break;
 			case TableEvent.EVENT_tableUnlocked:break;
+			case TableEvent.EVENT_TABLE_DESTROYED:tableDestroyed(event);log.log(Level.WARNING,"table destroyed"); break;
 			
 		}
 	}
@@ -217,6 +218,7 @@ public abstract class EventDispatcher {
 	public abstract void signSendRequest(TableEvent event);
 	public abstract void signSend(TableEvent event);
 	
+	public abstract void tableDestroyed(TableEvent event);
 	//METODOS DEL TRUCO GAME
 	public abstract void receiveCards(TrucoEvent event);
 	

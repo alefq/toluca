@@ -43,7 +43,8 @@ public class TableGame extends JTable{
      * @param tableNumber
      */
     public void eliminarFila(int tableNumber) {
-        //System.out.println("falta copiar lo que se hac�a antes en el RoomUI viejo");      
+        
+    	tableModelGame.deleteTable(tableNumber);
     }
 
     /**

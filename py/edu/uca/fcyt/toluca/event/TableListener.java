@@ -23,6 +23,7 @@ public interface TableListener extends SpaceListener
     public void signSendRequest(TableEvent event);
     public void signSent(TableEvent event);
     public void showPlayed(TableEvent event);
+    public void tableDestroyed(TableEvent event);
 } 
 
 

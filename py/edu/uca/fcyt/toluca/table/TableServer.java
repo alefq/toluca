@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
+
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -331,8 +332,26 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		
 		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);
 		firePlayerKicked(te);
+		comprobarTable();
 	}
-
+	public void comprobarTable()
+	{
+		if(getPlayers().size()==0)
+		{//hay que eliminar la tabla
+			fireTableDestroyed();
+			
+		}
+			
+	}
+	private void fireTableDestroyed()
+	{
+		Iterator iter=tableListeners.listIterator();
+		TableEvent event=new TableEvent();
+		event.setTableServer(this);
+		event.setEvent(TableEvent.EVENT_TABLE_DESTROYED);
+		while(iter.hasNext())
+			((TableListener)iter.next()).tableDestroyed(event);
+	}
 	private void firePlayerKicked(TableEvent te) {
 		Iterator iter = tableListeners.listIterator();
 		int i =0;
@@ -372,4 +391,5 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }

@@ -62,6 +62,17 @@ public class TableModelGame extends AbstractTableModel{
 		fireTableRowsDeleted(row, row);
 
 	}
+	public void deleteTable(int tableNumber)
+	{
+		int i=0;
+		for(i=0;i<datos.size();i++)
+		{
+			RowGame row=(RowGame) datos.get(i);
+			if(row.getTableNumber()==tableNumber)
+				break;
+		}
+		deleteRow(i);
+	}
 	public String getColumnName(int col)
 	{
 		return columnNames[col];

@@ -222,4 +222,13 @@ public class CommunicatorServer extends Communicator{
 		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
 			super.sendXmlPackage(event);
 	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.TableListener#tableDestroyed(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void tableDestroyed(TableEvent event) {
+		logger.debug(" Se va a informar la destruccion de la tabla "+event.getTableServer().getTableNumber());
+		super.sendXmlPackage(event);
+		
+	}
 }

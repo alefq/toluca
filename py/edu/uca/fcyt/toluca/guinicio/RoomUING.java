@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/22 20:55:11 $
- * @version $Revision: 1.7 $ 
+ * Last modified: $Date: 2004/10/16 13:22:54 $
+ * @version $Revision: 1.8 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.Table;
 
 /**
  * 
@@ -421,5 +422,9 @@ public class RoomUING extends JApplet {
     public void setOwner(TrucoPlayer trucoPlayer)
     {
     	panelTitle.setNombre(trucoPlayer.getFullName());
+    }
+    public void removeTable(Table table)
+    {
+    	tableGame.eliminarFila(table.getTableNumber());
     }
 } //  @jve:decl-index=0:visual-constraint="10,30"

@@ -99,8 +99,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
         // remueve la mesa de la Lista de Mesas de juego
         super.removeTable(table);
 
-        // remueve la mesa de la Tabla Principal
-        mainTable.eliminarFila(table.getTableNumber());
+//        // remueve la mesa de la Tabla Principal
+//        mainTable.eliminarFila(table.getTableNumber());
     }
 
     /*
@@ -556,5 +556,18 @@ public class RoomClient extends Room implements ChatPanelContainer,
         // TODO Auto-generated method stub
 
     }
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.TableListener#tableDestroyed(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void tableDestroyed(TableEvent event) {
+		
+		
+	}
+	public void tableDestroyed(Table table)
+	{
+		removeTable(table);
+		rui.removeTable(table);
+	}
 
 } // end RoomClient

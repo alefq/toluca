@@ -31,6 +31,7 @@ public class TableEvent {
 	public static final int EVENT_signSent = 12;
 	public static final int EVENT_showPlayed = 13;
 	public static final int EVENT_playerLeft=14;
+	public static final int EVENT_TABLE_DESTROYED=15;
 	private static int PLAYER_MASK = 0x4000;
 	private static int VALUE_MASK = 0x8000;
     

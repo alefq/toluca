@@ -9,6 +9,7 @@ package py.edu.uca.fcyt.toluca.net;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.game.ChatMessage;
@@ -724,5 +725,16 @@ public class EventDispatcherClient extends EventDispatcher {
         trucoGameClient.playResponse(playerClient, event.getType(), event
                 .getValue());
     }
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#tableDestroyed(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void tableDestroyed(TableEvent event) {
+
+			logeador.log(Level.WARNING,"se destruyo la tabla "+event.getTableServer().getTableNumber());
+			Table table = room.getTable(event.getTableServer().getTableNumber());
+			((RoomClient)room).tableDestroyed(table);
+		
+	}
 
 }
