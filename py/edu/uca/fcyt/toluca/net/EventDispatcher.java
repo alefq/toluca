@@ -58,8 +58,8 @@ public abstract class EventDispatcher {
 			case TableEvent.EVENT_playerStanded:playerStand(event);break;
 			case TableEvent.EVENT_playerStandRequest:playerStandRequest(event);break;
 			case TableEvent.EVENT_showPlayed:break;
-			case TableEvent.EVENT_signSendRequest:break;
-			case TableEvent.EVENT_signSent:break;
+			case TableEvent.EVENT_signSendRequest:signSendRequest(event);break;
+			case TableEvent.EVENT_signSent:signSend(event);break;
 			case TableEvent.EVENT_tableLocked:break;
 			case TableEvent.EVENT_tableUnlocked:break;
 			
@@ -209,6 +209,8 @@ public abstract class EventDispatcher {
 	public abstract void gameStartRequest(TableEvent event);
 	public abstract void gameStarted(TableEvent event);
 	
+	public abstract void signSendRequest(TableEvent event);
+	public abstract void signSend(TableEvent event);
 	
 	//METODOS DEL TRUCO GAME
 	public abstract void receiveCards(TrucoEvent event);
@@ -220,4 +222,6 @@ public abstract class EventDispatcher {
 	
 	public abstract void canto(TrucoEvent event);
 	public abstract void cantarTanto(TrucoEvent event);
+	
+	
 }

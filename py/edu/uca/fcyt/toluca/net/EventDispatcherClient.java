@@ -383,7 +383,33 @@ public class EventDispatcherClient extends EventDispatcher{
 		trucoGameClient.startGameClient();//linea morgue
 		
 	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#signSendRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void signSendRequest(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#signSend(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void signSend(TableEvent event) {
+		
+		TableServer tableServer=event.getTableServer();
+		Table table=room.getTable(tableServer.getTableNumber());
+		
+		TrucoPlayer playerServerSenhador=event.getPlayer(0);
+		TrucoPlayer playerServerSenhado=event.getPlayer(1);
+		
+		TrucoPlayer playerClienteSenhador=room.getPlayer(playerServerSenhador.getName());
+		TrucoPlayer playerClienteSenhado=room.getPlayer(playerServerSenhado.getName());
+		
+		TableEvent te=new TableEvent(TableEvent.EVENT_signSent,table,
+				playerClienteSenhador,playerClienteSenhado,event.getValue());
+		table.showSign(te);
+		
+	}
 	public void infoGame(TrucoEvent event) {
 //		System.out.println("****************************INFO DE JUEGO******************************");
 //		System.out.println(" Info del juego type "+event.getType());
@@ -393,7 +419,11 @@ public class EventDispatcherClient extends EventDispatcher{
 //		if(event.getType()==TrucoEvent.INICIO_DE_MANO)
 //			System.out.println("SE EMPIEZA LA MANO");
 		
-		
+		if(event.getType()==TrucoEvent.FIN_DE_JUEGO)
+		{
+			System.out.println(" *******************llego un fin de juego**********************************");
+			
+		}
 		Table table=room.getTable(event.getTableNumber());
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
 //		System.out.println(" Table "+table.getTableNumber());
@@ -557,5 +587,7 @@ public class EventDispatcherClient extends EventDispatcher{
 		
 		trucoGameClient.playResponse(playerClient,event.getType(),event.getValue());
 	}
+
+
 
 }

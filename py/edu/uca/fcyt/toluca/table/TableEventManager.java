@@ -292,15 +292,23 @@ class TableEventManager
     {
 		table.setCursor(Cursor.WAIT_CURSOR);
         Iterator iter = tableListeners.iterator();
+        TableEvent event=new TableEvent();
+        event.setEvent(TableEvent.EVENT_signSendRequest);
+        event.setTableBeanRepresentation( table.getTableBeanRepresentation());
+        event.setPlayer(new TrucoPlayer[]{table.getPlayer(),dest});
+        event.setValue(sign);
+        
+        /*este era el evento chilista
+         * 	new TableEvent
+    	(
+    		TableEvent.EVENT_signSendRequest,
+    		table, table.getPlayer(), dest, sign
+    	)*/
         while(iter.hasNext()) 
         {
             ((TableListener)iter.next()).signSendRequest
             (
-            	new TableEvent
-            	(
-            		TableEvent.EVENT_signSendRequest,
-            		table, table.getPlayer(), dest, sign
-            	)
+            event
             );
         }
     }

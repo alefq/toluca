@@ -135,7 +135,10 @@ public class CommunicatorServer extends Communicator{
 		super.sendXmlPackage(event);
 		
 	}
-	
+	public void signSent(TableEvent event) {
+		super.sendXmlPackage(event);
+		
+	}
 	//METODOS DEL TRUCOGAME
 	
 	public void play(TrucoEvent event) {

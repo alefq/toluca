@@ -248,6 +248,10 @@ public class EventDispatcherServer extends EventDispatcher{
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#receiveCards(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
+	public  void signSend(TableEvent event)
+	{
+		
+	}
 	public void receiveCards(TrucoEvent event) {
 		// TODO Auto-generated method stub
 		
@@ -262,6 +266,29 @@ public class EventDispatcherServer extends EventDispatcher{
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#play(py.edu.uca.fcyt.toluca.game.TrucoPlay)
 	 */
+	public void signSendRequest(TableEvent event) {
+		
+		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
+		TableServer tableServer=room.getTableServer(tableClient.getId());
+		
+		TrucoPlayer playerClienteSenhador=event.getPlayer(0);
+		TrucoPlayer playerClienteSenhado=event.getPlayer(1);
+		
+		TrucoPlayer playerServerSenhador=room.getPlayer(playerClienteSenhador.getName());
+		TrucoPlayer playerServerSenhado=room.getPlayer(playerClienteSenhado.getName());
+		
+		System.out.println(" *********************************llego una senha**********************");
+		System.out.println(" El que hizo la senha = "+playerServerSenhador.getName());
+		System.out.println(" el que resive la senha =  "+playerServerSenhado.getName());
+		System.out.println(" value = "+event.getValue());
+		System.out.println(" table "+tableServer.getTableNumber());
+		System.out.println("*********************************************************************");
+		
+		TableEvent te=new TableEvent(TableEvent.EVENT_signSent,tableServer,
+				playerServerSenhador,playerServerSenhado,event.getValue());
+		tableServer.showSign(te);
+		
+	}
 	public void play(TrucoPlay event) {
 
 		logger.debug("SE recibe un play de "+event.getPlayer().getName());
@@ -310,4 +337,6 @@ public class EventDispatcherServer extends EventDispatcher{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 }

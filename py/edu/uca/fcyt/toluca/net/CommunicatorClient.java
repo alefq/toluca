@@ -147,7 +147,9 @@ public class CommunicatorClient extends Communicator{
 		// TODO Auto-generated method stub
 		
 	}
-	
+	public void signSendRequest(TableEvent event) {
+		super.sendXmlPackage(event);
+	}
 	
 	
 	
