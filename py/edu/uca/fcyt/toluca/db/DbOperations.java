@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.Random;
 
 import py.edu.uca.fcyt.game.Game;
 import py.edu.uca.fcyt.toluca.LoginFailedException;

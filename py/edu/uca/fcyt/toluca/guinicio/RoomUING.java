@@ -1,15 +1,14 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/01/07 20:32:01 $
- * @version $Revision: 1.15 $ 
+ * Last modified: $Date: 2005/01/12 21:05:37 $
+ * @version $Revision: 1.16 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
@@ -20,14 +19,13 @@ import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
-
-import javax.swing.JTextArea;
 /**
  * 
  * @author afeltes

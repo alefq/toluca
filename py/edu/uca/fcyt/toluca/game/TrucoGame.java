@@ -8,10 +8,7 @@ package py.edu.uca.fcyt.toluca.game;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
-
 import py.edu.uca.fcyt.game.Game;
-import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 
