@@ -75,7 +75,7 @@ public void showSystemMessage(String htmlMessage,     String[] bounds)
     getChatArea().append(
             bounds[0] + "System" + bounds[1] + ": " + htmlMessage
                     + "\n");
-    getChatArea().setCaretPosition(getChatArea().getText() != null ? getChatArea().getText().length() : 0);
+    //getChatArea().setCaretPosition(getChatArea().getText() != null ? getChatArea().getText().length() : 0);
 }
     private void sendChatMessage() {
 
