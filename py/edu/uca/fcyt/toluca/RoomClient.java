@@ -57,11 +57,19 @@ public class RoomClient extends Room implements ChatPanelContainer,
         } catch (java.lang.NumberFormatException e) {
             portNumber = 6767;
         }
-        cc = new CommunicatorClient(this, serverString, portNumber);
-        setRoomUING(rui);
-        addRoomListener(cc);
-        //SwingUtilities.invokeLater(cc);
-        new Thread(cc, "comm-client").start();
+        try {
+            cc = new CommunicatorClient(this, serverString, portNumber);
+            setRoomUING(rui);
+            addRoomListener(cc);
+            //SwingUtilities.invokeLater(cc);
+            new Thread(cc, "comm-client").start();
+        } catch (IOException e) {
+            rui.getLoginPanel().getJLestado().setText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
+            rui.getLoginPanel().getJLestado().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
+            rui.getLoginPanel().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
+            rui.getJTextArea().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
+            e.printStackTrace(System.out);
+        }
         //init();
     }
 

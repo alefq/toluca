@@ -194,7 +194,7 @@ public abstract class XmlPackagesSession implements Runnable
 	}
 	public abstract void connectionFailed();
 	public abstract void receiveObject(Object bean);
-	public abstract int init();
+	public abstract int init() throws IOException;
 	public abstract String getInitErrorMessage(int errcode);
 }
 

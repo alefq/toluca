@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/02/23 19:58:50 $
- * @version $Revision: 1.26 $ 
+ * Last modified: $Date: 2005/03/04 13:34:43 $
+ * @version $Revision: 1.27 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -39,7 +39,7 @@ public class RoomUING extends JApplet {
     //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
     //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20050223-1749";
+    public static final String VERSION = "20050304-1023";
 
     public static final String CLAVE_LOGIN = "claveLogin";
 
@@ -340,7 +340,7 @@ public class RoomUING extends JApplet {
      * 
      * @return javax.swing.JTextArea
      */
-    private JTextArea getJTextArea() {
+    public JTextArea getJTextArea() {
         if (jTextArea == null) {
             jTextArea = new JTextArea();
             jTextArea.setText("Aqui va a ir los avisos y demas yerbas");
@@ -398,7 +398,7 @@ public class RoomUING extends JApplet {
     /**
      * @return
      */
-    private LoginPanel getLoginPanel() {
+    public LoginPanel getLoginPanel() {
         if (loginPanel == null) {
             loginPanel = new LoginPanel();
             loginPanel.setRoomUING(this);

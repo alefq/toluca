@@ -64,13 +64,6 @@ implements RoomListener,TrucoListener,TableListener
 //	static Logger logger = Logger.getLogger(Communicator.class);
 	
 	protected EventDispatcher eventDispatcher;
-	
-	//METODOS QUE HAY QUE escribir DEL XmlPackagesSession
-	
-	public int init() {
-		
-		return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
-	}
 
 	
 	public String getInitErrorMessage(int errcode) {

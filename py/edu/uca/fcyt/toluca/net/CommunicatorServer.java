@@ -22,7 +22,7 @@ import py.edu.uca.fcyt.toluca.table.TableServer;
  *
  * 
  */
-public class CommunicatorServer extends Communicator{
+public class CommunicatorServer extends Communicator {
 	static Logger logger = Logger.getLogger(CommunicatorServer.class);
 	private RoomServer roomServer;
 	
@@ -251,6 +251,14 @@ public class CommunicatorServer extends Communicator{
 		super.sendXmlPackage(ev);
 		
 	}
+
+    /* (non-Javadoc)
+     * @see py.edu.uca.fcyt.net.XmlPackagesSession#init()
+     */
+    public int init() throws IOException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 	
 
 }
