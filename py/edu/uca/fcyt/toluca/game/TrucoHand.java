@@ -18,7 +18,7 @@ import py.edu.uca.fcyt.toluca.statusGame.TrucoStatusTable;
  */
 public class TrucoHand {
     
-    private TrucoGame game;
+    protected TrucoGame game;
     /*estados del juego*/
     protected static final byte PRIMERA_RONDA = 0;
     protected static final byte SEGUNDA_RONDA = 1;
@@ -136,7 +136,7 @@ public class TrucoHand {
     public void startHand(){
         playTurn(); //asignar turno
     }
-    protected void getPies(){ /*quienes seran los pies de esta mano*/
+    protected void getPies(){ /*quienes \seran los pies de esta mano*/
         pieTeam1Number = (primerTurnoNumber+cantidadDePlayers-1)%(cantidadDePlayers); //numero de player que sera pie del 
         pie1=teams[0].getTrucoPlayerNumber(pieTeam1Number/2); //obtener player
         pieTeam2Number =  (primerTurnoNumber+cantidadDePlayers-2)%(cantidadDePlayers); //numero de player que sera pie del team2
@@ -627,10 +627,16 @@ public class TrucoHand {
      * @throws InvalidPlayExcepcion Tita en caso de detectarse una jugada inválida.
      */    
     public void play(TrucoPlay tp) throws InvalidPlayExcepcion{
-    	System.out.println("Voy a jugar: " + tp.getType() + " soy: " + tp.getPlayer().getName());
+//    	System.out.println("Voy a jugar: " + tp.getType() + " soy: " + tp.getPlayer().getName());
         try{
             switch(tp.getType()){
                 case  62: /*Jugar carta*/
+                    if (tp.getCard() == null){
+                        System.out.println("carta en trucohand es null!");
+                    }
+                    else{
+                        System.out.println("carta en trucohand"+tp.getCard().getKind()+","+tp.getCard().getValue());
+                    }
                     jugarCarta(tp);
                     break;
                 case TrucoPlay.ENVIDO:
@@ -1024,11 +1030,27 @@ public class TrucoHand {
         
         if (estadoActual != PRIMERA_RONDA && estadoActual != SEGUNDA_RONDA && estadoActual != TERCERA_RONDA)
             throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > No se puede jugar carta"));
-        if(playTurn != tp.getPlayer())
-                throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > No es el turno de ese player"));
+		if(playTurn != tp.getPlayer()) {
+			System.out.println("Es el turno de: " + playTurn.getName());
+			System.out.println("Quiere jugar: " + tp.getPlayer().getName());
+			
+			throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > No es el turno de ese player"));
+		}
+		//if(!playTurn.getName().trim().equals(tp.getPlayer().getName().trim()))
+        
+        System.out.println("probando en trucohand la carta");
+        if (statusTable == null){
+            System.out.println("el statusTable es null ;(");
+        }
         if (!statusTable.jugarCarta(playTurnNumber, tp.getCard())) //*****************************funcion que necesito de choco
                 throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > el player no puede jugar esa carta"));
-        game.firePlayEvent(playTurn,tp.getCard(),TrucoEvent.JUGAR_CARTA);
+                
+        if (this instanceof TrucoHandClient) {
+        	//if ()
+			game.firePlayEvent(playTurn,tp.getCard(),TrucoEvent.JUGAR_CARTA);
+        } else {
+			game.firePlayResponseEvent(playTurn,tp.getCard(),TrucoEvent.JUGAR_CARTA);
+        }
         
         
         nextPlayTurn();
@@ -1383,5 +1405,8 @@ public class TrucoHand {
     }
     public Vector getPointsDetail(){
         return detalleDePuntaje;
+    }
+    public TrucoCard getCard(byte mykind, byte myvalue){
+    	return statusTable.getCard(mykind, myvalue);
     }
 }

@@ -4,12 +4,12 @@ import py.edu.uca.fcyt.toluca.game.*;
 
 
 public class TrucoStatusTable{
-	private int cJugadores; //Guarda la cantidad de jugadores
-        private py.edu.uca.fcyt.toluca.statusGame.StatusPlayer[] estado;
-        private py.edu.uca.fcyt.toluca.statusGame.StatusEnvido envidos;
-        private TrucoDeck elMazo;
-        private py.edu.uca.fcyt.toluca.statusGame.StatusFlor flores;
-        private py.edu.uca.fcyt.toluca.statusGame.StatusMano mano;
+	protected int cJugadores; //Guarda la cantidad de jugadores
+        protected py.edu.uca.fcyt.toluca.statusGame.StatusPlayer[] estado;
+        protected py.edu.uca.fcyt.toluca.statusGame.StatusEnvido envidos;
+        protected TrucoDeck elMazo;
+        protected py.edu.uca.fcyt.toluca.statusGame.StatusFlor flores;
+        protected py.edu.uca.fcyt.toluca.statusGame.StatusMano mano;
         private void repartir() //reparte  3 cartas a todos los jugadores
         {
             for(int i=0;i<3;i++)
@@ -24,6 +24,14 @@ public class TrucoStatusTable{
         public void imprimirEstado(int cual)
         {
             estado[cual].statusPrint();
+        }
+        public TrucoStatusTable(){
+            estado=new StatusPlayer[cJugadores];
+            flores=new StatusFlor(cJugadores);
+            envidos=new StatusEnvido(cJugadores);
+            mano=new StatusMano(cJugadores);            
+            for (int i=0;i<cJugadores;i++)
+                    estado[i]=new StatusPlayer();
         }
         public TrucoStatusTable(int cantidadDeJugadores)
         {
@@ -290,6 +298,10 @@ public class TrucoStatusTable{
             }
             System.out.println("Error en TST-jugo Sus Cartas de Envido: Avisar a la gente de TrucoGame");
             return false;
+        }
+        public TrucoCard getCard(byte myKind, byte myValue){
+        	return elMazo.getCard((byte)myKind, (byte)myValue); 
+        
         }
 }
 	

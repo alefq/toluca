@@ -60,6 +60,7 @@ public class StatusPlayer{
      */    
     public void agregarCarta(TrucoCard Cual){
         //new Exception("repartija de cartas").printStackTrace(System.out);
+        System.out.println("Agregando carta al player!!");
         cartas[cCartas]=Cual;
         cCartas++;
     }
@@ -193,7 +194,6 @@ public class StatusPlayer{
      */
     public boolean puedeCantarFlor()
     {
-        System.out.println("verificando puede cantar flor: "+cartas[0].getKind()+cartas[1].getKind()+cartas[2].getKind());
         if(cartas[0].getKind()==cartas[1].getKind() && cartas[0].getKind()==cartas[2].getKind())
             return true;
         return false;
@@ -248,7 +248,17 @@ public class StatusPlayer{
 
     public boolean jugarCarta (TrucoCard cual)
     {
+         if (cual == null){
+             System.out.println("La cual Carta es null!");
+         }
+         else{
+             System.out.println("La cual no es null"+cual.getKind()+"-"+cual.getValue());
+         }
+             
         for(int i=0;i<3;i++){
+            if (cartas[i] == null){
+                System.out.println("cartas["+i+"]"+"is null ;(");
+            }
             if(cartas[i].equals(cual) && cartas[i].isFlipped()==false){
                 cartas[i].setFlipped(true);
                 cantidadDeCartasJugadas++;
@@ -265,15 +275,22 @@ public class StatusPlayer{
      */    
     public int puedeJugarCarta(TrucoCard cual)
     {//Busca la carta y verifica si la carta no se jugo ya
+        if (cual == null){
+            System.out.println("statusplayer trucocard cual es null");
+        }
         if(!seCerro){           
             for(int i=0;i<3;i++){
                 //if(cartas[i]==cual && cartas[i].isFlipped()==false)
-				if(cartas[i].equals(cual) && cartas[i].isFlipped()==false)
+                if(cartas[i].equals(cual) && cartas[i].isFlipped()==false){
+                    System.out.println("status player 1 - ok");
                     return 1;
+                }
                 else if(cartas[i].equals(cual) && cartas[i].isFlipped()==true){
+                    System.out.println("status player 2 - ok");
                     return 0;}
             }       
         }
+        System.out.println("status player 3 - ok");
         return -1;
     }
     public boolean mostraraFlor (){

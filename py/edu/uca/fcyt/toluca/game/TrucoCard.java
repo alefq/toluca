@@ -62,7 +62,10 @@ public class TrucoCard extends Card {
 	}
 	
 	public boolean equals(TrucoCard tc) {
-		if (kind == tc.getKind() && value == tc.getValue())
+            if (tc == null){
+                System.out.println("truco card error tc == null");
+            }
+            if (kind == tc.getKind() && value == tc.getValue())
 			return true;
 	    else 
 	    	return false;

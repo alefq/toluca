@@ -96,8 +96,10 @@ public class TrucoPlay
      * @param type Tipo de Jugada en este caso si canto el valor del Envido o Flor.
      * @param value Valor del Envido o de la Flor a cantar.
      */
-    public TrucoPlay(TrucoPlayer tp, byte type, int value )
-    {
+    public TrucoPlay(){
+    }
+    public TrucoPlay(TrucoPlayer tp, byte type, int value ){
+    
 	
 	this(tp,type);
 	this.value = value;

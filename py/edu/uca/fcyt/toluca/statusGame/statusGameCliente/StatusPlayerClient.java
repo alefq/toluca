@@ -265,14 +265,22 @@ public class StatusPlayerClient{
      */    
     public int puedeJugarCarta(TrucoCard cual)
     {//Busca la carta y verifica si la carta no se jugo ya
+        System.out.println("quiere jugar"+cual.getKind()+"con"+cual.getValue());
         if(!seCerro){           
             for(int i=0;i<3;i++){
-                if(cartas[i]==cual && cartas[i].isFlipped()==false)
+                System.out.println("buscar carta, palo"+cartas[i].getKind() + ","+cartas[i].getValue());
+                if(cartas[i]==cual && cartas[i].isFlipped()==false){
+                    System.out.println("status player 1 - ok");
                     return 1;
+                }
                 else if(cartas[i]==cual && cartas[i].isFlipped()==true){
-                    return 0;}
+                    System.out.println("status player 2 - ok");
+                    return 0;
+                    
+                }
             }       
         }
+        System.out.println("status player 3 - ok");
         return -1;
     }
     public boolean mostraraFlor (){

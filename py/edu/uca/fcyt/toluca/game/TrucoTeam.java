@@ -53,6 +53,13 @@ public class TrucoTeam extends Team{
     public void addPlayer (TrucoPlayer tPl){
         super.addPlayer(tPl);        
     }
-    
+    public TrucoPlayer getPlayer (String aname){
+		for (int i=0; i<playersList.size(); i++){
+			if (((TrucoPlayer)(playersList.get(i))).getName()==aname)
+				return (TrucoPlayer)(playersList.get(i));
+				
+		}
+		return null;
+    }
     
 }

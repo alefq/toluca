@@ -98,5 +98,16 @@ public class TrucoDeck {
     
     void Cut(int index) {
     }
+	public TrucoCard getCard(byte myKind, byte myValue){
+		   for (int i=0; i<40; i++){
+			   if (elMazo[i].getKind() == myKind && elMazo[i].getValue() == myValue){
+                                System.out.println("la carta buscada fue encontrada con exito");
+				   return elMazo[i];	
+                           }
+		   }
+                   System.out.println("la carta buscada fue no encontrada con exito :(");
+		   return null;
+    
+	   }
     
 }

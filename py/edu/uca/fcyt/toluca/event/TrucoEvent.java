@@ -13,6 +13,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
+
 public class TrucoEvent {
 
   ///////////////////////////////////////
@@ -168,6 +169,78 @@ public class TrucoEvent {
 	}
    public int getValue (){
 	   return value;
+   }
+   public TrucoPlay toTrucoPlay(){
+
+   		TrucoPlay tp = new TrucoPlay();
+   		tp.setPlayer(player);
+   		tp.setTableNumber(tableNumber);
+   		byte typeevent = 0;
+   		TrucoCard carta = null;
+   		switch (type){
+   			case 1:
+   				typeevent = 1;
+   				break;
+   			case 2:
+   				typeevent = 2;
+   				break;
+   			case 3:
+   				typeevent = 3;
+   				break;
+   			case 11:
+   				typeevent = 11;
+   				break;
+   			case 12:
+   				typeevent = 12;
+   				break;
+   			case 13:
+   				typeevent = 13;
+   				break;
+   			case 14:
+   				typeevent = 14;
+   				break;
+   			case 21:
+   				typeevent = 21;
+   				break;
+   			case 22:
+   				typeevent = 22;
+   				break;
+   			case 31:
+   				typeevent = 31;
+   				break;
+   			case 32:
+   				typeevent = 32;
+   				break;
+   			case 33:
+   				typeevent = 33;
+   				break;
+   			case 61:
+   				typeevent = 62;
+   				carta = card;
+   				break;
+   			case 62:
+   				typeevent = 61;
+   				break;
+   			case 63:
+   				typeevent = 65;
+   				break;
+   			case 64:
+   				typeevent = 63;
+   				break;
+   			case 65:
+   				typeevent = 64;
+   				break;
+   			case 66:
+   				typeevent = 66;
+   				break; 
+                        default :
+                                typeevent = -1;
+                                break;
+   		}
+   		tp.setType(typeevent);
+   		tp.setCard(carta);
+   		tp.setValue(value);
+   		return tp;
    }
    public void setTableNumber(int tableNumber)
 	{

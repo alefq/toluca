@@ -47,4 +47,12 @@ public class Deck {
     public TrucoCard getTrucoCard(){
         return (deck[cursor++]);
     }
+    public TrucoCard getCard(byte myKind, byte myValue){
+    	for (int i=0; i<40; i++){
+    		if (deck[i].getKind() == myKind && deck[i].getValue() == myValue)
+    			return deck[i];	
+    	}
+    	return null;
+    
+    }
 }

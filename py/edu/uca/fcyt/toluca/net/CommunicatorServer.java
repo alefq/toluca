@@ -20,12 +20,14 @@ import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.TableServer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 
 /**
  *
  * @author  PABLO JAVIER
  */
 public class CommunicatorServer extends Communicator {
+	TrucoTeam equipos[];
 	public void showPlayed(TableEvent te) {
 
 	}
@@ -81,9 +83,10 @@ public class CommunicatorServer extends Communicator {
 		    */
 
 		TrucoGame tGame = te.getTableServer().getTrucoGame();
+		equipos=te.getTableServer().createTeams();
 		tGame.addTrucoListener(this);
-
-		Document doc = te.xmlCreateGameStarted("0", "1");
+		
+		Document doc = te.xmlCreateGameStarted(equipos[0].getName(), equipos[1].getName());
 
 		super.sendXmlPackage(doc);
 
@@ -264,8 +267,11 @@ public class CommunicatorServer extends Communicator {
 	 */
 	TrucoPlayer elPlayerDeAcaOtraVez;
 	public void xmlReadTrucoPlay(Object o) {
+		TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
+		TrucoGame tgame = tabela.getTrucoGame();
 		String aux;
 		if (o instanceof Element) {
+                        System.out.println("gueno hace instance of en server!");
 			Element element = (Element) o;
 			aux = element.getName();
 			if (aux.compareTo("Type") == 0) {
@@ -284,10 +290,8 @@ public class CommunicatorServer extends Communicator {
 			if (aux.compareTo("Carta") == 0) {
 				String kind = element.getAttributeValue("kind");
 				String value = element.getAttributeValue("value");
-				cardAux =
-					new TrucoCard(
-						Integer.parseInt(kind),
-						Integer.parseInt(value));
+				cardAux = tgame.getCard(Byte.parseByte(kind),Byte.parseByte(value));
+						
 			}
 			if (aux.compareTo("Value") == 0) {
 
@@ -320,10 +324,9 @@ public class CommunicatorServer extends Communicator {
 						+ tp.getCard().getValue());
 				System.out.println("El valor es " + tp.getValue());
 				//ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
-				try {
-					TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
-					TrucoGame tgame = tabela.getTrucoGame();
+				try {										
 					tgame.play(tp);
+                    System.out.println("Se hizo una jugada con exito :?");
 				} catch (java.lang.NullPointerException e) {
 					System.err.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER Método xmlReadTrucoPlay");
 					e.printStackTrace();
@@ -353,7 +356,7 @@ public class CommunicatorServer extends Communicator {
 		Document doc;
 
 		doc = xmlCreateTableJoined(ev);
-		super.sendXmlPackage(doc);
+            super.sendXmlPackage(doc);
 
 	}
 
@@ -500,6 +503,15 @@ public class CommunicatorServer extends Communicator {
 	}
 	
 	public void playResponse(TrucoEvent event) {
+       	//TrucoPlay tp = event.toTrucoPlay();
+                /*if (tp.getPlayer() == getAssociatedPlayer()){/*no le devuelvo su jugada
+                    System.out.println("Server no quiere devolver jugada de su jugador"+tp.getPlayer().getName());
+                    System.out.println("que es "+getAssociatedPlayer().getName());
+                    
+                    return;
+                }*/
+		System.out.println("voy a enviar el pacote TrucoEvent en el m'etodo PLayRespone");
+		//Document doc = tp.toXml();		
 		Document doc = event.toXml();		
 		super.sendXmlPackage(doc);
 	}
@@ -514,7 +526,7 @@ public class CommunicatorServer extends Communicator {
 		super.sendXmlPackage(doc);
 	}
 	public void cardsDeal(TrucoEvent event) {
-		System.err.println("Vienen las CARTAS carajo");
+		System.err.println("Vienen las CARTAS carajo"+this);
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}

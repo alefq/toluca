@@ -40,6 +40,8 @@ public class TrucoGameClient extends TrucoGame
      public void recibirCartas (TrucoPlayer tp,TrucoCard cards[]){
         trucoHandCli.recibirCartas(tp,cards);
         dealtCards(tp,cards);
+        if (trucoHandCli.isRunHand())
+            trucoHandCli.startHand();
     }
     public boolean esPosibleJugar(TrucoPlay tp){
         return trucoHandCli.esPosibleJugar(tp);
@@ -140,8 +142,24 @@ public class TrucoGameClient extends TrucoGame
             numberOfHand++;
             fireHandStarted();/*para que se preparen los jugadores*/
             trucoHandCli = new TrucoHandClient(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
+            trucoHand = trucoHandCli;		// Truco Julístico para evitar el STRESS. Muy feo, pero cumple el objetivo: EVITAR STRESS
             //TODO comentamos el starthand porque tiene que venir por que tiene que venir en un evento
-            trucoHandCli.startHand();
         }
     }
+     public TrucoCard getCard(byte myKind, byte myValue){
+    	TrucoCard myCarta =  trucoHandCli.getCard(myKind,  myValue);
+        if (myCarta == null)
+        {
+            System.out.println("en TrucoGame getCard devuelve null");
+        }
+        return myCarta;
+    }
+	/**
+	 * 
+	 */
+	public void playResponse(TrucoPlay tp) {
+		
+		firePlayResponseEvent(tp.getPlayer(), tp.getCard(), TrucoEvent.JUGAR_CARTA);
+	}
+     
 }
