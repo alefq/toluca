@@ -12,20 +12,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-import java.sql.SQLException;
-
-
-
-import py.edu.uca.fcyt.toluca.RoomServer;
-//import py.edu.uca.fcyt.toluca.TolucaProperties;
-import py.edu.uca.fcyt.toluca.db.DbOperations;
 
 /**
  * @author jrey

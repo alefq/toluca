@@ -6,15 +6,11 @@ package py.edu.uca.fcyt.toluca;
  */
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
-import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
@@ -25,7 +21,6 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.guinicio.RoomUING;
 import py.edu.uca.fcyt.toluca.guinicio.TableGame;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
-import py.edu.uca.fcyt.toluca.net.Communicator;
 import py.edu.uca.fcyt.toluca.net.CommunicatorClient;
 import py.edu.uca.fcyt.toluca.table.Table;
 
@@ -139,7 +134,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *            El numero de tabla a la que queremos unirnos
      *            </p>
      */
-    private void fireTableJoinRequested(int tableNumber) {
+    private synchronized void fireTableJoinRequested(int tableNumber) {
         /** lock-end */
         System.out
                 .println("Voy a disparar el tableJoinRequest sobre la tabla: "
@@ -164,7 +159,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
      * Informa a todos los <i>listeners </i> registrados que se esta intentando
      * crear una tabla nueva en el Room.
      */
-    private void fireTableCreateRequested() {
+    private synchronized void fireTableCreateRequested() {
         /** lock-end */
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_CREATE_TABLE_REQUESTED);
@@ -200,7 +195,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *            El mensaje que se esta enviando
      *            </p>
      */
-    private void fireChatMessageRequested(TrucoPlayer player,
+    private synchronized void fireChatMessageRequested(TrucoPlayer player,
             String htmlMessage, String origin) {
         /** lock-end */
 
@@ -287,7 +282,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
     /*
      * Metodo nuevo, avisa a todos los listeners q se cayo alguien...
      */
-    public void fireEliminatePlayer(String playerName) {
+    public synchronized void fireEliminatePlayer(String playerName) {
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_PLAYER_LEFT);
         re.setUser(playerName);

@@ -1,10 +1,8 @@
 
 package py.edu.uca.fcyt.toluca.guinicio;
-import javax.swing.table.AbstractTableModel;
-
-
-
 import java.util.ArrayList;
+
+import javax.swing.table.AbstractTableModel;
 
 
 

@@ -1,7 +1,6 @@
 package py.edu.uca.fcyt.toluca;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -32,6 +31,8 @@ implements ChatPanelContainer {
 		return tablesServers;
 	}
     protected Vector roomListeners; // of type Vector
+    //Unlike the new collection implementations, Vector is synchronized.
+    
     protected Table [] tables; // of type Table
     protected TableServer [] tablesServers;
     
@@ -67,7 +68,7 @@ implements ChatPanelContainer {
      * </p>
      *
      */
-    private void fireTableCreated() {
+    private synchronized void fireTableCreated() {
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_CREATED);
         Iterator iter = roomListeners.listIterator();
@@ -87,7 +88,7 @@ implements ChatPanelContainer {
      * @param htmlMessage El mensaje que se intenta enviar
      *
      */
-    private void fireChatMessageSent(TrucoPlayer player, String htmlMessage) {
+    private synchronized void fireChatMessageSent(TrucoPlayer player, String htmlMessage) {
         /** lock-end */
         
         Iterator iter = roomListeners.listIterator();
@@ -125,7 +126,7 @@ implements ChatPanelContainer {
      * @param roomListener es el listener que se va a agregar al vector.
      * </p>
      */
-    public void addRoomListener(RoomListener roomListener) {        /**
+    public synchronized void addRoomListener(RoomListener roomListener) {        /**
      * lock-end */
         roomListeners.add(roomListener);
     } // end addRoomListener        /** lock-begin */
@@ -154,7 +155,7 @@ implements ChatPanelContainer {
      * </p>
      *
      */
-    private void fireTableJoined() {        /** lock-end */
+    private synchronized void fireTableJoined() {        /** lock-end */
         
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_JOINED);

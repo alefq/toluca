@@ -2,9 +2,7 @@ package py.edu.uca.fcyt.toluca.net;
 
 import java.io.IOException;
 
-
 import org.apache.log4j.Logger;
-
 
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
@@ -12,9 +10,7 @@ import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
-
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
-
 import py.edu.uca.fcyt.toluca.table.TableServer;
 
 

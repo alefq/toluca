@@ -7,10 +7,8 @@
 package py.edu.uca.fcyt.toluca.db;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * @author jrey

@@ -1,17 +1,17 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;

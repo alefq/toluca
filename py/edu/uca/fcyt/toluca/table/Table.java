@@ -1,6 +1,7 @@
 package py.edu.uca.fcyt.toluca.table;
 
 //import java.awt.*;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -8,9 +9,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Vector;
 
-import java.awt.Cursor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
@@ -26,9 +28,6 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * Maneja el juego de truco

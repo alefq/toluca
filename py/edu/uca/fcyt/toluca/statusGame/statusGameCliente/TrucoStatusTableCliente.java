@@ -1,7 +1,11 @@
 package py.edu.uca.fcyt.toluca.statusGame.statusGameCliente;
 
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.statusGame.*;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.statusGame.StatusEnvido;
+import py.edu.uca.fcyt.toluca.statusGame.StatusFlor;
+import py.edu.uca.fcyt.toluca.statusGame.StatusMano;
+import py.edu.uca.fcyt.toluca.statusGame.StatusPlayer;
+import py.edu.uca.fcyt.toluca.statusGame.TrucoStatusTable;
 //import py.edu.uca.fcyt.toluca.statusGame;
 
 

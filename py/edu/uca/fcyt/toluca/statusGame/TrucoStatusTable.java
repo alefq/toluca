@@ -1,6 +1,7 @@
 package py.edu.uca.fcyt.toluca.statusGame;
 
-import py.edu.uca.fcyt.toluca.game.*;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoDeck;
 
 
 public class TrucoStatusTable{

@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -14,14 +15,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
 import java.util.Vector;
-import java.awt.Cursor;
 
 import javax.swing.JPanel;
 
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
 import py.edu.uca.fcyt.toluca.table.animation.Graphics2DPainter;
+import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
 //import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
 
 /**

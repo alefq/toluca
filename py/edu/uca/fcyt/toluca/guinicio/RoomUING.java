@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/12/23 21:14:13 $
- * @version $Revision: 1.10 $ 
+ * Last modified: $Date: 2004/12/28 21:14:25 $
+ * @version $Revision: 1.11 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -19,8 +19,6 @@ import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;

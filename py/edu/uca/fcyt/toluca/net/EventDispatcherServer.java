@@ -2,9 +2,7 @@ package py.edu.uca.fcyt.toluca.net;
 
 import org.apache.log4j.Logger;
 
-
 import py.edu.uca.fcyt.game.ChatMessage;
-import py.edu.uca.fcyt.toluca.LoginFailedException;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;

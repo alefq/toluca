@@ -12,8 +12,10 @@ package py.edu.uca.fcyt.toluca.sound;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-import java.applet.*;
-import java.net.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class PlaySound {
 

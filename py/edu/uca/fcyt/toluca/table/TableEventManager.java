@@ -1,8 +1,8 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.awt.Cursor;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.awt.Cursor;
 
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;

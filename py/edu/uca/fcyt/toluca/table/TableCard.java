@@ -1,16 +1,16 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.awt.Graphics2D;
-import java.awt.BasicStroke;
 
 import javax.swing.ImageIcon;
-import java.awt.Color;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.toluca.table.animation.Animable;

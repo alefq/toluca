@@ -1,7 +1,8 @@
 package py.edu.uca.fcyt.game;
 
-import javax.swing.*;
-import java.util.*;
+import java.util.Hashtable;
+
+import javax.swing.ImageIcon;
 
 
 public class Card

@@ -1,8 +1,11 @@
 package py.edu.uca.fcyt.toluca.table.state;
 
-import py.edu.uca.fcyt.toluca.table.*;
-import java.util.*;
-import java.security.*;
+import java.security.InvalidParameterException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
+import py.edu.uca.fcyt.toluca.table.Util;
 
 /**
  * Esta clase maneja a un objeto en la mesa el cual 

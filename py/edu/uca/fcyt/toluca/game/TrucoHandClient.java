@@ -10,7 +10,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.toluca.TolucaConstants;
-import py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.StatusPlayerClient;
 import py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.TrucoStatusTableCliente;
 
 /**

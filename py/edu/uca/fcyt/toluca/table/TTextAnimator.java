@@ -6,11 +6,12 @@
  */
 package py.edu.uca.fcyt.toluca.table;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
-import java.awt.Font;
-import java.awt.Color;
+
 import py.edu.uca.fcyt.toluca.table.animation.Animable;
 import py.edu.uca.fcyt.toluca.table.state.StateListener;
 

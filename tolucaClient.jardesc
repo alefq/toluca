@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="/tmp/tolucaClient.jar"/>
+    <jar path="H:/borrame/tolucaClient.jar"/>
     <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/toluca/tolucaClient.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
     <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
         <sealing sealJar="false">
@@ -25,6 +25,7 @@
         <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsersManager.java"/>
         <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.net{XmlPackagesSession.java"/>
         <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginDialog.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.sound"/>
         <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{HashUtils.java"/>
         <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginPanel.java"/>
         <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.webmanager"/>

@@ -8,13 +8,16 @@ package py.edu.uca.fcyt.net;
 
 //import py.edu.uca.fcyt.toluca.XMLParser;
 
-import java.net.Socket;
-
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.*;
-
-import py.edu.uca.fcyt.toluca.TolucaConstants;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 
 

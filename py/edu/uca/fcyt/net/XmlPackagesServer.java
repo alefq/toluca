@@ -6,11 +6,11 @@
 
 package py.edu.uca.fcyt.net;
 
-import java.net.*;
-import java.io.*;
-
-import java.util.Vector;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 

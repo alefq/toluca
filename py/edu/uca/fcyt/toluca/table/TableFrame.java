@@ -5,15 +5,16 @@
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package py.edu.uca.fcyt.toluca.table;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.GradientPaint;
 import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
 import py.edu.uca.fcyt.toluca.table.animation.Animable;
-import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
 import py.edu.uca.fcyt.toluca.table.state.GeneralState;
 import py.edu.uca.fcyt.toluca.table.state.StateListener;
+import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
 
 
 /**

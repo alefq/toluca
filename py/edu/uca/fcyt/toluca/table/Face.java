@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -10,14 +11,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.awt.BasicStroke;
 
 import javax.swing.ImageIcon;
 
 import py.edu.uca.fcyt.toluca.table.animation.Animable;
-import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
-import py.edu.uca.fcyt.toluca.table.state.StateListener;
 import py.edu.uca.fcyt.toluca.table.state.GeneralState;
+import py.edu.uca.fcyt.toluca.table.state.StateListener;
+import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
 
 /**
  * Maneja el dibujo de una carita en el juego

@@ -4,20 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-
 import java.util.HashMap;
 
-import javax.swing.JApplet;
-
-import javax.swing.ImageIcon;
-
 import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JApplet;
 import javax.swing.JComponent;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 

@@ -1,7 +1,10 @@
 package py.edu.uca.fcyt.toluca;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -147,7 +150,7 @@ implements ChatPanelContainer, TableListener {
      *            ...
      *            </p>
      */
-    protected void fireTableCreated(TableServer table) {
+    protected synchronized void fireTableCreated(TableServer table) {
         //
         //tHashTable().put(new
         // Integer(table.getTableNumber()),table);//Agregado por Cricco
@@ -197,7 +200,7 @@ implements ChatPanelContainer, TableListener {
      *            ...
      *            </p>
      */
-    private void fireTableJoined(RoomEvent re) {
+    private synchronized void fireTableJoined(RoomEvent re) {
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {
             RoomListener ltmp = (RoomListener) iter.next();
@@ -285,7 +288,7 @@ implements ChatPanelContainer, TableListener {
 
     }
 
-    public void firePlayerLeft(TrucoPlayer player) {
+    protected  synchronized void firePlayerLeft(TrucoPlayer player) {
         Iterator iter = roomListeners.listIterator();
 
         RoomEvent re = new RoomEvent();
@@ -395,6 +398,7 @@ implements ChatPanelContainer, TableListener {
                 ret.load(fis);
                 rs.setProperties(ret);
                 rs.init();
+                rs.leerComandos();
             } catch (Exception e) {
                 logger.error("", e);
             }
@@ -484,7 +488,7 @@ implements ChatPanelContainer, TableListener {
      * </p>
      *  
      */
-    protected void firePlayerJoined(final TrucoPlayer jogador) {
+    protected synchronized void firePlayerJoined(final TrucoPlayer jogador) {
         //la gran avestruz, deberia ser asi con RoomEvent que extiende de la
         // inexistente SpaceEvent
         /*
@@ -578,7 +582,7 @@ implements ChatPanelContainer, TableListener {
     /**
      * Dispara el evento de chatMessageSent
      */
-    protected void fireChatMessageSent(TrucoPlayer jogador, String htmlMessage) {
+    protected synchronized void fireChatMessageSent(TrucoPlayer jogador, String htmlMessage) {
         Iterator iter = roomListeners.listIterator();
         int i = 0;
         while (iter.hasNext()) {
@@ -608,7 +612,11 @@ implements ChatPanelContainer, TableListener {
         fireChatMessageSend(event);
     }
 
-    public void fireChatMessageSend(RoomEvent event) {
+    /** 
+     * 
+     *  
+     */
+    public synchronized void fireChatMessageSend(RoomEvent event) {
         Iterator iter = roomListeners.listIterator();
         int i = 0;
         while (iter.hasNext()) {
@@ -825,5 +833,59 @@ implements ChatPanelContainer, TableListener {
     public void setProperties(java.util.Properties properties) {
         this.properties = properties;
     }
+    
+	/**
+	 * 
+	 */
+	private void leerComandos() {
+		try {
+			BufferedReader in =
+				new BufferedReader(new InputStreamReader(System.in));
+			System.out.print("roomServer> ");
+			String command = in.readLine().trim();
+			while (!command.equals("salir")) {
+				if (command.equalsIgnoreCase("showUsers")) {
+					showUsers();	
+				} else if(command.trim().length() > 0){
+					System.out.println("Comando incorrecto");					
+				}
+				System.out.print("roomServer> ");
+				command = in.readLine();
+			}			
+			System.out.println(
+				"Finalizo la sesion del administrador en el server");
+			System.exit(0);
+
+		} catch (IOException ioe) {
+			// Communication is broken
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private synchronized void showUsers() {
+		showHashMap(getHashPlayers());
+		 
+		
+	}
+	
+	public synchronized void showHashMap(
+			java.util.HashMap ht) {
+			java.util.Iterator it = ht.values().iterator();
+//			java.util.Enumeration en = ht.keys();
+			int i = 0;
+			System.out.println("Usuarios conectados al Toluca:");
+			while (it.hasNext()) {
+//				if (showKeys)
+//					System.out.println(
+//						"element: " + en.nextElement() + " -> " + it.next());
+//				else
+					System.out.println("element #" + (i++) + " -> " + (it.next()));
+			}
+			System.out.println("terminado");
+		}
+	
+
 } // end RoomServer
 

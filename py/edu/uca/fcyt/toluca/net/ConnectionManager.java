@@ -2,7 +2,6 @@ package py.edu.uca.fcyt.toluca.net;
 
 import java.util.ArrayList;
 
-
 import org.apache.log4j.Logger;
 
 import py.edu.uca.fcyt.net.XmlPackagesServer;
