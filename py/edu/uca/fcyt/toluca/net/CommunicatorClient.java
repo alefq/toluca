@@ -38,16 +38,20 @@ public class CommunicatorClient extends Communicator{
 	 */
 	private RoomClient roomClient;
 	protected Logger logeador = Logger.getLogger(CommunicatorClient.class.getName());
-	public CommunicatorClient(RoomClient client) {
+	private String serverString;
+	private int portNumber;
+	public CommunicatorClient(RoomClient client,String serverString,int portNumber) {
 		
-		this();
+		this(serverString,portNumber);
 		eventDispatcher.setRoom(client);
 		roomClient=client;
 	}
 	//static Logger logger = Logger.getLogger(CommunicatorClient.class);
-	public CommunicatorClient()
+	public CommunicatorClient(String serverString,int portNumber)
 	{
 		super(new EventDispatcherClient());
+		this.serverString=serverString;
+		this.portNumber=portNumber;
 		((EventDispatcherClient)getEventDispatcher()).setCommClient(this);
 		int retinit = init();
 	}
@@ -57,7 +61,7 @@ public class CommunicatorClient extends Communicator{
 		try
 		{
 			
-			setSocket(new Socket("192.168.16.25", 6767));
+			setSocket(new Socket(getServerString(), portNumber));
 			
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 			logeador.log(Level.FINEST,"Se establecio la coneccion con el servidor");
@@ -200,4 +204,16 @@ public class CommunicatorClient extends Communicator{
 	while(true)
 			;
 }*/
+	public String getServerString() {
+		return serverString;
+	}
+	public void setServerString(String serverString) {
+		this.serverString = serverString;
+	}
+	public int getPortNumber() {
+		return portNumber;
+	}
+	public void setPortNumber(int portNumber) {
+		this.portNumber = portNumber;
+	}
 }

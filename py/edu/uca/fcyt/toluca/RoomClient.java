@@ -56,7 +56,18 @@ public class RoomClient extends Room implements ChatPanelContainer,
         super();
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea el
         // roomClient");
-        cc = new CommunicatorClient(this);
+        String serverString=rui.getParameter("serverString");
+        String portNumberString=rui.getParameter("portNumber");
+        int portNumber;
+        try
+		{
+        	portNumber = Integer.parseInt(portNumberString);
+		}
+        catch(java.lang.NumberFormatException e)
+		{
+        	portNumber=6767;
+        }
+        cc = new CommunicatorClient(this,serverString,portNumber);
         this.rui = rui;
         addRoomListener(cc);        
         //SwingUtilities.invokeLater(cc);
