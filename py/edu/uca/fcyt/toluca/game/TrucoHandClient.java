@@ -14,6 +14,6 @@ public class TrucoHandClient extends TrucoHand{
     
     /** Creates a new instance of TrucoHandClient */
     public TrucoHandClient(TrucoPlayer asociado) {
-        
+        System.out.println("El THC");
     }
 }

@@ -104,7 +104,9 @@ public class TrucoHand {
     private int pointsOfHandDetail = PointsDetail.NO_SE_CANTO_TRUCO;
     
    
-    
+    public TrucoHand() {
+        
+    }
     
     
     /** Contruye un TrucoHand.
