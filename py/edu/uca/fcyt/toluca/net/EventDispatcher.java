@@ -49,7 +49,7 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TableEvent event)
 	{
-		log.log(Level.WARNING,"se resive un tableevent");
+		log.log(Level.WARNING,"se recibe un tableevent");
 		switch(event.getEvent())
 		{
 			case TableEvent.EVENT_gameFinished:break;

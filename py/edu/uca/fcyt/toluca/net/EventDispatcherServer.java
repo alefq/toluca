@@ -216,7 +216,7 @@ public class EventDispatcherServer extends EventDispatcher{
 	 */
 	public void playerLeft(TableEvent event) {
 
-		logger.info("Se resive un playerLeft");
+		logger.info("Se recibe un playerLeft");
 		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
 		TrucoPlayer playerCliente=event.getPlayer()[0];
 		

@@ -21,6 +21,7 @@ import py.edu.uca.fcyt.game.ChatPanel;
 /**
  * @author CYT UCA
  * 
+ * @deprecated
  *  
  */
 public class RoomUI extends JApplet {
