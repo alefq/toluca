@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/16 12:38:24 $
- * @version $Revision: 1.5 $ 
+ * Last modified: $Date: 2004/09/22 12:44:47 $
+ * @version $Revision: 1.6 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -293,7 +293,7 @@ public class RoomUING extends JApplet {
      * 
      * @return py.edu.uca.fcyt.toluca.guinicio.TableRanking
      */
-    private TableRanking getTableRanking() {
+    public TableRanking getTableRanking() {
         if (tableRanking == null) {
             tableRanking = new TableRanking();
         }
@@ -398,7 +398,7 @@ public class RoomUING extends JApplet {
         //mainTable.insertarFila(table);
 
         //jpChatRanking.validate();
-
+        roomClient.fireLoginRequested(ld.getUsername(), ld.getPassword());
     }
 
     /**

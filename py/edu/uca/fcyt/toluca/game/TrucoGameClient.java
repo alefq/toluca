@@ -5,6 +5,9 @@
  */
 
 package py.edu.uca.fcyt.toluca.game;
+import java.util.logging.Logger;
+
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 
@@ -14,6 +17,8 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
  */
 public class TrucoGameClient extends TrucoGame
 /*implements TrucoListener */ {
+    protected Logger logeador = Logger.getLogger(TrucoGameClient.class.getName());
+    
 	/** Creates a new instance of TrucoClient */
 	protected TrucoHandClient trucoHandCli;
 	
@@ -21,7 +26,7 @@ public class TrucoGameClient extends TrucoGame
 	public TrucoGameClient(TrucoTeam t1, TrucoTeam t2)
 	{
 		super(t1, t2);
-		System.out.println("Se crea un nuevo truco Game Client");
+		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea un nuevo truco Game Client");
 		
 	}
 	public void startGameClient()
@@ -76,7 +81,7 @@ public class TrucoGameClient extends TrucoGame
 				
 			default:
 			  /*  TrucoPlay tp = event.toTrucoPlay();
-				System.out.println("Se recibio un TrucoEvent para ser TrucoPlay"+ tp.getType());
+				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se recibio un TrucoEvent para ser TrucoPlay"+ tp.getType());
 				if (tp.getType()>=0){
 					play(tp);
 					playResponse(tp);
@@ -99,7 +104,7 @@ public class TrucoGameClient extends TrucoGame
 	}
 	public void cardsDeal(TrucoEvent event)
 	{
-		System.out.println("event.getTypeEvent(): " + event.getTypeEvent());
+		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "event.getTypeEvent(): " + event.getTypeEvent());
 		new Exception("En cardsDeal. Ac� se tendr�an que recibir las cartas").printStackTrace(System.out);
 	}
 	public void handStarted(TrucoEvent event)
@@ -131,13 +136,13 @@ public class TrucoGameClient extends TrucoGame
 	}
 	public void startHand(TrucoPlayer tPlayer)
 	{
-		System.out.println("startHAND !!!!!!! EN trucoGame Cliente");
+		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "startHAND !!!!!!! EN trucoGame Cliente");
 		firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 	}
 	public void startHandClient(TrucoPlayer tPlayer)
 	{
 		int i; //
-		System.out.println("cantidad de players preparados="+cantidadDePlayersPreparados);
+		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "cantidad de players preparados="+cantidadDePlayersPreparados);
 		int numOfPlayer = teams[0].getNumberOfPlayer(tPlayer)*2;
 		if (numOfPlayer >= 0)
 		{
@@ -146,7 +151,7 @@ public class TrucoGameClient extends TrucoGame
 				playersPreparados[numOfPlayer] = true;
 				firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 				cantidadDePlayersPreparados++;
-				System.out.println(tPlayer.getName()+"confirmado");
+				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, tPlayer.getName()+"confirmado");
 			}
 			else
 				return;
@@ -159,7 +164,7 @@ public class TrucoGameClient extends TrucoGame
 				playersPreparados[numOfPlayer] = true;
 				firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 				cantidadDePlayersPreparados++;
-				System.out.println(tPlayer.getName()+"confirmado");
+				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, tPlayer.getName()+"confirmado");
 			}
 			else
 				return;
@@ -191,7 +196,7 @@ public class TrucoGameClient extends TrucoGame
 		TrucoCard myCarta =  trucoHandCli.getCard(myKind,  myValue);
 		if (myCarta == null)
 		{
-			System.out.println("en TrucoGame getCard devuelve null");
+			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "en TrucoGame getCard devuelve null");
 		}
 		return myCarta;
 	}
@@ -200,12 +205,12 @@ public class TrucoGameClient extends TrucoGame
 	 */
 /*	public void playResponse(TrucoPlay tp) {
 			TrucoEvent te = tp.toTrucoEvent();
-			System.out.println("se hizo truco event="+te.getTypeEvent());
+			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "se hizo truco event="+te.getTypeEvent());
 			if (tp.getCard())
 			if (te.getCard() == null)
-				System.out.println("carta null en playResponse");
+				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "carta null en playResponse");
 			if (te.getCard() != getCard((byte)te.getCard().getKind(),(byte)te.getCard().getValue()))
-				System.out.println("carta no tg en mazo");;
+				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "carta no tg en mazo");;
  
 			firePlayResponseEvent(te.getPlayer(), te.getCard(), te.getTypeEvent());
 	}*/
@@ -235,13 +240,13 @@ public class TrucoGameClient extends TrucoGame
 		{
 			((TrucoListener)(listenerlist.get(i))).endOfHand(event);
 		}
-		System.out.println("------------------------------------------------------------------------");
-		System.out.println("--------------------------------------Puntajes--------------------------");
+		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "------------------------------------------------------------------------");
+		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "--------------------------------------Puntajes--------------------------");
 		for (int i=0; i<2; i++)
-			System.out.println(teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
+			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
 		
 		for (int i=0; i<detalleDelPuntaje.size(); i++)
-			System.out.println(((PointsDetail)detalleDelPuntaje.get(i)).aString());
+			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, ((PointsDetail)detalleDelPuntaje.get(i)).aString());
 		
 	}
 }

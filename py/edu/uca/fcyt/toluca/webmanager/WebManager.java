@@ -24,7 +24,7 @@ import java.sql.SQLException;
 
 
 import py.edu.uca.fcyt.toluca.RoomServer;
-import py.edu.uca.fcyt.toluca.TolucaProperties;
+//import py.edu.uca.fcyt.toluca.TolucaProperties;
 import py.edu.uca.fcyt.toluca.db.DbOperations;
 
 /**
@@ -45,7 +45,7 @@ public class WebManager implements Runnable{
     ServerSocket s;
     boolean live = false;
     public WebManager() throws NumberFormatException, IOException{
-        s = new ServerSocket(Integer.parseInt(TolucaProperties.getProperty(TolucaProperties.WEBMANAGERPORT)));
+  //      s = new ServerSocket(Integer.parseInt(TolucaProperties.getProperty(TolucaProperties.WEBMANAGERPORT)));
         Thread t = new Thread(this);
         t.start();
     }
@@ -71,11 +71,11 @@ public class WebManager implements Runnable{
             }
             String command;
 
-            try {
+            /*try {
                 
                 command = reader.readLine();
                 
-                try{
+               try{
                     
                     String values[] = command.split(" ");
                     if (values[0].equals("LOGIN") && values.length==3){
@@ -108,7 +108,7 @@ public class WebManager implements Runnable{
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
-            }
+            }*/
         }
         
     }

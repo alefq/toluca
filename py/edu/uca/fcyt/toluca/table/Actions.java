@@ -32,8 +32,8 @@ class Actions extends JButton implements ChangeListener
 			buttons[i].addActionListener(actListener);
 			add(buttons[i]);
 		}
-		add(fps = new JLabel("FPS: 50"));
-		add(jSlider = new JSlider(1, 100, 50));
+		add(fps = new JLabel("FPS: 5"));
+		add(jSlider = new JSlider(1, 100, 5));
 		jSlider.addChangeListener(chListener);
 		jSlider.addChangeListener(this);
 		

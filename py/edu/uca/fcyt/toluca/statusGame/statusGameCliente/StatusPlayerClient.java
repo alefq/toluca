@@ -1,12 +1,18 @@
 package py.edu.uca.fcyt.toluca.statusGame.statusGameCliente;
 
-import py.edu.uca.fcyt.toluca.game.*;
+import java.util.logging.Logger;
+
+import py.edu.uca.fcyt.toluca.TolucaConstants;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
 
 
 /** Guarda y controla el estado de un jugador en la mano
  */
 //package py.edu.uca.fcyt.toluca;
 public class StatusPlayerClient{
+    
+    protected Logger logeador = Logger.getLogger(StatusPlayerClient.class.getName());
+    
     private TrucoCard[] cartas;
     private boolean primeraCarta;//Guarda verdadero si el jugador jugo la primera carta
     private int cCartas; //Indica la cantidad de cartas que tiene el jugador
@@ -74,17 +80,17 @@ public class StatusPlayerClient{
     /** Imprime un estado de las cartas de jugador en la consola "QUITAR"
      */
     public void statusPrint(){
-        System.out.println("Cartas");
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Cartas");
         for(int i=0;i<3;i++){
-            System.out.print("Palo: ");
-            System.out.print(cartas[i].getKind());
-            System.out.print(" - ");
-            System.out.print("Valor: ");
-            System.out.println(cartas[i].getValue());
-            System.out.print(" Jugada: ");
-            System.out.println(cartas[i].isFlipped());
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"Palo: ");
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"" + cartas[i].getKind());
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL," - ");
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"Valor: ");
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "" + cartas[i].getValue());
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL," Jugada: ");
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "" + cartas[i].isFlipped());
         }
-            System.out.println(puedeCantarFlor());
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "" + puedeCantarFlor());
      }
     
     private int valor_envido(TrucoCard cual)
@@ -265,22 +271,22 @@ public class StatusPlayerClient{
      */    
     public int puedeJugarCarta(TrucoCard cual)
     {//Busca la carta y verifica si la carta no se jugo ya
-        //System.out.println("quiere jugar"+cual.getKind()+"con"+cual.getValue());
+        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "quiere jugar"+cual.getKind()+"con"+cual.getValue());
         if(!seCerro){           
             for(int i=0;i<3;i++){
-                System.out.println("buscar carta, palo"+cartas[i].getKind() + ","+cartas[i].getValue());
+                logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "buscar carta, palo"+cartas[i].getKind() + ","+cartas[i].getValue());
                 if(cartas[i]==cual && cartas[i].isFlipped()==false){
-                    System.out.println("status player 1 - ok");
+                    logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "status player 1 - ok");
                     return 1;
                 }
                 else if(cartas[i]==cual && cartas[i].isFlipped()==true){
-                    System.out.println("status player 2 - ok");
+                    logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "status player 2 - ok");
                     return 0;
                     
                 }
             }       
         }
-        System.out.println("status player 3 - ok");
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "status player 3 - ok");
         return -1;
     }
     public boolean mostraraFlor (){

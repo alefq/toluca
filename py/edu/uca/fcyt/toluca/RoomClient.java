@@ -6,10 +6,12 @@ package py.edu.uca.fcyt.toluca;
  */
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanel;
@@ -22,6 +24,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.guinicio.RoomUING;
 import py.edu.uca.fcyt.toluca.guinicio.TableGame;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
+import py.edu.uca.fcyt.toluca.net.Communicator;
 import py.edu.uca.fcyt.toluca.net.CommunicatorClient;
 import py.edu.uca.fcyt.toluca.table.Table;
 
@@ -31,6 +34,8 @@ import py.edu.uca.fcyt.toluca.table.Table;
  */
 public class RoomClient extends Room implements ChatPanelContainer,
         TableListener {
+
+    protected Logger logeador = Logger.getLogger(RoomClient.class.getName());
 
     private ChatPanel chatPanel;
 
@@ -49,12 +54,13 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     public RoomClient(RoomUING rui, String username, String password) {
         super();
-        //System.out.println("Se crea el roomClient");
+        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea el
+        // roomClient");
         cc = new CommunicatorClient(this);
-        addRoomListener(cc);
-        new Thread(cc).start();
-        fireLoginRequested(username, password);
         this.rui = rui;
+        addRoomListener(cc);        
+        //SwingUtilities.invokeLater(cc);
+        new Thread(cc).start();
         //init();
     }
 
@@ -74,16 +80,12 @@ public class RoomClient extends Room implements ChatPanelContainer,
         this.chatPanel = chatPanel;
     }
 
-    public void setRankingTable(TableRanking rankTable) {
-        //System.out.println("rank");
-        this.rankTable = rankTable;
-    }
-
     public void addTable(Table table) {
         /** lock-end */
         // agrega la mesa a la lista de mesas de juego
         super.addTable(table);
-        //System.out.println("desde el roomClient se inserta mesa.");
+        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "desde el
+        // roomClient se inserta mesa.");
 
         // Agregamos una fila a la Tabla Principal
         mainTable.insertarFila(table);
@@ -147,17 +149,17 @@ public class RoomClient extends Room implements ChatPanelContainer,
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_CREATE_TABLE_REQUESTED);
         re.setPlayer(roomPlayer);
-        
+
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {
-            
+
             RoomListener ltmp = (RoomListener) iter.next();
             ltmp.createTableRequested(re);
         }
     } // end fireTableCreateRequested /** lock-begin */
 
     public void sendChatMessage(TrucoPlayer player, String htmlMessage) {
-        fireChatMessageRequested(player, htmlMessage,getOrigin());
+        fireChatMessageRequested(player, htmlMessage, getOrigin());
     }
 
     /**
@@ -178,10 +180,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *            El mensaje que se esta enviando
      *            </p>
      */
-    private void fireChatMessageRequested(TrucoPlayer player, String htmlMessage,String origin) {
+    private void fireChatMessageRequested(TrucoPlayer player,
+            String htmlMessage, String origin) {
         /** lock-end */
-        
-        
+
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {
             RoomListener ltmp = (RoomListener) iter.next();
@@ -201,12 +203,13 @@ public class RoomClient extends Room implements ChatPanelContainer,
     public void addPlayer(TrucoPlayer player) {
         // agrega al player a la lista de players conectados
         super.addPlayer(player);
-       // System.out.println("Gooool!! Carajo");
+        // logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Gooool!!
+        // Carajo");
 
         // agrega al player a la Tabla del Ranking
-        if (rankTable == null)
-            System.out.println("Nulooooo!!!");
-        rankTable.addPlayer(player);
+        if (getRankTable() == null)
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Nulooooo!!!");
+        getRankTable().addPlayer(player);
     }
 
     /*
@@ -225,7 +228,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         super.removePlayer(player);
 
         // elimina al player de la Tabla del Ranking
-        rankTable.removeplayer(player);
+        getRankTable().removeplayer(player);
 
         /*
          * linea nueva
@@ -244,7 +247,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         super.modifyPlayer(player);
 
         // modifica el player de la Tabla del Ranking
-        rankTable.modifyplayer(player);
+        getRankTable().modifyplayer(player);
 
         /*
          * linea nueva
@@ -275,14 +278,14 @@ public class RoomClient extends Room implements ChatPanelContainer,
         }
     }
 
-    private void fireLoginRequested(String username, String password) {
+    public synchronized void  fireLoginRequested(String username, String password) {
         /** lock-end */
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_LOGIN_REQUESTED);
         re.setUser(username);
         re.setPassword(password);
         Iterator iter = roomListeners.listIterator();
-        
+
         while (iter.hasNext()) {
             RoomListener ltmp = (RoomListener) iter.next();
             ltmp.loginRequested(re);
@@ -291,11 +294,12 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     public void loginCompleted(TrucoPlayer player) {
         /** lock-end */
-        
+
         //chatPanel = new ChatPanel(this, player);
         //rui.addChatPanel(chatPanel);
         chatPanel.setPlayer(player);
-        //System.out.println("el chatpanel del room es "+chatPanel);
+        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "el chatpanel
+        // del room es "+chatPanel);
         setRoomPlayer(player);
         player.setFullName(player.getName());
         rui.setOwner(player);
@@ -316,8 +320,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     public void loginFailed(String msg) {
         /** lock-end */
-        JOptionPane.showMessageDialog(new JButton(), ": Login Failed! "+msg);
-        
+        JOptionPane.showMessageDialog(new JButton(), ": Login Failed! " + msg);
+
     }
 
     /**
@@ -327,9 +331,12 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *  
      */
     public TableRanking getRankTable() {
+        if(rankTable == null)
+        {
+            setRankTable(rui.getTableRanking());
+        }
         return rankTable;
     }
-
 
     /**
      * Setter for property rankTable.
@@ -339,13 +346,11 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *  
      */
     public void setRankTable(TableRanking ranking) {
-        if (rankTable == null)
-            System.out.println("Se settea el rank table a null");
-        else
-            System.out.println("Se settea el rank table a no null");
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
+                "Se settea el rank table -> " + ranking);
         this.rankTable = ranking;
     }
-    
+
     public void gameStartRequest(TableEvent event) {
         // TODO Auto-generated method stub
 
@@ -437,10 +442,11 @@ public class RoomClient extends Room implements ChatPanelContainer,
      * Cuando el player se sento en una mesa, se le carga en la Tabla Principal.
      */
     public void playerSit(TableEvent event) {
-        
+
         Table tabela = event.getTable();
         TrucoPlayer jug = tabela.getPlayer();
-        //System.out.println("El player que se sienta es" + jug.getName());
+        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "El player que
+        // se sienta es" + jug.getName());
         //mainTable.pl
         // tabela.getChair(jug));
 
@@ -452,9 +458,9 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
         mainTable.addPlayer(player, tabela.getTableNumber(), chair);
     }
-    public void setStandPlayer(int chair,Table tabela)
-    {
-    	mainTable.remPlayer(tabela.getTableNumber(),chair);
+
+    public void setStandPlayer(int chair, Table tabela) {
+        mainTable.remPlayer(tabela.getTableNumber(), chair);
     }
 
     public void borrarPlayerTable(TrucoPlayer player, Table table) {
@@ -473,12 +479,11 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     }
 
-    
     public void signSent(TableEvent event) {
         // TODO Auto-generated method stub
 
     }
-    
+
     public void showPlayed(TableEvent event) {
         // TODO Auto-generated method stub
 
@@ -532,20 +537,24 @@ public class RoomClient extends Room implements ChatPanelContainer,
         t.addTableListener(this);
     }
 
-	/* (non-Javadoc)
-	 * @see py.edu.uca.fcyt.game.ChatPanelContainer#sendChatMessage(py.edu.uca.fcyt.toluca.event.RoomEvent)
-	 */
-	public void sendChatMessage(RoomEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see py.edu.uca.fcyt.game.ChatPanelContainer#sendChatMessage(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void sendChatMessage(RoomEvent event) {
+        // TODO Auto-generated method stub
 
-	/* (non-Javadoc)
-	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.toluca.event.RoomEvent)
-	 */
-	public void chatMessageSent(RoomEvent event) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void chatMessageSent(RoomEvent event) {
+        // TODO Auto-generated method stub
+
+    }
 
 } // end RoomClient
