@@ -211,7 +211,7 @@ public class Table implements PTableListener, ChatPanelContainer,
                 "Inicia tus mensajes con \\ si no quieres que "
                         + "salgan en la mesa.", new String[] { "[", "]" });
 
-        new Thread(animator).start();
+        new Thread(animator, "animator").start();
     }
 
     public void showSystemMessage(String message) {
@@ -711,13 +711,14 @@ public class Table implements PTableListener, ChatPanelContainer,
             }.start();
         } else if (text.equals("Confirmar")) {
             trucoTable.buttons[TrucoTable.BUTTON_HECHAR].setText("Echar");
-            pName = trucoTable.getJpWatchers().getSelection();
+            //TODO Deprecada la hechada hasta nuevo aviso
+/*            pName = trucoTable.getJpWatchers().getSelection();
 
             for (int i = 0; i < players.size(); i++) {
                 tPlayer = (TrucoPlayer) players.get(i);
                 if (tPlayer != actualPlayer && tPlayer.getName().equals(pName))
                     tEventMan.firePlayerKickRequest(tPlayer);
-            }
+            }*/
         } else if (text.equals("Ayuda")) {
             ttAnimator.showIndications();
             new Thread() {

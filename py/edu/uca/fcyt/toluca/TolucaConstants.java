@@ -1,8 +1,8 @@
 /* TolucaConstants.java
  * Created on Sep 22, 2004
  *
- * Last modified: $Date: 2005/01/14 13:45:58 $
- * @version $Revision: 1.3 $ 
+ * Last modified: $Date: 2005/02/11 21:06:08 $
+ * @version $Revision: 1.4 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca;
@@ -65,5 +65,12 @@ public class TolucaConstants {
         String ori = "aloooo \\n \\n pepe";       
         String replaced = TolucaConstants.replaceString(ori, "p", "POP");
         System.out.println(replaced);
+    }
+
+    /**
+     * @return
+     */
+    public static boolean isWindowFamily() {
+        return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
     }
 }

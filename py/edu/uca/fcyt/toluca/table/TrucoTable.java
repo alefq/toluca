@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
 
 import py.edu.uca.fcyt.game.ChatPanel;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 
@@ -26,8 +27,6 @@ class TrucoTable extends JPanel implements ComponentListener {
     public static final int BUTTON_AYUDA = 2;
 
     protected Score score; // panel de puntajes
-
-    private JPlayers jpWatchers; // observadores
 
     //	protected PlayTable pTable;
 
@@ -46,7 +45,7 @@ class TrucoTable extends JPanel implements ComponentListener {
 
     private JPanel jpLeftPanel = null;
 
-    private JPanel jpPlayers = null;
+    private JPanel jpCantos = null;
 
     private JScrollPane jScrollPane = null;
 
@@ -71,7 +70,7 @@ class TrucoTable extends JPanel implements ComponentListener {
         this.add(getPlayTable(), BorderLayout.CENTER);
         this.add(getChatPanel(), java.awt.BorderLayout.SOUTH);
         this.add(getJpLeftPanel(), java.awt.BorderLayout.WEST);
-        this.add(getJpPlayers(), java.awt.BorderLayout.NORTH);
+        this.add(getJpCantos(), java.awt.BorderLayout.NORTH);
         this.add(getScore(), java.awt.BorderLayout.EAST);
     }
 
@@ -83,7 +82,7 @@ class TrucoTable extends JPanel implements ComponentListener {
             score = new Score(30);
             score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
             score.add(new JLabel(" ------ Puntaje ------ "));
-            score.add(new JLabel("    Rojo        Azul   "));
+            score.add(new JLabel("    Rojo        "+ (TolucaConstants.isWindowFamily() ? "" : "   ")+"Azul   "));
             score.setBorder(new EtchedBorder());
         }
         return score;
@@ -96,7 +95,7 @@ class TrucoTable extends JPanel implements ComponentListener {
         //      crea los componentes
         //		pTable = new PlayTable(getTable());
         //		jpLeftPanel = new JPanel();
-        //		jpPlayers = new JPanel();
+        //		jpCantos = new JPanel();
         //		jpChat = new ChatPanel(getTable(), getTable().getPlayer());
         //		score = new Score(30);
         //		jpWatchers = new JPlayers();
@@ -108,7 +107,7 @@ class TrucoTable extends JPanel implements ComponentListener {
 
         //		add(pTable, BorderLayout.CENTER);
         //		add(jpLeftPanel, BorderLayout.WEST);
-        //		add(jpPlayers, BorderLayout.NORTH);
+        //		add(jpCantos, BorderLayout.NORTH);
         //		add(jpChat, BorderLayout.SOUTH);
         //		add(score, BorderLayout.EAST);
 
@@ -224,26 +223,16 @@ class TrucoTable extends JPanel implements ComponentListener {
     }
 
     /**
-     * @return
-     */
-    public JPlayers getJpWatchers() {
-        if (jpWatchers == null) {
-            jpWatchers = new JPlayers();
-        }
-        return jpWatchers;
-    }
-
-    /**
      * This method initializes jPanel
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJpPlayers() {
-        if (jpPlayers == null) {
-            jpPlayers = new JPanel();
-            jpPlayers.add(jlSaying = new JLabel("Canto: "));
+    private JPanel getJpCantos() {
+        if (jpCantos == null) {
+            jpCantos = new JPanel();
+            jpCantos.add(jlSaying = new JLabel("Canto: "));
         }
-        return jpPlayers;
+        return jpCantos;
     }
 
     /**

@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 import javax.swing.JPanel;
 
-class Score extends JPanel implements ComponentListener {
+import py.edu.uca.fcyt.toluca.TolucaConstants;
+
+class Score extends JPanel {
 	
 	protected static final int ABAJO = 0;
 	protected static final int ARRIBA = 1;
@@ -30,7 +30,6 @@ class Score extends JPanel implements ComponentListener {
 			puntos == 30 || puntos == 20, 
 			"Parámetro 'totalPts' inválido"
 		);
-		addComponentListener(this);
 		
 	}	
 
@@ -56,7 +55,7 @@ class Score extends JPanel implements ComponentListener {
 		
 		//se pintan los puntajes representados por fósforos
 		drawMatch(18,0,gr,ptsTeam1);
-		drawMatch(68,0,gr,ptsTeam2);
+		drawMatch((TolucaConstants.isWindowFamily() ? 68 : 95),0,gr,ptsTeam2);
 	}
 	//------------------------------------------
 	//este metodo es llamado cuando se actualizan los puntajes		
@@ -246,29 +245,6 @@ class Score extends JPanel implements ComponentListener {
 		g.drawLine(0, y + 1, w, y + 1);
 		g.setColor(Color.DARK_GRAY);
 		g.drawLine(0, y + 2, w, y + 2);
-	}
-
-	public void componentResized(ComponentEvent e) 
-	{
-//		double scale;
-//		Rectangle bounds = getBounds();
-//		
-//		setPreferredSize(new Dimension
-//		(
-//			(int) (bounds.getHeight() * .2), 0
-//		));
-	}
-
-	public void componentMoved(ComponentEvent e) {
-		// TODO: Add your code here
-	}
-
-	public void componentShown(ComponentEvent e) {
-		// TODO: Add your code here
-	}
-
-	public void componentHidden(ComponentEvent e) {
-		// TODO: Add your code here
 	}
 
 }

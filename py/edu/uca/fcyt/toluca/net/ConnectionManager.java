@@ -42,7 +42,7 @@ public class ConnectionManager implements XmlPackagesServerListener {
             int port = Integer.parseInt(rs.getProperties().getProperty(PROP_SERVER_PORT));
             server = new XmlPackagesServer( port, rs.getProperties().getProperty(PROP_SERVER_FQN));
             server.addXmlPackagesServerListener(this);
-            new Thread(server).start();
+            new Thread(server, "connection-manager").start();
             
         } catch (java.io.IOException e) {
             logger.error("I/O exception in server");

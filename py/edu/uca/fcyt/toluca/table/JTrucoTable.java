@@ -14,7 +14,9 @@ import javax.swing.border.EtchedBorder;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
-/** Panel principal de juego */
+/** Panel principal de juego 
+ * @deprecated Usar TrucoTable
+ * */
 class JTrucoTable extends JPanel implements ComponentListener {
 	public static final int BUTTON_INICIAR_OK = 0;
 

@@ -288,7 +288,7 @@ public void showSystemMessage(String htmlMessage,     String[] bounds)
         jf.getContentPane().add(cp);
         jf.pack();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.show();
+        jf.setVisible(true);
         //        cp.showChatMessage(jose, "Hola don Pepito");
         //        cp.showChatMessage(pepito, "Hola don Jos�");
     }

@@ -1,19 +1,16 @@
 /* EmoticonsWindow.java
  * Created on June 13, 2003
  *
- * Last modified: $Date: 2005/01/17 15:16:08 $
- * @version $Revision: 1.4 $ 
+ * Last modified: $Date: 2005/02/11 21:06:08 $
+ * @version $Revision: 1.5 $ 
  * @author Mirna, Mali y Nati
  */
 package py.edu.uca.fcyt.game;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
