@@ -330,17 +330,18 @@ public class DbOperations {
 			TrucoPlayer tp1 = (TrucoPlayer)lp1.get(i);
 			TrucoPlayer tp2 = (TrucoPlayer)lp2.get(i);
 			
+			//TEAM 0
 			insertStmt.setString(1, tp1.getName());
 			insertStmt.setInt(2, partida);
-			insertStmt.setInt(3, 1);
+			insertStmt.setInt(3, 0);
 			insertStmt.setString(4, tp1.getName());
 			
 			insertStmt.executeUpdate();
 
-			/*Hacemos lo mismo para el jugador i del equipo 2*/
+			/*Hacemos lo mismo para el jugador i del equipo 1*/
 			insertStmt.setString(1, tp2.getName());
 			insertStmt.setInt(2, partida);
-			insertStmt.setInt(3, 2);
+			insertStmt.setInt(3, 1);
 			insertStmt.setString(4, tp2.getName());
 			
 			insertStmt.executeUpdate();
