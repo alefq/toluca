@@ -25,7 +25,10 @@ class PlayerManager
 													   //de los players		
 		players.setSize(playerCount);
 	}
-	
+	public PlayerManager()
+	{
+		
+	}
 	
 	/** 
 	 * Sienta al jugador en un numero 
@@ -34,7 +37,7 @@ class PlayerManager
 	public void sitPlayer(TrucoPlayer p,int chair)
 	{
 		if (players.contains(p))
-			throw new TableException("Jugador ya está sentado");
+			throw new TableException("Jugador ya estï¿½ sentado");
 
 	 	if (getPlayer(chair) != null)
  			throw new TableException("Silla ocupada");
@@ -51,7 +54,7 @@ class PlayerManager
 		TrucoPlayer player;
 		
 		player = getPlayer(chair);
-	 	if (player == null)	throw new TableException("Silla vacía");
+	 	if (player == null)	throw new TableException("Silla vacï¿½a");
  			
  		if (actualPlayer == player) actualPlayer = null; 
 
@@ -61,7 +64,7 @@ class PlayerManager
 	
 	public void setActualPlayer(TrucoPlayer p)
 	{
-		Util.verifParam(p != null, "Parámetro 'p' nulo");
+		Util.verifParam(p != null, "Parï¿½metro 'p' nulo");
 		Util.verif(players.contains(p), "Jugador " + p.getName() + " no agregado");
 		
 		actualPlayer = p;
@@ -136,7 +139,7 @@ class PlayerManager
 	}
 	
 	/**
-     * Retorna verdadero si los equipos están parejos
+     * Retorna verdadero si los equipos estï¿½n parejos
      */
     public boolean evenTeams()
     {
@@ -164,7 +167,7 @@ class PlayerManager
 	
 	/* Devuelve la posicion relativa de un jugador
 	 * en relacion al jugador que esta enfrente a la pantalla.
-	 * Se le manda el lugar de la silla en donde eligió sentarse
+	 * Se le manda el lugar de la silla en donde eligiï¿½ sentarse
 	 * y de acuerdo a algunos calculos se le coloca en la posicion
 	 * correspondiente para que el jugador actual lo vea
 	 */
@@ -178,8 +181,8 @@ class PlayerManager
 	}
 	
 	/**
-     * Retorna la posición en la cual está <code>player</code>.
-     * Si no está sentado, retorna -1
+     * Retorna la posiciï¿½n en la cual estï¿½ <code>player</code>.
+     * Si no estï¿½ sentado, retorna -1
      */
 	public int getPos(TrucoPlayer player)
 	{
@@ -197,10 +200,40 @@ class PlayerManager
 	public int getPlayerCount() { return players.size(); }
 	
 	/**
-     * Retorna verdadero si 'player' está sentado
+     * Retorna verdadero si 'player' estï¿½ sentado
      */
 	public boolean isSitted(TrucoPlayer player)
 	{
 		return players.contains(player);
+	}
+	/**
+	 * @return Returns the players.
+	 */
+	public Vector getPlayers() {
+		return players;
+	}
+	/**
+	 * @param players The players to set.
+	 */
+	public void setPlayers(Vector players) {
+		this.players = players;
+	}
+	/**
+	 * @return Returns the started.
+	 */
+	public boolean isStarted() {
+		return started;
+	}
+	/**
+	 * @param started The started to set.
+	 */
+	public void setStarted(boolean started) {
+		this.started = started;
+	}
+	/**
+	 * @return Returns the actualPlayer.
+	 */
+	public TrucoPlayer getActualPlayer() {
+		return actualPlayer;
 	}
 }

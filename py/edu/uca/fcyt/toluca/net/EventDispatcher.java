@@ -54,7 +54,8 @@ public abstract class EventDispatcher {
 			case TableEvent.EVENT_playerLeft:break;
 			case TableEvent.EVENT_playerSit:playerSit(event);break;
 			case TableEvent.EVENT_playerSitRequest: playerSitRequest(event);break;
-			case TableEvent.EVENT_playerStanded:break;
+			case TableEvent.EVENT_playerStanded:playerStand(event);break;
+			case TableEvent.EVENT_playerStandRequest:playerStandRequest(event);break;
 			case TableEvent.EVENT_showPlayed:break;
 			case TableEvent.EVENT_signSendRequest:break;
 			case TableEvent.EVENT_signSent:break;
@@ -105,4 +106,6 @@ public abstract class EventDispatcher {
 	
 	public abstract void playerSitRequest(TableEvent event);
 	public abstract void playerSit(TableEvent event);
+	public abstract void playerStandRequest(TableEvent event);
+	public abstract void playerStand(TableEvent event);
 }

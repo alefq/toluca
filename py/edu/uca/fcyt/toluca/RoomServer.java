@@ -162,9 +162,17 @@ implements ChatPanelContainer
 	public void joinTable(RoomEvent re)
 	{
 		TableServer ts = re.getTableServer();
-		ts.addPlayer(re.getPlayer());
-		re.setType(RoomEvent.TYPE_TABLE_JOINED);
-		fireTableJoined(re);
+		if(!ts.getPlayers().contains(re.getPlayer()))
+		{//si no esta unido
+			ts.addPlayer(re.getPlayer());
+			re.setType(RoomEvent.TYPE_TABLE_JOINED);
+			fireTableJoined(re);
+		}
+		else
+		{
+			logger.info("El player ya esta dentro de la tabla");
+		}
+		
 		
 	}
 	/**
@@ -247,14 +255,19 @@ implements ChatPanelContainer
 			Vector jugadores=tabela.getPlayers();
 			if(jugadores.contains(player))
 			{
-					TableEvent te=new TableEvent(TableEvent.EVENT_playerStanded,tabela,null,null,tabela.getChair(player));
+				int chair=tabela.getChair(player);
+				if(chair>=0)
+				{
+					TableEvent te=new TableEvent(TableEvent.EVENT_playerStanded,tabela,player,null,chair);
 					tabela.standPlayer(te);
-					tabela.kickPlayer(player);
+					
+				}
+				tabela.kickPlayer(player);
 				
 			}
 			}
 		}
-		players.remove(player.getName());
+		players.remove(player.getName());//quitar del almacenaje de players
 		//vPlayers.remove(player);
 		firePlayerLeft(player);
 	} 
@@ -312,6 +325,7 @@ implements ChatPanelContainer
 			
 			//jogador = new Player("CIT", 108);
 			jogador = dbOperations.authenticatePlayer(username, password);
+			
 			logger.debug("Se creo el jugador: " +  jogador.getName());
 			
 			cs.setTrucoPlayer(jogador);
@@ -549,7 +563,30 @@ implements ChatPanelContainer
 	{
 		
 	}
-	
+
+
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.game.ChatPanelContainer#sendChatMessage(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void sendChatMessage(RoomEvent event) {
+		
+		event.setType(RoomEvent.TYPE_CHAT_SENT);
+		fireChatMessageSend(event);
+	}
+	public void fireChatMessageSend(RoomEvent event)
+	{
+		Iterator iter = roomListeners.listIterator();
+		int i =0;
+		while(iter.hasNext())
+		{
+			RoomListener ltmp = (RoomListener)iter.next();
+			//System.out.println("Jogador vale "+jogador+ " el mensaje es"+htmlMessage);
+			//logger.debug(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+			
+			ltmp.chatMessageSent(event);
+		}
+	}
 } // end RoomServer
 
 

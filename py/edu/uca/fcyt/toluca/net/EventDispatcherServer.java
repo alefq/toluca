@@ -74,8 +74,8 @@ public class EventDispatcherServer extends EventDispatcher{
 		logger.debug("Llego un chat Requested de :");
 		logger.debug(chatMsg.getPlayer());
 		logger.debug(chatMsg.getHtmlMessage());
-		if(chatMsg.getOrigin().equals("room"))
-			room.sendChatMessage(chatMsg.getPlayer(),chatMsg.getHtmlMessage());
+	//	if(chatMsg.getOrigin().equals("room"))
+			room.sendChatMessage(event);
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#chatSend(py.edu.uca.fcyt.toluca.event.RoomEvent)
@@ -143,6 +143,7 @@ public class EventDispatcherServer extends EventDispatcher{
 		TableServer tableServer=room.getTableServer(tableClient.getId());
 		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
 		
+		
 		tableServer.sitPlayer(playerServidor,chair);
 			
 		
@@ -152,6 +153,35 @@ public class EventDispatcherServer extends EventDispatcher{
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerSit(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerSit(TableEvent event) {
+		
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerStandRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerStandRequest(TableEvent event) {
+		logger.debug("Player stand request"); 
+		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
+		TrucoPlayer playerCliente=event.getPlayer()[0];
+		int chair=event.getValue();
+		
+		TableServer tableServer=room.getTableServer(tableClient.getId());
+		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
+		
+		TableEvent e=new TableEvent();
+		e.setEvent(TableEvent.EVENT_playerStandRequest);
+		e.setTableServer(tableServer);
+		e.setPlayer(new TrucoPlayer[]{playerServidor,null});
+		e.setValue(chair);
+		tableServer.standPlayer(e);
+		
+		
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerStand(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerStand(TableEvent event) {
 		// TODO Auto-generated method stub
 		
 	}

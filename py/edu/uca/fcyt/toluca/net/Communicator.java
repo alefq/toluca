@@ -15,6 +15,7 @@ import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.Table;
 
 
 /**
@@ -180,7 +181,7 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#playerLeft(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void playerLeft(RoomEvent ev) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	/* (non-Javadoc)
@@ -201,12 +202,18 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageRequested(py.edu.uca.fcyt.game.ChatPanelContainer, py.edu.uca.fcyt.toluca.game.TrucoPlayer, java.lang.String)
 	 */
 	public void chatMessageRequested(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
-
+			
+			
+				
+			
 			RoomEvent event=new RoomEvent();
 			event.setType(RoomEvent.TYPE_CHAT_REQUESTED);
 			ChatMessage chatMsg=new ChatMessage(player,htmlMessage);
 			chatMsg.setOrigin(cpc.getOrigin());
 			event.setChatMessage(chatMsg);
+			
+			if(cpc instanceof Table)
+				event.setTableNumber( ((Table)cpc).getTableNumber());
 			super.sendXmlPackage(event);
 			
 	}
@@ -310,7 +317,8 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerStandRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerStandRequest(TableEvent event) {
-		// TODO Auto-generated method stub
+		
+		System.out.println("player stand request");
 		
 	}
 	/* (non-Javadoc)

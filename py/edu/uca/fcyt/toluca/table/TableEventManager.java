@@ -146,17 +146,17 @@ class TableEventManager
     public void firePlayerStandRequest(int chair) 
     {
 		table.setCursor(Cursor.WAIT_CURSOR);
-		
+		TableEvent event=new TableEvent();
+		event.setEvent(TableEvent.EVENT_playerStandRequest);
+		event.setTableBeanRepresentation(table.getTableBeanRepresentation());
+		event.setPlayer(new TrucoPlayer[]{table.getPlayer(),null});
+		event.setValue(chair);
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
             ((TableListener)iter.next()).playerStandRequest
             (
-            	new TableEvent
-            	(
-            		TableEvent.EVENT_playerStandRequest,
-            		table, table.getPlayer(), null,chair
-            	)
+            	event
             );
         }
     }

@@ -1,7 +1,12 @@
 
 package py.edu.uca.fcyt.toluca.guinicio;
 import javax.swing.table.AbstractTableModel;
+
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.Table;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 
@@ -62,5 +67,19 @@ public class TableModelGame extends AbstractTableModel{
 	{
 		return columnNames[col];
 	}
-	
+	public void setPosicionOwner(int tableId,String trucoPlayer,int chair)
+	{
+		int rowUpdate=0;
+		for(int i=0;i<datos.size();i++)
+		{
+			RowGame row=(RowGame) datos.get(i);
+			if(row.getTableNumber()==tableId)
+			{
+				System.out.println(getClass().getName()+"Se encontro la tabla se sienta en "+chair);
+				row.setJugador(chair,trucoPlayer);
+				rowUpdate=i;
+			}
+		}
+		fireTableDataChanged();
+	}
 }

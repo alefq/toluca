@@ -198,7 +198,7 @@ implements ChatPanelContainer {
         }
         //tables.put(table.getTableNumber()), table); //se carga la tabla nueva pow
         tables[table.getTableNumber()]=table;
-        System.out.println("Imprimir los tables");
+       // System.out.println("Imprimir los tables");
         //py.edu.uca.fcyt.util.HashUtils.imprimirHash(tables);
     }
     public void addTable(TableServer table)

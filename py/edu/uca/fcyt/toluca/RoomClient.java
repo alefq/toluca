@@ -437,17 +437,11 @@ public class RoomClient extends Room implements ChatPanelContainer,
      * Cuando el player se sento en una mesa, se le carga en la Tabla Principal.
      */
     public void playerSit(TableEvent event) {
-        // TODO Auto-generated method stub
-        System.out.println("Se sento!!!!!");
-        //System.out.println("El player"+event.getPlayer());
-        System.out.println("Dentro del playersit en RoomClient");
-        System.out.println("La tabla es:" + event.getTable());
-        System.out.println("El player en la tabla: "
-                + event.getTable().getPlayer());
+        
         Table tabela = event.getTable();
         TrucoPlayer jug = tabela.getPlayer();
         System.out.println("El player que se sienta es" + jug.getName());
-        //mainTable.addPlayer(jug, tabela.getTableNumber(),
+        //mainTable.pl
         // tabela.getChair(jug));
 
     }
@@ -457,6 +451,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
                 .println("Se va a sentar al player Parche de Redes el CommunicatorClient le llama a este");
 
         mainTable.addPlayer(player, tabela.getTableNumber(), chair);
+    }
+    public void setStandPlayer(int chair,Table tabela)
+    {
+    	mainTable.remPlayer(tabela.getTableNumber(),chair);
     }
 
     public void borrarPlayerTable(TrucoPlayer player, Table table) {
@@ -533,5 +531,21 @@ public class RoomClient extends Room implements ChatPanelContainer,
     public void seAgregoTable(Table t) {
         t.addTableListener(this);
     }
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.game.ChatPanelContainer#sendChatMessage(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void sendChatMessage(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void chatMessageSent(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 
 } // end RoomClient

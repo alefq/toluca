@@ -19,7 +19,8 @@ public class TrucoPlayer {
     private String pass; 
     private String email; 
     protected int rating; 
-
+    
+	
   ///////////////////////////////////////
   // operations
 

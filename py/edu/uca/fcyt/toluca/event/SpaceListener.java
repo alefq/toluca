@@ -17,6 +17,7 @@ public interface SpaceListener
     public void playerLeft(TrucoPlayer player);
     public void chatMessageRequested(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage);
     public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage);
+    public void chatMessageSent(RoomEvent event);
 } 
 
 

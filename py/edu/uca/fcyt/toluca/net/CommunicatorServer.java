@@ -1,6 +1,7 @@
 package py.edu.uca.fcyt.toluca.net;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
@@ -9,6 +10,8 @@ import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+
+import py.edu.uca.fcyt.toluca.table.TableServer;
 
 
 
@@ -72,6 +75,14 @@ public class CommunicatorServer extends Communicator{
 	{
 		logger.debug("Login completed");
 		super.sendXmlPackage(event);
+		TableServer[] tablesServers=event.getTablesServers();
+		for(int i=0;i<tablesServers.length;i++)
+		{//se agrega a todas las tablas como listener
+			if(tablesServers[i]!=null)
+			{
+				tablesServers[i].addTableServerListener(this);
+			}
+		}
 	}
 	
 	public void playerLeft(RoomEvent event)
@@ -89,7 +100,8 @@ public class CommunicatorServer extends Communicator{
 	}
 	
 	public void tableJoined(RoomEvent event) {
-		event.getTableServer().addTableServerListener(this);
+		//if(getTrucoPlayer().getName().equals(event.getPlayer().getName()))
+		//	event.getTableServer().addTableServerListener(this);
 		
 		super.sendXmlPackage(event);
 		
@@ -101,5 +113,15 @@ public class CommunicatorServer extends Communicator{
 	public void playerSit(TableEvent event) {
 		logger.debug("Player sit");
 		super.sendXmlPackage(event);
+	}
+	public void playerStanded(TableEvent event) {
+		super.sendXmlPackage(event);
+		
+	}
+
+	
+	public void chatMessageSent(RoomEvent event) {
+		super.sendXmlPackage(event);
+		
 	}
 }

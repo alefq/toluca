@@ -1,17 +1,13 @@
-/*
- * TableServer.java
- *
- * Created on 4 de junio de 2003, 07:22 PM
- */
-
 package py.edu.uca.fcyt.toluca.table;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
@@ -39,7 +35,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     private TrucoGame tGame;
     
     private static int nextTableNumber = 0;
-    
+    private HashMap asientos;
     /** Creates a new instance of TableServer */
     public TableServer(TrucoPlayer host) {
         this.host= host;
@@ -51,25 +47,44 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         setTableNumber(nextTableNumber++);
         System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
         System.out.println("El HOST de la tabela es: " + getHost().getName());
+        asientos=new HashMap();
     }
     public TableServer()
     {
     }
     
+	/**
+	 * @return Returns the pManager.
+	 */
+	public PlayerManager getPManager() {
+		return pManager;
+	}
+	/**
+	 * @param manager The pManager to set.
+	 */
+
     public void addTableServerListener(TableListener tableListener) {        /**
      * lock-end */
         tableListeners.add(tableListener);
     } // end addRoomListener        /** lock-begin */
     
     public void sitPlayer(TrucoPlayer player, int chair) {
-        logger.debug("Sit player "+player+" chair "+chair);
+        try
+		{
+    	logger.debug("Sit player "+player+" chair "+chair);
     	pManager.sitPlayer(player, chair);
+    	asientos.put(player.getName(),new Integer(chair));
         firePlayerSat(player, chair);
         
         if (player == getHost())
             pManager.setActualPlayer(getHost());
         
         logger.debug(player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
+		}
+        catch(TableException e)
+		{
+        	logger.debug("TableException "+e.getMessage());
+		}
     }
     
     public void startGame() {
@@ -281,7 +296,9 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	public void standPlayer(TableEvent event)
 	{
 		pManager.standPlayer(event.getValue());
-
+		TrucoPlayer player=event.getPlayer(0);
+		asientos.remove(player.getName());
+		event.setEvent(TableEvent.EVENT_playerStanded);
 		// avisa que el player se levant� correctamente
 		for (int i = 0; i < tableListeners.size(); i++)
 			((TableListener) tableListeners.get(i)).playerStanded(event);
@@ -292,7 +309,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		for (int i = 0; i < tableListeners.size(); i++)
 			((TableListener) tableListeners.get(i)).signSent(event);
 	}
-
+	
 	public void kickPlayer(TrucoPlayer tptmp) 
 	{
 		// TODO Auto-generated method stub
@@ -312,13 +329,34 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		}
 	}
 	
-	public PlayerManager getPlayerManager()
-	{
-		return pManager;
-	}
+
 	
 	public int getChair(TrucoPlayer p)
 	{
 		return pManager.getChair(p);
+	}
+	
+	/**
+	 * @return Returns the asientos.
+	 */
+	public HashMap getAsientos() {
+		return asientos;
+	}
+	/**
+	 * @param asientos The asientos to set.
+	 */
+	public void setAsientos(HashMap asientos) {
+		this.asientos = asientos;
+	}
+	public Integer getAsiento(TrucoPlayer player)
+	{
+		return (Integer) asientos.get(player.getName());
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.game.ChatPanelContainer#sendChatMessage(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void sendChatMessage(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

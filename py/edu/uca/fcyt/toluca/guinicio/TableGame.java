@@ -30,7 +30,7 @@ public class TableGame extends JTable{
 	    Dimension size = super.getPreferredScrollableViewportSize();
 	    return new Dimension(Math.min(getPreferredSize().width, size.width), size.height);
 	}
-
+	
     /**
      * @param table
      */
@@ -75,7 +75,12 @@ public class TableGame extends JTable{
      * @param chair
      */
     public void addPlayer(TrucoPlayer player, int tableNumber, int chair) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
+        
+    	tableModelGame.setPosicionOwner(tableNumber,player.getName(),chair);
+    }
+    public void remPlayer(int tableNumber, int chair)
+    {
+    	tableModelGame.setPosicionOwner(tableNumber,"vacio",chair);
     }
 
     /**
@@ -109,4 +114,5 @@ public class TableGame extends JTable{
     public void setTableModelGame(TableModelGame tableModelGame) {
         this.tableModelGame = tableModelGame;
     }
+    
 }

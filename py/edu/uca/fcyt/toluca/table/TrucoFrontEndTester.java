@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.swing.JFrame;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
@@ -285,7 +286,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         }
         
         // habilita el boton de "unir" y deshabilita
-        // el botón "crear"
+        // el botï¿½n "crear"
         jbCreate.setEnabled(hostTable == null);
         jbJoin.setEnabled(hostTable != null);
     }
@@ -386,4 +387,12 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
     public void playerStanded(TableEvent event) 
     {
     }
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void chatMessageSent(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }

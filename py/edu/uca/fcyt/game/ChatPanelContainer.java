@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.game;
 
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
@@ -26,7 +27,9 @@ public interface ChatPanelContainer {
  * </p>
  */
     public void sendChatMessage(TrucoPlayer player, String htmlMessage);
+    public void sendChatMessage(RoomEvent event);
     public void showChatMessage(TrucoPlayer player, String htmlMessage);
+    
     public String getOrigin();
 } // end ChatPanelContainer
 

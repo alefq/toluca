@@ -8,12 +8,14 @@ package py.edu.uca.fcyt.toluca.net;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Vector;
 
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
 import sun.rmi.runtime.GetThreadPoolAction;
@@ -60,14 +62,40 @@ public class EventDispatcherClient extends EventDispatcher{
 		System.out.println("El vector de table vale ");
 		System.out.println(event.getTablesServers().length);
 		TableServer [] tables=event.getTablesServers();
+		
 		for(int i=0;i<tables.length;i++)
 		{
 			
 			if(tables[i]!=null)
 			{
+				System.out.println("login ok dentro de tables ");
 				TrucoPlayer playerOwner=tables[i].getHost();//este player es igual al playerCreador, solo que el playerCreador es la ref en el cliente
 				TrucoPlayer playerCreador=room.getPlayer(playerOwner.getName());
-				addTable(playerCreador,tables[i].getTableNumber());
+				Table table=addTable(playerCreador,tables[i].getTableNumber());
+				
+
+				Vector vec=tables[i].getPlayers();
+				Iterator iterator=vec.iterator();
+				
+				System.out.println("Los player de la taba "+tables[i].getTableNumber());
+				
+				
+				while(iterator.hasNext())
+				{
+					TrucoPlayer playerClient=room.getPlayer(((TrucoPlayer)iterator.next()).getName());
+					if(!playerClient.getName().equals(playerCreador.getName()))
+					{
+						table.addPlayer(playerClient);
+						
+					}
+					Integer asiento=tables[i].getAsiento(playerClient);
+					if(asiento!=null)
+					{
+						System.out.println("En el login ya se hace un sitPlayer de"+playerClient +" en la chair "+asiento);
+						table.sitPlayer(playerClient,asiento.intValue());
+						((RoomClient)room).setearPlayerTable(playerClient,table,asiento.intValue());
+					}
+				}
 			}
 		}
 	}
@@ -119,8 +147,22 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void chatSend(RoomEvent event) {
 		ChatMessage chatMessage=event.getChatMessage();
+		System.out.println(getClass().getName()+"Se resivio un chat message "+chatMessage.getOrigin());
 		if(chatMessage.getOrigin().equals("room"))
+		{
 			room.showChatMessage(chatMessage.getPlayer(),chatMessage.getHtmlMessage());
+		}
+		else
+		{
+			System.out.println("un chat para la mesa "+event.getTableNumber());
+			Table table=room.getTable(event.getTableNumber());
+			
+			TrucoPlayer playerServer=chatMessage.getPlayer();
+			TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+			table.showChatMessage(playerClient,chatMessage.getHtmlMessage());
+			
+		}
+		
 		
 	}
 
@@ -156,29 +198,30 @@ public class EventDispatcherClient extends EventDispatcher{
 		
 		
 	}
-	private void addTable(TrucoPlayer playerCreador,int tableNumber)
-	{
+	private Table addTable(TrucoPlayer playerCreador,int tableNumber)
+	{//crea una Tabla y agrega al room
 		Table table=null;
 		boolean mostrar=false;
 		if(playerCreador.getName().equals(trucoPlayer.getName()))
 		{//CREO EL PLAYER QUE ACABA DE RESIVIR EL MSG
 			
-			table=new Table(playerCreador,true);
+			table=new Table(trucoPlayer,true);
 			mostrar=true;
 		}
 		else
 		{//fue otro el que creo
-			table=new Table(playerCreador,false);
+			table=new Table(trucoPlayer,false);
 		}
 		
 		table.setTableNumber(tableNumber);
-		System.out.println("El sila le asigna "+table.getTableNumber());
+		
 		table.addTableListener(commClient);
 		room.addTable(table);
 		table.addPlayer(playerCreador);
 		
 		if(mostrar)
 			table.show();
+		return table;
 	}
 
 	/* (non-Javadoc)
@@ -205,10 +248,7 @@ public class EventDispatcherClient extends EventDispatcher{
 			{
 				table.show();
 			}
-			if(playerClient==trucoPlayer)
-					System.out.println("andaaaaaaaaaaaaaaaa bien la ref");
-			else
-					System.out.println("waaaaaaaaaaaaring no anda la ref");
+			
 	}
 
 	/* (non-Javadoc)
@@ -224,17 +264,52 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void playerSit(TableEvent event) {
 		
+		System.out.println("player sit");
 		System.out.println("Se resive un player sit a la mesa "+event.getTableServer().getTableNumber());
-		System.out.println("player "+event.getPlayer()[1]);
+		System.out.println("player "+event.getPlayer()[0]);
 		System.out.println("chair "+event.getValue());
-		
 		TableServer tableServer=event.getTableServer();
-		TrucoPlayer playerServer=event.getPlayer()[1];
+		TrucoPlayer playerServer=event.getPlayer()[0];
+		
 		int chair=event.getValue();
 		
 		Table table=room.getTable(tableServer.getTableNumber());
 		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		
+		System.out.println("La silla de  "+playerClient.getName()+" es "+table.getChair(playerClient));
 		table.sitPlayer(playerClient,chair);
+		System.out.println("ya se hizo el table.sitPlayer");
+		((RoomClient)room).setearPlayerTable(playerClient,table,chair);
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerStandRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerStandRequest(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerStand(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerStand(TableEvent event) {
+		
+		System.out.println("player staaaaanded");
+		System.out.println("Se resive un player stand a la mesa "+event.getTableServer().getTableNumber());
+		System.out.println("player "+event.getPlayer()[0]);
+		System.out.println("chair "+event.getValue());
+		
+		TableServer tableServer=event.getTableServer();
+		TrucoPlayer playerServer=event.getPlayer()[0];
+		
+		int chair=event.getValue();
+		
+		Table table=room.getTable(tableServer.getTableNumber());
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		
+		table.standPlayer(chair);
+		((RoomClient)room).setStandPlayer(chair,table);
 		
 	}
 }

@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
@@ -106,7 +107,7 @@ public class Table implements
 		tGame = null;
 
 		ttAnimator.clearAll();
-		ttAnimator.showPresentation();
+		//ttAnimator.showPresentation();
 
 		// establece el texto del bot�n
 		jtTable.buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Iniciar");
@@ -926,8 +927,20 @@ public class Table implements
 	
 	public TableBeanRepresentation getTableBeanRepresentation()
 		{
-			return new TableBeanRepresentation();
+			TableBeanRepresentation tableBean=new TableBeanRepresentation();
+			tableBean.setId(getTableNumber());
+			tableBean.setPlayer(getPlayer());
+			return tableBean;
+			
 		}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.game.ChatPanelContainer#sendChatMessage(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void sendChatMessage(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
 
