@@ -286,8 +286,12 @@ public class TrucoHand
 			int tercera = winRound[2];
 			if(tercera >= 0)
 				finDeMano(tercera%2);//ganador de tercera
-			else //empate
-				finDeMano(primerTurnoNumber); //gana equipo mano
+			else {//empate
+				int winner = winRound[0];/*gana  la pri*/
+				if (winner<0) /*si fue empate la pri*/
+					winner = primerTurnoNumber;/**/
+				finDeMano(winner); //gana equipo mano^
+			}
 		}
 		return true;
 	}
@@ -1524,7 +1528,7 @@ public class TrucoHand
 			playTurn = pie1;
 		
 		estadoActual = ESPERANDO_RESPUESTA_DEL_TRUCO;
-		game.firePlayEvent(playTurn,TrucoEvent.TRUCO);
+		game.firePlayResponseEvent(playTurn,TrucoEvent.TRUCO);
 		esperarRespuesta();
 		game.fireTurnEvent(playTurn,TrucoEvent.TURNO_RESPONDER_TRUCO);
 	}
