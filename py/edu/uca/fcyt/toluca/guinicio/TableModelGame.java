@@ -2,11 +2,10 @@
 package py.edu.uca.fcyt.toluca.guinicio;
 import javax.swing.table.AbstractTableModel;
 
-import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
-import py.edu.uca.fcyt.toluca.table.Table;
+
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 
 

@@ -2,7 +2,7 @@ package py.edu.uca.fcyt.toluca.net;
 
 
 
-import org.apache.log4j.Logger;
+
 
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
@@ -60,7 +60,7 @@ implements RoomListener,TrucoListener,TableListener
 	public void setEventDispatcher(EventDispatcher eventDispatcher) {
 		this.eventDispatcher = eventDispatcher;
 	}
-	static Logger logger = Logger.getLogger(Communicator.class);
+//	static Logger logger = Logger.getLogger(Communicator.class);
 	
 	protected EventDispatcher eventDispatcher;
 	

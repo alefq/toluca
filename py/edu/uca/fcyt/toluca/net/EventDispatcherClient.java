@@ -23,7 +23,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
-import sun.rmi.runtime.GetThreadPoolAction;
+
 
 /**
  * @author dcricco
@@ -401,7 +401,7 @@ public class EventDispatcherClient extends EventDispatcher{
 		}
 		else
 		{
-			System.out.println("TrucoPlayer es nulo");
+			System.out.println("TrucoPlayer es nulo esto no es un problema. solo que este evento no trae player");
 		}
 		//System.out.println("******************************************************");
 		trucoGameClient.play(event);

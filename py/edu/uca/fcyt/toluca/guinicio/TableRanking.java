@@ -14,8 +14,8 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 public class TableRanking extends JTable{
 
-    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-            .getLogger(TableRanking.class);
+//    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+//            .getLogger(TableRanking.class);
     
     public TableRanking()
     {
@@ -96,7 +96,7 @@ public class TableRanking extends JTable{
      * @param player
      */
     public void modifyplayer(TrucoPlayer player) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
+        //logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
     }
 	
 }

@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import javax.swing.JButton;
 
 
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
+
+//import org.apache.log4j.Logger;
+
 
 import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.RoomClient;
@@ -36,7 +36,7 @@ public class CommunicatorClient extends Communicator{
 		this();
 		eventDispatcher.setRoom(client);
 	}
-	static Logger logger = Logger.getLogger(CommunicatorClient.class);
+	//static Logger logger = Logger.getLogger(CommunicatorClient.class);
 	public CommunicatorClient()
 	{
 		super(new EventDispatcherClient());
@@ -52,14 +52,14 @@ public class CommunicatorClient extends Communicator{
 			setSocket(new Socket("localhost", 6767));
 			
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
-			logger.info("Se establecio la coneccion con el servidor");
+			System.out.println("Se establecio la coneccion con el servidor");
 		} catch (UnknownHostException e)
 		{
-			logger.error("No se puede identificar el host");
+			System.out.println("No se puede identificar el host");
 			ret = -5;
 		} catch (IOException e)
 		{
-			logger.error("Fallo la coneccion IO Exception");
+			System.out.println("Fallo la coneccion IO Exception");
 			ret = -4;
 		}
 		return ret;
@@ -113,24 +113,24 @@ public class CommunicatorClient extends Communicator{
 	//	System.out.println(getClass().getName()+"se va a hacer un play al server");
 		TrucoPlay trucoPlay= event.toTrucoPlay();
 		
-		logger.debug("SE resive un play de "+trucoPlay.getPlayer().getName());
-		logger.debug("TAbla : "+trucoPlay.getTableNumber());
-		logger.debug("type : "+trucoPlay.getType());
-		if(trucoPlay.getCard()!=null)
-			logger.debug("carta Palo: "+trucoPlay.getCard().getKind() +" val "+trucoPlay.getCard().getValue());
-		logger.debug("value > "+trucoPlay.getValue());
+//		logger.debug("SE resive un play de "+trucoPlay.getPlayer().getName());
+//		logger.debug("TAbla : "+trucoPlay.getTableNumber());
+//		logger.debug("type : "+trucoPlay.getType());
+//		if(trucoPlay.getCard()!=null)
+//			logger.debug("carta Palo: "+trucoPlay.getCard().getKind() +" val "+trucoPlay.getCard().getValue());
+//		logger.debug("value > "+trucoPlay.getValue());
 		super.sendXmlPackage(trucoPlay);
 		}
 	}
 	
 	public void playResponse(TrucoEvent event) {
 	
-		logger.debug("playResponse");
+		//logger.debug("playResponse");
 	}
 	
 	public void turn(TrucoEvent event) {
 	
-		logger.debug("Turn");
+		//logger.debug("Turn");
 	}
 	
 	public void endOfHand(TrucoEvent event) {

@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/16 01:12:53 $
- * @version $Revision: 1.4 $ 
+ * Last modified: $Date: 2004/09/16 12:38:24 $
+ * @version $Revision: 1.5 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.xml.DOMConfigurator;
+
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
@@ -33,8 +33,9 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
  */
 public class RoomUING extends JApplet {
 
-    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-            .getLogger(RoomUING.class);
+	//se saca el log4j porque es muy gande para que este en el cliente
+//    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+//            .getLogger(RoomUING.class);
 
     private javax.swing.JPanel jContentPane = null;
 
@@ -317,8 +318,8 @@ public class RoomUING extends JApplet {
      * @return void
      */
     public void init() {
-        DOMConfigurator.configure(System.getProperty("user.dir")
-                + System.getProperty("file.separator") + "log.xml");
+//        DOMConfigurator.configure(System.getProperty("user.dir")
+//                + System.getProperty("file.separator") + "log.xml");
         loadAppletParameters();
         this.setSize(750, 470);
         this.setContentPane(getJContentPane());
@@ -345,7 +346,7 @@ public class RoomUING extends JApplet {
         //  dir = (at != null) ? at : "/images";
         try {
             String imagedir = getParameter("IMAGEDIR");
-            logger.debug("La dire de imagenes es " + imagedir);
+           // logger.debug("La dire de imagenes es " + imagedir);
         } catch (Exception e) {
         }
     }
@@ -363,16 +364,16 @@ public class RoomUING extends JApplet {
                 count = imgStream.read(buf);
                 imgStream.close();
             } catch (java.io.IOException ioe) {
-                logger.error("Couldn't read stream from file: " + path);
+                System.out.println("Couldn't read stream from file: " + path);
                 return null;
             }
             if (count <= 0) {
-                logger.error("Empty file: " + path);
+            	System.out.println("Empty file: " + path);
                 return null;
             }
             return new ImageIcon(Toolkit.getDefaultToolkit().createImage(buf));
         } else {
-            logger.error("Couldn't find file: " + path);
+        	System.out.println("Couldn't find file: " + path);
             return null;
         }
     }

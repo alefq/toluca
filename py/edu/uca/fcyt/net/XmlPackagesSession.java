@@ -19,7 +19,7 @@ import java.io.*;
 
 
 
-import org.apache.log4j.Logger;
+
 
 
 /**
@@ -28,7 +28,8 @@ import org.apache.log4j.Logger;
  */
 public abstract class XmlPackagesSession implements Runnable
 {
-	static Logger logger = Logger.getLogger(XmlPackagesSession.class);
+	//se elimino de aca el log4j porque esta clase tambien se usa en el cliente
+	//static Logger logger = Logger.getLogger(XmlPackagesSession.class);
 	/** Constants */
 	public static final int XML_PACKAGE_DELIMITER = '{';
 	public static final int XML_PACKAGE_SESSION_INIT_OK = 1;
@@ -57,7 +58,7 @@ public abstract class XmlPackagesSession implements Runnable
 		String rawPacket = "";
 		// Loop until live = false
 		
-		logger.debug("el descriptor de socket en el thread es:" + socket);
+		//logger.debug("el descriptor de socket en el thread es:" + socket);
 		try {
 	
 			while (live)
@@ -94,7 +95,7 @@ public abstract class XmlPackagesSession implements Runnable
 						Object result = d.readObject();
 				
 						//inputStream.close();
-						logger.debug("Se resive un objeto");
+						//logger.debug("Se resive un objeto");
 						receiveObject(result);		
 				
 					rawPacket = "";
@@ -116,7 +117,7 @@ public abstract class XmlPackagesSession implements Runnable
 	
 	public void sendXmlPackage(Object bean)
 	{
-		logger.debug("enviando el paquete xml");
+		//logger.debug("enviando el paquete xml");
 		ByteArrayOutputStream outStream=new ByteArrayOutputStream();
 		XMLEncoder e=new XMLEncoder(new BufferedOutputStream(outStream));
 		e.writeObject(bean);
