@@ -15,7 +15,7 @@ public class PanelGradiente extends JComponent{
 	private Color startColor;
 	private int inc;
 	
-	private ImageIcon logo = RoomUI.loadImage("LogoSinFondo.gif");;
+	private ImageIcon logo = RoomUING.loadImage("LogoSinFondo.gif");;
 	private String nombre;
 	private double largo;
 	/**
