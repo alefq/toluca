@@ -22,9 +22,15 @@ public class ChatPanel extends javax.swing.JPanel {
     private TrucoPlayer player;
     private DefaultListModel dlm;
     
-    public ChatPanel(ChatPanelContainer cpc) {
-        setCpc(cpc);
+    public ChatPanel() {
         initComponents();
+    }
+    
+    
+
+    public ChatPanel(ChatPanelContainer cpc) {
+        this();
+        setCpc(cpc);        
     }
     
     /** Creates new form ChatPanel */
