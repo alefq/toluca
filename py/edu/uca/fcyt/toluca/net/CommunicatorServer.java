@@ -53,7 +53,7 @@ public class CommunicatorServer extends Communicator{
 	}
 	public void receiveXmlPackage(Element xmlPackage) {
 		
-		System.out.println("Se resive un packohiiiiiiiii");
+	//	System.out.println("Se resive un packohiiiiiiiii");
 	}
 	public void connectionFailed()
 	{
@@ -171,10 +171,10 @@ public class CommunicatorServer extends Communicator{
 		logger.info("Se envia Cards Deal");
 		TrucoCard[] cards=event.getCards();
 		logger.info("Las cartas de "+event.getPlayer().getName()+ " son");
-		for(int i=0;i<cards.length;i++)
-		{
-			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
-		}
+//		for(int i=0;i<cards.length;i++)
+//		{
+//			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
+//		}
 		super.sendXmlPackage(event);
 		
 	}

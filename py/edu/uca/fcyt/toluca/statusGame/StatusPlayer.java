@@ -60,7 +60,7 @@ public class StatusPlayer{
      */    
     public void agregarCarta(TrucoCard Cual){
         //new Exception("repartija de cartas").printStackTrace(System.out);
-        System.out.println("Agregando carta al player!!");
+     //   System.out.println("Agregando carta al player!!");
         cartas[cCartas]=Cual;
         cCartas++;
     }
@@ -248,12 +248,12 @@ public class StatusPlayer{
 
     public boolean jugarCarta (TrucoCard cual)
     {
-         if (cual == null){
-             System.out.println("La cual Carta es null!");
-         }
-         else{
-             System.out.println("La cual no es null"+cual.getKind()+"-"+cual.getValue());
-         }
+//         if (cual == null){
+//             System.out.println("La cual Carta es null!");
+//         }
+//         else{
+//             System.out.println("La cual no es null"+cual.getKind()+"-"+cual.getValue());
+//         }
              
         for(int i=0;i<3;i++){
             if (cartas[i] == null){

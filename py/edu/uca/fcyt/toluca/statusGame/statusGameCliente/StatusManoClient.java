@@ -44,7 +44,7 @@ public class StatusManoClient {
      *equipo 0 el primer equipo 1 el otro-*/
     private int hallarMayorCarta(int equipo,int Ronda)
     {
-        System.out.println("hallarMayorCarta - sm - equipo " + equipo + "ronda " + Ronda);
+        //System.out.println("hallarMayorCarta - sm - equipo " + equipo + "ronda " + Ronda);
         int valor=0,i,quien=0;
             for(i=equipo;i<cjugadores;i+=2){
                 if(cartasJugadas[Ronda][i]!=null && valor<=cartasJugadas[Ronda][i].getValueInGame()){

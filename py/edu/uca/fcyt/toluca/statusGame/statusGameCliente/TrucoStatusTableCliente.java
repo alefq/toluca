@@ -11,9 +11,9 @@ public class TrucoStatusTableCliente extends TrucoStatusTable{
          */             
         public void recibirCartas(int player,TrucoCard cartas[]) //reparte  3 cartas a todos los jugadores
         {
-            System.out.println("Agregando Cartas!!!!!!!");
+            //System.out.println("Agregando Cartas!!!!!!!");
             for(int i=0;i<3;i++){
-                    System.out.println("carta para"+player+","+cartas[i].getValue()+" de "+cartas[i].getKind());
+                    //System.out.println("carta para"+player+","+cartas[i].getValue()+" de "+cartas[i].getKind());
                     estado[player].agregarCarta(cartas[i]);
             }
         }
@@ -27,7 +27,7 @@ public class TrucoStatusTableCliente extends TrucoStatusTable{
             flores=new StatusFlor(cJugadores);
             envidos=new StatusEnvido(cJugadores);
             mano=new StatusMano(cJugadores);     
-            System.out.println("Ya se creo los objetos status...");
+            //System.out.println("Ya se creo los objetos status...");
             for (int i=0;i<cJugadores;i++)
                     estado[i]=new StatusPlayer();
          }

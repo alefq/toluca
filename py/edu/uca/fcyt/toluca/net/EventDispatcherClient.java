@@ -49,7 +49,7 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void loginCompleted(RoomEvent event) {
 		
-		System.out.println(" Cliente Login completed");
+		//System.out.println(" Cliente Login completed");
 		HashMap jugadores=event.getPlayers();
 		Iterator it=event.getPlayers().keySet().iterator();
 		while(it.hasNext())
@@ -64,8 +64,8 @@ public class EventDispatcherClient extends EventDispatcher{
 			}
 		}
 		
-		System.out.println("El vector de table vale ");
-		System.out.println(event.getTablesServers().length);
+		//System.out.println("El vector de table vale ");
+		//System.out.println(event.getTablesServers().length);
 		TableServer [] tables=event.getTablesServers();
 		
 		for(int i=0;i<tables.length;i++)
@@ -73,7 +73,7 @@ public class EventDispatcherClient extends EventDispatcher{
 			
 			if(tables[i]!=null)
 			{
-				System.out.println("login ok dentro de tables ");
+				//System.out.println("login ok dentro de tables ");
 				TrucoPlayer playerOwner=tables[i].getHost();//este player es igual al playerCreador, solo que el playerCreador es la ref en el cliente
 				TrucoPlayer playerCreador=room.getPlayer(playerOwner.getName());
 				Table table=addTable(playerCreador,tables[i].getTableNumber());
@@ -82,7 +82,7 @@ public class EventDispatcherClient extends EventDispatcher{
 				Vector vec=tables[i].getPlayers();
 				Iterator iterator=vec.iterator();
 				
-				System.out.println("Los player de la taba "+tables[i].getTableNumber());
+				//System.out.println("Los player de la taba "+tables[i].getTableNumber());
 				
 				
 				while(iterator.hasNext())
@@ -96,7 +96,7 @@ public class EventDispatcherClient extends EventDispatcher{
 					Integer asiento=tables[i].getAsiento(playerClient);
 					if(asiento!=null)
 					{
-						System.out.println("En el login ya se hace un sitPlayer de"+playerClient +" en la chair "+asiento);
+						//System.out.println("En el login ya se hace un sitPlayer de"+playerClient +" en la chair "+asiento);
 						table.sitPlayer(playerClient,asiento.intValue());
 						((RoomClient)room).setearPlayerTable(playerClient,table,asiento.intValue());
 					}
@@ -126,7 +126,7 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void playerLeft(RoomEvent event) {
 
-		System.out.println(" salioooooo "+event.getPlayer());
+		//System.out.println(" salioooooo "+event.getPlayer());
 		TrucoPlayer playerServer=event.getPlayer();
 		
 		room.removePlayer(room.getPlayer(playerServer.getName()));
@@ -153,14 +153,14 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void chatSend(RoomEvent event) {
 		ChatMessage chatMessage=event.getChatMessage();
-		System.out.println(getClass().getName()+"Se resivio un chat message "+chatMessage.getOrigin());
+		//System.out.println(getClass().getName()+"Se resivio un chat message "+chatMessage.getOrigin());
 		if(chatMessage.getOrigin().equals("room"))
 		{
 			room.showChatMessage(chatMessage.getPlayer(),chatMessage.getHtmlMessage());
 		}
 		else
 		{
-			System.out.println("un chat para la mesa "+event.getTableNumber());
+			//System.out.println("un chat para la mesa "+event.getTableNumber());
 			Table table=room.getTable(event.getTableNumber());
 			
 			TrucoPlayer playerServer=chatMessage.getPlayer();
@@ -270,10 +270,10 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void playerSit(TableEvent event) {
 		
-		System.out.println("player sit");
-		System.out.println("Se resive un player sit a la mesa "+event.getTableServer().getTableNumber());
-		System.out.println("player "+event.getPlayer()[0]);
-		System.out.println("chair "+event.getValue());
+//		System.out.println("player sit");
+//		System.out.println("Se resive un player sit a la mesa "+event.getTableServer().getTableNumber());
+//		System.out.println("player "+event.getPlayer()[0]);
+//		System.out.println("chair "+event.getValue());
 		TableServer tableServer=event.getTableServer();
 		TrucoPlayer playerServer=event.getPlayer()[0];
 		
@@ -282,9 +282,9 @@ public class EventDispatcherClient extends EventDispatcher{
 		Table table=room.getTable(tableServer.getTableNumber());
 		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
 		
-		System.out.println("La silla de  "+playerClient.getName()+" es "+table.getChair(playerClient));
+		//System.out.println("La silla de  "+playerClient.getName()+" es "+table.getChair(playerClient));
 		table.sitPlayer(playerClient,chair);
-		System.out.println("ya se hizo el table.sitPlayer");
+		//System.out.println("ya se hizo el table.sitPlayer");
 		((RoomClient)room).setearPlayerTable(playerClient,table,chair);
 	}
 
@@ -301,10 +301,10 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void playerStand(TableEvent event) {
 		
-		System.out.println("player staaaaanded");
-		System.out.println("Se resive un player stand a la mesa "+event.getTableServer().getTableNumber());
-		System.out.println("player "+event.getPlayer()[0]);
-		System.out.println("chair "+event.getValue());
+	//	System.out.println("player staaaaanded");
+//		System.out.println("Se resive un player stand a la mesa "+event.getTableServer().getTableNumber());
+//		System.out.println("player "+event.getPlayer()[0]);
+//		System.out.println("chair "+event.getValue());
 		
 		TableServer tableServer=event.getTableServer();
 		TrucoPlayer playerServer=event.getPlayer()[0];
@@ -363,7 +363,7 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void gameStarted(TableEvent event) {
 
-		System.out.println("Llego un gameStarted de TableEvent ");
+		//System.out.println("Llego un gameStarted de TableEvent ");
 		TableServer tableServer=event.getTableServer();
 		Table table=room.getTable(tableServer.getTableNumber());
 		
@@ -380,30 +380,30 @@ public class EventDispatcherClient extends EventDispatcher{
 	}
 
 	public void infoGame(TrucoEvent event) {
-		System.out.println("****************************INFO DE JUEGO******************************");
-		System.out.println(" Info del juego type "+event.getType());
+//		System.out.println("****************************INFO DE JUEGO******************************");
+//		System.out.println(" Info del juego type "+event.getType());
 		
-		if(event.getType()==TrucoEvent.INICIO_DE_JUEGO)
-			System.out.println("SE EMPIEZA UN JUEGO");
-		if(event.getType()==TrucoEvent.INICIO_DE_MANO)
-			System.out.println("SE EMPIEZA LA MANO");
+//		if(event.getType()==TrucoEvent.INICIO_DE_JUEGO)
+//			System.out.println("SE EMPIEZA UN JUEGO");
+//		if(event.getType()==TrucoEvent.INICIO_DE_MANO)
+//			System.out.println("SE EMPIEZA LA MANO");
 		
 		Table table=room.getTable(event.getTableNumber());
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
-		System.out.println(" Table "+table.getTableNumber());
-		System.out.println("Hands "+event.getNumberOfHand());
+//		System.out.println(" Table "+table.getTableNumber());
+//		System.out.println("Hands "+event.getNumberOfHand());
 		if(event.getPlayer()!=null)
 		{
 			
 			TrucoPlayer trucoPlayer=room.getPlayer(event.getPlayer().getName());
 			event.setPlayer(trucoPlayer);
-			System.out.println(" TrucoPlayer "+trucoPlayer.getName());
+			//System.out.println(" TrucoPlayer "+trucoPlayer.getName());
 		}
 		else
 		{
 			System.out.println("TrucoPlayer es nulo");
 		}
-		System.out.println("******************************************************");
+		//System.out.println("******************************************************");
 		trucoGameClient.play(event);
 		
 	}
@@ -411,19 +411,19 @@ public class EventDispatcherClient extends EventDispatcher{
 
 		
 		int tableId=event.getTableNumber();
-		System.out.println("Se reciben las cartas para el juego de la tabla "+tableId);
-		System.out.println(" cards "+event.getCards().length);
-		System.out.println(" hand "+event.getNumberOfHand());
-		System.out.println(" cartas del player "+event.getPlayer().getName());
+//		System.out.println("Se reciben las cartas para el juego de la tabla "+tableId);
+//		System.out.println(" cards "+event.getCards().length);
+//		System.out.println(" hand "+event.getNumberOfHand());
+//		System.out.println(" cartas del player "+event.getPlayer().getName());
 		TrucoPlayer playerServer=event.getPlayer();
 		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
 		Table table=room.getTable(tableId);
 		TrucoCard[] cards=event.getCards();
-		System.out.println("Se resiven las cartas");
-		for(int i=0;i<cards.length;i++)
-		{
-			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
-		}
+		//System.out.println("Se resiven las cartas");
+//		for(int i=0;i<cards.length;i++)
+//		{
+//			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
+//		}
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
 		trucoGameClient.recibirCartas(playerClient,event.getCards());
 	}
@@ -449,13 +449,13 @@ public class EventDispatcherClient extends EventDispatcher{
 		trucoGameClient.play(event);*/
 		
 		
-		System.out.println(" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHH BUENO; NO TIENE QUE PASAR ESTO");
+		//System.out.println(" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHH BUENO; NO TIENE QUE PASAR ESTO");
 	}
 
 	
 	public void tirarCarta(TrucoEvent event) {
 
-		System.out.println("Se quire tirar carta");
+		//System.out.println("Se quire tirar carta");
 		
 		Table table=room.getTable(event.getTableNumber());
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
@@ -466,13 +466,13 @@ public class EventDispatcherClient extends EventDispatcher{
 		TrucoCard cartaServer=event.getCard();
 		TrucoCard cartaClient=trucoGameClient.getCard(cartaServer.getKind(),cartaServer.getValue());
 		
-		System.out.println(" Player cliente : "+playerClient);
-		System.out.println(" carta cliente: "+cartaClient);
-		System.out.println("TrucoPlayer : "+trucoPlayer);
+		//System.out.println(" Player cliente : "+playerClient);
+//		System.out.println(" carta cliente: "+cartaClient);
+//		System.out.println("TrucoPlayer : "+trucoPlayer);
 		
 		if (trucoPlayer!=playerClient)
 		{
-			System.out.println(getClass().getName()+"tirarCarta: playerCliente no es igual a trucoPlayer");
+			//System.out.println(getClass().getName()+"tirarCarta: playerCliente no es igual a trucoPlayer");
 			//System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName());
 			TrucoPlay tp = new TrucoPlay(playerClient,TrucoPlay.JUGAR_CARTA,cartaClient);
 			trucoGameClient.play(tp);

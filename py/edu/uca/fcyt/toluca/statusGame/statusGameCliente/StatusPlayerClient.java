@@ -193,7 +193,7 @@ public class StatusPlayerClient{
      */
     public boolean puedeCantarFlor()
     {
-        System.out.println("verificando puede cantar flor: "+cartas[0].getKind()+cartas[1].getKind()+cartas[2].getKind());
+       // System.out.println("verificando puede cantar flor: "+cartas[0].getKind()+cartas[1].getKind()+cartas[2].getKind());
         if(cartas[0].getKind()==cartas[1].getKind() && cartas[0].getKind()==cartas[2].getKind())
             return true;
         return false;
@@ -265,7 +265,7 @@ public class StatusPlayerClient{
      */    
     public int puedeJugarCarta(TrucoCard cual)
     {//Busca la carta y verifica si la carta no se jugo ya
-        System.out.println("quiere jugar"+cual.getKind()+"con"+cual.getValue());
+        //System.out.println("quiere jugar"+cual.getKind()+"con"+cual.getValue());
         if(!seCerro){           
             for(int i=0;i<3;i++){
                 System.out.println("buscar carta, palo"+cartas[i].getKind() + ","+cartas[i].getValue());

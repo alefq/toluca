@@ -78,13 +78,13 @@ public class TrucoStatusTable{
        public TrucoCard getCardNoPlaying(int Jugador){
            if (Jugador >= 0 && Jugador < cJugadores)
                return estado[Jugador].getCardNoPlaying();
-           System.out.println("ocurre un grave error!!!");
+          // System.out.println("ocurre un grave error!!!");
            return null;
        }
        public TrucoCard getCardNoPlayingForEnvido(int Jugador){
            if (Jugador >= 0 && Jugador < cJugadores)
                return estado[Jugador].getCardNoPlayingForEnvido();
-           System.out.println("ocurre un grave error!!!");
+          // System.out.println("ocurre un grave error!!!");
            return null;
        }
        /** Juega una carta del jugador
@@ -114,7 +114,7 @@ public class TrucoStatusTable{
          * @return  */        
         public boolean seCerro(int jugador)
         {
-            System.out.println("cerrar a "+ jugador);
+            //System.out.println("cerrar a "+ jugador);
             if(jugador>=0 && jugador<cJugadores)
                 estado[jugador].cerrar();
             else 
@@ -128,7 +128,7 @@ public class TrucoStatusTable{
          */        
         public boolean estaCerrado(int jugador)
         {
-            System.out.println("pregunta si esta cerrado");
+            //System.out.println("pregunta si esta cerrado");
             if(jugador>=0 && jugador<cJugadores)
                 return estado[jugador].estaCerrado();
             return false;
@@ -266,13 +266,13 @@ public class TrucoStatusTable{
         
         public boolean jugarEnvido(int jugador,int valor)
         {
-            System.out.println("jugar envido verifica:"+jugador+"que quiere cantar"+valor);
+           // System.out.println("jugar envido verifica:"+jugador+"que quiere cantar"+valor);
             if(tieneEnvido(jugador,valor))    {
                 estado[jugador].cantoEnvido=true;
                 if(envidos.agregarEnvido(jugador,valor)==5)
                     return true;
             }
-            System.out.println("TT - jugar envido , false;");
+           // System.out.println("TT - jugar envido , false;");
             return false;
         }
         

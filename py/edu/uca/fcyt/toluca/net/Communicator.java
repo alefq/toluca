@@ -154,7 +154,7 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void tableJoinRequested(RoomEvent ev) {
 
-			System.out.println("Se dispara un tableJoinRequest");
+			//System.out.println("Se dispara un tableJoinRequest");
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#loginCompleted(py.edu.uca.fcyt.toluca.event.RoomEvent)
@@ -318,7 +318,7 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void playerStandRequest(TableEvent event) {
 		
-		System.out.println("player stand request");
+		//System.out.println("player stand request");
 		
 	}
 	/* (non-Javadoc)
