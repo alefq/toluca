@@ -21,7 +21,7 @@ public class Animator implements Runnable, ObjectsPainter
 	protected Vector anims; // c. en la mesa
 	private Vector faces; // caritas
 	public boolean drawComplete;
-	private int delay = 50;
+	private int delay = 20;
 	private static int animCount = 0;
 	private boolean alive = true;
 	private static boolean counterAlive;

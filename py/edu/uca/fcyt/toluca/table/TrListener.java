@@ -334,6 +334,7 @@ class TrListener implements TrucoListener
 		cManager = getCManager();
 		
 		getTable().clearSigns();
+		getTable().setPrimerTurno(true);
 		
 		
 		tPlayer = (TrucoPlayer) event.getTrucoPlayer();

@@ -287,10 +287,10 @@ class TrucoTable extends JPanel implements ComponentListener {
 	private JPanel getJPmedio() {
 		if (jPmedio == null) {
 			jPmedio = new JPanel();
-			jPmedio.setLayout(new BorderLayout());
-			jPmedio.add(getPlayTable(), java.awt.BorderLayout.CENTER);
+			jPmedio.setLayout(new BoxLayout(jPmedio, BoxLayout.Y_AXIS));
+			jPmedio.add(getPlayTable());
 			//jPmedio.add(getJSPbotonesJugadas(), java.awt.BorderLayout.SOUTH);
-			jPmedio.add(getJPbotonesJugadas(), java.awt.BorderLayout.SOUTH);
+			jPmedio.add(getJPbotonesJugadas());
 		}
 		return jPmedio;
 	}
@@ -301,11 +301,15 @@ class TrucoTable extends JPanel implements ComponentListener {
 	 */    
 	public JPanel getJPbotonesJugadas() {
 		if (jPbotonesJugadas == null) {
+		    Dimension dim = new Dimension(300,50);
 			java.awt.GridLayout gridLayout1 = new GridLayout();
 			jPbotonesJugadas = new JPanel();
 			jPbotonesJugadas.setLayout(gridLayout1);
+			jPbotonesJugadas.setMinimumSize(dim);
+			jPbotonesJugadas.setPreferredSize(dim);
+			jPbotonesJugadas.setMaximumSize(new Dimension(1024,50));
 			jPbotonesJugadas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jugadas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12), java.awt.Color.blue));					
-			gridLayout1.setRows(1);
+			gridLayout1.setRows(1);			
 		}
 		return jPbotonesJugadas;
 	}

@@ -99,6 +99,8 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     private boolean esMiTurno;
 
+    private int primerTurno = 0;
+
     public Vector getPlayers() {
         return players;
     }
@@ -698,6 +700,7 @@ public class Table implements PTableListener, ChatPanelContainer,
      *  
      */
     private void loadPlays() {
+        //getJTrucoTable().getJPbotonesJugadas().setVisible(false);
         getJTrucoTable().getJPbotonesJugadas().removeAll();
         if (esMiTurno && aPlays != null && !aPlays.isEmpty()) {
             byte play;
@@ -714,11 +717,24 @@ public class Table implements PTableListener, ChatPanelContainer,
                 getJTrucoTable().getJPbotonesJugadas().add(
                         new ButtonPlayAction(this, play, name));
             }
-        }
-        //PP total - Ale
-        jFrame.dispatchEvent(new ContainerEvent(getJTrucoTable(),
-                ContainerEvent.COMPONENT_RESIZED, getJTrucoTable()
-                        .getJPbotonesJugadas()));
+            //getJTrucoTable().getJPbotonesJugadas().setVisible(true);
+        }        
+        if (esPrimerTurno()) {
+            //PP total - Ale
+            jFrame.dispatchEvent(new ContainerEvent(getJTrucoTable(),
+                    ContainerEvent.COMPONENT_RESIZED, getJTrucoTable()
+                            .getJPbotonesJugadas()));
+            primerTurno++;
+        } else
+            getJTrucoTable().getJPbotonesJugadas().repaint();
+    }
+
+    /**
+     * @return
+     */
+    private boolean esPrimerTurno() {
+        //TODO No se porque entra dos veces asi q PP unicamente :((
+        return primerTurno < 2;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -1028,17 +1044,29 @@ public class Table implements PTableListener, ChatPanelContainer,
         String txt = getJTrucoTable().getJlSaying().getText();
         if (txt.trim().length() == 0) {
             txt = "<html>Canto: ";
-        } else if(!txt.startsWith("<html>"))
-        {
+        } else if (!txt.startsWith("<html>")) {
             txt = "<html>" + txt;
         }
         txt = txt + "<font color=\""
-                + (team == TrucoTeam.ROJO ? "ff0000" : "0000ff") + "\"> - " + val + "</font>";
+                + (team == TrucoTeam.ROJO ? "ff0000" : "0000ff") + "\"> - "
+                + val + "</font>";
         getJTrucoTable().getJlSaying().setText(txt);
     }
 
     public void handStarted() {
-        getJTrucoTable().getJlSaying().setText("Canto: ");
+        getJTrucoTable().getJlSaying().setText("Canto: ");        
     }
+
+    /**
+     * @param b
+     */
+    public void setPrimerTurno(boolean b) {
+        if(b)
+            primerTurno = 0;
+        else
+            primerTurno = 2;
+    } 
+
+    
 }
 

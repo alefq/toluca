@@ -1,8 +1,8 @@
 /* PlayTablee.java
  * Created on Feb 9, 2005
  *
- * Last modified: $Date: 2005/02/10 07:55:55 $
- * @version $Revision: 1.9 $ 
+ * Last modified: $Date: 2005/02/23 19:32:57 $
+ * @version $Revision: 1.10 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.table;
@@ -217,9 +217,9 @@ public class PlayTable extends JPanel {
     }
 
     /** rutina de pintado */
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         synchronized (animator) {
-            super.paint(g);
+            super.paintComponent(g);
             if (animator.drawComplete)
                 switchImages();
             g.drawImage(biBuff[currBuff], offsetX, offsetY, this);
@@ -240,4 +240,5 @@ public class PlayTable extends JPanel {
         for (int i = 0; i < oPainter.size(); i++)
             ((ObjectsPainter) oPainter.get(i)).setOut(biBuff, afTrans);
     }
+    
 }
