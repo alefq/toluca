@@ -185,7 +185,7 @@ public class TrucoEvent
 	}
 	public void setCard(TrucoCard tc)
 	{
-		this.card = card;
+		this.card = tc;
 	}
 	
 	public TrucoCard getCard()

@@ -76,7 +76,7 @@ public class CommunicatorClient extends Communicator
 		try
 		{
 			//setSocket(new Socket("interno.roshka.com.py", 6767));
-			setSocket(new Socket("localhost", 6767));
+			setSocket(new Socket("ray-ray.roshka.com.py", 6767));
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 		} catch (UnknownHostException e)
 		{
