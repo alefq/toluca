@@ -185,20 +185,28 @@ implements RoomListener, TableListener,TrucoListener
 		{
 			
 			mesa=(TableServer)e.nextElement();
+			mesa.addTableServerListener(this);//se Adhiere como Listener powered by Cricco
 			//System.out.println(mesa.getTableNumber());
 			jugadores=(Vector)mesa.getPlayers();
 			eleMesa=new Element("Table");
 			eleMesa.setAttribute("number",String.valueOf(mesa.getTableNumber()));
+			eleMesa.setAttribute("host",String.valueOf(mesa.getHost().getName()));
 			for (Enumeration e2 = jugadores.elements() ; e2.hasMoreElements() ;)
 			{
 				jug=(TrucoPlayer)e2.nextElement();
 				player=new Element("Playert");
 				//System.out.println(jug.getName());
 				if (jug == null)
-					player.setAttribute("name","El PUTO");
-				else
-					player.setAttribute("name",jug.getName());
+				{
 				
+					player.setAttribute("name","El PUTO");
+				
+				}else{
+				
+					player.setAttribute("name",jug.getName());
+					int chair=mesa.getPlayerManager().getChair(jug);
+					player.setAttribute("chair",String.valueOf(chair));
+				}
 				eleMesa.addContent(player);
 				
 			}
@@ -208,6 +216,7 @@ implements RoomListener, TableListener,TrucoListener
 		
 		return doc;
 	}
+
 	int gameID;
 	int hand;
 	TrucoCard []cartas=new TrucoCard[3];

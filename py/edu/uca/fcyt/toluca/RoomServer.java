@@ -103,7 +103,8 @@ implements ChatPanelContainer
 		System.out.println("Dentor del create table del room server: " + player.getName());
 		TableServer tableServer= new TableServer(player);
 		
-		tableServer.addPlayer(player);
+		//tableServer.addPlayer(player);Comentado porque en el constructor del TableServer
+		//ya se esta haciendo un addPlayer, osea esto esta alpedo
 		//Table table = new Table(player, true);
 		vTables.add(tableServer);
 		fireTableCreated(tableServer);
@@ -122,6 +123,8 @@ implements ChatPanelContainer
 	protected void fireTableCreated(TableServer table)
 	{
 		//
+		getHashTable().put(new Integer(table.getTableNumber()),table);//Agregado por Cricco 
+		
 		System.out.println("dentro del firetalbe created del room server" );
 		//Vector players = table.getPlayers();
 		Vector playerstmp = new Vector();
@@ -420,6 +423,7 @@ implements ChatPanelContainer
 		}*/
 		/*Agrego el jugador a la lista de jugadores.*/
 		addPlayer(jogador);
+	
 		System.out.println("Dentro de fire user joined (Room Server) , jugador = " + jogador.getName());
 		RoomEvent re = new RoomEvent();
 		re.setType(RoomEvent.TYPE_PLAYER_JOINED);

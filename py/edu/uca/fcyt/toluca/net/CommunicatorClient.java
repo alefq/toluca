@@ -77,7 +77,7 @@ public class CommunicatorClient extends Communicator
 		{
 			//setSocket(new Socket("interno.roshka.com.py", 6767));
 			//setSocket(new Socket("ray-ray.roshka.com.py", 6767));
-			setSocket(new Socket("localhost", 6767));
+			setSocket(new Socket("ray-ray.roshka.com.py", 6767));
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 		} catch (UnknownHostException e)
 		{
@@ -191,14 +191,20 @@ public class CommunicatorClient extends Communicator
 				System.out.println("El origen es: " + origen);
 				if (origen.equalsIgnoreCase("room"))
 				{
-					pieza.showChatMessage(new TrucoPlayer(user, 0), message);
+				
+					//pieza.showChatMessage(new TrucoPlayer(user, 0), message);
+					pieza.showChatMessage(pieza.getPlayer(user),message);
+					
 				} else
 				{
-					Table t = (Table) getTables().get(origen);
+					//Table t = (Table) getTables().get(origen);
+					Table t = (Table)(pieza.getHashTable().get(new Integer(origen)));
 					if (t != null)
 					{
-						t.showChatMessage(new TrucoPlayer(user, 0), message);
+						//t.showChatMessage(new TrucoPlayer(user, 0), message);
+						t.showChatMessage(pieza.getPlayer(user),message);
 					} else
+					
 					{
 						System.out.println(
 						"NO PUDIMOS ENTREGAR EL CHAT!!! !@@!#$#@@Q");
@@ -261,7 +267,9 @@ public class CommunicatorClient extends Communicator
 			if (aux.compareTo("CantarTanto") == 0)
 			{
 				System.out.println("quieron cantar mi tanto!!");
-				TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+				
+				//TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+				TrucoGameClient myCliente = (TrucoGameClient)((Table)pieza.getHashTable().get(new Integer(gameID))).getTGame();
 				TrucoPlayer myPlayer = pieza.getPlayer(userAux);
 				
 				int myValue = tantoAux;
@@ -489,7 +497,9 @@ public class CommunicatorClient extends Communicator
 			if (aux.equals("TableLeft"))
 			{
 				// Hacer lo que hay que hacer
-				Table t = (Table) getTables().get(atabelaDaKicked);
+				
+				//Table t = (Table) getTables().get(atabelaDaKicked);
+				Table t=(Table)(pieza.getHashTable().get(new Integer(atabelaDaKicked)));
 				TrucoPlayer tp = (TrucoPlayer) pieza.getPlayer(oTrucoPlayerDaTv);
 				t.removePlayer(tp);
 				
@@ -519,7 +529,9 @@ public class CommunicatorClient extends Communicator
 			{
 				//System.out.println("MESSAGE:"+element.getText());
 				gameID = Integer.parseInt(element.getAttributeValue("id"));
-				elGameDeAca = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+				//elGameDeAca = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+				//cambiado por cricco
+				elGameDeAca = (TrucoGameClient)((Table)pieza.getHashTable().get(new Integer(gameID))).getTGame();
 			}
 			if (aux.compareTo("Hand") == 0)
 			{
@@ -583,7 +595,8 @@ public class CommunicatorClient extends Communicator
 			{
 				//System.out.println("MESSAGE:"+element.getText());
 				tableIdAux = Integer.parseInt(element.getAttributeValue("id"));
-				laTabelaAsdf = (Table)(getTables().get(String.valueOf(tableIdAux)));
+				//laTabelaAsdf = (Table)(getTables().get(String.valueOf(tableIdAux)));
+				laTabelaAsdf = (Table)(pieza.getHashTable().get(new Integer(tableIdAux)));
 				System.out.println("en table");
 			}
 			if (aux.compareTo("Hand") == 0)
@@ -633,7 +646,8 @@ public class CommunicatorClient extends Communicator
 				+ " El valor es "
 				+ te.getCard().getValue());*/
 				TrucoPlayer myPlayer = pieza.getPlayer(userAux);
-				TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+				//TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+				TrucoGameClient myCliente = (TrucoGameClient)((Table)pieza.getHashTable().get(new Integer(gameID))).getTGame();
 				TrucoCard myCard = myCliente.getCard(kindCardAux,valueCardAux);
 				System.out.println("1)Quiere Jugar + "+userAux);
 				System.out.println("2)Quiere Jugar + "+myPlayer.getName());
@@ -708,7 +722,8 @@ public class CommunicatorClient extends Communicator
 				try
 				{
 					System.out.println("queriendo hacer jugada de canto!!!!");
-					TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+					//TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
+					TrucoGameClient myCliente = (TrucoGameClient)((Table)pieza.getHashTable().get(new Integer(gameID))).getTGame();
 					TrucoPlayer myPlayer = pieza.getPlayer(userAux);
 					TrucoEvent ev = new TrucoEvent(myCliente ,handAux,myPlayer,(byte)typeAux);
 					TrucoPlay tp = ev.toTrucoPlay();
@@ -794,7 +809,9 @@ public class CommunicatorClient extends Communicator
 				try
 				{
 					String tableid=String.valueOf(tableIdAux);
-					Table tabela = (Table)getTables().get(tableid);
+					//Table tabela = (Table)getTables().get(tableid);
+					//la linea de arriba se cambia por la de abajo by Cricco
+					Table tabela=(Table)(pieza.getHashTable().get(new Integer(tableid)));
 					TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
 					//if (te.getTypeEvent() != 50) {
 					if (userAux!=null)
@@ -901,11 +918,17 @@ public class CommunicatorClient extends Communicator
 				
 				try
 				{
+					
+					System.out.println("Se recibe cartas\n");
 					String tableid=String.valueOf(tableIdAux);
-					Table tabela = (Table)getTables().get(tableid);
+					//Table tabela = (Table)getTables().get(tableid);
+					//la linea de arriba se camibia por la de abajo
+					Table tabela=(Table)(pieza.getHashTable().get(new Integer(tableid)));
 					TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
 					//ucoGame.play(te);
 					trucoGame.recibirCartas(elPlayerDeAca, cartasIMP);
+					System.out.println("Se recibio bien las cartas\n");
+					
 				} catch (java.lang.NullPointerException e)
 				{
 					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
@@ -983,8 +1006,22 @@ public class CommunicatorClient extends Communicator
 			(
 				event.toTrucoPlay().toXml()
 			);
+			System.out.println("DEntro de Play se va a enviar el play\n");
+			impXml(event.toTrucoPlay().toXml());
 		}
 		
+	}
+	public void impXml(Document doc)
+	{
+		try {
+       
+				XMLOutputter serializer = new XMLOutputter("  ", true);
+       
+				serializer.output(doc, System.out);
+			}
+			catch (IOException e) {
+			System.err.println(e);
+			}
 	}
 	
 	public void turn(TrucoEvent event)
@@ -1082,8 +1119,12 @@ public class CommunicatorClient extends Communicator
 				try
 				{
 					String tableid = String.valueOf(idAux);
-					Table tabela = (Table) getTables().get(tableid);
-					
+					//Table tabela = (Table) getTables().get(tableid);
+					//la linea de arriba se reemplaza por la de abajo by Cricco
+					Table tabela =(Table)(pieza.getHashTable().get(new Integer(tableid)));
+					System.out.println("Imprimir los tables");
+					py.edu.uca.fcyt.util.HashUtils.imprimirHash(pieza.getHashTable());
+					System.out.println("La tabla en la que se va a sentar es: "+tabela);
 					tabela.sitPlayer(pieza.getPlayer(userAux2), posAux);
 				} catch (java.lang.NullPointerException e)
 				{
@@ -1177,10 +1218,13 @@ public class CommunicatorClient extends Communicator
 			if (aux.equals("TableJoined"))
 			{
 				// Hacer lo que hay que hacer
-				Table t = (Table) getTables().get(tableidAux4);
+				//Table t = (Table) getTables().get(tableidAux4);
+				//La linea de arriba cambie por la de abajo by Cricco
+				Table t= (Table)(pieza.getHashTable().get(new Integer(tableidAux4)));
 				TrucoPlayer tp = (TrucoPlayer) pieza.getPlayer(playerAux4);
 				System.out.println(
 				"Voy a hacer un t.addPlayer de " + tp.getName());
+				System.out.println("Vamos a imprimr la tabla \n"+t);
 				t.addPlayer(tp);
 				
 				if (getAssociatedPlayer().getName().equals(tp.getName()))
@@ -1197,7 +1241,7 @@ public class CommunicatorClient extends Communicator
 		
 		if (o instanceof Element)
 		{
-			System.out.println("Cricco morgue: " + ((Element) o).getName());
+			System.out.println("Detro de Table Created elementos: " + ((Element) o).getName());
 			Element element = (Element) o;
 			aux = element.getName();
 			if (aux.equals("Player"))
@@ -1231,6 +1275,7 @@ public class CommunicatorClient extends Communicator
 					getTables().put(tableidAux, t);
 					System.out.println("En el cliente, voy a crear un table.!");
 					this.pieza.addTable(t);
+					
 					t.addPlayer(tp);
 					
 					t.show();
@@ -1274,23 +1319,67 @@ public class CommunicatorClient extends Communicator
 				Integer.parseInt(element.getAttributeValue("rating"));
 				TrucoPlayer jug1 = new TrucoPlayer(jugname, rating);
 				Players.add(jug1);
-				System.out.println("Player" + jugname);
+				System.out.println("Player: " + jugname + "Rating: "+rating);
+				
+				if (!jug1.getName().equals(getAssociatedPlayer().getName()))
+					pieza.addPlayer(jug1);
 			}
 			if (aux.compareTo("Playert") == 0)
 			{
 				String jugname = element.getAttributeValue("name");
-				//System.out.println("Playert:  "+jugname);
-				TrucoPlayer jugaux = new TrucoPlayer(jugname, 0);
-				((Table) (Mesas.get(current))).addPlayer(jugaux);
+			
+				int chair=Integer.parseInt(element.getAttributeValue("chair"));
+				System.out.println("Player table: "+jugname +" en la silla: "+chair);
+				TrucoPlayer jug=pieza.getPlayer(jugname);
+				//aca en vez de instanciar hay que obtener la ref
+				//verdadera al jugador juganame
+				//en table hay que hacer el addtable que ande verdaderamente
+				Table tabela=(Table)(Mesas.get(current));
+				
+				tabela.addPlayer(jug);
+				
+				tabela.sitPlayer(jug,chair);
+				
 				//mesa.addPlayer(jugaux);
 			}
 			if (aux.compareTo("Table") == 0)
 			{
-								/*                Table mesa=new Table();
-												int number=Integer.parseInt(element.getAttributeValue("number"));
-												mesa.setTableNumber(number);
-												current=Mesas.size();
-												Mesas.add(mesa); */
+				String host=element.getAttributeValue("host");
+				
+				TrucoPlayer jughost=pieza.getPlayer(host);
+				//Table mesa=new Table(jughost,true);
+				String tableid=element.getAttributeValue("number");
+				//mesa.setTableNumber(number);
+				current=Mesas.size();
+				
+				System.out.println("La mesa: "+tableid +"Con el host: "+ host);
+				
+								
+				Table t = null;
+				if (getAssociatedPlayer().getName().equals(jughost.getName()))
+				{
+					t = new Table(getAssociatedPlayer(), true);
+					t.setTableNumber(Integer.parseInt(tableid));
+					t.addTableListener(this);
+					getTables().put(new Integer(tableid), t);
+					System.out.println("En el cliente, voy a crear un table.!");
+					this.pieza.addTable(t);
+					//t.addPlayer(jughost);
+					Mesas.add(t);
+					//t.show();
+				} else
+				{
+					t = new Table(getAssociatedPlayer(), false);
+					t.setTableNumber(Integer.parseInt(tableid));
+					t.addTableListener(this);
+					getTables().put(new Integer(tableid), t);
+					System.out.println("En el cliente, voy a crear un table.!");
+					this.pieza.addTable(t);
+					//t.addPlayer(jughost);
+					Mesas.add(t);
+				}
+				
+				
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
@@ -1304,38 +1393,28 @@ public class CommunicatorClient extends Communicator
 				
 				TrucoPlayer jug;
 				Table mesa1;
-				for (Enumeration e = Players.elements();
-				e.hasMoreElements();
-				)
-				{
-					jug = (TrucoPlayer) e.nextElement();
-					System.out.println(
-					"================= RECIBI Player: "
-					+ jug.getName()
-					+ " Rating: "
-					+ jug.getRating()
-					+ "\n");
-					
-					if (!jug.getName().equals(getAssociatedPlayer().getName()))
-						pieza.addPlayer(jug);
-				}
-				for (Enumeration e = Mesas.elements(); e.hasMoreElements();)
+	
+			
+				/*for (Enumeration e = Mesas.elements(); e.hasMoreElements();)
 				{
 					mesa1 = (Table) e.nextElement();
+					
 					System.out.println(
 					"==================  RECIBI Table number: "
 					+ mesa1.getTableNumber()
 					+ "\n");
 					Vector jugadores = (Vector) mesa1.getPlayers();
-										/*for(Enumeration e2=jugadores.elements();e2.hasMoreElements();) {
-										jug=(Player)e2.nextElement();
-										System.out.println("======================RECIBI Player: "+jug.getName()+" Rating: "+jug.getRating()+"\n");
-										}*/
+										for(Enumeration e2=jugadores.elements();e2.hasMoreElements();) {
+										jug=(TrucoPlayer)e2.nextElement();
+										System.out.println("en table======================RECIBI Player: "+jug.getName()+" Rating: "+jug.getRating()+"\n");
+										}
 					
-					pieza.addTable(mesa1);
+					pieza.addTable(mesa1);// Info de la pieza comentado para pruebas de Redes descomentar para que ande
+				
 					
-				}
-			} //el if cuando termina de leer el paquete
+				
+				}*/
+			} 	
 		}
 		
 	}
@@ -1432,7 +1511,10 @@ public class CommunicatorClient extends Communicator
 				
 				System.out.println("Requesting client game start...");
 				
-				Table t = (Table) (getTables().get(String.valueOf(idAux)));
+				//Table t = (Table) (getTables().get(String.valueOf(idAux)));
+				//La linea de arriba fue cambiada por Cricco vale abajo
+				Table t=(Table)(pieza.getHashTable().get(new Integer(idAux)));
+				
 				tTeams = t.createTeams();
 				
 				// se crea el TrucoGame con los teams creados
@@ -1446,6 +1528,7 @@ public class CommunicatorClient extends Communicator
 				t.startGame(tGame);
 				// da la orden de inicio de juego a 'tGame'
 				tGame.startGameClient();
+				System.out.println("Parece que el juego empezo hei Communicator Client");
 				
 			}
 		}

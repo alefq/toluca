@@ -71,7 +71,8 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 	
 	public Table()
 	{
-		
+		players =new Vector();
+		//Constructor para prueba de Redes. Dani Cricco
 	}
 	
 	/** Crea un Table asociado con 'player' */
@@ -160,6 +161,10 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 		jtTable.jpWatchers.addPlayer(player.getName());
 		tEventMan.firePlayerJoined(player);
 	}
+	public void addPlayer(TrucoPlayer player,int aux)
+	{
+		players.add(player);
+	}//solo para pruebas no se usa. Dani Cricco
 	
 	/**
 	 * Elimina al jugador 'player' de la mesa.

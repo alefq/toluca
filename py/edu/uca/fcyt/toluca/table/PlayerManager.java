@@ -8,7 +8,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 /** 
  * Maneja la posicion de los jugadores en la mesa
  */
-class PlayerManager
+public class PlayerManager
 {
 
 	protected TrucoPlayer actualPlayer;

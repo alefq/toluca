@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.*;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -21,7 +22,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.TableServer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
-
+import py.edu.uca.fcyt.toluca.table.Table;
 /**
  *
  * @author  PABLO JAVIER
@@ -235,13 +236,29 @@ public class CommunicatorServer extends Communicator
 		
 		Document doc;
 		//re.setPlayerss(pieza.getPlayerss());
+		System.out.println("Login Completed");
+		System.out.println("antes de cargar tables");
+		impVector((Vector)re.getTabless());
 		re.setPlayerss(pieza.getVPlayers());
 		re.setTabless(pieza.getVTables());
+		System.out.println("Despues de cargar tables");
+		impVector((Vector)re.getTabless());
 		
 		doc = super.xmlCreateLoginOk(re);
+		System.out.println("*************Paquete login que va al cliente ************");
+		impXml(doc);
 		super.sendXmlPackage(doc);
 	}
-	
+	public void impVector(Vector myvec)
+	{
+		System.out.println("Dentro de imp Vector");
+		for(Enumeration e=myvec.elements();e.hasMoreElements();)
+		{
+			System.out.println("Dentro imp Vector bucle");
+			System.out.println(e.nextElement());
+			
+		}
+	}
 	public void xmlReadChatMsg(Object o)
 	{
 		String aux;
@@ -281,10 +298,15 @@ public class CommunicatorServer extends Communicator
 					pieza.sendChatMessage(new TrucoPlayer(user, 0), message);
 				} else
 				{
-					TableServer t = (TableServer) getTables().get(origen);
+					//TableServer t = (TableServer) getTables().get(origen);
+					TableServer t=(TableServer)(pieza.getHashTable().get(new Integer(origen)));
+					System.out.println("Dentro del CServer chat message la tabla es "+t);
+					
 					if (t != null)
 					{
-						t.sendChatMessage(new TrucoPlayer(user, 0), message);
+						//t.sendChatMessage(new TrucoPlayer(user, 0), message);
+						t.sendChatMessage(pieza.getPlayer(user),message);
+						
 					} else
 					{
 						System.out.println(
@@ -306,7 +328,10 @@ public class CommunicatorServer extends Communicator
 	TrucoPlayer elPlayerDeAcaOtraVez;
 	public void xmlReadTrucoPlay(Object o)
 	{
-		TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
+		//TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
+		//Cambiado por Cricco vale la de abajo
+		TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tableIdAux)));
+		
 		TrucoGame tgame = tabela.getTrucoGame();
 		String aux;
 		if (o instanceof Element)
@@ -488,13 +513,15 @@ public class CommunicatorServer extends Communicator
 			while (iterator.hasNext())
 			{
 				Object child = iterator.next();
-				xmlReadTableJoinRequest(child);
+				xmlReadTableLeftRequest(child);
 			}
 			if (aux.compareTo("TableLeftRequest") == 0)
 			{
 				try
 				{
-					TableServer tstmp = (TableServer) getTables().get(tableid);
+					//TableServer tstmp = (TableServer) getTables().get(tableid);
+					TableServer tstmp=(TableServer)(pieza.getHashTable().get(new Integer(tableid)));
+					
 					TrucoPlayer tptmp = pieza.getPlayer(userAux);
 										
 					//TableEvent te = new TableEvent(TableEvent.EVENT_playerKickRequest, tstmp, tptmp, 0);					
@@ -512,7 +539,9 @@ public class CommunicatorServer extends Communicator
 		}
 	}
 	public void xmlReadTrucoGameInfo (Object o){
-		TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
+		//TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
+		TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tableIdAux)));
+		
 		TrucoGame tgame = tabela.getTrucoGame();
 		String aux;
 		if (o instanceof Element)
@@ -581,8 +610,10 @@ public class CommunicatorServer extends Communicator
 				//ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
 				try
 				{
-					TableServer tabela =
-					(TableServer) getTables().get(String.valueOf(tableid));
+					//TableServer tabela =
+					//(TableServer) getTables().get(String.valueOf(tableid));
+					TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tableid)));
+					
 					tabela.startGame();
 				} catch (java.lang.NullPointerException e)
 				{
@@ -640,7 +671,7 @@ public class CommunicatorServer extends Communicator
 			if (aux.compareTo("PlayerSitRequest") == 0)
 			{
 				System.out.println(
-				"DENTRO DEL COMMUNICATOR SERVFER/////////////////");
+				"DENTRO DEL COMMUNICATOR SERVer carajo////////////////");
 				System.out.println("El table a sentarse es " + idAux);
 				System.out.println("La posicion es " + posAux);
 				//ATENCION ESTE TRY HAY QUE DESCOMENTAR PARA QUE FUNCIONE. ESTA COMOENTADO PORQUE EL TABLESERVER
@@ -648,8 +679,13 @@ public class CommunicatorServer extends Communicator
 				try
 				{
 					String tid = String.valueOf(idAux);
-					TableServer tabela = (TableServer) getTables().get(tid);
+					//TableServer tabela = (TableServer) getTables().get(tid);
+					//La linea de arrriba fue cambiada por cricco ahora se usa la de abajo
+					TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tid)));
+					System.out.println("********#######Dentro de sit 1\n"+tabela);
 					tabela.sitPlayer(pieza.getPlayer(otroPlayerName), posAux);
+					System.out.println("********#######Dentro de sit 2\n"+tabela);
+					
 				} catch (java.lang.NullPointerException e)
 				{
 					System.out.println(
@@ -907,7 +943,19 @@ public class CommunicatorServer extends Communicator
 				+ "/"
 				+ player.getName());
 				//pieza.createTable(new TrucoPlayer(user));
-				pieza.createTable(pieza.getPlayer(user));
+				TrucoPlayer auxi=pieza.getPlayer(user);
+				pieza.createTable(auxi);
+				
+				
+				for(Enumeration e=getTables().elements();e.hasMoreElements();)
+				{
+					TableServer tabela=(TableServer)e.nextElement();
+					System.out.println("*****#####*****La tabla dentro de create table\n"+tabela);	
+		
+				}	
+				
+				
+				
 			}
 		}
 	}
@@ -980,9 +1028,19 @@ public class CommunicatorServer extends Communicator
 						 tstmp.addPlayer(tptmp);
 					 }
 				 }*/
+				 System.out.println("Dentro de table join request imp datos tablas\n");
+				 py.edu.uca.fcyt.util.HashUtils.imprimirHash(pieza.getHashTable());
+				 py.edu.uca.fcyt.util.HashUtils.imprimirHash(pieza.getHashPlayers());
+				 System.out.println("La tabla"+pieza.getHashTable().get(new Integer(tableid)));
+				 System.out.println("El playername"+userAux);
+				 System.out.println("El player en verdad: "+pieza.getPlayer(userAux));
 				try
 				{
-					TableServer tstmp = (TableServer) getTables().get(tableid);
+					
+					//TableServer tstmp = (TableServer) getTables().get(tableid);
+					//la linea de arriba fue cambiada por la de abajo. Powered Cricco
+					TableServer tstmp=(TableServer)(pieza.getHashTable().get(new Integer(tableid)));
+					System.out.println("La tabla a la cual se va adherir es\n"+tstmp);
 					TrucoPlayer tptmp = pieza.getPlayer(userAux);
 					
 					RoomEvent re = new RoomEvent();
@@ -1019,5 +1077,62 @@ public class CommunicatorServer extends Communicator
 		
 		Document doc = new Document(ROOT);
 		return doc;
+	}
+	public void impXml(Document doc)
+	{
+		try {
+       
+				XMLOutputter serializer = new XMLOutputter("  ", true);
+       
+				serializer.output(doc, System.out);
+			}
+			catch (IOException e) {
+			System.err.println(e);
+			}
+	}
+	public static void main(String[] args)
+	{
+					RoomEvent te=new RoomEvent();
+					
+					
+       				Vector jugadores=new Vector();
+					jugadores.add(new TrucoPlayer("Dani",105));
+					jugadores.add(new TrucoPlayer("Cricco",5));
+					jugadores.add(new TrucoPlayer("Crey",108));
+					
+					CommunicatorServer cc=new CommunicatorServer();
+					te.setPlayers(jugadores);
+					
+					Vector mesas=new Vector();
+					TableServer mesa1=new TableServer();
+					mesa1.addPlayer(new TrucoPlayer("Jose",5));
+					mesa1.addPlayer(new TrucoPlayer("Menganito",8));
+					
+					
+					mesas.add(mesa1);
+					te.setTabless(mesas);
+					
+					TableServer mesa2=new TableServer();
+					mesa2.addPlayer(new TrucoPlayer("Juan",5));
+					mesa2.addPlayer(new TrucoPlayer("Fulanito",8));
+					mesas.add(mesa2);
+					mesa2.setTableNumber(5);
+					te.setTabless(mesas);
+					Document doc=cc.xmlCreateLoginOk(te);
+														
+					cc.impXml(doc);
+					
+					CommunicatorClient cc1 = new CommunicatorClient();
+					System.out.println("************************");
+					List children = doc.getContent();
+					Iterator iterator = children.iterator();
+					Object child = iterator.next();
+					Element element = (Element) child;
+					String aux = element.getName();
+				
+					cc1.xmlReadLoginOk(child);
+					System.out.println("El table es: "+mesa1);
+					
+					 //cc.cabecera(doc);
 	}
 }

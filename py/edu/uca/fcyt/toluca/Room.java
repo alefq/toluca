@@ -170,16 +170,19 @@ implements ChatPanelContainer {
             System.out.println("Voy a agregar en el servidor: " + player.getName());            
         }
         players.put(player.getName(), player); //se carga al vector de jugadores
+        System.out.println("Va a imprimr el hash de players by Cricco");
         py.edu.uca.fcyt.util.HashUtils.imprimirHash(players);
     }
-
+	public Hashtable getHashPlayers(){return players;}
+	public Hashtable getHashTable(){return tables;}
     public void addTable(Table table) {        /** lock-end */
         if (this instanceof RoomClient) {
             System.out.println("Voy a agregar en el cliente la tabela: " + table.getOrigin());
         } else {
             System.out.println("Voy a agregar en el servidor la tabela: " + table.getOrigin());            
         }
-        tables.put(table.getOrigin(), table); //se carga al vector de jugadores
+        tables.put(new Integer(table.getTableNumber()), table); //se carga la tabla nueva pow
+        System.out.println("Imprimir los tables");
         py.edu.uca.fcyt.util.HashUtils.imprimirHash(tables);
     }
     
