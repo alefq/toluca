@@ -70,8 +70,7 @@ public class RoomUI extends JApplet {
         ImageIcon logo = loadImage("LogoSinFondo.gif");
 
         double width = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-        PanelGradiente panel = new PanelGradiente(logo, new Color(50, 255, 50),
-                50, "Dani Cricco", 200);
+        PanelGradiente panel = new PanelGradiente();
 
         panel.setMinimumSize(new Dimension(logo.getIconWidth(), logo
                 .getIconHeight()));

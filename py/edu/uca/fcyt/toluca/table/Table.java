@@ -4,7 +4,6 @@ package py.edu.uca.fcyt.toluca.table;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -213,11 +212,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         }
 
         jFrame.addWindowListener(this);
-        trucoTable.getChatPanel().setCpc(this);
-        trucoTable.getChatPanel().showChatMessage(
-                actualPlayer,
-                "Inicia tus mensajes con \\ si no quieres que "
-                        + "salgan en la mesa.", new String[] { "[", "]" });
+        trucoTable.getChatPanel().setCpc(this);        
 
         new Thread(animator, "animator").start();
     }
@@ -718,15 +713,15 @@ public class Table implements PTableListener, ChatPanelContainer,
                         new ButtonPlayAction(this, play, name));
             }
             //getJTrucoTable().getJPbotonesJugadas().setVisible(true);
-        }        
-        if (esPrimerTurno()) {
+        }
+        /*if (esPrimerTurno()) {
             //PP total - Ale
             jFrame.dispatchEvent(new ContainerEvent(getJTrucoTable(),
                     ContainerEvent.COMPONENT_RESIZED, getJTrucoTable()
                             .getJPbotonesJugadas()));
             primerTurno++;
-        } else
-            getJTrucoTable().getJPbotonesJugadas().repaint();
+        }*/
+        getJTrucoTable().getJPbotonesJugadas().repaint();
     }
 
     /**
@@ -915,7 +910,7 @@ public class Table implements PTableListener, ChatPanelContainer,
     void flash(boolean on) {
         this.esMiTurno = on;
         tFrame.flash(on);
-        loadPlays();
+        loadPlays();        
     }
 
     protected TTextAnimator getTTextAnimator() {
@@ -1054,19 +1049,18 @@ public class Table implements PTableListener, ChatPanelContainer,
     }
 
     public void handStarted() {
-        getJTrucoTable().getJlSaying().setText("Canto: ");        
+        getJTrucoTable().getJlSaying().setText("Canto: ");
     }
 
     /**
      * @param b
      */
     public void setPrimerTurno(boolean b) {
-        if(b)
+        if (b)
             primerTurno = 0;
         else
             primerTurno = 2;
-    } 
+    }
 
-    
 }
 

@@ -307,7 +307,16 @@ class TrucoTable extends JPanel implements ComponentListener {
 		if (jPbotonesJugadas == null) {
 		    Dimension dim = new Dimension(300,50);
 			java.awt.GridLayout gridLayout1 = new GridLayout();
-			jPbotonesJugadas = new JPanel();
+			jPbotonesJugadas = new JPanel() {
+			    /* (non-Javadoc)
+                 * @see java.awt.Component#repaint()
+                 */
+                public void repaint() {
+                    // TODO Auto-generated method stub
+                    super.repaint();
+                    validateTree();
+                }
+			};
 			jPbotonesJugadas.setLayout(gridLayout1);
 			jPbotonesJugadas.setMinimumSize(dim);
 			jPbotonesJugadas.setPreferredSize(dim);

@@ -1,106 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="H:/borrame/tolucaClient.jar"/>
-    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/toluca/tolucaClient.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
-    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
-        <sealing sealJar="false">
-            <packagesToSeal/>
-            <packagesToUnSeal/>
-        </sealing>
-    </manifest>
-    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.inicio"/>
-        <javaElement handleIdentifier="=toluca/&lt;rath.jmsn.util"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/2.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.state"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/4.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/6.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/1.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/5.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/7.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/2.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/4.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/9.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/12.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{Communicator.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/5.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.event"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{EventDispatcher.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/6.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsersManager.java"/>
-        <javaElement handleIdentifier="=toluca/&lt;rath.jmsn.ui"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginDialog.java"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.sound"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{RoomServer.java"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.webmanager"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/10.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{RoomClient.java"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/7.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/12.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/3.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/3.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/2.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.game"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/2.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/9.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/10.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame.statusGameCliente"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/12.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{LoginFailedException.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/1.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/8.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/3.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/3.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/1.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/3.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/9.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/4.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.animation"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsers.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/10.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{EventDispatcherClient.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/11.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/10.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/0.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/11.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{CommunicatorClient.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/7.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{Room.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/8.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/8.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.net{XmlPackagesSession.java"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.resources.emoticon"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/6.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/1.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/4.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{HashUtils.java"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.util"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginPanel.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/5.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.game"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/6.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{TolucaConstants.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/11.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{ConnectionManager.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/9.jpg"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.resources"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/8.jpg"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/6.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/4.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/9.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/1.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/8.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/2.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/5.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/11.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{DbOperations.java"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/7.gif"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table"/>
-        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.guinicio"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/5.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/12.gif"/>
-        <file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/7.jpg"/>
-    </selectedElements>
+<jar path="/tmp/tolucaClient.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/toluca/tolucaClient.jardesc" exportErrors="true" exportWarnings="true" overwrite="false" saveDescription="true" useSourceFolders="false"/>
+<manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+<sealing sealJar="false">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+<javaElement handleIdentifier="=toluca/&lt;rath.jmsn.util"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.inicio"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/2.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.state"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/4.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/6.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/1.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/5.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/7.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/2.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/4.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/9.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/12.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{Communicator.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/5.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.event"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{EventDispatcher.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/6.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsersManager.java"/>
+<javaElement handleIdentifier="=toluca/&lt;rath.jmsn.ui"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginDialog.java"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.sound"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{RoomServer.java"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.webmanager"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/10.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{RoomClient.java"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/7.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/12.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/3.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/3.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/2.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.game"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/2.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/9.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/10.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame.statusGameCliente"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/12.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{LoginFailedException.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/1.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/8.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/3.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/3.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/1.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/3.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/9.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/4.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.animation"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsers.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/10.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{EventDispatcherClient.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/11.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/10.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/0.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/11.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{CommunicatorClient.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/7.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{Room.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/8.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/8.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.net{XmlPackagesSession.java"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.resources.emoticon"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/6.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/1.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/4.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{HashUtils.java"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.util"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginPanel.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/5.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.game"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/6.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{TolucaConstants.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/11.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{ConnectionManager.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/9.jpg"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.resources"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/8.jpg"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/6.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/4.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/9.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/1.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/8.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/2.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Oro/5.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/11.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{DbOperations.java"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Espada/7.gif"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.guinicio"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Copa/5.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/Basto/12.gif"/>
+<file path="/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/7.jpg"/>
+</selectedElements>
 </jardesc>
