@@ -31,7 +31,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *    $Id: ChatArea.java,v 1.1 2005/01/14 13:45:58 afeltes Exp $
+ *    $Id: ChatArea.java,v 1.2 2005/01/17 15:16:08 afeltes Exp $
  */
 package rath.jmsn.ui;
 
@@ -73,7 +73,7 @@ import rath.jmsn.util.Emoticon;
  * Special thank to pistos (Min-Jong Kim)
  *
  * @author Jangho Hwang, rath@linuxkorea.co.kr
- * @version $Id: ChatArea.java,v 1.1 2005/01/14 13:45:58 afeltes Exp $
+ * @version $Id: ChatArea.java,v 1.2 2005/01/17 15:16:08 afeltes Exp $
  */
 public abstract class ChatArea extends JTextPane implements ActionListener, MouseListener, MouseMotionListener
 {
@@ -181,6 +181,7 @@ public abstract class ChatArea extends JTextPane implements ActionListener, Mous
 			this.setEditable(false);
 			// Temporary patch code.
 			this.getDocument().insertString(this.getDocument().getLength(), "", style);
+			setCaretPosition(getDocument().getLength());
 		}
 		catch(Exception e)
 		{
@@ -351,7 +352,7 @@ public abstract class ChatArea extends JTextPane implements ActionListener, Mous
 			 * the browser to open will change to customize.
 			 */
 			cmd[0] = System.getProperty("os.name").startsWith("Windows") ?
-				"explorer" : "netscape";
+				"explorer" : "mozilla";
 			cmd[1] = "\"" + urls + "\"";
 			Runtime.getRuntime().exec( cmd );
 		}
