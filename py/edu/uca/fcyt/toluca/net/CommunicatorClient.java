@@ -861,6 +861,7 @@ public class CommunicatorClient extends Communicator {
                 tGame = new TrucoGameClient(tTeams[0], tTeams[1]);
                 
                 // se llama al 'startGame' de todas las tablas
+				tGame.addTrucoListener(this);
                 t.startGame(tGame);
                 // da la orden de inicio de juego a 'tGame'
                 tGame.startGameClient();
