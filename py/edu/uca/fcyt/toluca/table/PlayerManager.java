@@ -12,7 +12,7 @@ class PlayerManager {
 
 	protected TrucoPlayer actualPlayer;
 
-	protected Vector players;/*
+	protected Vector sittedPlayers;/*
 							  * Vector de referencia de jugadores cuyo subindice
 							  * corresponde al numero de su silla
 							  */
@@ -21,9 +21,9 @@ class PlayerManager {
 
 	/** Crea un PlayerManager */
 	public PlayerManager(int playerCount) {
-		players = new Vector(playerCount);//vector de referencias
+		sittedPlayers = new Vector(playerCount);//vector de referencias
 		//de los players
-		players.setSize(playerCount);
+		sittedPlayers.setSize(playerCount);
 	}
 
 	public PlayerManager() {
@@ -34,13 +34,13 @@ class PlayerManager {
 	 * Sienta al jugador en un numero de silla correspondiente
 	 */
 	public void sitPlayer(TrucoPlayer p, int chair) {
-		if (players.contains(p))
-			throw new TableException("Jugador ya estï¿½ sentado");
+		if (sittedPlayers.contains(p))
+			throw new TableException("Jugador ya está sentado");
 
 		if (getPlayer(chair) != null)
 			throw new TableException("Silla ocupada");
 
-		players.set(chair, p);
+		sittedPlayers.set(chair, p);
 	}
 
 	/**
@@ -54,18 +54,18 @@ class PlayerManager {
 
 		player = getPlayer(chair);
 		if (player == null)
-			throw new TableException("Silla vacï¿½a");
+			throw new TableException("Silla vacía");
 
 		if (actualPlayer == player)
 			actualPlayer = null;
 
-		players.set(chair, null);
+		sittedPlayers.set(chair, null);
 		return player;
 	}
 
 	public void setActualPlayer(TrucoPlayer p) {
-		Util.verifParam(p != null, "Parï¿½metro 'p' nulo");
-		Util.verif(players.contains(p), "Jugador " + p.getName()
+		Util.verifParam(p != null, "Parámetro 'p' nulo");
+		Util.verif(sittedPlayers.contains(p), "Jugador " + p.getName()
 				+ " no agregado");
 
 		actualPlayer = p;
@@ -90,17 +90,17 @@ class PlayerManager {
 		// crea el vector de 2 equipos
 		teams = new Vector[] { new Vector(3), new Vector(3) };
 
-		for (int i = 0; i < players.size(); i++) {
-			player = players.get(i);
+		for (int i = 0; i < sittedPlayers.size(); i++) {
+			player = sittedPlayers.get(i);
 			if (player != null)
 				teams[i % 2].add(player);
 		}
 
 		if (teams[0].size() == teams[1].size()) {
-			players.clear();
+			sittedPlayers.clear();
 			for (int i = 0; i < teams[0].size(); i++) {
-				players.add(teams[0].get(i));
-				players.add(teams[1].get(i));
+				sittedPlayers.add(teams[0].get(i));
+				sittedPlayers.add(teams[1].get(i));
 			}
 
 			started = true;
@@ -145,11 +145,11 @@ class PlayerManager {
 
 	public TrucoPlayer getPlayer(int chair) {
 		// verificaciones
-		return (TrucoPlayer) players.get(chair);
+		return (TrucoPlayer) sittedPlayers.get(chair);
 	}
 
 	public int getChair(TrucoPlayer player) {
-		return players.indexOf(player);
+		return sittedPlayers.indexOf(player);
 	}
 
 	/*
@@ -182,19 +182,21 @@ class PlayerManager {
 	}
 
 	public int getPlayerCount() {
-		return players.size();
+		return sittedPlayers.size();
 	}
 
 	/**
-	 * Retorna verdadero si 'player' estï¿½ sentado
+	 * Retorna verdadero si 'player' está sentado
 	 */
 	public boolean isSitted(TrucoPlayer player) {
 		boolean ret = false;
 //		players.contains(player);
-		Iterator iter = players.iterator();
+		Iterator iter = sittedPlayers.iterator();
 		while (iter.hasNext()) {
 			TrucoPlayer element = (TrucoPlayer) iter.next();
-			if (element.getName().equals(player.getName())) {
+			//Tengo que preguntar si no es nulo, xq el iterador viene con elementos null
+			// del vector players
+			if (element != null && element.getName().equals(player.getName())) {
 				ret = true;
 				break;
 			}
@@ -205,16 +207,16 @@ class PlayerManager {
 	/**
 	 * @return Returns the players.
 	 */
-	public Vector getPlayers() {
-		return players;
+	public Vector getSittedPlayers() {
+		return sittedPlayers;
 	}
 
 	/**
 	 * @param players
 	 *            The players to set.
 	 */
-	public void setPlayers(Vector players) {
-		this.players = players;
+	public void setSittedPlayers(Vector players) {
+		this.sittedPlayers = players;
 	}
 
 	/**
