@@ -65,7 +65,7 @@ public class ChatPanel extends javax.swing.JPanel {
     
     private void sendChatMessage() {
         
-        System.out.println(getClass().getName()+" getplayer "+getPlayer());
+       // System.out.println(getClass().getName()+" getplayer "+getPlayer());
         cpc.sendChatMessage(getPlayer(), jtInput.getText());
         jtInput.setText("");
     }
@@ -170,7 +170,7 @@ public class ChatPanel extends javax.swing.JPanel {
      *
      */
     public void setPlayer(TrucoPlayer player) {
-    	System.out.println("ChatPanel.setPlayer: Se setea el player "+player);
+    	//System.out.println("ChatPanel.setPlayer: Se setea el player "+player);
         this.player = player;
     }
     

@@ -126,11 +126,11 @@ public class RoomUI extends javax.swing.JApplet {
     private void jbJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbJoinActionPerformed
         // aca se mira si el player selecciono alguna mesa para jugar
         int numeroDeFila = mainTable.isRowSelected();
-        System.out.println("numeroDeFila=" + numeroDeFila);
+       // System.out.println("numeroDeFila=" + numeroDeFila);
         if (numeroDeFila >= 0) {
             numeroDeFila = mainTable.getNumeroDeMesa(numeroDeFila);
-            System.out.println("////////////// JOINNN /////////////");
-            System.out.println("Se presiono el join..." + numeroDeFila);
+           // System.out.println("////////////// JOINNN /////////////");
+           // System.out.println("Se presiono el join..." + numeroDeFila);
             roomClient.joinTableRequest(numeroDeFila);
         }
     }//GEN-LAST:event_jbJoinActionPerformed
@@ -167,9 +167,9 @@ public class RoomUI extends javax.swing.JApplet {
 
         mainTable = new JButtonTable();
         rankTable = new RankingTable();
-        System.out.println("Agregar el mainTable.");
+        //System.out.println("Agregar el mainTable.");
         jpTabla.add(mainTable);
-        System.out.println("Agregar el rankTable.");
+        //System.out.println("Agregar el rankTable.");
         if (rankTable == null)
             System.out.println("Es nulo el rankTaaaaable!!!");
         jpRanking.add(rankTable);
@@ -178,7 +178,7 @@ public class RoomUI extends javax.swing.JApplet {
     }
 
     public void login() {
-        // El login lo escribo por n-ésima vez - CVS urgeeeeente!
+        // El login lo escribo por n-ï¿½sima vez - CVS urgeeeeente!
         /*py.edu.uca.fcyt.util.LoginDialog ld = new py.edu.uca.fcyt.util.LoginDialog(
                 JOptionPane.getRootFrame(), true);
         ld.show();
@@ -198,13 +198,13 @@ public class RoomUI extends javax.swing.JApplet {
     }
 
     public void addChatPanel(ChatPanel cp) {
-        System.out.println("Esto se ejecuta sin falta!");
+        //System.out.println("Esto se ejecuta sin falta!");
         //jpChat.add(new JLabel("Berniii"));
         jpChat.removeAll();
         jpChat.add(cp);
         jpChat.validate();
         //jpChat.repaint();
-        //System.out.println("Se terminó de agregar el cp: " +
+        //System.out.println("Se terminï¿½ de agregar el cp: " +
         // cp.getPlayer().getName());
 
         //validate();
@@ -224,7 +224,7 @@ public class RoomUI extends javax.swing.JApplet {
     }
 
     public void destroy() {
-        System.out.println("El player cerro su RoomUI!");
+        //System.out.println("El player cerro su RoomUI!");
         roomClient.eliminatePlayer();
     }
 

@@ -30,7 +30,7 @@ public class ButtonEditor extends AbstractCellEditor
   public ButtonEditor(/*Player player*/) {
     
       super();
-      System.out.println("entre al button editor");
+    //  System.out.println("entre al button editor");
    // label = player.getName();
     label = "nombre";
     button = new JButton();
@@ -43,19 +43,19 @@ public class ButtonEditor extends AbstractCellEditor
       }
       
     });
-    System.out.println(" al button editor");
+   // System.out.println(" al button editor");
 
   }
 
   public Component getTableCellEditorComponent(JTable table, Object value,
                    boolean isSelected, int row, int column) {
   
-    System.out.println("En el buttonEditor value es=" + value.getClass());
+  //  System.out.println("En el buttonEditor value es=" + value.getClass());
     Component comp = etiqueta;
     Integer fila = new Integer(row);
     
-    System.out.println("fila= " +fila);
-    System.out.println("value=" +value);
+   // System.out.println("fila= " +fila);
+    //System.out.println("value=" +value);
 
     valueCopy = value.toString();
 	
@@ -72,13 +72,13 @@ public class ButtonEditor extends AbstractCellEditor
 	 * si no estaba jugando ahi, se le agrega
      */
     isInTable = tableList.contains(fila);
-    System.out.println("isIntable="+isInTable);
+   // System.out.println("isIntable="+isInTable);
 
 	if(!isInTable)
 		tableList.add(fila);	
 	
 	/* 
-	 * si presionó alguno de los botones de "Jugar"
+	 * si presionï¿½ alguno de los botones de "Jugar"
      */
     if( column>1 && column<8){
         

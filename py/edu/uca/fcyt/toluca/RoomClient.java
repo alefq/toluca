@@ -49,7 +49,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     public RoomClient(RoomUING rui, String username, String password) {
         super();
-        System.out.println("Se crea el roomClient");
+        //System.out.println("Se crea el roomClient");
         cc = new CommunicatorClient(this);
         addRoomListener(cc);
         new Thread(cc).start();
@@ -75,7 +75,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
     }
 
     public void setRankingTable(TableRanking rankTable) {
-        System.out.println("rank");
+        //System.out.println("rank");
         this.rankTable = rankTable;
     }
 
@@ -83,7 +83,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         /** lock-end */
         // agrega la mesa a la lista de mesas de juego
         super.addTable(table);
-        System.out.println("desde el roomClient se inserta mesa.");
+        //System.out.println("desde el roomClient se inserta mesa.");
 
         // Agregamos una fila a la Tabla Principal
         mainTable.insertarFila(table);
@@ -201,7 +201,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
     public void addPlayer(TrucoPlayer player) {
         // agrega al player a la lista de players conectados
         super.addPlayer(player);
-        System.out.println("Gooool!! Carajo");
+       // System.out.println("Gooool!! Carajo");
 
         // agrega al player a la Tabla del Ranking
         if (rankTable == null)
@@ -295,7 +295,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         //chatPanel = new ChatPanel(this, player);
         //rui.addChatPanel(chatPanel);
         chatPanel.setPlayer(player);
-        System.out.println("el chatpanel del room es "+chatPanel);
+        //System.out.println("el chatpanel del room es "+chatPanel);
         setRoomPlayer(player);
         player.setFullName(player.getName());
         rui.setOwner(player);
@@ -440,7 +440,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         
         Table tabela = event.getTable();
         TrucoPlayer jug = tabela.getPlayer();
-        System.out.println("El player que se sienta es" + jug.getName());
+        //System.out.println("El player que se sienta es" + jug.getName());
         //mainTable.pl
         // tabela.getChair(jug));
 

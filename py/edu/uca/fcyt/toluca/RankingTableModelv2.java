@@ -94,7 +94,7 @@ public class RankingTableModelv2 extends AbstractTableModel {
      * Agrega un jugador a la tabla del Ranking.
      */
     public void addPlayer(TrucoPlayer player) {
-        System.out.println("Voy a agarlo a: " + player.getName());
+       // System.out.println("Voy a agarlo a: " + player.getName());
         Object[] objs = new Object[1];
         objs[0] = player;
         insertRow(objs);

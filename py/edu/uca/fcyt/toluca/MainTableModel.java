@@ -68,8 +68,8 @@ public class MainTableModel extends AbstractTableModel
                             ret = ret.concat( String.valueOf( fila.getObservador(i) ));
                             ret = ret.concat(", ");
                         }
-                        else
-                            System.out.println("Columna no definida");
+                       // else
+                         //   System.out.println("Columna no definida");
         }//if row < filas.size()
        
 	return ret;

@@ -35,7 +35,7 @@ public class JButtonTable extends JPanel {
     
     public JButtonTable(){
         
-        System.out.println("Se instancia el MainTableModel");
+       // System.out.println("Se instancia el MainTableModel");
             
         encabezado.add(new String("Mesa #"));
         encabezado.add(new String("Observar"));
@@ -47,14 +47,14 @@ public class JButtonTable extends JPanel {
         encabezado.add(new String("Jugador6"));        
         encabezado.add(new String("Observando"));        
             
-        System.out.println("Se instancia el MainTableModel-i");
+        //System.out.println("Se instancia el MainTableModel-i");
         mtm = new MainTableModel();
-        System.out.println("Se termina de instanciar el MainTableModel-i");
+       // System.out.println("Se termina de instanciar el MainTableModel-i");
           
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        System.out.println("Antes de crear la tabla");
+       // System.out.println("Antes de crear la tabla");
         jtable = new JTable(mtm);
-        System.out.println("Despues de creat la tabla");
+        //System.out.println("Despues de creat la tabla");
 
         //TableColumn nivelColumn = jtable.getColumn("Mesa #");
         //nivelColumn.setPreferredWidth(30);
@@ -146,7 +146,7 @@ public class JButtonTable extends JPanel {
     }
     
     void insertarFila(Table table){
-        System.out.println("Se quiere insertar la fila en el MainTable");
+        //System.out.println("Se quiere insertar la fila en el MainTable");
         mtm.insertRow(table.getTableNumber());
     }
         
@@ -154,7 +154,7 @@ public class JButtonTable extends JPanel {
      * Elimina de la Tabla Principal a la mesa numero "tableNumber"
      */
     void eliminarFila(int tableNumber){
-         System.out.println("Se quiere remover la fila en el MainTable");
+         //System.out.println("Se quiere remover la fila en el MainTable");
         mtm.removeRow(tableNumber);
     }
     

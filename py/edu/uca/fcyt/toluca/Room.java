@@ -176,11 +176,11 @@ implements ChatPanelContainer {
      * </p>
      */
     public void addPlayer(TrucoPlayer player) {
-        if (this instanceof RoomClient) {
+      /*  if (this instanceof RoomClient) {
             System.out.println("Voy a agregar en el cliente: " + player.getName());
         } else {
             System.out.println("Voy a agregar en el servidor: " + player.getName());            
-        }
+        }*/
         players.put(player.getName(), player); //se carga al vector de jugadores
         //System.out.println("Va a imprimr el hash de players by Cricco");
         //py.edu.uca.fcyt.util.HashUtils.imprimirHash(players);
@@ -191,11 +191,11 @@ implements ChatPanelContainer {
     //public HashMap getHashTable(){return tables;}
         
     public void addTable(Table table) {        /** lock-end */
-        if (this instanceof RoomClient) {
+        /*if (this instanceof RoomClient) {
             System.out.println("Voy a agregar en el cliente la tabela: " + table.getOrigin());
         } else {
             System.out.println("Voy a agregar en el servidor la tabela: " + table.getOrigin());            
-        }
+        }*/
         //tables.put(table.getTableNumber()), table); //se carga la tabla nueva pow
         tables[table.getTableNumber()]=table;
        // System.out.println("Imprimir los tables");
@@ -208,7 +208,7 @@ implements ChatPanelContainer {
     	tablesServers[table.getTableNumber()]=table;
     }
     public TrucoPlayer getPlayer(String keyCode) {
-        System.out.println("Voy a buscar al player: " + keyCode);
+       // System.out.println("Voy a buscar al player: " + keyCode);
         return ((TrucoPlayer)players.get(keyCode));
     }
     

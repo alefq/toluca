@@ -30,7 +30,7 @@ public class Fila
             for(int i=0;i<6;i++){
 				jugadores.add("Libre");
             }
-            System.out.println("Se instancia una fila.");
+           // System.out.println("Se instancia una fila.");
 	}
 	
 	/** Crea una nueva instancia de Fila */
@@ -69,7 +69,7 @@ public class Fila
 	public void setPlayer(Object player, int index){
             
     	if ( index>=0 && index< jugadores.size() ){
-    		System.out.println("agregoPplayer en la pos="+index);
+    		//System.out.println("agregoPplayer en la pos="+index);
 			jugadores.setElementAt(player,index);}
 	}
 	public void impJugadores()
@@ -148,7 +148,7 @@ public class Fila
 	}
 	
 	/*
-	 * Retorna la posición del jugador, si este se encuentra en esa fila.
+	 * Retorna la posiciï¿½n del jugador, si este se encuentra en esa fila.
 	 * De lo contrario, retorna 0.
 	 */
 	public int isPlayer(String player){

@@ -29,14 +29,14 @@ public class ButtonEditor2 extends AbstractCellEditor
                 fireEditingStopped();
             }
         });
-        System.out.println("Estoy en el button editor");
+       // System.out.println("Estoy en el button editor");
 
     }
     
     public Component getTableCellEditorComponent(JTable table, Object value,
                    boolean isSelected, int row, int column) {
   
-        System.out.println("En el buttonEditor value es=" + value.getClass());
+       // System.out.println("En el buttonEditor value es=" + value.getClass());
     	
         if (isSelected) {
             button.setForeground(table.getSelectionForeground());

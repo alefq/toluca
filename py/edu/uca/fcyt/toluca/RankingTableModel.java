@@ -17,11 +17,11 @@ public class RankingTableModel extends DefaultTableModel{
     
     public RankingTableModel(Vector data, Vector columnNames) {
         //super(data, columnNames);
-        System.out.println("DATA SIZE " + data.size());
-        System.out.println("CNAMES SIZE " + columnNames.size());
+        //System.out.println("DATA SIZE " + data.size());
+       // System.out.println("CNAMES SIZE " + columnNames.size());
         this.encabezado = columnNames;
         this.jugadores = data;
-        System.out.println("Se instancia el RankingTableModel");
+       // System.out.println("Se instancia el RankingTableModel");
         //super(TableData,TableHeader);
     }
     
@@ -30,7 +30,7 @@ public class RankingTableModel extends DefaultTableModel{
         if (column < encabezado.size()) {
             ret = (String)encabezado.get(column);
         } else {
-            System.out.println("Columna inválida!!!!!");
+            System.out.println("Columna invï¿½lida!!!!!");
         }
         return ret;
     }
@@ -79,7 +79,7 @@ public class RankingTableModel extends DefaultTableModel{
     }*/
     
     public void addPlayer(TrucoPlayer player){
-        System.out.println("******** SE AGREGA A LA TABLE EL JUGADOR: " + player.getName());
+        //System.out.println("******** SE AGREGA A LA TABLE EL JUGADOR: " + player.getName());
         //jugadores.add(player);
         Vector tmp = new Vector();
         tmp.add(player);

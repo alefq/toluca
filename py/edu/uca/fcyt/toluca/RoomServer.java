@@ -463,7 +463,7 @@ implements ChatPanelContainer
 		
 		while(iter.hasNext())
 		{
-			System.out.println("Player join iterando: " + i++);
+			//System.out.println("Player join iterando: " + i++);
 			RoomListener ltmp = (RoomListener)iter.next();
 			ltmp.playerJoined(jogador);
 		}
@@ -547,7 +547,7 @@ implements ChatPanelContainer
 		while(iter.hasNext())
 		{
 			RoomListener ltmp = (RoomListener)iter.next();
-			System.out.println("Jogador vale "+jogador+ " el mensaje es"+htmlMessage);
+			//System.out.println("Jogador vale "+jogador+ " el mensaje es"+htmlMessage);
 			logger.debug(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
 			ltmp.chatMessageSent(this, jogador, htmlMessage);
 		}

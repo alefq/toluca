@@ -22,14 +22,14 @@ public class RankingTable extends JPanel {
         Vector encabezado = new Vector();
         
 	RankingTable(){
-            System.out.println("Se instancia el RankingTable");
+          //  System.out.println("Se instancia el RankingTable");
             encabezado.add(new String("Nivel"));
             encabezado.add(new String("Jugador"));
             encabezado.add(new String("Ranking"));        
             
-            System.out.println("Se instancia el RankingTableModel-i");
+          //  System.out.println("Se instancia el RankingTableModel-i");
             rtm = new RankingTableModelv2(/*jugadores, encabezado*/);
-            System.out.println("Se termina de instanciar1324123123");
+            //System.out.println("Se termina de instanciar1324123123");
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             JTable jtable = new JTable(rtm);
          
