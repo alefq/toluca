@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/10/22 19:58:54 $
- * @version $Revision: 1.9 $ 
+ * Last modified: $Date: 2004/12/23 21:14:13 $
+ * @version $Revision: 1.10 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -98,6 +98,18 @@ public class RoomUING extends JApplet {
         return panelPrincipal;
     }
 
+    
+    /* (non-Javadoc)
+	 * @see java.applet.Applet#stop()
+	 * 
+	 * Programación porcina aa / af el 23 de Diciembre de 2004
+	 * Cerramos el socket al cerrar el applet.
+	 * 
+	 */
+	public void stop() {
+		roomClient.cerrarConexion();
+		super.stop();
+	}	
     /**
      * This method initializes panelTitle
      * 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="H:/borrame/tolucaServer.jar"/>
+    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/toluca/CrearTolucaServer.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="false" manifestLocation="/toluca/toluca-manifest.mf">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=toluca"/>
+    </selectedElements>
+</jardesc>

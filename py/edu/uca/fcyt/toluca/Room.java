@@ -34,6 +34,7 @@ implements ChatPanelContainer {
     protected Vector roomListeners; // of type Vector
     protected Table [] tables; // of type Table
     protected TableServer [] tablesServers;
+    
     public Room() {
         players = new HashMap();
         tables = new Table[MAX_TABLES];

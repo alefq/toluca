@@ -4,6 +4,7 @@ package py.edu.uca.fcyt.toluca;
  *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -83,6 +84,14 @@ public class RoomClient extends Room implements ChatPanelContainer,
         return roomPlayer;
     }
 
+    public void cerrarConexion() {
+    	try {
+			cc.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
     public void setMainTable(TableGame game) {
         this.mainTable = game;
     }

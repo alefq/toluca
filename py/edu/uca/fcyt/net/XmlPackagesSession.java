@@ -184,8 +184,8 @@ public abstract class XmlPackagesSession implements Runnable
 	
 	public void close() throws IOException
 	{
-		in.close();
-		out.close();
+		//in.close();
+		//out.close();
 		socket.close();
 		
 	}

@@ -54,14 +54,15 @@ public class CommunicatorServer extends Communicator{
 	
 	public void connectionFailed()
 	{
-		logger.info("Fallo la coneccion de "+getTrucoPlayer()+ " communicator  "+this);
-		roomServer.removePlayer(getTrucoPlayer());
-		roomServer.removeCommunicator(this);//para que se elimine ya no es util
 		try {
+			logger.info("Fallo la coneccion de "+getTrucoPlayer()+ " communicator  "+this);
+			roomServer.removePlayer(getTrucoPlayer());
+			roomServer.removeCommunicator(this);//para que se elimine ya no es util
+			
 			close();
 		} catch (IOException e) {
 		
-			e.printStackTrace();
+			logger.error("Fallo a" , e);
 		}
 	}
 	public void playerJoined(TrucoPlayer player) {
@@ -150,24 +151,36 @@ public class CommunicatorServer extends Communicator{
 	//METODOS DEL TRUCOGAME
 	
 	public void play(TrucoEvent event) {
-		logger.info("Play"+getTrucoPlayer().getName());
-		TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
 		
-		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
-			super.sendXmlPackage(event);
-		
+		try {
+			logger.info("Play"+getTrucoPlayer().getName());
+			TableServer tableServer=roomServer.getTableServer(event.getTableNumber());
+			
+			if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+				super.sendXmlPackage(event);
+		} catch (NullPointerException e) {
+			logger.error("El player es nulo en play de Communicator server!", e);
+			
+		}
 		
 	}
 	
 	public void playResponse(TrucoEvent event) {
-		
-	logger.info("Play Response "+getTrucoPlayer().getName());	
+		try {
+			logger.info("Play Response "+getTrucoPlayer().getName());			
+		} catch (NullPointerException e ) {
+			logger.error("El player es nulo en play de Communicator server!", e);
+		}
 	}
 	
 	public void turn(TrucoEvent event) {
-		logger.info("Turn "+getTrucoPlayer().getName()+ " event type> "+event.getType());
-		
-		
+		try {
+			logger.info("Turn " + getTrucoPlayer().getName() + " event type> "
+					+ event.getType());
+		} catch (NullPointerException e) {
+			logger.error("El player es nulo en play de Communicator server!",e);
+
+		}
 		
 	}
 	
