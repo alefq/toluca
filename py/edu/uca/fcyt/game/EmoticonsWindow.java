@@ -1,8 +1,8 @@
 /* EmoticonsWindow.java
  * Created on June 13, 2003
  *
- * Last modified: $Date: 2005/01/14 21:05:30 $
- * @version $Revision: 1.2 $ 
+ * Last modified: $Date: 2005/01/14 21:19:40 $
+ * @version $Revision: 1.3 $ 
  * @author Mirna, Mali y Nati
  */
 package py.edu.uca.fcyt.game;
@@ -11,6 +11,8 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -74,6 +76,11 @@ public class EmoticonsWindow extends JWindow implements ActionListener {
 	 */
 	private void initialize() {
 		this.setSize(450, 220);
+		addMouseListener(new MouseAdapter(){
+			public void mouseExited(MouseEvent e) {
+				setVisible(false);
+			}
+			});
 		getJContentPane().setLayout(new GridLayout(10, 10));
 		setContentPane(getJContentPane());
 		initEmoticons();

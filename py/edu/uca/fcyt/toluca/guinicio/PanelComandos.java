@@ -80,7 +80,7 @@ public class PanelComandos extends JPanel {
      */
     protected void botonAyudaActionPerformed(ActionEvent e) {
         try {        	
-            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "_blank");
+            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "\"_blank\"");
         } catch (MalformedURLException e1) {
             System.out.println(e1.getMessage());
         }        
