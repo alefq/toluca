@@ -298,9 +298,10 @@ public class EventDispatcherClient extends EventDispatcher {
         TrucoPlayer playerClient = room.getPlayer(playerServer.getName());
 
         table.addPlayer(playerClient);
-        if (playerClient.getName().equals(trucoPlayer.getName())) {
+        if (playerClient.getName().equals(trucoPlayer.getName())) 
             table.show();
-        }
+        
+       
 
     }
 
@@ -321,13 +322,10 @@ public class EventDispatcherClient extends EventDispatcher {
      */
     public void playerSit(TableEvent event) {
 
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "player sit");
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se resive un
-        // player sit a la mesa "+event.getTableServer().getTableNumber());
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "player
-        // "+event.getPlayer()[0]);
-        //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "chair
-        // "+event.getValue());
+        		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "player sit");
+        		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se resive un      player sit a la mesa "+event.getTableServer().getTableNumber());
+        		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "player       "+event.getPlayer()[0]);
+        		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "chair "+event.getValue());
         TableServer tableServer = event.getTableServer();
         TrucoPlayer playerServer = event.getPlayer()[0];
 
