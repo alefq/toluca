@@ -240,4 +240,13 @@ public class CommunicatorServer extends Communicator{
 		super.sendXmlPackage(event);
 		
 	}
+	
+	public String toString() {
+		try {
+			return getTrucoPlayer().getName() ;			
+		}catch (NullPointerException e) {
+			return " Truco Player NULO" ;
+		}
+
+	}
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -382,10 +383,10 @@ implements ChatPanelContainer, TableListener {
      *            archivo de configuraci&#243;n?
      *            </p>
      */
-    public static void main(String[] args) {
-        RoomServer rs = new RoomServer();
+    public static void main(String[] args) {        
         DOMConfigurator.configure(System.getProperty("user.dir")
                 + System.getProperty("file.separator") + "log.xml");
+        RoomServer rs = new RoomServer();
         List params = Arrays.asList(args);
         if (!params.isEmpty()) {
             props = (String) params.get(0);
@@ -400,7 +401,7 @@ implements ChatPanelContainer, TableListener {
                 rs.init();
                 rs.leerComandos();
             } catch (Exception e) {
-                logger.error("", e);
+                logger.error("no hya beleza", e);
             }
         } else
             logger.error("Se necesita la ubicación del archivo: " + props);
@@ -845,7 +846,11 @@ implements ChatPanelContainer, TableListener {
 			String command = in.readLine().trim();
 			while (!command.equals("salir")) {
 				if (command.equalsIgnoreCase("showUsers")) {
-					showUsers();	
+					showUsers();
+				} else if (command.equalsIgnoreCase("showComm")) {
+					showCommunicators();
+				} else if (command.equalsIgnoreCase("showTables")) {
+					showTables();
 				} else if(command.trim().length() > 0){
 					System.out.println("Comando incorrecto");					
 				}
@@ -864,28 +869,48 @@ implements ChatPanelContainer, TableListener {
 	/**
 	 * 
 	 */
+	private synchronized void showTables() {
+		ArrayList list = new ArrayList();
+		TableServer ts[] = getTablesServers();
+		for (int i = 0; i< ts.length; i++) {
+			list.add(ts[i]);
+		}
+		
+		showList(list);
+	}
+
+	/**
+	 * 
+	 */
 	private synchronized void showUsers() {
 		showHashMap(getHashPlayers());
-		 
+	}
+	
+	private synchronized void showCommunicators() {
+		showList(getConnManager().getVecSesiones());
+
+	}
+	
+	public synchronized void showHashMap(java.util.HashMap ht) {
+		java.util.Iterator it = ht.values().iterator();
+		int i = 0;
+		System.out.println("Toluca:");
+		while (it.hasNext()) {
+			System.out.println("element #" + (i++) + " -> " + (it.next()));
+		}
+		System.out.println("terminado");
+	}
+	
+	public synchronized void showList(java.util.List l) {
+		java.util.Iterator it = l.iterator();
+		int i = 0;
+		System.out.println("Toluca:");
+		while (it.hasNext()) {
+			System.out.println("element #" + (i++) + " -> " + (it.next()));
+		}
+		System.out.println("terminado");
 		
 	}
 	
-	public synchronized void showHashMap(
-			java.util.HashMap ht) {
-			java.util.Iterator it = ht.values().iterator();
-//			java.util.Enumeration en = ht.keys();
-			int i = 0;
-			System.out.println("Usuarios conectados al Toluca:");
-			while (it.hasNext()) {
-//				if (showKeys)
-//					System.out.println(
-//						"element: " + en.nextElement() + " -> " + it.next());
-//				else
-					System.out.println("element #" + (i++) + " -> " + (it.next()));
-			}
-			System.out.println("terminado");
-		}
-	
-
 } // end RoomServer
 
