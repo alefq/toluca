@@ -262,6 +262,7 @@ public class CommunicatorServer extends Communicator {
 	 *   En realidad parece que es un read truco event, no play.
 	 * @param o
 	 */
+	TrucoPlayer elPlayerDeAcaOtraVez;
 	public void xmlReadTrucoPlay(Object o) {
 		String aux;
 		if (o instanceof Element) {
@@ -278,6 +279,7 @@ public class CommunicatorServer extends Communicator {
 			if (aux.compareTo("Player") == 0) {
 				//System.out.println("PLAYER:"+element.getText());
 				userAux = element.getAttributeValue("name");
+				elPlayerDeAcaOtraVez = pieza.getPlayer(userAux);
 			}
 			if (aux.compareTo("Carta") == 0) {
 				String kind = element.getAttributeValue("kind");
@@ -302,7 +304,7 @@ public class CommunicatorServer extends Communicator {
 				TrucoPlay tp =
 					new TrucoPlay(
 						tableIdAux,
-						player,
+						elPlayerDeAcaOtraVez,
 						(byte) typeAux,
 						cardAux,
 						valueAux);
@@ -479,17 +481,30 @@ public class CommunicatorServer extends Communicator {
 	    //        pieza.sendChatMessage(jug, message);
 	}
 	 */
+	 
+	 
+	 
 	public void play(TrucoPlay te) {
+		System.out.println("What the fuck @#!@$!!!! " + this.getClass().getName());		
 		Document doc = te.toXml();
 		super.sendXmlPackage(doc);
 	}
+	
 	public void play(TrucoEvent event) {
 		//Cantartanto con value
 		//canto sin value
 		//card semd
-		Document doc = event.toXml();
+		//Document doc = event.toXml();		
+		//super.sendXmlPackage(doc);
+		System.out.println("Void play method in " + this.getClass().getName());		
+	}
+	
+	public void playResponse(TrucoEvent event) {
+		Document doc = event.toXml();		
 		super.sendXmlPackage(doc);
 	}
+	
+	
 	public void turn(TrucoEvent event) {
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);

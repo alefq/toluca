@@ -10,6 +10,7 @@ import org.jdom.Element;
 
 import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 public class TrucoEvent {
@@ -474,6 +475,125 @@ public Document xmlCreateSendCards()
 	   }
 	   return doc;
    }
+/**
+ * @return
+ */
+public TrucoPlay getTrucoPlay() {
+	// TODO Hacer el SWITCH gigantesco, probar y ya está
+	TrucoPlay tp = null;
+	switch(type)
+	 {
+/*		 case ENVIAR_CARTAS:
+			 doc = xmlCreateSendCards();
+			 break;
+		 case ENVIDO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case REAL_ENVIDO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case FALTA_ENVIDO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case FLOR:
+			 doc = xmlCreateCanto();
+			 break;
+		 case CANTO_ENVIDO:
+			 doc = xmlCreateCanto();
+			 break;
+
+		 case CANTO_FLOR:
+			 doc = xmlCreateCanto();
+			 break;
+			
+		 case CONTRA_FLOR:
+			 doc = xmlCreateCanto();
+			 break;
+		
+		 case CONTRA_FLOR_AL_RESTO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case CON_FLOR_ME_ACHICO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case TRUCO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case RETRUCO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case VALE_CUATRO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case QUIERO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case NO_QUIERO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case ME_VOY_AL_MAZO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case CERRARSE:
+			 doc = xmlCreateCanto();
+			 break;
+		 case PASO_ENVIDO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case PASO_FLOR:
+			 doc = xmlCreateCanto();
+			 break;
+		 case TURNO_JUGAR_CARTA:
+			 doc = xmlCreateCanto();
+			 break;
+			
+		 case TURNO_CANTAR_FLOR:
+			 doc = xmlCreateCanto();
+			 break;
+		 case TURNO_RESPONDER_TRUCO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case TURNO_RESPONDER_RETRUCO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case TURNO_RESPONDER_VALECUATRO:
+			 doc = xmlCreateCanto();
+			 break;
+		 case TURNO_RESPONDER_ENVIDO:
+			 doc = xmlCreateCantarTanto();
+			 break;
+		 case TURNO_RESPONDER_REALENVIDO:
+			 doc = xmlCreateCantarTanto();
+			 break;
+		 case TURNO_RESPONDER_FALTAENVIDO:
+			 doc = xmlCreateCantarTanto();
+			 break;
+		 case TURNO_RESPONDER_CONTRAFLOR:
+			 //doc =xmlCreateCantarTanto();
+			 break;
+		 case TURNO_RESPONDER_CONTRAFLORALRESTO:
+			 //doc = xmlCreateCantarTanto();
+			 break;*/
+		 case JUGAR_CARTA:
+			 tp = new TrucoPlay(getPlayer(), TrucoPlay.JUGAR_CARTA, getCard());
+			 break;
+		 case FIN_DE_MANO:
+			 //doc = xmlCreateCanto();
+			 break;
+		 case FIN_DE_JUEGO:
+			 //doc = xmlCreateCanto();
+			 break;
+		 case INICIO_DE_JUEGO:
+			 //doc = xmlCreateCanto();
+			 break;
+		 case INICIO_DE_MANO:
+			 //doc = xmlCreateCanto();
+			 break;
+		 default:
+			 System.out.println("tipo de event no encontrado:" + type);
+	}	
+	return tp;
+}
   	
 } // end TrucoEvent
 

@@ -12,7 +12,8 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
  *
  * @author  Julio Rey
  */
-public class TrucoGameClient extends TrucoGame implements TrucoListener{
+public class TrucoGameClient extends TrucoGame 
+/*implements TrucoListener */ {
     /** Creates a new instance of TrucoClient */
     protected TrucoHandClient trucoHandCli;
    
@@ -59,6 +60,9 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
             case TrucoEvent.INICIO_DE_MANO:
                 startHandConfirmatedClient();
                 break;
+            case TrucoEvent.JUGAR_CARTA:
+            	
+            	break;
         
         }
     }

@@ -132,9 +132,15 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         // IGNORAR en el lado del servidor
     }
     
-    public void play(TrucoEvent event) {
-        // IGNORAR en el lado del servidor
-    }
+	public void play(TrucoEvent event) {
+		// IGNORAR en el lado del servidor
+		// El TableServer no sirve absolutamente para nada
+	}
+
+	public void playResponse(TrucoEvent event) {
+		// IGNORAR en el lado del servidor
+		// El TableServer no sirve absolutamente para nada
+	}
     
     public void turn(TrucoEvent event) {
         // IGNORAR en el lado del servidor

@@ -16,7 +16,8 @@ import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 //import java.*;
 
-public class TPlayer extends JFrame implements TrucoListener{
+public class TPlayer extends JFrame 
+implements TrucoListener{
     TrucoPlayer asociado;
     TrucoGame TG;
     TrucoCard[] cards = new TrucoCard[3];
@@ -129,7 +130,12 @@ public class TPlayer extends JFrame implements TrucoListener{
         elPanel.add(boton);
        
     }
-    public void play(TrucoEvent event){
+    
+	public void play(TrucoEvent event) {
+		System.out.println("Void play method in " + this.getClass().getName());		
+	}
+    
+    public void playResponse(TrucoEvent event){
         System.out.println(elSpinner.getValue());
         if(event.getTypeEvent() == TrucoEvent.JUGAR_CARTA){
             System.out.println("queria jugar carta"+event.getTypeEvent());

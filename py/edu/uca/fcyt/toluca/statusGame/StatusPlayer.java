@@ -249,7 +249,7 @@ public class StatusPlayer{
     public boolean jugarCarta (TrucoCard cual)
     {
         for(int i=0;i<3;i++){
-            if(cartas[i]==cual && cartas[i].isFlipped()==false){
+            if(cartas[i].equals(cual) && cartas[i].isFlipped()==false){
                 cartas[i].setFlipped(true);
                 cantidadDeCartasJugadas++;
                 primeraCarta=true;

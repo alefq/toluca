@@ -15,6 +15,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 public interface TrucoListener {
     
     void play(TrucoEvent event);
+    void playResponse(TrucoEvent event);
     void turn (TrucoEvent event);
     void endOfHand(TrucoEvent event);
     void cardsDeal(TrucoEvent event);

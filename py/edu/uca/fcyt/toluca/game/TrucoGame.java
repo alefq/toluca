@@ -131,7 +131,8 @@ public class TrucoGame extends Game {
      * @throws InvalidPlayExcepcion Excepcion en caso de dectarse que no es posible hacer esa jugada.
      */ 
     
-    public void play (TrucoPlay tp) throws InvalidPlayExcepcion{ //play trucoGame
+    public void play (TrucoPlay tp) 
+    throws InvalidPlayExcepcion{ //play trucoGame
         
         if (teams[0] == null || teams[1] == null)
                 throw (new InvalidPlayExcepcion("Teams not found in Trucogame"));
@@ -179,7 +180,9 @@ public class TrucoGame extends Game {
     public void firePlayEvent(TrucoPlayer pl, byte type){ //eventos de juego sin carta o canto
         TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type);
         for(int i=0; i<listenerlist.size();i++){
-            ((TrucoListener)(listenerlist.get(i))).play(event);
+//			((TrucoListener)(listenerlist.get(i))).play(event);
+// 			Se cambió la llamada en intento desesperado por hacer funcionar esto
+			((TrucoListener)(listenerlist.get(i))).playResponse(event);
         }
     }
     /** Enviar mensaje de jugada a todos los oyentes del juego.
@@ -192,7 +195,8 @@ public class TrucoGame extends Game {
         TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type,card);
         for(int i=0; i<listenerlist.size();i++){
 	    System.out.println("firePlayEvent para: " + listenerlist.get(i).getClass().getName());
-            ((TrucoListener)(listenerlist.get(i))).play(event);
+//		((TrucoListener)(listenerlist.get(i))).play(event);
+		((TrucoListener)(listenerlist.get(i))).playResponse(event);
         }
     }
     /** Enviar mensaje de jugada a todos los oyentes del juego.
@@ -203,7 +207,8 @@ public class TrucoGame extends Game {
     public void firePlayEvent (TrucoPlayer pl, byte type, int value){//eventos de canto de tanto
     	TrucoEvent event = new TrucoEvent(this,numberOfHand,pl, type, value);
     	for(int i=0; i<listenerlist.size();i++){
-            ((TrucoListener)(listenerlist.get(i))).play(event);
+//			((TrucoListener)(listenerlist.get(i))).play(event);
+			((TrucoListener)(listenerlist.get(i))).playResponse(event);
         }
     }
     /*public void fireEventType(byte type){

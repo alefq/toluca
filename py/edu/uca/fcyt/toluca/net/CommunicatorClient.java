@@ -440,6 +440,8 @@ public class CommunicatorClient extends Communicator {
 	
     
     TrucoCard cardAux;
+    TrucoPlayer elTpAsdf;
+    Table laTabelaAsdf;
     public void xmlReadCard(Object o) {
         String aux;
         if (o instanceof Element) {
@@ -451,6 +453,7 @@ public class CommunicatorClient extends Communicator {
             if (aux.compareTo("Table") == 0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 tableIdAux = Integer.parseInt(element.getAttributeValue("id"));
+                laTabelaAsdf = (Table)(getTables().get(String.valueOf(tableIdAux)));
             }
             if (aux.compareTo("Hand") == 0) {
                 handAux = Integer.parseInt(element.getAttributeValue("number"));
@@ -458,14 +461,15 @@ public class CommunicatorClient extends Communicator {
             if (aux.compareTo("Player") == 0) {
                 //System.out.println("PLAYER:"+element.getText());
                 userAux = element.getAttributeValue("name");
+				elTpAsdf = pieza.getPlayer(userAux);
             }
             if (aux.compareTo("Carta") == 0) {
                 String kind = element.getAttributeValue("kind");
                 String value = element.getAttributeValue("value");
                 cardAux =
                 new TrucoCard(
-                Integer.parseInt(kind),
-                Integer.parseInt(value));
+                	Integer.parseInt(kind),
+                	Integer.parseInt(value));
             }
             List children = element.getContent();
             Iterator iterator = children.iterator();
@@ -474,13 +478,12 @@ public class CommunicatorClient extends Communicator {
                 xmlReadCard(child);
             }
             if (aux.compareTo("Cardsend") == 0) {
-                TrucoEvent te =
-                new TrucoEvent(
-                tableIdAux,
-                handAux,
-                mi_jugador,
-                (byte) type,
-                cardAux);
+                TrucoEvent te = new TrucoEvent(
+                	tableIdAux,
+                	handAux,
+					elTpAsdf,
+                	(byte) type,
+                	cardAux);
                 
                 System.out.println("Tabla :" + te.getTableNumber());
                 System.out.println("HAND : " + te.getNumberOfHand());
@@ -493,6 +496,7 @@ public class CommunicatorClient extends Communicator {
                 + " El valor es "
                 + te.getCard().getValue());
                 
+                ((TrucoGameClient)laTabelaAsdf.getTGame()).play(te.getTrucoPlay());
             }
         }
     }
@@ -654,6 +658,11 @@ public class CommunicatorClient extends Communicator {
             }
         }
     }
+    
+    public void playResponse(TrucoEvent event) {
+		System.out.println("Void playResponse method in " + this.getClass().getName());		
+    }
+    
     public void play(TrucoEvent event) {
     	//TODO. ver por que aca se usa TrucoEvent.jugar_carta y no truco play.jugar_carta !!!!!
                 /*

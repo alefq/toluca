@@ -50,7 +50,11 @@ class TrListener implements TrucoListener
 		return getPManager().getPlayerCount();
 	}
 
-	public void play(TrucoEvent event) 
+	public void play(TrucoEvent event) {
+		System.out.println("Void play method in " + this.getClass().getName());		
+	}
+
+	public void playResponse(TrucoEvent event) 
 	{
 		int pos;
 		TrucoPlayer player;
