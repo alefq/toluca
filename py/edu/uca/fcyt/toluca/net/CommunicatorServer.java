@@ -95,7 +95,12 @@ extends Communicator {
     public void loginFailed(RoomEvent te){
         
     }
-    public void playerJoined(Player player) {
+    /**
+     *  Se dispara cuando el usuario de une a un room.
+     *  Se guarda la referencia al TrucoPlayer
+     */
+    public void playerJoined(TrucoPlayer player) {
+        this.player = player;
         Document doc=super.xmlCreateUserJoined(player);
         super.sendXmlPackage(doc);
     }
@@ -330,7 +335,8 @@ extends Communicator {
             }
             if(aux.compareTo("CreateTable")==0) {
                 System.out.println("Player: "+user);
-                pieza.createTable(new TrucoPlayer(user));
+                //pieza.createTable(new TrucoPlayer(user));
+                pieza.createTable(player);
             }
         }
     }
@@ -345,13 +351,22 @@ extends Communicator {
      * </p>
      */
     public void tableCreated(RoomEvent ev) {
+        Table ts = (Table)((ev.getTabless().toArray())[0]);
+        // Agregamos al Hash de Tablas
+        
+        getTables().put(String.valueOf(ev.getTableNumber()), ts);
         System.out.println("Se creo una tabla. soy: " + getClass().getName());
         Document doc;
-        doc = xmlCreateTableRequested(ev);
+        doc = xmlCreateTableCreated(ev);
         super.sendXmlPackage(doc);
     }
     
     public Document xmlCreateTableCreated(RoomEvent te) {
-        return new Document();
+        Element ROOT= new Element("TableCreated");
+        
+        Element TABLE = new Element("Table");
+        TABLE.setAttribute("id",String.valueOf(te.getTableNumber()));
+        Document doc = new Document(ROOT);
+        return doc;
     }
 }

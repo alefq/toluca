@@ -25,9 +25,9 @@ import org.jdom.output.XMLOutputter;
  * @author  PABLO JAVIER
  */
 public class CommunicatorClient extends Communicator {
-     
+    
     RoomClient pieza;
-    Player mi_jugador=null;
+    TrucoPlayer mi_jugador=null;    // Este es el que hay que usar como referencia al jugador representado!!!
     /** Creates a new instance of XmlPackageSessionTest */
     ChatPanelContainer Chatpanel;
     
@@ -122,7 +122,7 @@ public class CommunicatorClient extends Communicator {
     }
     
     public void tableCreated(RoomEvent re) {
-        
+        // Problemas de diseno a resolver en TolucaV2
     }
     
     private void cabecera(Document doc) {//saca la cabeza del paquete y envia el paquete al lector correspondiente
@@ -136,42 +136,40 @@ public class CommunicatorClient extends Communicator {
         
         
         if(aux.compareTo("ChatMsg")==0) {
-            System.out.println("LLego un mensaje de chat, soy " + player.getName());
+            System.out.println("Llego un mensaje de chat, soy " + player.getName());
             xmlReadChatMsg(child);
         }
         
         if(aux.compareTo("LoginOk")==0) {
-           System.out.println("LLego un mensaje de LoginOk");
+            System.out.println("LLego un mensaje de LoginOk");
             xmlReadLoginOk(child);
         }
         if(aux.compareTo("UserJoined")==0){
             System.out.println("Llego un mensaje de UserJoined");
             xmlReadUserJoined(child);
         }
-		if(aux.compareTo("SendCards")==0)
-		{
-			super.xmlreadSendCards(child);
-		}
-		if(aux.compareTo("Canto")==0)
-		{	
-			super.xmlReadCanto(child);
-		}
-		if(aux.compareTo("Cardsend")==0)
-		{
-			super.xmlReadCard(child);
-		}
-		if(aux.compareTo("CantarTanto")==0)
-		{
-			super.xmlReadCantarTanto(child);
-		}
-		if(aux.compareTo("Turno")==0)
-		{
-			super.xmlReadTurno(child);
-		}
-		if(aux.compareTo("TerminalMessage")==0)
-		{
-			//super.xmlReadTerminalMessage(child);
-		}
+        if(aux.compareTo("SendCards")==0) {
+            super.xmlreadSendCards(child);
+        }
+        if(aux.compareTo("Canto")==0) {
+            super.xmlReadCanto(child);
+        }
+        if(aux.compareTo("Cardsend")==0) {
+            super.xmlReadCard(child);
+        }
+        if(aux.compareTo("CantarTanto")==0) {
+            super.xmlReadCantarTanto(child);
+        }
+        if(aux.compareTo("Turno")==0) {
+            super.xmlReadTurno(child);
+        }
+        if(aux.compareTo("TerminalMessage")==0) {
+            //super.xmlReadTerminalMessage(child);
+        }
+        
+        if(aux.compareTo("TableCreated")==0) {
+            xmlReadTableCreated(child);
+        }
     }
     
     public void xmlReadUserJoined(Object o){
@@ -185,7 +183,7 @@ public class CommunicatorClient extends Communicator {
                 String jugname=element.getAttributeValue("name");
                 int rating=Integer.parseInt(element.getAttributeValue("rating"));
                 if(mi_jugador== null) {
-                    mi_jugador=new Player(jugname,rating);
+                    mi_jugador= new TrucoPlayer(jugname,rating);
                     System.out.println("Jugador nuevo name="+mi_jugador.getName()+"rating"+mi_jugador.getRating());
                     pieza.loginCompleted(mi_jugador);
                     setPlayer(mi_jugador);
@@ -200,6 +198,36 @@ public class CommunicatorClient extends Communicator {
             while (iterator.hasNext()) {
                 Object child = iterator.next();
                 xmlReadUserJoined(child);
+            }
+        }
+    }
+    
+    public void xmlReadTableCreated(Object o){
+        String aux;
+        
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            
+            if(aux.equals("Table")) {
+                String tableid=element.getAttributeValue("id");
+                Table t = new Table(getPlayer(), false);
+                t.setTableNumber(Integer.parseInt(tableid));
+                t.addTableListener(this);
+                getTables().put(tableid, t);
+                
+                /*try {
+                    Table tabela = (Table)getTables().get(tableid);
+                    tabela.yapiro();
+                } catch (java.lang.NullPointerException e) {
+                 asdfasdf   
+                } */
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadTableCreated(child);
             }
         }
     }
@@ -273,7 +301,7 @@ public class CommunicatorClient extends Communicator {
         }
         
     }
-   
+    
     
     /** <p>
      * Does ...
@@ -299,7 +327,7 @@ public class CommunicatorClient extends Communicator {
      */
     public void gameStartRequested() {
     }
-        
+    
     public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
         
     }
@@ -308,15 +336,15 @@ public class CommunicatorClient extends Communicator {
      * @return Value of property player.
      *
      */
-    public Player getPlayer() {
-        return this.player;
+    public TrucoPlayer getPlayer() {
+        return this.mi_jugador;
     }
     
     /** Setter for property player.
      * @param player New value of property player.
      *
      */
-    public void setPlayer(Player player) {
+    public void setPlayer(TrucoPlayer player) {
         this.player = player;
     }
     
@@ -370,29 +398,29 @@ public class CommunicatorClient extends Communicator {
     public void signSent(TableEvent event) {
     }
     
-	/*public static void main(String[] args)
-	{
-		TrucoCard []cards=new TrucoCard[3];
-		cards[0]=new TrucoCard(1,1);
-		cards[1]=new TrucoCard(1,4);
-		cards[2]=new TrucoCard(1,7);
-
-		TrucoEvent dani = new TrucoEvent(new TrucoGame(2),5,new TrucoPlayer("Cricco"),TrucoEvent.CANTO_ENVIDO,28);
-
-		Document doc=dani.toXml();
-		CommunicatorClient cc=new CommunicatorClient();
-		
-		try {
-
-      		XMLOutputter serializer = new XMLOutputter("  ", true);
-	
-      		serializer.output(doc, System.out);
-
-			}
-    		catch (IOException e) {
-      		System.err.println(e);
-    		}
-			cc.cabecera(doc);
-	}*/
+        /*public static void main(String[] args)
+        {
+                TrucoCard []cards=new TrucoCard[3];
+                cards[0]=new TrucoCard(1,1);
+                cards[1]=new TrucoCard(1,4);
+                cards[2]=new TrucoCard(1,7);
+         
+                TrucoEvent dani = new TrucoEvent(new TrucoGame(2),5,new TrucoPlayer("Cricco"),TrucoEvent.CANTO_ENVIDO,28);
+         
+                Document doc=dani.toXml();
+                CommunicatorClient cc=new CommunicatorClient();
+         
+                try {
+         
+                XMLOutputter serializer = new XMLOutputter("  ", true);
+         
+                serializer.output(doc, System.out);
+         
+                        }
+                catch (IOException e) {
+                System.err.println(e);
+                }
+                        cc.cabecera(doc);
+        }*/
     
 }

@@ -129,6 +129,9 @@ implements ChatPanelContainer {
         }
     } // end fireTableCreated
     
+    public void joinTable(RoomEvent re) {
+        
+    }
     /**
      * <p>
      * Does ...

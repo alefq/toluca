@@ -98,7 +98,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).gameStartRequest
             (
-            	new TableEvent(table, null, 0)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_gameStartRequest,
+            		table, null, 0
+            	)
             );
         }
     }
@@ -114,7 +118,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).gameStarted
             (
-            	new TableEvent(table, null, 0)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_gameStarted,
+            		table, null, 0
+            	)
             );
         }
     }
@@ -130,7 +138,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).gameFinished
             (
-            	new TableEvent(table, null, 0)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_gameFinished,
+            		table, null, 0
+            	)
             );
         }
     }
@@ -146,7 +158,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).playerStandRequest
             (
-            	new TableEvent(table, null, chair)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerStandRequest,
+            		table, null, chair
+            	)
             );
         }
     }
@@ -162,7 +178,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).playerStanded
             (
-            	new TableEvent(table, null, 0)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerStanded,
+            		table, null, 0
+            	)
             );
         }
     }
@@ -178,7 +198,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).playerKickRequest
             (
-            	new TableEvent(table, player, 0)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerKickRequest,
+            		table, player, 0
+            	)
             );
         }
     }
@@ -194,7 +218,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).playerKicked
             (
-            	new TableEvent(table, player, 0)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerKicked,
+            		table, player, 0
+            	)
             );
         }
     }
@@ -209,7 +237,11 @@ class TableEventManager
         while(iter.hasNext()) {
             ((TableListener)iter.next()).playerSitRequest
             (
-            	new TableEvent(table, null, chair)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerSitRequest,
+            		table, null, chair
+            	)
             );
         }
     }
@@ -224,7 +256,11 @@ class TableEventManager
         while(iter.hasNext()) {
             ((TableListener)iter.next()).playerSit
             (
-            	new TableEvent(table, null, chair)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerSit,
+            		table, null, chair
+            	)
             );
         }
     }
@@ -240,7 +276,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).signSendRequest
             (
-            	new TableEvent(table, dest, sign)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_signSendRequest,
+            		table, dest, sign
+            	)
             );
         }
     }
@@ -256,7 +296,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).signSent
             (
-            	new TableEvent(table, null, sign)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_signSent,
+            		table, null, sign
+            	)
             );
         }
     }
@@ -272,7 +316,11 @@ class TableEventManager
         {
             ((TableListener)iter.next()).showPlayed
             (
-            	new TableEvent(table, null, chair)
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_showPlayed,
+            		table, null, chair
+            	)
             );
         }
     }

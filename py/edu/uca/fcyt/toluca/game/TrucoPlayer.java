@@ -30,4 +30,8 @@ public class TrucoPlayer extends Player{
         super();
     }
     
+    public TrucoPlayer(String name, int rating) {
+        super (name, rating);
+    
+    }
 }

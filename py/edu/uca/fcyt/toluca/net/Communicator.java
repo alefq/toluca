@@ -22,7 +22,7 @@ implements RoomListener, TableListener {
     /*
      * <p>Player del communicator</p>
      */
-    Player player;
+    TrucoPlayer player;
     
     Vector Players=new Vector();
     Vector Mesas=new Vector();
@@ -38,9 +38,6 @@ implements RoomListener, TableListener {
     }
     public int init() {
         return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
-    }
-    public void receiveXmlPackage(Element xmlPackage) {
-        
     }
     
     public void sendXmlPackage(Document doc) {
@@ -743,6 +740,8 @@ implements RoomListener, TableListener {
     String password;
     String message;
     
+    /** Holds value of property tables. */
+    private Hashtable tables;    
     
 /*
         public static Document xmlCreateTableClosed(RoomEvent te)
@@ -1054,5 +1053,20 @@ implements RoomListener, TableListener {
   public void sitRequest(TableEvent ev) {
     }
     
+  /** Getter for property tables.
+   * @return Value of property tables.
+   *
+   */
+  public Hashtable getTables() {
+      return this.tables;
+  }  
           
+  /** Setter for property tables.
+   * @param tables New value of property tables.
+   *
+   */
+  public void setTables(Hashtable tables) {
+      this.tables = tables;
+  }
+  
 }

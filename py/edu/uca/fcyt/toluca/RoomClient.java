@@ -280,6 +280,10 @@ public class RoomClient extends Room
         addPlayer(player);
     } // end loginCompleted        /** lock-begin */
 
+    public void joinTable(RoomEvent re) {
+        
+    }
+
 /**
  * <p>
  * Does ...
