@@ -16,6 +16,8 @@ import py.edu.uca.fcyt.game.ChatPanel;
 /** Panel principal de juego*/
 class JTrucoTable extends JPanel implements ComponentListener 
 {
+	public static final int BUTTON_INICIAR_OK = 0;
+	public static final int BUTTON_HECHAR = 1;
 	// paneles
 	protected JPanel jpPlayers; 	// panel de jugadores
 	protected ChatPanel jpChat;		// panel de chat

@@ -34,7 +34,7 @@ public class ConnectionManager implements XmlPackagesServerListener {
     /** Creates a new instance of ChatServer */
     public ConnectionManager(RoomServer rs) {
         try {
-            System.err.println("Soy un Connection mannager y ya fui instanciado");
+            System.out.println("Soy un Connection mannager y ya fui instanciado");
             setRoomserver(rs);            
             vecSesiones = new Vector();
             server = new XmlPackagesServer( ConnectionManager.SERVER_PORT , ConnectionManager.SERVER_FQN);
@@ -43,10 +43,10 @@ public class ConnectionManager implements XmlPackagesServerListener {
             
         } catch (java.io.IOException e) {
             System.out.println("I/O exception in server");
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         } catch (java.lang.ClassNotFoundException e) {
             System.out.println("Class not found in server: " + e.getMessage());
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
         
     }

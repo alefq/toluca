@@ -55,7 +55,7 @@ implements RoomListener, TableListener,TrucoListener
 	}
 	public void playerLeft(TableEvent te)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	public void sendXmlPackage(Document doc)
@@ -223,7 +223,7 @@ implements RoomListener, TableListener,TrucoListener
 	}
 	public void xmlreadSendCardsAlg(Object o)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 /*		String aux;
 	if (o instanceof Element) {
 		Element element = (Element) o;
@@ -274,7 +274,7 @@ implements RoomListener, TableListener,TrucoListener
 	int type;
 	public void xmlReadCanto(Object o)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 /*		String aux;
 	if (o instanceof Element) {
 		Element element = (Element) o;
@@ -314,7 +314,7 @@ implements RoomListener, TableListener,TrucoListener
 	int tanto;
 	public void xmlReadCantarTanto(Object o)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 /*				String aux;
 	if (o instanceof Element) {
 		Element element = (Element) o;
@@ -404,12 +404,12 @@ implements RoomListener, TableListener,TrucoListener
 	//by sacoleiro
 	public void chatMessageRequested(SpaceListener spaceListener, TrucoPlayer player, String htmlMessage)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	public void gameStartRequest(TableEvent ev)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	
@@ -521,8 +521,8 @@ implements RoomListener, TableListener,TrucoListener
 			doc = new Document(ROOT);
 		} catch (java.lang.NullPointerException npe)
 		{
-			System.err.println("Hay un error al hacer el XMLCREATELOGIN en el Communicator");
-			npe.printStackTrace();
+			System.out.println("Hay un error al hacer el XMLCREATELOGIN en el Communicator");
+			npe.printStackTrace(System.out);
 			throw npe;
 		} finally
 		{
@@ -673,7 +673,7 @@ implements RoomListener, TableListener,TrucoListener
 	
 	public void loginCompleted(RoomEvent re)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	
@@ -735,11 +735,11 @@ implements RoomListener, TableListener,TrucoListener
  */
 	public void loginRequested(RoomEvent te)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	public void loginFailed(RoomEvent te)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	
@@ -782,7 +782,7 @@ implements RoomListener, TableListener,TrucoListener
 	 
 	}
 	catch (IOException e) {
-		System.err.println(e);
+		System.out.println(e);
 	}
 	//cc.cabecera(doc);
 	 
@@ -801,7 +801,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void chatMessageRequested(TrucoPlayer player, String htmlMessage)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 		
 	}
 	
@@ -818,7 +818,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void chatMessageSent(TrucoPlayer player, String htmlMessage)
 	{
-		new Exception("").printStackTrace();
+		new Exception("").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -843,7 +843,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void gameFinished(Game game)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -857,7 +857,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void gameStarted(Game game)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -883,7 +883,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void playerKicked(TrucoPlayer player)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -897,17 +897,17 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void playerLeft(TrucoPlayer player)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	public void playerSit(TrucoPlayer player, int position)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	public void sitRequested(TrucoPlayer player, int position)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	//    /** <p>
@@ -925,7 +925,7 @@ implements RoomListener, TableListener,TrucoListener
 	
 	public void tableJoinRequested(RoomEvent ev)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -940,7 +940,7 @@ implements RoomListener, TableListener,TrucoListener
 	
 	public void tableJoined(RoomEvent ev)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -954,7 +954,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void tableLocked(Table table)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -968,7 +968,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void tableModified(RoomEvent ev)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -982,7 +982,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void tableRemoved(RoomEvent re)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -996,7 +996,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void tableUnlocked(Table table)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** <p>
@@ -1010,7 +1010,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void joinTableRequested(RoomEvent ev)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	
@@ -1060,7 +1060,7 @@ implements RoomListener, TableListener,TrucoListener
 	 */
 	public void sitRequest(TableEvent ev)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace();
+		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 	}
 	
 	/** Getter for property tables.

@@ -150,17 +150,17 @@ public class TrucoGame extends Game
 		
 		if (teams[0] == null || teams[1] == null)
 			throw (new InvalidPlayExcepcion("Teams not found in Trucogame"));
-		try
-		{
+		/*try
+		{*/
 			trucoHand.play(tp);
 			//firePlayToOtherClients(tp);
 			
-		}
+/*		} //Comente esta parte xq si el metodo hace tiene "throws" no hace falta el try,catch
 		catch (InvalidPlayExcepcion e)
 		{
 			e.printStackTrace(System.out);
 			throw e;
-		}
+		}*/
 	}
 	/** Retorna Verdadero si posible realizar una jugada.
 	 * @param tp Jugada a verificar si es posible ser realizada.

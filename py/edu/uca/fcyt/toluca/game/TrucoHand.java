@@ -758,9 +758,14 @@ public class TrucoHand
 				case TrucoPlay.ME_VOY_AL_MAZO:
 					meVoyAlMazo(tp);
 					break;
+				case TrucoPlay.PLAYER_CONFIRMADO: //Esta es la jugada q viene cuando se presiona "Ok' en el Table
+					game.startHand(tp.getPlayer()); //No se si este es el metodo correcto
+					break;
 				case TrucoPlay.FIN_DE_MANO:
-					finDeRonda(); //o tiene q ser nexPlayTurn () ???
+					//Creo q ahora ya no hace falta. Ale 2003.08.25 11:26 PM
+					//finDeRonda(); //o tiene q ser nexPlayTurn () ??? o playTurn() ??
 					//nextPlayTurn();
+					playTurn();
 					break;
 				default:
 					throw(new InvalidPlayExcepcion("error grave - TrucoPlay no definido: "+tp.getType()));

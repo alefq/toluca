@@ -285,6 +285,10 @@ public class TrucoEvent
 			case FIN_DE_MANO:
 				typeevent = FIN_DE_MANO;
 				break;
+			case PLAYER_CONFIRMADO:
+				System.out.println("Vino el Player Confirmado: " + tp.getPlayer());
+				typeevent = PLAYER_CONFIRMADO;
+				break;
 			default :
 				typeevent = -1;
 				new Throwable("No se conoce el tipo del Truco Play: " + type).printStackTrace(System.out);

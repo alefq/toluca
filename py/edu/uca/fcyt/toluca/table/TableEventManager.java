@@ -98,7 +98,7 @@ class TableEventManager
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
-            System.err.println("iterando...");
+            System.out.println("iterando...");
             ((TableListener)iter.next()).gameStartRequest
             (
             	new TableEvent

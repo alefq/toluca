@@ -21,7 +21,7 @@ public class TrucoGameClient extends TrucoGame
 	public TrucoGameClient(TrucoTeam t1, TrucoTeam t2)
 	{
 		super(t1, t2);
-		System.err.println("Se crea un nuevo truco Game Client");
+		System.out.println("Se crea un nuevo truco Game Client");
 		
 	}
 	public void startGameClient()
@@ -29,7 +29,7 @@ public class TrucoGameClient extends TrucoGame
 		numberOfPlayers = teams[0].getNumberOfPlayers()*2;
 		playersPreparados = new boolean[numberOfPlayers];
 		newGame();
-		//fireGameStarted(); //Ahora ya no hace falta avisar?
+		fireGameStarted(); //Ahora ya no hace falta avisar? Si hace falta, xq sino el Table no habilita el boton Ok
 		//porque Table inicia el juego y se crea en el serva el TrucoGame (no estoy seguro. Ale)
 		for (int i=0; i<numberOfPlayers; i++)
 			playersPreparados[i] = true;
@@ -83,7 +83,7 @@ public class TrucoGameClient extends TrucoGame
 	
 	public void turn(TrucoEvent event)
 	{
-		//new Exception("Nada implementado aun :-(   ").printStackTrace();
+		//new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
 		//TODO ACA TOCO PARA ASIGNAR EL TURNO, VERIFICAR ESTO.
 		//trucoHandCli.startHand();
 		
@@ -95,8 +95,8 @@ public class TrucoGameClient extends TrucoGame
 	}
 	public void cardsDeal(TrucoEvent event)
 	{
-		System.err.println("event.getTypeEvent(): " + event.getTypeEvent());
-		new Exception("En cardsDeal. Acá se tendrían que recibir las cartas").printStackTrace(System.err);
+		System.out.println("event.getTypeEvent(): " + event.getTypeEvent());
+		new Exception("En cardsDeal. Acá se tendrían que recibir las cartas").printStackTrace(System.out);
 	}
 	public void handStarted(TrucoEvent event)
 	{

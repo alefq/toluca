@@ -117,7 +117,7 @@ public class TableEvent {
         return id & ~(PLAYER_MASK | VALUE_MASK);
     }
     private Document xmlCreatePlayerSitRequest() {//del cliente al servidor para
-        System.err.println("//////////////////////////////////////////Dentro de xmlCreatePlayerSitRequest name del player es nulo " + (player==null) );
+        System.out.println("//////////////////////////////////////////Dentro de xmlCreatePlayerSitRequest name del player es nulo " + (player==null) );
         
         Element ROOT=new Element("PlayerSitRequest");
         Element TABLE=new Element("Table");

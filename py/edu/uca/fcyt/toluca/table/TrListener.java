@@ -11,6 +11,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
+import py.edu.uca.fcyt.toluca.table.*;
 
 /**
  * Escucha los eventos del juego
@@ -20,41 +21,46 @@ class TrListener implements TrucoListener
 	protected LinkedList trucoListeners; 	// listeners de eventos
 	private Table table;
 	private boolean endOfHand = false;
-
+	
 	/** Construye un TrucoListenerManger con Table 'table' */
 	public TrListener(Table table)
 	{
 		trucoListeners = new LinkedList();
 		this.table = table;
 	}
-
+	
 	/** Registra un listener de eventos TrucoListener */
 	public void addListener(TrucoListener t)
 	{
 		Util.verifParam(t != null, "Parámetro 't' nulo");
 		trucoListeners.add(t);
 	}
-
+	
 	/** Invocado cuando se inicia el juego de truco */
 	public void gameStarted(TrucoEvent event)
 	{
 		System.out.println("Game started for player " + getAssociatedPlayer().getName());
-		table.getJTrucoTable().buttons[0].setText("Ok");
-    }
-
+//		new Throwable("").printStackTrace(System.out);
+		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Ok");
+	}
+	
 	/**
-     * Devuelve la cantidad de jugadores 
-     */
+	 * Devuelve la cantidad de jugadores
+	 */
 	private int playerCount()
 	{
 		return getPManager().getPlayerCount();
 	}
-
-	public void play(TrucoEvent event) {
-		System.out.println("Void play method in " + this.getClass().getName());		
+	
+	public void play(TrucoEvent event)
+	{
+		//System.out.println("Void play method in " + this.getClass().getName());
+		//Aca llega cuando se "Confirma" un jugador desde el serva
+		new Throwable("Nada implementado :-(").printStackTrace(System.out);
+		//playResponse(event);
 	}
-
-	public void playResponse(TrucoEvent event) 
+	
+	public void playResponse(TrucoEvent event)
 	{
 		int pos;
 		TrucoPlayer player;
@@ -73,7 +79,7 @@ class TrListener implements TrucoListener
 		
 		System.out.println
 		(
-			"\nPlay for player " + getAssociatedPlayer().getName() + ": " + name
+		"\nPlay for player " + getAssociatedPlayer().getName() + ": " + name
 		);
 		
 		switch (type)
@@ -82,14 +88,14 @@ class TrListener implements TrucoListener
 				card = event.getCard();
 				cManager.playCard(pos, card);
 				// Somos la estirpe guaraní
-			if (table.getPlayer() == player) 
-			//if (getAssociatedPlayer() == player) 
+				if (table.getPlayer() == player)
+					//if (getAssociatedPlayer() == player)
 					cManager.showCards(null);
 				else if (endOfHand)
 					cManager.pushPause(pos, 250);
 				System.out.println("Card played: " + card.getDescription());
 				break;
-			
+				
 			case TrucoEvent.CERRARSE:
 				System.out.println("Cerrarse! pos: " + pos);
 				cManager.playClosed(pos);
@@ -105,9 +111,9 @@ class TrListener implements TrucoListener
 				else
 					drawBalloon
 					(
-						event.getPlayer(), 
-						Integer.toString(event.getValue()), 
-						true
+					event.getPlayer(),
+					Integer.toString(event.getValue()),
+					true
 					);
 				break;
 				
@@ -128,13 +134,13 @@ class TrListener implements TrucoListener
 					System.out.println("Play name: " + name);
 					System.out.println("TrucoPlayer: " + event.getPlayer());
 					System.out.println("---------------------- ");
-//					throw new IllegalStateException();
+					//					throw new IllegalStateException();
 				}
-					
+				
 				break;
 		}
 	}
-
+	
 	public void turn(TrucoEvent event)
 	{
 		Vector aPlays = new Vector();
@@ -149,12 +155,12 @@ class TrListener implements TrucoListener
 		// obtiene el TrucoGame de la mesa y el jugador actual
 		tGame = table.getTGame();
 		aPlayer = (TrucoPlayer) table.getPlayer();
-
+		
 		// establece el estado de la mesa
 		if (event.getPlayer() == getAssociatedPlayer())
 		{
 			table.setStatus(Table.PLAY);
-
+			
 			table.envidoPoints = event.getValue();
 			
 			// caga el vector de jugadas habilitadas
@@ -166,16 +172,16 @@ class TrListener implements TrucoListener
 				{
 					tPlay = new TrucoPlay
 					(
-						(TrucoPlayer) aPlayer, 
-						play, 
-						table.envidoPoints
+					(TrucoPlayer) aPlayer,
+					play,
+					table.envidoPoints
 					);
 				}
 				else
 					tPlay = new TrucoPlay(aPlayer, play);
-					
-					
-				if (tGame.esPosibleJugar(tPlay)) 
+				
+				
+				if (tGame.esPosibleJugar(tPlay))
 					aPlays.add(new Byte(play));
 			}
 			
@@ -185,42 +191,42 @@ class TrListener implements TrucoListener
 			table.setStatus(Table.WAIT);
 		else
 			table.setStatus(Table.WATCH);
-
+		
 		// resalta la carita con turno
 		getFManager().setHighlight
 		(
-			table.getPManager().getPos(event.getPlayer())
+		table.getPManager().getPos(event.getPlayer())
 		);
-
+		
 	}
-
+	
 	public void endOfHand(TrucoEvent event)
 	{
 		int pun1, pun2;
-
+		
 		System.out.println("End of hand for player " + getAssociatedPlayer().getName());
 		
 		pun1 = table.getPoints(0);
 		pun2 = table.getPoints(1);
-
+		
 		table.updateScore(pun1, pun2);
-
+		
 		table.setStatus(Table.WAIT);
-		table.getJTrucoTable().buttons[0].setEnabled(true);
+		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
 		getCManager().pushGeneralPause(2000);
 		endOfHand = true;
 	}
-
+	
 	public void cardsDeal(TrucoEvent event)
 	{
 		Card[] cards;
 		int sign;
-
-                new Exception("dealing cards...").printStackTrace(System.out);
+		
+		//Fnew Exception("dealing cards...").printStackTrace(System.out);
 		System.out.println("Cards deal for player " + getAssociatedPlayer().getName());
 		
 		cards = event.getCards();
-
+		
 		for (int i = 0; i < 3; i++)
 			System.out.println(cards[i].getDescription());
 		
@@ -232,48 +238,48 @@ class TrListener implements TrucoListener
 		}
 		
 		// TODO Agregado por PS y AA porque así parecería que tiene que ser
-		if (event.getPlayer() == getAssociatedPlayer())	
+		if (event.getPlayer() == getAssociatedPlayer())
 			getCManager().showCards(cards);
 	}
-
+	
 	public void handStarted(TrucoEvent event)
 	{
 		TrucoPlayer tPlayer;
 		int dealPos, turnPos;
 		CardManager cManager;
 		
-                //new Exception("player: " + getAssociatedPlayer().getName()).printStackTrace(System.out);
+		//new Exception("player: " + getAssociatedPlayer().getName()).printStackTrace(System.out);
 		System.out.println("New hand started for player " + getAssociatedPlayer().getName());
 		
-		endOfHand = false;		
-		table.getJTrucoTable().buttons[0].setEnabled(false);
+		endOfHand = false;
+		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
 		cManager = getCManager();
-
+		
 		table.clearSigns();
-
-
+		
+		
 		tPlayer = (TrucoPlayer) event.getTrucoPlayer();
 		
 		dealPos = getPManager().getPos(tPlayer);
 		System.out.println(tPlayer.getName() + " is dealing");
 		turnPos = (dealPos + 1) % playerCount();
-
+		
 		cManager.gatherCards(dealPos);
 		cManager.deal(dealPos, false);
 		cManager.take();
 		cManager.putDeckInTable
 		(
-			playerCount() * 3 * 250 + 100, turnPos
+		playerCount() * 3 * 250 + 100, turnPos
 		);
 	}
-
+	
 	public void endOfGame(TrucoEvent event)
 	{
 		System.out.println("End of game for player " + table.getPlayer());
 		table.initialize();
 		table.getTEventMan().fireGameFinished();
 	}
-
+	
 	public TrucoPlayer getAssociatedPlayer()
 	{
 		return table.getPlayer();
@@ -281,7 +287,7 @@ class TrListener implements TrucoListener
 	
 	public void drawBalloon
 	(
-		TrucoPlayer player, String text, boolean highlighted
+	TrucoPlayer player, String text, boolean highlighted
 	)
 	{
 		Face face;
@@ -295,33 +301,38 @@ class TrListener implements TrucoListener
 			// obtiene la carita
 			face = getFManager().getFace
 			(
-				getPManager().getPos(player)
+			getPManager().getPos(player)
 			);
 			
 			face.pushText(text, highlighted, 750);
 			face.pushText(null, false, 100);
 		}
-
+		
 		// muestra el mensaje también en el chat si está jugando
 		if (!(table.getStatus() == Table.WATCH))
 			table.getJTrucoTable().jpChat.showChatMessage
 			(
-				player, text
+			player, text
 			);
-	}	
-
-	/** Retorna el animador */	
-	private Animator getAnimator() { return table.getAnimator(); }
-
+	}
+	
+	/** Retorna el animador */
+	private Animator getAnimator()
+	{ return table.getAnimator(); }
+	
 	/** Retorna el manejador de cartas */
-	private CardManager getCManager() { return table.getCManager(); }
-
+	private CardManager getCManager()
+	{ return table.getCManager(); }
+	
 	/** Retorna el manejador de jugadores */
-	private PlayerManager getPManager() { return table.getPManager(); }
-
+	private PlayerManager getPManager()
+	{ return table.getPManager(); }
+	
 	/** Retorna el manejador de caritas */
-	private FaceManager getFManager() { return table.getFManager(); }
-
+	private FaceManager getFManager()
+	{ return table.getFManager(); }
+	
 	/** Retorna el TrucoGame */
-	private TrucoGame getTGame() { return table.getTGame(); }
+	private TrucoGame getTGame()
+	{ return table.getTGame(); }
 }

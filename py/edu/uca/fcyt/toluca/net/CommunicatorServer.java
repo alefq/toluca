@@ -35,7 +35,7 @@ public class CommunicatorServer extends Communicator
 	}
 	public void signSent(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	public void playerSit(TableEvent te)
 	{
@@ -45,31 +45,32 @@ public class CommunicatorServer extends Communicator
 	}
 	public void playerSitRequest(TableEvent te)
 	{
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	public void playerKicked(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	public void playerKickRequest(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	public void playerStanded(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	public void playerStandRequest(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	public void gameFinished(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	
 	public void signSendRequest(TableEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	
 	public void gameStarted(TableEvent te)
@@ -139,7 +140,7 @@ public class CommunicatorServer extends Communicator
 			
 		} catch (IOException e)
 		{
-			System.err.println(e);
+			System.out.println(e);
 		}
 		System.out.println("Vino un paquete: " + xmlPackage.getName());
 		Document doc = new Document();
@@ -186,7 +187,7 @@ public class CommunicatorServer extends Communicator
 	}
 	public void loginFailed(RoomEvent te)
 	{
-		
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	/**
 	 *  Se dispara cuando el usuario de une a un room.
@@ -375,9 +376,9 @@ public class CommunicatorServer extends Communicator
 					System.out.println("Se hizo una jugada con exito :?");
 				} catch (java.lang.NullPointerException e)
 				{
-					System.err.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER Método xmlReadTrucoPlay");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER Método xmlReadTrucoPlay");
 					e.printStackTrace(System.out);
-					throw e;
+					//					throw e;
 				}
 			}
 		}
@@ -524,7 +525,7 @@ public class CommunicatorServer extends Communicator
 			}
 			if (aux.compareTo("PlayerSitRequest") == 0)
 			{
-				System.err.println(
+				System.out.println(
 				"DENTRO DEL COMMUNICATOR SERVFER/////////////////");
 				System.out.println("El table a sentarse es " + idAux);
 				System.out.println("La posicion es " + posAux);
@@ -537,7 +538,7 @@ public class CommunicatorServer extends Communicator
 					tabela.sitPlayer(pieza.getPlayer(otroPlayerName), posAux);
 				} catch (java.lang.NullPointerException e)
 				{
-					System.err.println(
+					System.out.println(
 					"LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadPlayerSitRequest ");
 					e.printStackTrace(System.out);
 					throw e;
@@ -564,6 +565,7 @@ public class CommunicatorServer extends Communicator
 		/*System.out.println("What the fuck @#!@$!!!! " + this.getClass().getName());
 		Document doc = te.toXml();
 		super.sendXmlPackage(doc);*/
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	
 	public void play(TrucoEvent event)
@@ -576,8 +578,19 @@ public class CommunicatorServer extends Communicator
 		//System.out.println("Void play method in " + this.getClass().getName());
 		System.out.println("voy a enviar el pacote TrucoEvent en el m'etodo PLayRespone");
 		//Document doc = tp.toXml();
+		
+		//Con este nhembo q jugaba pero no iniciaba la 2da. ronda
+		//Sin este no funca ni siquiera la primera mano :-(
+		//Sospecho q es porque falta la implementacion para todos los casos del toTrucoPlay del TrucoEvent
 		Document doc = event.toXml();
-		super.sendXmlPackage(doc);
+		
+		//Con esta linea se va al mazo. No juega nada :-(  Document doc = event.toTrucoPlay().toXml();
+		if(doc == null) //BIEN DRAGONICO, hasta q se convierta bien a TrucoPlay
+			//Da null cuando se termina una ronda, y tiene q empezar la segunda y los jugadores
+			//van preparandose a travez del boton OK
+			sendXmlPackage(event.toTrucoPlay().toXml());
+		else
+			super.sendXmlPackage(doc);
 	}
 	
 	public void playResponse(TrucoEvent event)
@@ -589,7 +602,7 @@ public class CommunicatorServer extends Communicator
 				 
 					return;
 				}*/
-		
+		new Throwable("Nada implementado aun :-( ").printStackTrace(System.out);
 	}
 	
 	
@@ -597,6 +610,8 @@ public class CommunicatorServer extends Communicator
 	{
 		/*Document doc = event.toXml();
 		super.sendXmlPackage(doc);*/
+		//new Throwable("nada implementado aun :-(").printStackTrace(System.out);
+		System.out.println(getClass().getName()+".turn() NO IMPLEMENTADO");
 	}
 	public void endOfHand(TrucoEvent event)
 	{
@@ -605,13 +620,13 @@ public class CommunicatorServer extends Communicator
 	}
 	public void cardsDeal(TrucoEvent event)
 	{
-		System.err.println("Vienen las CARTAS carajo"+this);
+		System.out.println("Vienen las CARTAS carajo"+this);
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
 	public void handStarted(TrucoEvent event)
 	{
-		System.err.println("Se disparo un hand started en " + this.getClass());
+		System.out.println("Se disparo un hand started en " + this.getClass());
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
@@ -670,7 +685,7 @@ public class CommunicatorServer extends Communicator
 			{
 				//Hace la autenticacion contra la base de datos
 				//DbOoperation.authenticatePlayer(user,password);
-				System.err.println(
+				System.out.println(
 				"Dentro del Communicator Client, recibi un login request de: ");
 				System.out.println("Username: " + user);
 				System.out.println("Password: " + password);
@@ -680,8 +695,8 @@ public class CommunicatorServer extends Communicator
 					pieza.login(user, password, this);
 				} catch (py.edu.uca.fcyt.toluca.LoginFailedException lfe)
 				{
-					System.err.println("hubo un error en el login");
-					System.err.println("enviar uno paquete indicando el error");
+					System.out.println("hubo un error en el login");
+					System.out.println("enviar uno paquete indicando el error");
 					//No se pudo logear
 				}
 			}
@@ -707,6 +722,7 @@ public class CommunicatorServer extends Communicator
 	TrucoPlayer player,
 	String htmlMessage)
 	{
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	
 	//   public void createTableRequested(RoomEvent ev) { }
@@ -747,6 +763,7 @@ public class CommunicatorServer extends Communicator
 	 */
 	public void createTableRequested(RoomEvent ev)
 	{
+		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
 	}
 	
 	public void xmlReadCreateTable(Object o)

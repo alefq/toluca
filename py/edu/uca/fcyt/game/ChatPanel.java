@@ -30,7 +30,7 @@ public class ChatPanel extends javax.swing.JPanel {
     /** Creates new form ChatPanel */
     public ChatPanel(ChatPanelContainer cpc, TrucoPlayer player) {
         if (player == null) {
-            new Exception("Se fue a la puta: player null").printStackTrace();
+            new Exception("Se fue a la puta: player null").printStackTrace(System.out);
             //            System.out.println("El player es null :((");
         } else {
             //            System.out.println("TrucoPlayer BZ!: " + player.getName());

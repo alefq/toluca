@@ -100,7 +100,7 @@ implements ChatPanelContainer
 	public void createTable(TrucoPlayer player)
 	{
 		// your code here
-		System.err.println("Dentor del create table del room server: " + player.getName());
+		System.out.println("Dentor del create table del room server: " + player.getName());
 		TableServer tableServer= new TableServer(player);
 		
 		tableServer.addPlayer(player);
@@ -464,30 +464,30 @@ implements ChatPanelContainer
 			Vector v = new Vector();
 			v.add(jogador);
 			re.setPlayers(v);
-			System.err.println("antes de obtener el room listener");
+			System.out.println("antes de obtener el room listener");
 			RoomListener ltmp = (RoomListener) pendingConnections.get(jogador.getName());
-			System.err.println("despues de obtener el Roomlistener");
+			System.out.println("despues de obtener el Roomlistener");
 			try
 			{
 				
 				ltmp.loginCompleted(re);
 			} catch (NullPointerException e)
 			{
-				System.err.println("cagamos, no hay listener");
+				System.out.println("cagamos, no hay listener");
 				throw e;
 			}
 			
 			
-			System.err.println("despues de disparar loginCompleted");
+			System.out.println("despues de disparar loginCompleted");
 			pendingConnections.remove(jogador.getName());
 			
 		} catch (java.lang.NullPointerException npe)
 		{
-			System.err.println("Null pointer exceptiooooon en room server");
+			System.out.println("Null pointer exceptiooooon en room server");
 			if (jogador == null)
-				System.err.println("jogador es nulo!");
+				System.out.println("jogador es nulo!");
 			else
-				System.err.println("nombre del jogador:" + jogador.getName());
+				System.out.println("nombre del jogador:" + jogador.getName());
 			npe.printStackTrace(System.out);
 		}
 		/*
@@ -496,7 +496,7 @@ implements ChatPanelContainer
 			RoomListener ltmp = (py.edu.uca.fcyt.toluca.RoomListener)iter.next();
 		 
 			String nombre = ((CommunicatorServer)ltmp).player.getName();
-			System.err.println("Verificando el jugador: " + nombre);
+			System.out.println("Verificando el jugador: " + nombre);
 		 
 			if ( jogador.getName().compareTo(nombre)  == 0) { //
 				System.out.println("dentro del roomserver, encontre el player que se logeuo");

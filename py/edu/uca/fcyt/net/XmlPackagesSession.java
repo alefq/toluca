@@ -75,7 +75,7 @@ public abstract class XmlPackagesSession implements Runnable
 							} catch (JDOMException e)
 							{
 								e.printStackTrace(System.out);
-								System.err.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method: " + e.getMessage());
+								System.out.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method: " + e.getMessage());
 								receiveXmlPackageWithParsingError(rawPacket.trim());
 							}
 							rawPacket = "";
@@ -103,7 +103,7 @@ public abstract class XmlPackagesSession implements Runnable
 									receiveXmlPackage(eReceived);
 								} catch (JDOMException e)
 								{
-									System.err.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
+									System.out.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
 									receiveXmlPackageWithParsingError(rawPacket.trim());
 								}
 							} else
@@ -115,7 +115,7 @@ public abstract class XmlPackagesSession implements Runnable
 									receiveXmlPackage(eReceived);
 								} catch (JDOMException e)
 								{
-									System.err.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
+									System.out.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
 									receiveXmlPackageWithParsingError(subPacket);
 								}
 								rawPacket = rawPacket.substring(ind);
@@ -130,7 +130,7 @@ public abstract class XmlPackagesSession implements Runnable
 						Thread.sleep(DEFAULT_SLEEP_TIME);
 					} catch (InterruptedException e)
 					{
-						System.err.println("System interrupted. Cannot continue");
+						System.out.println("System interrupted. Cannot continue");
 					}
 				}
 			}

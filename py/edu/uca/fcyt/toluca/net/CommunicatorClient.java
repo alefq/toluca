@@ -90,7 +90,7 @@ public class CommunicatorClient extends Communicator
 	
 	public void receiveXmlPackage(Element xmlPackage)
 	{
-		System.err.println("//////////////////////////////////////////");
+		System.out.println("//////////////////////////////////////////");
 		System.out.println("Vino un paquete: " + xmlPackage.getName());
 		Document doc = new Document(xmlPackage);
 		try
@@ -102,9 +102,9 @@ public class CommunicatorClient extends Communicator
 			
 		} catch (IOException e)
 		{
-			System.err.println(e);
+			System.out.println(e);
 		}
-		System.err.println("//////////////////////////////////////////");
+		System.out.println("//////////////////////////////////////////");
 		cabecera(doc);
 		//chat.agregar(xmlPackage.getChild("Usuario").getText() + ": " + xmlPackage.getChild("Mensaje").getText());
 		
@@ -133,7 +133,7 @@ public class CommunicatorClient extends Communicator
 				 
 				}
 				catch (IOException e) {
-					System.err.println(e);
+					System.out.println(e);
 				}*/
 		
 		super.sendXmlPackage(doc);
@@ -298,9 +298,9 @@ public class CommunicatorClient extends Communicator
 			{
 				String kind = element.getAttributeValue("kind");
 				String value = element.getAttributeValue("value");
-/*                new TrucoCard(
+                cardAux = new TrucoCard(
 				Integer.parseInt(kind),
-				Integer.parseInt(value));*/
+				Integer.parseInt(value)); //No se porq estaba comentado, me daba un null pointer x eso descomente
 			}
 			if (aux.compareTo("Value") == 0)
 			{
@@ -344,8 +344,8 @@ public class CommunicatorClient extends Communicator
 								TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
 								trucoGame.play(te);
 				} catch (java.lang.NullPointerException e) {
-								System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
-								e.printStackTrace();
+								System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+								e.printStackTrace(System.out);
 										throw e;
 				}*/
 			}
@@ -448,7 +448,7 @@ public class CommunicatorClient extends Communicator
 	public void xmlReadTurno(Object o)
 	{
 		// Chau excepción Feltística
-		//new Exception("Nada implementado aun :-(     ").printStackTrace();
+		//new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
 		String aux;
 		if (o instanceof Element)
 		{
@@ -666,7 +666,7 @@ public class CommunicatorClient extends Communicator
 					
 				} catch (java.lang.NullPointerException e)
 				{
-					System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
 					e.printStackTrace(System.out);
 					throw e;
 				}
@@ -749,7 +749,7 @@ public class CommunicatorClient extends Communicator
 					
 				} catch (java.lang.NullPointerException e)
 				{
-					System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
 					e.printStackTrace(System.out);
 					throw e;
 				}
@@ -851,7 +851,7 @@ public class CommunicatorClient extends Communicator
 					trucoGame.recibirCartas(elPlayerDeAca, cartasIMP);
 				} catch (java.lang.NullPointerException e)
 				{
-					System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
 					e.printStackTrace(System.out);
 					throw e;
 				}
@@ -930,13 +930,14 @@ public class CommunicatorClient extends Communicator
 	
 	public void turn(TrucoEvent event)
 	{
-		new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
+		//		new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
 		
+		System.out.println(getClass().getName()+".turn() NO IMPLEMENTADO");
 		
 	}
 	public void endOfHand(TrucoEvent event)
 	{
-//		new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
+		//		new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
 		System.out.println("Soy: " + getClass().getName() + ", voy a enviar el fin de mano");
 		Document doc = event.toTrucoPlay().toXml();
 		super.sendXmlPackage(doc);
@@ -1027,7 +1028,7 @@ public class CommunicatorClient extends Communicator
 					tabela.sitPlayer(pieza.getPlayer(userAux2), posAux);
 				} catch (java.lang.NullPointerException e)
 				{
-					System.err.println(
+					System.out.println(
 					"LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadPlayerSit ");
 					e.printStackTrace(System.out);
 					throw e;
@@ -1040,7 +1041,7 @@ public class CommunicatorClient extends Communicator
 	public void xmlReadUserJoined(Object o)
 	{
 		String aux;
-		System.err.println(
+		System.out.println(
 		"Estamos dentro de xmlReadUserJoines-------------------------------");
 		if (o instanceof Element)
 		{
@@ -1049,7 +1050,7 @@ public class CommunicatorClient extends Communicator
 			
 			if (aux.compareTo("Player") == 0)
 			{
-				System.err.println(
+				System.out.println(
 				"Estamos dentro de xmlReadUserJoines//////  dentro de un player=======================================");
 				String jugname = element.getAttributeValue("name");
 				int rating =
@@ -1088,7 +1089,7 @@ public class CommunicatorClient extends Communicator
 	public void xmlReadTableJoined(Object o)
 	{
 		String aux;
-		System.err.println(
+		System.out.println(
 		"Estamos dentro de xmlReadTableJoined-------------------------------");
 		if (o instanceof Element)
 		{
@@ -1097,7 +1098,7 @@ public class CommunicatorClient extends Communicator
 			
 			if (aux.compareTo("Player") == 0)
 			{
-				System.err.println(
+				System.out.println(
 				"Estamos dentro de xmlReadTableJoined//////  dentro de un player=======================================");
 				playerAux4 = element.getAttributeValue("name");
 			}
@@ -1364,7 +1365,7 @@ public class CommunicatorClient extends Communicator
 								tabela.startGame(truco);
 								} catch (java.lang.NullPointerException e) {
 								System.e.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT EN EL Método xmlReadGameStarted");
-								e.printStackTrace();
+								e.printStackTrace(System.out);
 								throw e;
 								}*/
 				TrucoGameClient tGame;
@@ -1539,7 +1540,7 @@ public class CommunicatorClient extends Communicator
 		 
 						}
 				catch (IOException e) {
-				System.err.println(e);
+				System.out.println(e);
 				}
 				//        cc.
 		 (doc);

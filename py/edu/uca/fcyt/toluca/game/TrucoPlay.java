@@ -352,7 +352,7 @@ public class TrucoPlay
 		}
 		catch (IOException e)
 		{
-			System.err.println(e);
+			System.out.println(e);
 		}
 		List children = doc.getContent();
 		Iterator iterator = children.iterator();

@@ -402,7 +402,7 @@ public class RoomEvent {
         
         } catch (Exception e ) {
             System.out.println("Error en el ROOM EVENT.  PQNTSC.  table es nulo al parecer");
-            e.printStackTrace();
+            e.printStackTrace(System.out);
            
         }
         

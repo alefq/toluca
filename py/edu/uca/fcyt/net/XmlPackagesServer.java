@@ -63,13 +63,13 @@ public class XmlPackagesServer extends ServerSocket implements Runnable {
             }
         } catch (IOException e) {
             System.out.println("I/O Exception in server");
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         } catch (InstantiationException e) {
             System.out.println("Could not instantiate class: " + theClass.getName());
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         } catch (IllegalAccessException e) {
             System.out.println("Illegal access exception in server");
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
         
     }

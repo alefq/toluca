@@ -152,7 +152,7 @@ public class MainTableModel extends AbstractTableModel
 	 */
 	   public void modifyRow(int row, TrucoPlayer player)
 	   {
-		   new Exception("").printStackTrace();
+		   new Exception("").printStackTrace(System.out);
 		   Fila fila = new Fila();
 		   for(int i=0; i<filas.size();i++)
 		   {
@@ -170,7 +170,7 @@ public class MainTableModel extends AbstractTableModel
 	 */
 	   public void addPlayer(TrucoPlayer player, int tableNumber)
 	   {
-		   new Exception("").printStackTrace();
+		   new Exception("").printStackTrace(System.out);
 		   Fila fila = new Fila();
 		   
 		   for(int i=0; i<filas.size(); i++)
