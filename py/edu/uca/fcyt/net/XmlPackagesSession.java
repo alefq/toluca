@@ -82,7 +82,7 @@ public abstract class XmlPackagesSession implements Runnable
 				if(c==-1)
 				{
 					live=false;
-					connectionFailed();
+					connectionFailed("Cayó bruscamente");
 					
 				}
 						
@@ -131,7 +131,7 @@ public abstract class XmlPackagesSession implements Runnable
 			
 		} catch (IOException e) {
 			live=false;
-			connectionFailed();
+			connectionFailed(e.getMessage());
 		}
 
 			
@@ -193,7 +193,7 @@ public abstract class XmlPackagesSession implements Runnable
 		socket.close();
 		
 	}
-	public abstract void connectionFailed();
+	public abstract void connectionFailed(String mensaje);
 	public abstract void receiveObject(Object bean);
 	public abstract int init() throws IOException;
 	public abstract String getInitErrorMessage(int errcode);

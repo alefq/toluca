@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
@@ -55,9 +56,9 @@ public class CommunicatorClient extends Communicator{
 			logeador.log(Level.FINEST,"Se establecio la coneccion con el servidor");		
 		return ret;
 	}
-	public void connectionFailed()
+	public void connectionFailed(String msg)
 	{
-		logeador.log(Level.WARNING,"Falllllllllllllllllloooooooooooo la coneccion");
+		logeador.log(TolucaConstants.CLIENT_ERROR_LOG_LEVEL,"Falló la conexión: "+msg);
 	}
 	
 	//REQUEST DEL ROOM

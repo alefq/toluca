@@ -353,7 +353,7 @@ public class EventDispatcherServer extends EventDispatcher{
 		
 	}
     public void testConexion(RoomEvent event) {
-        logger.info("Se resive un test de conexion");
+        logger.debug("Se resive un test de conexion");
         communicatorServer.sendXmlPackage(event);
     }
 	

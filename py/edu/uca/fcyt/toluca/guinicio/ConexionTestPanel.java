@@ -6,9 +6,17 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.NumberFormat;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 
 import javax.swing.JLabel;
+import javax.swing.text.NumberFormatter;
+
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 /**
  * @author Dani Cricco
  *
@@ -16,6 +24,7 @@ import javax.swing.JLabel;
  */
 public class ConexionTestPanel extends JPanel{
     
+    private Logger logger=Logger.getLogger(ConexionTestPanel.class.getName());
 	private JLabel jLabel = null;
 	private JLabel labelConexion;
 	private int intervalo=5;
@@ -23,12 +32,37 @@ public class ConexionTestPanel extends JPanel{
 	private float test[];
 	
 	
+	private Properties properties;
+	private int valExelente;
+	private int valBuena;
+	private int valAceptable;
+	
 	
     public ConexionTestPanel()
     {
         super();
  		
        test=new float[intervalo];
+       properties=new Properties();
+       
+       
+       try {
+        properties.load(ConexionTestPanel.class.getResource("/py/edu/uca/fcyt/toluca/resources/conexion.properties").openStream());
+        System.out.println("Propiedades d conexion");
+        
+        valExelente=Integer.parseInt((String) properties.get("EXCELENTE"));
+        valBuena=Integer.parseInt((String) properties.get("BUENA"));
+        valAceptable=Integer.parseInt((String) properties.get("ACEPTABLE"));
+        
+       System.out.println("Val d conexion: "+valExelente+" - "+valBuena+" - "+valAceptable);
+    } catch (IOException e) {
+       logger.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"IOException "+e.getMessage());
+    }
+    catch(NumberFormatException e)
+    {
+        logger.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"No se pudo leer las propiedades de conexion -> NumberFormatException: "+e.getMessage());
+    }
+       
        initialize();
     }
     
@@ -51,14 +85,25 @@ public class ConexionTestPanel extends JPanel{
 	}
 	private Color getColorForMs(double ms)
 	{
-	    if(ms<30)
+	    if(ms<=valExelente)
 	        return Color.GREEN;
-	    if(ms>30 && ms <40)
+	    if(ms>valExelente && ms <=valBuena)
 	        return Color.BLUE;
-	    if(ms >40 && ms <55)
+	    if(ms >valBuena && ms <=valAceptable)
 	        return Color.YELLOW;
 	    return Color.RED;
 	        
+	}
+	
+	private String getStringForMs(double ms)
+	{
+	    if(ms<=valExelente)
+	        return "Excelente";
+	    if(ms>valExelente && ms <=valBuena)
+	        return "Buena";
+	    if(ms >valBuena && ms <=valAceptable)
+	        return "Aceptable";
+	    return "Mala";
 	}
 	private JLabel getLabelConexion()
 	{
@@ -69,25 +114,18 @@ public class ConexionTestPanel extends JPanel{
 	    }
 	    return labelConexion;
 	}
-	private String getStringForMs(double ms)
-	{
-	    if(ms<30)
-	        return "Excelente";
-	    if(ms>30 && ms <40)
-	        return "Muy Buena";
-	    if(ms >40 && ms <55)
-	        return "Buena";
-	    return "Aceptable";
-	}
 	public void actualizar(float ms)
 	{
 
 	    getJLabel().setOpaque(true);
-		 getJLabel().setText("           ");
+		 
 		 for(int i=0;i<test.length;i++)
 		     ms+=test[i];
 		 
 		 ms=ms/intervalo;
+		 NumberFormat format=NumberFormat.getNumberInstance();
+		 format.setMaximumFractionDigits(2);
+		 getJLabel().setText("  "+format.format(ms)+"  ");
 		 String text=getStringForMs(ms)+" - "+ms+"ms.";
 		 getJLabel().setToolTipText(text);
 		 getJLabel().setBackground(getColorForMs(ms));

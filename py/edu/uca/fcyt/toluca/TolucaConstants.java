@@ -1,8 +1,8 @@
 /* TolucaConstants.java
  * Created on Sep 22, 2004
  *
- * Last modified: $Date: 2005/02/11 21:06:08 $
- * @version $Revision: 1.4 $ 
+ * Last modified: $Date: 2005/03/21 23:44:56 $
+ * @version $Revision: 1.5 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca;
@@ -18,7 +18,9 @@ import java.util.logging.Level;
  */
 public class TolucaConstants {
 
-    public static final Level CLIENT_DEBUG_LOG_LEVEL = Level.WARNING;
+    public static final Level CLIENT_DEBUG_LOG_LEVEL = Level.INFO;
+    public static final Level CLIENT_INFO_LOG_LEVEL = Level.WARNING;
+    public static final Level CLIENT_ERROR_LOG_LEVEL = Level.SEVERE;
 
     /**
      * @param result

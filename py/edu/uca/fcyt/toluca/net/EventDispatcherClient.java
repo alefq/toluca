@@ -67,7 +67,8 @@ public class EventDispatcherClient extends EventDispatcher {
 
         //      if (trucoPlayer == null) {
         trucoPlayer = event.getPlayer();
-        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Cliente Login  completed "+trucoPlayer);
+        logeador.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL, " Cliente Login  completed "+trucoPlayer);
+        
         commClient.setTrucoPlayer(trucoPlayer);
         ((RoomClient) room).loginCompleted(trucoPlayer);
         getCommClient().setLoggedIn(true);
@@ -846,8 +847,8 @@ public class EventDispatcherClient extends EventDispatcher {
     public void testConexion(RoomEvent event) {
         
         long intervalo=System.currentTimeMillis()-event.getMsSend();
-        logeador.info("Se recibe la respuesta "+intervalo);
-        System.out.println("Se recibe la respuesta "+intervalo);
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"Se recibe la respuesta "+intervalo);
+        //System.out.println("Se recibe la respuesta "+intervalo);
         RoomClient roomClient=(RoomClient) room;
         roomClient.testConexionReceive(intervalo);
         
