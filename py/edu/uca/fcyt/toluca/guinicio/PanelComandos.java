@@ -62,12 +62,28 @@ public class PanelComandos extends JPanel {
         botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
         botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
         botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
+        botonAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                botonAyudaActionPerformed(e);
+            }
+        });
         botonSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 botonSalirActionPerformed(e);
             }
         });
         setPanel();
+    }
+
+    /**
+     * @param e
+     */
+    protected void botonAyudaActionPerformed(ActionEvent e) {
+        try {        	
+            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "_toluca_help");
+        } catch (MalformedURLException e1) {
+            System.out.println(e1.getMessage());
+        }        
     }
 
     /**

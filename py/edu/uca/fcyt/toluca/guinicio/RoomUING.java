@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/01/12 21:05:37 $
- * @version $Revision: 1.16 $ 
+ * Last modified: $Date: 2005/01/14 19:37:05 $
+ * @version $Revision: 1.17 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 
 import javax.swing.Box;
@@ -20,12 +21,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
+
 /**
  * 
  * @author afeltes
@@ -33,14 +36,14 @@ import py.edu.uca.fcyt.toluca.table.Table;
  */
 public class RoomUING extends JApplet {
 
-	//se saca el log4j porque es muy gande para que este en el cliente
-//    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-//            .getLogger(RoomUING.class);
+    //se saca el log4j porque es muy gande para que este en el cliente
+    //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+    //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20050107-1804";
-    
+    public static final String VERSION = "20050114-1709";
+
     public static final String CLAVE_LOGIN = "claveLogin";
-    
+
     private javax.swing.JPanel jProomPanel = null;
 
     private JPanel panelPrincipal = null; //  @jve:decl-index=0:visual-constraint="25,16"
@@ -84,7 +87,8 @@ public class RoomUING extends JApplet {
 
     private JPanel jContenPane;
 
-	private JTextArea jTextArea = null;
+    private JTextArea jTextArea = null;
+
     /**
      * This method initializes panelPrincipal
      * 
@@ -104,18 +108,20 @@ public class RoomUING extends JApplet {
         return panelPrincipal;
     }
 
-    
-    /* (non-Javadoc)
-	 * @see java.applet.Applet#stop()
-	 * 
-	 * Programaci�n porcina aa / af el 23 de Diciembre de 2004
-	 * Cerramos el socket al cerrar el applet.
-	 * 
-	 */
-	public void stop() {
-		roomClient.cerrarConexion();
-		super.stop();
-	}	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.applet.Applet#stop()
+     * 
+     * Programaci�n porcina aa / af el 23 de Diciembre de 2004 Cerramos el
+     * socket al cerrar el applet.
+     *  
+     */
+    public void stop() {
+        roomClient.cerrarConexion();
+        super.stop();
+    }
+
     /**
      * This method initializes panelTitle
      * 
@@ -123,13 +129,14 @@ public class RoomUING extends JApplet {
      */
     private PanelGradiente getPanelTitle() {
         if (panelTitle == null) {
-            ImageIcon logo = new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "LogoSinFondo.gif"));//RoomUING.loadImage("LogoSinFondo.gif");
+            ImageIcon logo = new ImageIcon(getClass().getResource(
+                    RoomUING.IMAGE_DIR + "LogoSinFondo.gif"));//RoomUING.loadImage("LogoSinFondo.gif");
             panelTitle = new PanelGradiente();
             panelTitle.setLogo(logo);
             panelTitle.setStartColor(new Color(50, 255, 50));
             panelTitle.setLargo(50);
             panelTitle.setNombre("desconocido");
-            
+
             panelTitle.setMinimumSize(new Dimension(logo.getIconWidth(), logo
                     .getIconHeight()));
 
@@ -190,7 +197,8 @@ public class RoomUING extends JApplet {
             panelControl.add(getPanelComandos(), java.awt.BorderLayout.CENTER);
             panelControl.setBackground(RoomUING.COLOR_DE_FONDO);
             panelControl.setOpaque(true);
-            panelControl.add(Box.createRigidArea(new Dimension(margen, 0)),BorderLayout.EAST);
+            panelControl.add(Box.createRigidArea(new Dimension(margen, 0)),
+                    BorderLayout.EAST);
         }
         return panelControl;
     }
@@ -220,7 +228,8 @@ public class RoomUING extends JApplet {
             scrollRanking = new JPanel();
             scrollRanking.setLayout(new BorderLayout());
             //scrollRanking.setPreferredSize(new Dimension(150, 2000));
-            scrollRanking.add(Box.createRigidArea(new Dimension(margen,0)),BorderLayout.WEST);
+            scrollRanking.add(Box.createRigidArea(new Dimension(margen, 0)),
+                    BorderLayout.WEST);
             scrollRanking.setOpaque(true);
             scrollRanking.setBackground(RoomUING.COLOR_DE_FONDO);
             scrollRanking.add(getJScrollPane(), java.awt.BorderLayout.CENTER);
@@ -236,7 +245,7 @@ public class RoomUING extends JApplet {
     private PanelComandos getPanelComandos() {
         if (panelComandos == null) {
             panelComandos = new PanelComandos();
-          //  panelComandos.add(Box.createRigidArea(new Dimension(margen, 0)),
+            //  panelComandos.add(Box.createRigidArea(new Dimension(margen, 0)),
             //        BorderLayout.EAST);
             panelComandos.setBackground(RoomUING.COLOR_DE_FONDO);
             panelComandos.setTableGame(getTableGame());
@@ -327,19 +336,20 @@ public class RoomUING extends JApplet {
         return tableRanking;
     }
 
-	/**
-	 * This method initializes jTextArea	
-	 * 	
-	 * @return javax.swing.JTextArea	
-	 */    
-	private JTextArea getJTextArea() {
-		if (jTextArea == null) {
-			jTextArea = new JTextArea();
-			jTextArea.setText("Aqui va a ir los avisos y demas yerbas");
-		}
-		return jTextArea;
-	}
-     public static void main(String[] args) {
+    /**
+     * This method initializes jTextArea
+     * 
+     * @return javax.swing.JTextArea
+     */
+    private JTextArea getJTextArea() {
+        if (jTextArea == null) {
+            jTextArea = new JTextArea();
+            jTextArea.setText("Aqui va a ir los avisos y demas yerbas");
+        }
+        return jTextArea;
+    }
+
+    public static void main(String[] args) {
     }
 
     /**
@@ -348,7 +358,7 @@ public class RoomUING extends JApplet {
     public RoomUING() {
         super();
         //init();
-       
+
     }
 
     /**
@@ -357,56 +367,57 @@ public class RoomUING extends JApplet {
      * @return void
      */
     public void init() {
-//        DOMConfigurator.configure(System.getProperty("user.dir")
-//                + System.getProperty("file.separator") + "log.xml");
+        //        DOMConfigurator.configure(System.getProperty("user.dir")
+        //                + System.getProperty("file.separator") + "log.xml");
         loadAppletParameters();
         setRoomClient(new RoomClient(this));
         this.setSize(750, 470);
-        //this.setContentPane(getRoomPanel());        
+        //this.setContentPane(getRoomPanel());
         this.setContentPane(getCcontenPane());
-        //login();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                
+                    getChatPanel().getJtInput().requestFocus();
+                
+            }
+        });
     }
 
     /**
      * @return
      */
     private JPanel getCcontenPane() {
-        if(jContenPane == null)
-        {
+        if (jContenPane == null) {
             jContenPane = new JPanel();
             jContenPane.setLayout(new BorderLayout());
-            jContenPane.add(getLoginPanel(), BorderLayout.NORTH);            
+            jContenPane.add(getLoginPanel(), BorderLayout.NORTH);
             jContenPane.add(getJTextArea(), java.awt.BorderLayout.CENTER);
         }
         return jContenPane;
     }
 
-
     /**
      * @return
      */
     private LoginPanel getLoginPanel() {
-        if(loginPanel == null)
-        {
+        if (loginPanel == null) {
             loginPanel = new LoginPanel();
-            loginPanel.setRoomUING(this);            
+            loginPanel.setRoomUING(this);
         }
         return loginPanel;
     }
-
 
     /**
      * @param client
      */
     private void setRoomClient(RoomClient client) {
         this.roomClient = client;
-        getChatPanel().setCpc(roomClient);        
+        getChatPanel().setCpc(roomClient);
         roomClient.setChatPanel(getChatPanel());
         roomClient.setMainTable(getTableGame());
         roomClient.setRankTable(getTableRanking());
-        getPanelComandos().setRoomClient(roomClient);        
+        getPanelComandos().setRoomClient(roomClient);
     }
-
 
     /**
      * This method initializes jProomPanel
@@ -429,14 +440,16 @@ public class RoomUING extends JApplet {
         //  dir = (at != null) ? at : "/images";
         try {
             String imagedir = getParameter("IMAGEDIR");
-           // logger.debug("La dire de imagenes es " + imagedir);
+            // logger.debug("La dire de imagenes es " + imagedir);
         } catch (Exception e) {
         }
     }
 
     protected static ImageIcon loadImage(String image) {
-        /*ImageIcon ret = new ImageIcon(image.getClass().getResource(image));
-        return ret;*/
+        /*
+         * ImageIcon ret = new ImageIcon(image.getClass().getResource(image));
+         * return ret;
+         */
         String path = IMAGE_DIR + image;
         int MAX_IMAGE_SIZE = 10000; //Change this to the size of
         //your biggest image, in bytes.
@@ -453,12 +466,12 @@ public class RoomUING extends JApplet {
                 return null;
             }
             if (count <= 0) {
-            	System.out.println("Empty file: " + path);
+                System.out.println("Empty file: " + path);
                 return null;
             }
             return new ImageIcon(Toolkit.getDefaultToolkit().createImage(buf));
         } else {
-        	System.out.println("Couldn't find file: " + path);
+            System.out.println("Couldn't find file: " + path);
             return null;
         }
     }
@@ -469,9 +482,10 @@ public class RoomUING extends JApplet {
         py.edu.uca.fcyt.util.LoginDialog ld = new py.edu.uca.fcyt.util.LoginDialog(
                 JOptionPane.getRootFrame(), true);
         ld.setVisible(true);
-        //roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
+        //roomClient = new RoomClient(this, ld.getUsername(),
+        // ld.getPassword());
         getChatPanel().setCpc(roomClient);
-        
+
         //System.out.println("El chatpanel del roomui es "+chatPanel);
         roomClient.setChatPanel(getChatPanel());
         roomClient.setMainTable(getTableGame());
@@ -492,36 +506,39 @@ public class RoomUING extends JApplet {
     public void addChatPanel(ChatPanel chatPanel2) {
         setChatPanel(chatPanel2);
     }
+
     /**
-     * @param chatPanel The chatPanel to set.
+     * @param chatPanel
+     *            The chatPanel to set.
      */
     public void setChatPanel(ChatPanel chatPanel) {
         this.chatPanel = chatPanel;
     }
-    public void setOwner(TrucoPlayer trucoPlayer)
-    {
-    	panelTitle.setNombre(trucoPlayer.getFullName());
+
+    public void setOwner(TrucoPlayer trucoPlayer) {
+        panelTitle.setNombre(trucoPlayer.getFullName());
     }
-    public void removeTable(Table table)
-    {
-    	tableGame.eliminarFila(table.getTableNumber());
+
+    public void removeTable(Table table) {
+        tableGame.eliminarFila(table.getTableNumber());
     }
+
     /**
      * @return Returns the roomClient.
      */
     public RoomClient getRoomClient() {
         return roomClient;
     }
-        
+
     /**
      * @param event
      */
     public void loginFailed(RoomEvent event) {
         getLoginPanel().getJLestado().setForeground(Color.RED);
-        getLoginPanel().getJLestado().setText(">  " + event.getErrorMsg() + "  <");
+        getLoginPanel().getJLestado().setText(
+                ">  " + event.getErrorMsg() + "  <");
         getLoginPanel().getJLestado().setToolTipText(event.getErrorMsg());
     }
-
 
     /**
      * @param player
@@ -530,7 +547,7 @@ public class RoomUING extends JApplet {
         getContentPane().removeAll();
         getContentPane().add(getRoomPanel());
         setOwner(player);
-        validateTree();           
+        validateTree();
     }
-    
-}  //  @jve:decl-index=0:visual-constraint="10,30"
+
+} //  @jve:decl-index=0:visual-constraint="10,30"

@@ -31,7 +31,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *    $Id: Emoticon.java,v 1.1 2005/01/14 13:45:58 afeltes Exp $
+ *    $Id: Emoticon.java,v 1.2 2005/01/14 19:37:05 afeltes Exp $
  */
 package rath.jmsn.util;
 
@@ -47,12 +47,13 @@ import javax.swing.ImageIcon;
 /**
  *
  * @author Kim, Min Jong, pistos@skypond.snu.ac.kr
- * @version $Id: Emoticon.java,v 1.1 2005/01/14 13:45:58 afeltes Exp $, since 2002/03/24
+ * @version $Id: Emoticon.java,v 1.2 2005/01/14 19:37:05 afeltes Exp $, since 2002/03/24
  */
 public class Emoticon
 {
 	private Hashtable emoticons = new Hashtable();
 	private static Emoticon INSTANCE = null;
+	private int size = 0;
 	
 	private Emoticon()
 	{
@@ -88,8 +89,10 @@ public class Emoticon
 					//value = TolucaConstants.replaceString(value, "\\n", "\n");
 					String urlString = "/py/edu/uca/fcyt/toluca/resources/emoticon/"+value;
 					URL eUrl = Emoticon.class.getResource(urlString);
-					if( eUrl!=null )
+					if( eUrl!=null ) {
 					    emoticons.put( key, new ImageIcon(eUrl) );
+					    size++;
+					}
 				}
 			}
 		}
@@ -122,4 +125,7 @@ public class Emoticon
 	{
 	    return (ImageIcon)emoticons.get(key);
 	}
+    public int getSize() {
+        return size;
+    }
 }	
