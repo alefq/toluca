@@ -49,7 +49,8 @@ public class CommunicatorServer extends Communicator
 	}
 	public void playerKicked(TableEvent te)
 	{
-		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
+		Document doc = te.toXml();
+		super.sendXmlPackage(doc);
 	}
 	public void playerKickRequest(TableEvent te)
 	{
@@ -451,11 +452,64 @@ public class CommunicatorServer extends Communicator
 		if (aux.compareTo("TrucoPlay")== 0){
 			xmlReadTrucoPlay(child);
 		}
-		
 		if (aux.compareTo("TrucoGameInfo")== 0){
 			xmlReadTrucoGameInfo(child);
 		}
-		
+		if (aux.compareTo("TableLeftRequest")== 0){
+			xmlReadTableLeftRequest(child);
+		}
+
+	}
+	/**
+	 * @param child
+	 */
+	private void xmlReadTableLeftRequest(Object o) {
+		String aux;
+		System.out.println("Leyendo el paquete");
+
+		if (o instanceof Element)
+		{
+			Element element = (Element) o;
+			aux = element.getName();
+			
+			if (aux.compareTo("Table") == 0)
+			{
+				//System.out.println("MESSAGE:"+element.getText());
+				tableid = element.getAttributeValue("id");
+				System.out.println("El table id es" + tableid);
+			}
+			if (aux.compareTo("Player") == 0)
+			{
+				//System.out.println("PLAYER:"+element.getText());
+				userAux = element.getAttributeValue("name");
+			}
+			List children = element.getContent();
+			Iterator iterator = children.iterator();
+			while (iterator.hasNext())
+			{
+				Object child = iterator.next();
+				xmlReadTableJoinRequest(child);
+			}
+			if (aux.compareTo("TableLeftRequest") == 0)
+			{
+				try
+				{
+					TableServer tstmp = (TableServer) getTables().get(tableid);
+					TrucoPlayer tptmp = pieza.getPlayer(userAux);
+										
+					//TableEvent te = new TableEvent(TableEvent.EVENT_playerKickRequest, tstmp, tptmp, 0);					
+					tstmp.kickPlayer(tptmp);
+										
+				} catch (NullPointerException npe)
+				{
+					System.out.println("TABLA NUUUUUUUUUUUUUUULA :(( :((!!!!");
+					System.out.println(
+					"Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
+					npe.printStackTrace(System.out);
+				}
+				
+			}
+		}
 	}
 	public void xmlReadTrucoGameInfo (Object o){
 		TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));

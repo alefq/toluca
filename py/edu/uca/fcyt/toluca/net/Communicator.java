@@ -55,7 +55,7 @@ implements RoomListener, TableListener,TrucoListener
 	}
 	public void playerLeft(TableEvent te)
 	{
-		new Exception("Nada implementado aun :-(     ").printStackTrace(System.out);
+		new Throwable("No implementado").printStackTrace(System.out);
 	}
 	
 	public void sendXmlPackage(Document doc)

@@ -243,8 +243,8 @@ class TableEventManager
             (
             	new TableEvent
             	(
-            		TableEvent.EVENT_playerKicked,
-            		table, null, -1
+            		TableEvent.EVENT_playerKickRequest,
+            		table, table.getPlayer(), -1
             	)
             );
         }

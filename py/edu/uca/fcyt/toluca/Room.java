@@ -14,7 +14,8 @@ import py.edu.uca.fcyt.toluca.table.Table;
  *
  * @author  Interfaz de Inicio
  */
-public abstract class Room implements ChatPanelContainer {
+public abstract class Room 
+implements ChatPanelContainer {
     
     
     protected String name;

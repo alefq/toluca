@@ -76,7 +76,8 @@ public class CommunicatorClient extends Communicator
 		try
 		{
 			//setSocket(new Socket("interno.roshka.com.py", 6767));
-			setSocket(new Socket("ray-ray.roshka.com.py", 6767));
+			//setSocket(new Socket("ray-ray.roshka.com.py", 6767));
+			setSocket(new Socket("localhost", 6767));
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 		} catch (UnknownHostException e)
 		{
@@ -149,6 +150,13 @@ public class CommunicatorClient extends Communicator
 		super.sendXmlPackage(doc);
 	}
 	
+	public void playerLeft(TableEvent te)
+	{
+		Document doc = te.toXml();
+		sendXmlPackage(doc);
+	}
+	
+
 	public void xmlReadChatMsg(Object o)
 	{
 		String aux;
@@ -404,6 +412,12 @@ public class CommunicatorClient extends Communicator
 			//cuando ya se creo una tabla
 			xmlReadTableJoined(child);
 		}
+		if (aux.compareTo("TableLeft") == 0)
+		{
+			//TODO morgueada++: SE uso TableLeft para los nombres de los ELEMENT y TableKicked para los nombres de los metodos
+			//cuando ya se creo una tabla
+			xmlReadTableKicked(child);
+		}
 		if (aux.compareTo("GameStarted") == 0)
 		{
 			//cuando empezo el juego
@@ -440,6 +454,49 @@ public class CommunicatorClient extends Communicator
 	}
 	
 	
+	/**
+	 * @param child
+	 */
+	String atabelaDaKicked;
+	String oTrucoPlayerDaTv;
+	private void xmlReadTableKicked(Object o) {
+		String aux;
+		System.out.println(
+		"Estamos dentro de xmlReadTableKicked-------------------------------");
+		if (o instanceof Element)
+		{
+			Element element = (Element) o;
+			aux = element.getName();
+			
+			if (aux.compareTo("Player") == 0)
+			{
+				oTrucoPlayerDaTv = element.getAttributeValue("name");
+			}
+			if (aux.equals("Table"))
+			{
+				atabelaDaKicked = element.getAttributeValue("id");
+			}
+			
+			List children = element.getContent();
+			Iterator iterator = children.iterator();
+			while (iterator.hasNext())
+			{
+				Object child = iterator.next();
+				xmlReadTableKicked(child);
+			}
+			
+			//Por la morgueada de mezcla de nombres entre kicked y left
+			if (aux.equals("TableLeft"))
+			{
+				// Hacer lo que hay que hacer
+				Table t = (Table) getTables().get(atabelaDaKicked);
+				TrucoPlayer tp = (TrucoPlayer) pieza.getPlayer(oTrucoPlayerDaTv);
+				t.removePlayer(tp);
+				
+			}
+		}		
+	}
+
 	// TODO ESTE NO SE LLAMA NUNCA NI SIRVE PARA UN CARAJO APARENTE
 	// LO DEJAMOS PORSI
 	TrucoPlayer elPlayerDeAca2;
@@ -1516,8 +1573,8 @@ public class CommunicatorClient extends Communicator
 	
 	public void playerJoined(TrucoPlayer player)
 	{
-		new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
-		
+		//new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
+		System.out.println("no implementado -> " + getClass().getName()+ ".playerJoined(TrucoPlayer)");
 		
 	}
 	

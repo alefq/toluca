@@ -258,4 +258,29 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     public TrucoGame getTrucoGame() {
         return tGame;
     }
+
+	/**
+	 * @param tptmp
+	 */
+	public void kickPlayer(TrucoPlayer tptmp) {
+		// TODO Auto-generated method stub
+		System.out.println("Se fue: " + tptmp.getName());
+		getPlayers().remove(tptmp);
+		
+		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, 0);
+		firePlayerKicked(te);
+		
+	}
+
+	/**
+	 * @param te
+	 */
+	private void firePlayerKicked(TableEvent te) {
+		Iterator iter = tableListeners.listIterator();
+		int i =0;
+		while(iter.hasNext()) {
+			TableListener ltmp = (TableListener)iter.next();
+			ltmp.playerKicked(te);
+		}
+	}
 }
