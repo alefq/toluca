@@ -26,215 +26,246 @@ import py.edu.uca.fcyt.toluca.game.TrucoTeam;
  *
  * @author  PABLO JAVIER
  */
-public class CommunicatorServer extends Communicator {
+public class CommunicatorServer extends Communicator
+{
 	TrucoTeam equipos[];
-	public void showPlayed(TableEvent te) {
-
+	public void showPlayed(TableEvent te)
+	{
+		
 	}
-	public void signSent(TableEvent te) {
-
+	public void signSent(TableEvent te)
+	{
+		
 	}
-	public void playerSit(TableEvent te) {
+	public void playerSit(TableEvent te)
+	{
 		Document doc = te.toXml();
 		super.sendXmlPackage(doc);
-
+		
 	}
-	public void playerSitRequest(TableEvent te) {
+	public void playerSitRequest(TableEvent te)
+	{
 	}
-	public void playerKicked(TableEvent te) {
-
+	public void playerKicked(TableEvent te)
+	{
+		
 	}
-	public void playerKickRequest(TableEvent te) {
-
+	public void playerKickRequest(TableEvent te)
+	{
+		
 	}
-	public void playerStanded(TableEvent te) {
-
+	public void playerStanded(TableEvent te)
+	{
+		
 	}
-	public void playerStandRequest(TableEvent te) {
-
+	public void playerStandRequest(TableEvent te)
+	{
+		
 	}
-	public void gameFinished(TableEvent te) {
-
+	public void gameFinished(TableEvent te)
+	{
+		
 	}
-
-	public void signSendRequest(TableEvent te) {
-
+	
+	public void signSendRequest(TableEvent te)
+	{
+		
 	}
-
-	public void gameStarted(TableEvent te) {
-
+	
+	public void gameStarted(TableEvent te)
+	{
+		
 		// Hay que hacer un getTeams()
 		// Instanciar el TrucoGame
 		// Setear al table server asociado el trucoGame correspondiente (el ID viene en el TableEvent te)
 		// Colocarse como listener del trucoGame
 		// Crear el XML con: te.xmlCreateGameStarted(String, String) que son los teams correspondientes
 		// Enviar el paquete al Cliente
-
+		
 		//te.xmlCreateGameStarted("Hola", "Hola");
-
-		/*  esto pasó al table server        
-		        TrucoGame tGame;
-		        TrucoTeam tTeams[];
-		        System.out.println("Requesting game start...");
-		        tTeams = te.getTableServer().createTeams();
-		        // se crea el TrucoGame con los teams creados
-		        tGame = new TrucoGame(tTeams[0], tTeams[1]);
-		        tGame.addTrucoListener(te.getTableServer());
-		    */
-
+		
+		/*  esto pasó al table server
+				TrucoGame tGame;
+				TrucoTeam tTeams[];
+				System.out.println("Requesting game start...");
+				tTeams = te.getTableServer().createTeams();
+				// se crea el TrucoGame con los teams creados
+				tGame = new TrucoGame(tTeams[0], tTeams[1]);
+				tGame.addTrucoListener(te.getTableServer());
+		 */
+		
 		TrucoGame tGame = te.getTableServer().getTrucoGame();
 		equipos=te.getTableServer().createTeams();
 		tGame.addTrucoListener(this);
 		
 		Document doc = te.xmlCreateGameStarted(equipos[0].getName(), equipos[1].getName());
-
+		
 		super.sendXmlPackage(doc);
-
+		
 		// se llama al 'startGame' de todas las tablas
-
+		
 		// da la orden de inicio de juego a 'tGame'
 		//tGame.startGame();
-
+		
 	}
 	/** Creates a new instance of ChatSessionServer */
 	/*public CommunicatorServer(RoomSer pieza) {
-	    super(pieza);
+		super(pieza);
 	}*/
-
-	public CommunicatorServer() {
+	
+	public CommunicatorServer()
+	{
 		super();
 	}
-	public String getInitErrorMessage(int errcode) {
+	public String getInitErrorMessage(int errcode)
+	{
 		return "Sin errores";
 	}
-
-	public int init() {
+	
+	public int init()
+	{
 		return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 	}
 	private int i = 0;
-
-	public void receiveXmlPackage(Element xmlPackage) {
+	
+	public void receiveXmlPackage(Element xmlPackage)
+	{
 		//		doc.addContent(xmlPackage);
-		try {
-
+		try
+		{
+			
 			XMLOutputter serializer = new XMLOutputter("  ", true);
 			serializer.output(xmlPackage, System.out);
-
-		} catch (IOException e) {
+			
+		} catch (IOException e)
+		{
 			System.err.println(e);
 		}
 		System.out.println("Vino un paquete: " + xmlPackage.getName());
 		Document doc = new Document();
-		if (xmlPackage.getParent() != null) {
+		if (xmlPackage.getParent() != null)
+		{
 			Element parent = xmlPackage.getParent();
 			System.out.println("El PADRE: " + parent.getName());
-		} else {
+		} else
+		{
 			System.out.println("El Padre es nuuuuuulo");
 		}
 		doc.setRootElement(xmlPackage);
 		System.out.println("//////////////////////////////////////////");
 		cabecera(doc);
 		/*
-		                 TrucoPlayer p=new TrucoPlayer("Dani",10);
+						 TrucoPlayer p=new TrucoPlayer("Dani",10);
 		 
 		 
-		        TrucoCard cars [] = new TrucoCard[3];
-		                cars[0]=new TrucoCard(2,3);
-		                cars[1]=new TrucoCard(2,4);
-		                cars[2]=new TrucoCard(3,7);
+				TrucoCard cars [] = new TrucoCard[3];
+						cars[0]=new TrucoCard(2,3);
+						cars[1]=new TrucoCard(2,4);
+						cars[2]=new TrucoCard(3,7);
 		 
-		       TrucoEvent prueba=new TrucoEvent(5,10,p,TrucoEvent.JUGAR_CARTA,cars[2]);
-		                play(prueba);*/
+			   TrucoEvent prueba=new TrucoEvent(5,10,p,TrucoEvent.JUGAR_CARTA,cars[2]);
+						play(prueba);*/
 		//cardsDeal(prueba);
 		//loginComplete();
-
+		
 	}
-
-	public void receiveXmlPackageWithParsingError(String rawXmlPackage) {
+	
+	public void receiveXmlPackageWithParsingError(String rawXmlPackage)
+	{
 		System.out.println("Error en el parsing del XML");
 	}
-        
-
+	
+	
 	ConnectionManager trucoServer;
-
+	
 	private RoomServer pieza;
-
-	public void setTrucoServer(ConnectionManager trucoServer) {
+	
+	public void setTrucoServer(ConnectionManager trucoServer)
+	{
 		this.trucoServer = trucoServer;
 	}
-	public void loginFailed(RoomEvent te) {
-
+	public void loginFailed(RoomEvent te)
+	{
+		
 	}
 	/**
 	 *  Se dispara cuando el usuario de une a un room.
 	 *  Se guarda la referencia al TrucoPlayer
 	 */
-	public void playerJoined(TrucoPlayer player) {
+	public void playerJoined(TrucoPlayer player)
+	{
 		System.out.println("COMMSRV -> Player Joined DE: " + player.getName());
 		this.player = player;
 		Document doc = super.xmlCreateUserJoined(player);
 		super.sendXmlPackage(doc);
 	}
-	public void loginCompleted(RoomEvent re) {
+	public void loginCompleted(RoomEvent re)
+	{
 		//RoomEvent te;
-
+		
 		/*
-		        RoomEvent te=new RoomEvent();
-		        Vector jugadores=new Vector();
-		        Vector mesas=new Vector();
-		        Player jug1=new Player("Daniel",10);
-		        Player jug2=new Player("José",20);
+				RoomEvent te=new RoomEvent();
+				Vector jugadores=new Vector();
+				Vector mesas=new Vector();
+				Player jug1=new Player("Daniel",10);
+				Player jug2=new Player("José",20);
 		 
-		        Table mesa1=new Table();
-		        Table mesa2=new Table();
-		        jugadores.add(jug1);
-		        jugadores.add(jug2);
-		        mesa1.setTableNumber(2);
+				Table mesa1=new Table();
+				Table mesa2=new Table();
+				jugadores.add(jug1);
+				jugadores.add(jug2);
+				mesa1.setTableNumber(2);
 		 
-		        mesa1.addPlayer(jug1);
-		        mesa1.addPlayer(jug2);
-		        mesa2.setTableNumber(10);
-		        mesa2.addPlayer(jug1);
-		        mesa2.addPlayer(jug2);
-		        mesas.add(mesa1);
-		        mesas.add(mesa2);
-		        te.setTabless(mesas);
-		        te.setPlayerss(jugadores);
+				mesa1.addPlayer(jug1);
+				mesa1.addPlayer(jug2);
+				mesa2.setTableNumber(10);
+				mesa2.addPlayer(jug1);
+				mesa2.addPlayer(jug2);
+				mesas.add(mesa1);
+				mesas.add(mesa2);
+				te.setTabless(mesas);
+				te.setPlayerss(jugadores);
 		 
-		        te.setUser("AAdaniAA");
-		        te.setPassword("AAcriccoAAA");
+				te.setUser("AAdaniAA");
+				te.setPassword("AAcriccoAAA");
 		 *
 		 **/
-
+		
 		Document doc;
 		//re.setPlayerss(pieza.getPlayerss());
 		re.setPlayerss(pieza.getVPlayers());
 		re.setTabless(pieza.getVTables());
-
+		
 		doc = super.xmlCreateLoginOk(re);
 		super.sendXmlPackage(doc);
 	}
-
-	public void xmlReadChatMsg(Object o) {
+	
+	public void xmlReadChatMsg(Object o)
+	{
 		String aux;
-		if (o instanceof Element) {
+		if (o instanceof Element)
+		{
 			Element element = (Element) o;
 			aux = element.getName();
-			if (aux.compareTo("Player") == 0) {
+			if (aux.compareTo("Player") == 0)
+			{
 				//System.out.println("PLAYER:"+element.getText());
 				user = element.getAttributeValue("name");
 			}
-			if (aux.compareTo("Msg") == 0) {
+			if (aux.compareTo("Msg") == 0)
+			{
 				//System.out.println("MESSAGE:"+element.getText());
 				message = element.getText();
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadChatMsg(child);
 			}
-			if (aux.compareTo("ChatMsg") == 0) {
+			if (aux.compareTo("ChatMsg") == 0)
+			{
 				//pieza.fireChatSent(user,message);
 				System.out.println("Player: " + user);
 				System.out.println("Mensaje: " + message);
@@ -243,15 +274,19 @@ public class CommunicatorServer extends Communicator {
 				// Aca vemos para quién puta es el mensaje
 				String origen = element.getAttributeValue("origin");
 				System.out.println("El origen es: " + origen);
-				if (origen.equalsIgnoreCase("room")) {
+				if (origen.equalsIgnoreCase("room"))
+				{
 					pieza.sendChatMessage(new TrucoPlayer(user, 0), message);
-				} else {
+				} else
+				{
 					TableServer t = (TableServer) getTables().get(origen);
-					if (t != null) {
+					if (t != null)
+					{
 						t.sendChatMessage(new TrucoPlayer(user, 0), message);
-					} else {
+					} else
+					{
 						System.out.println(
-							"NO PUDIMOS ENTREGAR EL CHAT!!! !@@!#$#@@Q");
+						"NO PUDIMOS ENTREGAR EL CHAT!!! !@@!#$#@@Q");
 					}
 				}
 			}
@@ -267,328 +302,384 @@ public class CommunicatorServer extends Communicator {
 	 * @param o
 	 */
 	TrucoPlayer elPlayerDeAcaOtraVez;
-	public void xmlReadTrucoPlay(Object o) {
+	public void xmlReadTrucoPlay(Object o)
+	{
 		TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
 		TrucoGame tgame = tabela.getTrucoGame();
 		String aux;
-		if (o instanceof Element) {
-                        System.out.println("gueno hace instance of en server!");
+		if (o instanceof Element)
+		{
+			System.out.println("gueno hace instance of en server!");
 			Element element = (Element) o;
 			aux = element.getName();
-			if (aux.compareTo("Type") == 0) {
+			if (aux.compareTo("Type") == 0)
+			{
 				typeAux = Integer.parseInt(element.getAttributeValue("id"));
 			}
-			if (aux.compareTo("Table") == 0) {
+			if (aux.compareTo("Table") == 0)
+			{
 				//System.out.println("MESSAGE:"+element.getText());
 				tableIdAux = Integer.parseInt(element.getAttributeValue("id"));
 			}
-
-			if (aux.compareTo("Player") == 0) {
+			
+			if (aux.compareTo("Player") == 0)
+			{
 				//System.out.println("PLAYER:"+element.getText());
 				userAux = element.getAttributeValue("name");
 				elPlayerDeAcaOtraVez = pieza.getPlayer(userAux);
 			}
-			if (aux.compareTo("Carta") == 0) {
+			if (aux.compareTo("Carta") == 0)
+			{
 				String kind = element.getAttributeValue("kind");
 				String value = element.getAttributeValue("value");
 				cardAux = tgame.getCard(Byte.parseByte(kind),Byte.parseByte(value));
-						
+				
 			}
-			if (aux.compareTo("Value") == 0) {
-
+			if (aux.compareTo("Value") == 0)
+			{
+				
 				valueAux = Integer.parseInt(element.getAttributeValue("val"));
 				//if (valueAux == )
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadTrucoPlay(child);
 			}
-			if (aux.compareTo("TrucoPlay") == 0) {
+			if (aux.compareTo("TrucoPlay") == 0)
+			{
 				TrucoPlay tp =
-					new TrucoPlay(
-						tableIdAux,
-						elPlayerDeAcaOtraVez,
-						(byte) typeAux,
-						cardAux,
-						valueAux);
-
+				new TrucoPlay(
+				tableIdAux,
+				elPlayerDeAcaOtraVez,
+				(byte) typeAux,
+				cardAux,
+				valueAux);
+				
 				System.out.println("Tabla :" + tp.getTableNumber());
 				System.out.println(
-					"Truco Player : " + tp.getPlayer().getName());
+				"Truco Player : " + tp.getPlayer().getName());
 				System.out.println("TYPE  : " + tp.getType());
 				System.out.println(
-					"LA CARTA   PALO = "
-						+ tp.getCard().getKind()
-						+ " El valor es "
-						+ tp.getCard().getValue());
+				"LA CARTA   PALO = "
+				+ tp.getCard().getKind()
+				+ " El valor es "
+				+ tp.getCard().getValue());
 				System.out.println("El valor es " + tp.getValue());
 				//ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
-				try {										
+				try
+				{
 					tgame.play(tp);
-                    System.out.println("Se hizo una jugada con exito :?");
-				} catch (java.lang.NullPointerException e) {
+					System.out.println("Se hizo una jugada con exito :?");
+				} catch (java.lang.NullPointerException e)
+				{
 					System.err.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER Método xmlReadTrucoPlay");
-					e.printStackTrace();
+					e.printStackTrace(System.out);
 					throw e;
 				}
 			}
 		}
 	}
-
-	public Document xmlCreateTableJoined(RoomEvent re) {
-
+	
+	public Document xmlCreateTableJoined(RoomEvent re)
+	{
+		
 		Element ROOT = new Element("TableJoined");
 		Element PLAYER = new Element("Player");
 		PLAYER.setAttribute("name", re.getPlayer().getName());
 		Element TABLE = new Element("Table");
 		TABLE.setAttribute(
-			"id",
-			String.valueOf(re.getTableServer().getTableNumber()));
+		"id",
+		String.valueOf(re.getTableServer().getTableNumber()));
 		ROOT.addContent(PLAYER);
 		ROOT.addContent(TABLE);
 		Document doc = new Document(ROOT);
 		return doc;
-
+		
 	}
-
-	public void tableJoined(RoomEvent ev) {
+	
+	public void tableJoined(RoomEvent ev)
+	{
 		Document doc;
-
+		
 		doc = xmlCreateTableJoined(ev);
-            super.sendXmlPackage(doc);
-
+		super.sendXmlPackage(doc);
+		
 	}
-
-	public void cabecera(Document doc) { //saca la cabeza del paquete y envia el paquete al lector correspondiente
-
+	
+	public void cabecera(Document doc)
+	{ //saca la cabeza del paquete y envia el paquete al lector correspondiente
+		
 		List children = doc.getContent();
 		Iterator iterator = children.iterator();
 		Object child = iterator.next();
 		Element element = (Element) child;
 		String aux = element.getName();
 		//System.out.println(aux);
-
-		if (aux.compareTo("PlayerSitRequest") == 0) {
+		
+		if (aux.compareTo("PlayerSitRequest") == 0)
+		{
 			xmlReadPlayerSitRequest(child);
 		}
-
-		if (aux.compareTo("Login") == 0) {
+		
+		if (aux.compareTo("Login") == 0)
+		{
 			xmlReadLogin(child);
 		}
-		if (aux.compareTo("ChatMsg") == 0) {
+		if (aux.compareTo("ChatMsg") == 0)
+		{
 			xmlReadChatMsg(child);
 		}
-		if (aux.compareTo("CreateTable") == 0) {
+		if (aux.compareTo("CreateTable") == 0)
+		{
 			xmlReadCreateTable(child);
 		}
-		if (aux.compareTo("TableJoinRequest") == 0) {
+		if (aux.compareTo("TableJoinRequest") == 0)
+		{
 			System.out.println("Dentro de cabecera para ejecutar el metodo\n");
 			xmlReadTableJoinRequest(child);
 		}
-		if (aux.compareTo("GameStartRequest") == 0) {
+		if (aux.compareTo("GameStartRequest") == 0)
+		{
 			xmlReadGameStartRequest(child);
 		}
-		if (aux.compareTo("TrucoPlay") == 0) {
+		if (aux.compareTo("TrucoPlay") == 0)
+		{
 			xmlReadTrucoPlay(child);
 		}
-
+		
 	}
-	public void xmlReadGameStartRequest(Object o) { // PAULO
+	public void xmlReadGameStartRequest(Object o)
+	{ // PAULO
 		String aux;
-		if (o instanceof Element) {
+		if (o instanceof Element)
+		{
 			Element element = (Element) o;
 			aux = element.getName();
-			if (aux.compareTo("Table") == 0) {
+			if (aux.compareTo("Table") == 0)
+			{
 				int tableid = Integer.parseInt(element.getAttributeValue("id"));
 				System.out.println(
-					"LLego un game Start Request al TABLE " + tableid);
+				"LLego un game Start Request al TABLE " + tableid);
 				//ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
-				try {
+				try
+				{
 					TableServer tabela =
-						(TableServer) getTables().get(String.valueOf(tableid));
+					(TableServer) getTables().get(String.valueOf(tableid));
 					tabela.startGame();
-				} catch (java.lang.NullPointerException e) {
+				} catch (java.lang.NullPointerException e)
+				{
 					System.out.println(
-						"LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadGameStartRequest");
-					e.printStackTrace();
+					"LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadGameStartRequest");
+					e.printStackTrace(System.out);
 					throw e;
 				}
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadGameStartRequest(child);
 			}
-
+			
 		}
 	}
 	int posAux;
 	//solo sirve para este metodo el de abajo xmlReadPlayerSitRequest
 	int idAux; //solo sirve para el metodo de abajo xmlReadPlayerSitRequest
 	String otroPlayerName = "";
-	public void xmlReadPlayerSitRequest(Object o) { //en verdad jugador no se usa porque creemos que como el communicator ya tiene su player entonces con
+	public void xmlReadPlayerSitRequest(Object o)
+	{ //en verdad jugador no se usa porque creemos que como el communicator ya tiene su player entonces con
 		//ese player es suficiente
 		String aux;
-
-		if (o instanceof Element) {
+		
+		if (o instanceof Element)
+		{
 			Element element = (Element) o;
 			aux = element.getName();
-
-			if (aux.compareTo("Pos") == 0) {
+			
+			if (aux.compareTo("Pos") == 0)
+			{
 				posAux = Integer.parseInt(element.getAttributeValue("pos"));
 			}
-			if (aux.compareTo("Player") == 0) {
+			if (aux.compareTo("Player") == 0)
+			{
 				otroPlayerName = element.getAttributeValue("name");
 			}
-			if (aux.compareTo("Table") == 0) {
-
+			if (aux.compareTo("Table") == 0)
+			{
+				
 				idAux = Integer.parseInt(element.getAttributeValue("id"));
-
+				
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadPlayerSitRequest(child);
 			}
-			if (aux.compareTo("PlayerSitRequest") == 0) {
+			if (aux.compareTo("PlayerSitRequest") == 0)
+			{
 				System.err.println(
-					"DENTRO DEL COMMUNICATOR SERVFER/////////////////");
+				"DENTRO DEL COMMUNICATOR SERVFER/////////////////");
 				System.out.println("El table a sentarse es " + idAux);
 				System.out.println("La posicion es " + posAux);
 				//ATENCION ESTE TRY HAY QUE DESCOMENTAR PARA QUE FUNCIONE. ESTA COMOENTADO PORQUE EL TABLESERVER
 				//TODAVIA NO TIENE UN Método PlayerSit
-				try {
+				try
+				{
 					String tid = String.valueOf(idAux);
 					TableServer tabela = (TableServer) getTables().get(tid);
 					tabela.sitPlayer(pieza.getPlayer(otroPlayerName), posAux);
-				} catch (java.lang.NullPointerException e) {
+				} catch (java.lang.NullPointerException e)
+				{
 					System.err.println(
-						"LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadPlayerSitRequest ");
-					e.printStackTrace();
+					"LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadPlayerSitRequest ");
+					e.printStackTrace(System.out);
 					throw e;
 				}
-
+				
 			}
-
+			
 		}
 	}
-
+	
 	/*    public void chatMessageSent(TrucoPlayer jug,String message) {
-	    System.out.println("Enviando msg de chat del jug: " + jug.getName());
-	    Document doc;
-	    doc=super.xmlCreateChatMsg(jug,message);
-	    super.sendXmlPackage(doc);
-	    //        pieza.sendChatMessage(jug, message);
+		System.out.println("Enviando msg de chat del jug: " + jug.getName());
+		Document doc;
+		doc=super.xmlCreateChatMsg(jug,message);
+		super.sendXmlPackage(doc);
+		//        pieza.sendChatMessage(jug, message);
 	}
 	 */
-	 
-	 
-	 
-	public void play(TrucoPlay te) {
-		/*System.out.println("What the fuck @#!@$!!!! " + this.getClass().getName());		
+	
+	
+	
+	public void play(TrucoPlay te)
+	{
+		/*System.out.println("What the fuck @#!@$!!!! " + this.getClass().getName());
 		Document doc = te.toXml();
 		super.sendXmlPackage(doc);*/
 	}
 	
-	public void play(TrucoEvent event) {/*preguntar bien por eso, estoy mareado. julio*/
+	public void play(TrucoEvent event)
+	{/*preguntar bien por eso, estoy mareado. julio*/
 		//Cantartanto con value
 		//canto sin value
 		//card semd
-		//Document doc = event.toXml();		
+		//Document doc = event.toXml();
 		//super.sendXmlPackage(doc);
-		//System.out.println("Void play method in " + this.getClass().getName());		
-                System.out.println("voy a enviar el pacote TrucoEvent en el m'etodo PLayRespone");
-		//Document doc = tp.toXml();		
-		Document doc = event.toXml();		
+		//System.out.println("Void play method in " + this.getClass().getName());
+		System.out.println("voy a enviar el pacote TrucoEvent en el m'etodo PLayRespone");
+		//Document doc = tp.toXml();
+		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
 	
-	public void playResponse(TrucoEvent event) {
-       	//TrucoPlay tp = event.toTrucoPlay();
-                /*if (tp.getPlayer() == getAssociatedPlayer()){/*no le devuelvo su jugada
-                    System.out.println("Server no quiere devolver jugada de su jugador"+tp.getPlayer().getName());
-                    System.out.println("que es "+getAssociatedPlayer().getName());
-                    
-                    return;
-                }*/
+	public void playResponse(TrucoEvent event)
+	{
+		//TrucoPlay tp = event.toTrucoPlay();
+				/*if (tp.getPlayer() == getAssociatedPlayer()){/*no le devuelvo su jugada
+					System.out.println("Server no quiere devolver jugada de su jugador"+tp.getPlayer().getName());
+					System.out.println("que es "+getAssociatedPlayer().getName());
+				 
+					return;
+				}*/
 		
 	}
 	
 	
-	public void turn(TrucoEvent event) {
+	public void turn(TrucoEvent event)
+	{
 		/*Document doc = event.toXml();
 		super.sendXmlPackage(doc);*/
 	}
-	public void endOfHand(TrucoEvent event) {
+	public void endOfHand(TrucoEvent event)
+	{
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
-	public void cardsDeal(TrucoEvent event) {
+	public void cardsDeal(TrucoEvent event)
+	{
 		System.err.println("Vienen las CARTAS carajo"+this);
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
-	public void handStarted(TrucoEvent event) {
+	public void handStarted(TrucoEvent event)
+	{
 		System.err.println("Se disparo un hand started en " + this.getClass());
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
-	public void gameStarted(TrucoEvent event) {
+	public void gameStarted(TrucoEvent event)
+	{
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
-
-	public void endOfGame(TrucoEvent event) {
+	
+	public void endOfGame(TrucoEvent event)
+	{
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
-
-	public TrucoPlayer getAssociatedPlayer() {
+	
+	public TrucoPlayer getAssociatedPlayer()
+	{
 		return player;
 	}
-	public void setRoom(RoomServer pieza) {
+	public void setRoom(RoomServer pieza)
+	{
 		this.pieza = pieza;
 		pieza.addRoomListener(this);
 	}
-
-	public RoomServer getRoom() {
+	
+	public RoomServer getRoom()
+	{
 		return this.pieza;
 	}
-
-	public void xmlReadLogin(Object o) {
+	
+	public void xmlReadLogin(Object o)
+	{
 		String aux;
-		if (o instanceof Element) {
+		if (o instanceof Element)
+		{
 			Element element = (Element) o;
 			aux = element.getName();
-			if (aux.compareTo("Player") == 0) {
+			if (aux.compareTo("Player") == 0)
+			{
 				//System.out.println("PLAYER:"+element.getText());
 				user = element.getText();
 			}
-			if (aux.compareTo("Password") == 0) {
+			if (aux.compareTo("Password") == 0)
+			{
 				//System.out.println("PASSWORD:"+element.getText());
 				password = element.getText();
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadLogin(child);
 			}
-			if (aux.compareTo("Login") == 0) {
+			if (aux.compareTo("Login") == 0)
+			{
 				//Hace la autenticacion contra la base de datos
 				//DbOoperation.authenticatePlayer(user,password);
 				System.err.println(
-					"Dentro del Communicator Client, recibi un login request de: ");
+				"Dentro del Communicator Client, recibi un login request de: ");
 				System.out.println("Username: " + user);
 				System.out.println("Password: " + password);
-
-				try {
+				
+				try
+				{
 					pieza.login(user, password, this);
-				} catch (py.edu.uca.fcyt.toluca.LoginFailedException lfe) {
+				} catch (py.edu.uca.fcyt.toluca.LoginFailedException lfe)
+				{
 					System.err.println("hubo un error en el login");
 					System.err.println("enviar uno paquete indicando el error");
 					//No se pudo logear
@@ -596,7 +687,7 @@ public class CommunicatorServer extends Communicator {
 			}
 		}
 	}
-
+	
 	/** <p>
 	 * Does ...
 	 * </p><p>
@@ -612,13 +703,14 @@ public class CommunicatorServer extends Communicator {
 	 *
 	 */
 	public void chatMessageRequested(
-		ChatPanelContainer chatPanelContainer,
-		TrucoPlayer player,
-		String htmlMessage) {
+	ChatPanelContainer chatPanelContainer,
+	TrucoPlayer player,
+	String htmlMessage)
+	{
 	}
-
+	
 	//   public void createTableRequested(RoomEvent ev) { }
-
+	
 	/** <p>
 	 * Does ...
 	 * </p><p>
@@ -626,21 +718,23 @@ public class CommunicatorServer extends Communicator {
 	 * </p>
 	 *
 	 */
-	public void gameStartRequested() {
+	public void gameStartRequested()
+	{
 		System.out.println(
-			"En el CS.  Esto no se debería ejecutar.  recibi un GameStartRequested");
+		"En el CS.  Esto no se debería ejecutar.  recibi un GameStartRequested");
 	}
-
+	
 	public void chatMessageSent(
-		ChatPanelContainer cpc,
-		TrucoPlayer player,
-		String htmlMessage) {
+	ChatPanelContainer cpc,
+	TrucoPlayer player,
+	String htmlMessage)
+	{
 		System.out.println("Enviando msg de chat del jug: " + player.getName());
 		Document doc;
 		doc = super.xmlCreateChatMsg(cpc, player, htmlMessage);
 		super.sendXmlPackage(doc);
 	}
-
+	
 	/** <p>
 	 * Does ...
 	 * </p><p>
@@ -651,36 +745,42 @@ public class CommunicatorServer extends Communicator {
 	 * </p>
 	 *
 	 */
-	public void createTableRequested(RoomEvent ev) {
+	public void createTableRequested(RoomEvent ev)
+	{
 	}
-
-	public void xmlReadCreateTable(Object o) {
+	
+	public void xmlReadCreateTable(Object o)
+	{
 		String aux;
-		if (o instanceof Element) {
+		if (o instanceof Element)
+		{
 			Element element = (Element) o;
 			aux = element.getName();
-			if (aux.compareTo("Player") == 0) {
+			if (aux.compareTo("Player") == 0)
+			{
 				//System.out.println("PLAYER:"+element.getText());
 				user = element.getAttributeValue("id");
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadCreateTable(child);
 			}
-			if (aux.compareTo("CreateTable") == 0) {
+			if (aux.compareTo("CreateTable") == 0)
+			{
 				System.out.println(
-					"Dentro del Communicator Server. Player = "
-						+ user
-						+ "/"
-						+ player.getName());
+				"Dentro del Communicator Server. Player = "
+				+ user
+				+ "/"
+				+ player.getName());
 				//pieza.createTable(new TrucoPlayer(user));
 				pieza.createTable(pieza.getPlayer(user));
 			}
 		}
 	}
-
+	
 	/** <p>
 	 * Does ...
 	 * </p><p>
@@ -690,8 +790,9 @@ public class CommunicatorServer extends Communicator {
 	 * @param ev ...
 	 * </p>
 	 */
-	public void tableCreated(RoomEvent ev) {
-
+	public void tableCreated(RoomEvent ev)
+	{
+		
 		System.out.println("No hay nada: " + ev.getTabless().toArray().length);
 		TableServer ts = (TableServer) ((ev.getTabless().toArray())[0]);
 		ts.addTableServerListener(this);
@@ -702,80 +803,89 @@ public class CommunicatorServer extends Communicator {
 		Document doc;
 		doc = xmlCreateTableCreated(ev);
 		System.out.println(
-			"Antes de mandar el XML en el CREATE TABLE DEL SERVA");
+		"Antes de mandar el XML en el CREATE TABLE DEL SERVA");
 		super.sendXmlPackage(doc);
 	}
-
+	
 	String tableid;
-	public void xmlReadTableJoinRequest(Object o) {
+	public void xmlReadTableJoinRequest(Object o)
+	{
 		String aux;
 		System.out.println("Leyendo el paquete");
-		if (o instanceof Element) {
+		if (o instanceof Element)
+		{
 			Element element = (Element) o;
 			aux = element.getName();
-
-			if (aux.compareTo("Table") == 0) {
+			
+			if (aux.compareTo("Table") == 0)
+			{
 				//System.out.println("MESSAGE:"+element.getText());
 				tableid = element.getAttributeValue("id");
 				System.out.println("El table id es" + tableid);
 			}
-			if (aux.compareTo("Player") == 0) {
+			if (aux.compareTo("Player") == 0)
+			{
 				//System.out.println("PLAYER:"+element.getText());
 				userAux = element.getAttributeValue("name");
 			}
 			List children = element.getContent();
 			Iterator iterator = children.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				Object child = iterator.next();
 				xmlReadTableJoinRequest(child);
 			}
-			if (aux.compareTo("TableJoinRequest") == 0) {
+			if (aux.compareTo("TableJoinRequest") == 0)
+			{
 				//Chatpanel.showChatMessage(user,message);
 				/* TableServer tstmp = (TableServer)getTables().get(tableid);
 				 if (tstmp == null) {
-				     System.out.println("TABLA NUUUUUUUUUUUUUUULA :(( :((!!!!");
+					 System.out.println("TABLA NUUUUUUUUUUUUUUULA :(( :((!!!!");
 				 } else {
-				     TrucoPlayer tptmp = pieza.getPlayer(userAux);
-				     if (tptmp == null) {
-				         System.out.println("Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
-				     } else {
-				         tstmp.addPlayer(tptmp);
-				     }
+					 TrucoPlayer tptmp = pieza.getPlayer(userAux);
+					 if (tptmp == null) {
+						 System.out.println("Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
+					 } else {
+						 tstmp.addPlayer(tptmp);
+					 }
 				 }*/
-				try {
+				try
+				{
 					TableServer tstmp = (TableServer) getTables().get(tableid);
 					TrucoPlayer tptmp = pieza.getPlayer(userAux);
-
+					
 					RoomEvent re = new RoomEvent();
 					re.setPlayer(tptmp);
 					re.setTableServer(tstmp);
 					re.setType(RoomEvent.TYPE_TABLE_JOINED);
 					pieza.joinTable(re);
-
-				} catch (NullPointerException npe) {
+					
+				} catch (NullPointerException npe)
+				{
 					System.out.println("TABLA NUUUUUUUUUUUUUUULA :(( :((!!!!");
 					System.out.println(
-						"Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
-					npe.printStackTrace();
+					"Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
+					npe.printStackTrace(System.out);
 				}
-
+				
 			}
 		}
 	}
-	public Document xmlCreateTableCreated(RoomEvent re) {
+	public Document xmlCreateTableCreated(RoomEvent re)
+	{
 		System.out.println("Cricco quiere ver su pakochi");
 		Element ROOT = new Element("TableCreated");
-
+		
 		Element PLAYER = new Element("Player");
 		Vector Jugadores = (Vector) re.getPlayerss();
 		TrucoPlayer jug = (TrucoPlayer) (Jugadores.get(0));
 		PLAYER.setAttribute("name", jug.getName());
 		Element TABLE = new Element("Table");
 		TABLE.setAttribute("id", String.valueOf(re.getTableNumber()));
-
+		
 		ROOT.addContent(PLAYER);
 		ROOT.addContent(TABLE);
-
+		
 		Document doc = new Document(ROOT);
 		return doc;
 	}

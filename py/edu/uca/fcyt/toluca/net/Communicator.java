@@ -26,53 +26,53 @@ import py.edu.uca.fcyt.toluca.table.TableServer;
 public abstract class Communicator extends XmlPackagesSession
 implements RoomListener, TableListener,TrucoListener
 {
-    
-    int current=0;
-    
-    /*
-     * <p>Player del communicator</p>
-     */
-    TrucoPlayer player;
-    
-    Vector Players=new Vector();
-    Vector Mesas=new Vector();
-    /*
-    public Communicator(Room pieza) {
-	this.pieza=pieza;
-    }*/
-    public Communicator()
-    {
-	System.out.println("construyendo Communicator");
-	tables = new Hashtable();
-    }
-    public String getInitErrorMessage(int errcode)
-    {
-	return "Sin errores";
-    }
-    public int init()
-    {
-	return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
-    }
-    public void playerLeft(TableEvent te)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    public void sendXmlPackage(Document doc)
-    {
 	
-	String xmlstring=new String();
-	XMLOutputter serializer = new XMLOutputter("  ", true);
-	xmlstring=serializer.outputString(doc);
-	super.sendXmlPackage(xmlstring);
-    }
-    
-    public void receiveXmlPackageWithParsingError(String rawXmlPackage)
-    {
-	System.out.println("El XML tiene errores");
-    }
-    
-    
+	int current=0;
+	
+	/*
+	 * <p>Player del communicator</p>
+	 */
+	TrucoPlayer player;
+	
+	Vector Players=new Vector();
+	Vector Mesas=new Vector();
+	/*
+	public Communicator(Room pieza) {
+	this.pieza=pieza;
+	}*/
+	public Communicator()
+	{
+		System.out.println("construyendo Communicator");
+		tables = new Hashtable();
+	}
+	public String getInitErrorMessage(int errcode)
+	{
+		return "Sin errores";
+	}
+	public int init()
+	{
+		return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
+	}
+	public void playerLeft(TableEvent te)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	public void sendXmlPackage(Document doc)
+	{
+		
+		String xmlstring=new String();
+		XMLOutputter serializer = new XMLOutputter("  ", true);
+		xmlstring=serializer.outputString(doc);
+		super.sendXmlPackage(xmlstring);
+	}
+	
+	public void receiveXmlPackageWithParsingError(String rawXmlPackage)
+	{
+		System.out.println("El XML tiene errores");
+	}
+	
+	
 	/*
 	public static Document xmlCreateError(RoomEvent te)
 	{
@@ -106,136 +106,136 @@ implements RoomListener, TableListener,TrucoListener
 		return doc;
 	}
 	 */
-    
-    public  Document xmlCreateChatMsg(ChatPanelContainer cpc, TrucoPlayer jug,String message)
-    {
-	Element ROOT = new Element("ChatMsg");
-	ROOT.setAttribute("origin", cpc.getOrigin());
-	Element PLAYER= new Element("Player");
-	Element MSG = new Element("Msg");
 	
-	PLAYER.setAttribute("name",String.valueOf(jug.getName()));
-	CDATA datos=new CDATA(message);
-	MSG.addContent(datos);
-	
-	ROOT.addContent(PLAYER);
-	ROOT.addContent(MSG);
-	
-	Document doc = new Document(ROOT);
-	return doc;
-	
-    }
-    public Document xmlCreateUserJoined(TrucoPlayer jogador)
-    {
-	
-	Element ROOT=new Element("UserJoined");
-	Element PLAYER=new Element("Player");
-	PLAYER.setAttribute("name",jogador.getName());
-	PLAYER.setAttribute("rating",String.valueOf(jogador.getRating()));
-	ROOT.addContent(PLAYER);
-	Document doc = new Document(ROOT);
-	return doc;
-	
-    }
-    
-    
-    public Document xmlCreateTableRequested(RoomEvent te)
-    {
-	Element ROOT = new Element("CreateTable");
-	Element PLAYER=new Element("Player");
-	
-	PLAYER.setAttribute("id",String.valueOf(te.getUser()));
-	ROOT.addContent(PLAYER);
-	
-	Document doc = new Document(ROOT);
-	return doc;
-    }
-    
-    public  Document xmlCreateLoginOk(RoomEvent te)
-    {
-	Element ROOT=new Element("LoginOk");
-	Document doc=new Document(ROOT);
-	
-	Vector jugadores/*=new Vector()*/;
-	Vector mesas/*=new Vector()*/;
-	
-	jugadores=(Vector)te.getPlayerss();
-	System.out.println("El tam de jugadores es: " + jugadores.size());
-	mesas=(Vector)te.getTabless();
-	System.out.println("El tam de mesas es: " + mesas.size());
-	TrucoPlayer jug;
-	
-	Element player;
-	for (Enumeration e = jugadores.elements() ; e.hasMoreElements() ;)
+	public  Document xmlCreateChatMsg(ChatPanelContainer cpc, TrucoPlayer jug,String message)
 	{
-	    jug=(TrucoPlayer)e.nextElement();
-	    System.out.println("Se agrega el player: " + jug.getName() + " al xml que va a viajar");
-	    
-	    player=new Element("Player");
-	    player.setAttribute("name",jug.getName());
-	    player.setAttribute("rating",String.valueOf(jug.getRating()));
-	    
-	    ROOT.addContent(player);
-	    
+		Element ROOT = new Element("ChatMsg");
+		ROOT.setAttribute("origin", cpc.getOrigin());
+		Element PLAYER= new Element("Player");
+		Element MSG = new Element("Msg");
+		
+		PLAYER.setAttribute("name",String.valueOf(jug.getName()));
+		CDATA datos=new CDATA(message);
+		MSG.addContent(datos);
+		
+		ROOT.addContent(PLAYER);
+		ROOT.addContent(MSG);
+		
+		Document doc = new Document(ROOT);
+		return doc;
+		
 	}
-	TableServer mesa;
-	Element eleMesa;
-	
-	for (Enumeration e = mesas.elements() ; e.hasMoreElements() ;)
+	public Document xmlCreateUserJoined(TrucoPlayer jogador)
 	{
-	    
-	    mesa=(TableServer)e.nextElement();
-	    //System.out.println(mesa.getTableNumber());
-	    jugadores=(Vector)mesa.getPlayers();
-	    eleMesa=new Element("Table");
-	    eleMesa.setAttribute("number",String.valueOf(mesa.getTableNumber()));
-	    for (Enumeration e2 = jugadores.elements() ; e2.hasMoreElements() ;)
-	    {
-		jug=(TrucoPlayer)e2.nextElement();
-		player=new Element("Playert");
-		//System.out.println(jug.getName());
-		if (jug == null)
-		    player.setAttribute("name","El PUTO");
-		else
-		    player.setAttribute("name",jug.getName());
 		
-		eleMesa.addContent(player);
+		Element ROOT=new Element("UserJoined");
+		Element PLAYER=new Element("Player");
+		PLAYER.setAttribute("name",jogador.getName());
+		PLAYER.setAttribute("rating",String.valueOf(jogador.getRating()));
+		ROOT.addContent(PLAYER);
+		Document doc = new Document(ROOT);
+		return doc;
 		
-	    }
-	    ROOT.addContent(eleMesa);
-	    
 	}
 	
-	return doc;
-    }
-    int gameID;
-    int hand;
-    TrucoCard []cartas=new TrucoCard[3];
-    int currentCard=0;
-    public void xmlreadSendCards(Object o)
-    {
-	gameID=0;
-	hand=0;
-	currentCard=0;
-	xmlreadSendCardsAlg(o);
 	
+	public Document xmlCreateTableRequested(RoomEvent te)
+	{
+		Element ROOT = new Element("CreateTable");
+		Element PLAYER=new Element("Player");
+		
+		PLAYER.setAttribute("id",String.valueOf(te.getUser()));
+		ROOT.addContent(PLAYER);
+		
+		Document doc = new Document(ROOT);
+		return doc;
+	}
 	
-    }
-    public void xmlreadSendCardsAlg(Object o)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
+	public  Document xmlCreateLoginOk(RoomEvent te)
+	{
+		Element ROOT=new Element("LoginOk");
+		Document doc=new Document(ROOT);
+		
+		Vector jugadores/*=new Vector()*/;
+		Vector mesas/*=new Vector()*/;
+		
+		jugadores=(Vector)te.getPlayerss();
+		System.out.println("El tam de jugadores es: " + jugadores.size());
+		mesas=(Vector)te.getTabless();
+		System.out.println("El tam de mesas es: " + mesas.size());
+		TrucoPlayer jug;
+		
+		Element player;
+		for (Enumeration e = jugadores.elements() ; e.hasMoreElements() ;)
+		{
+			jug=(TrucoPlayer)e.nextElement();
+			System.out.println("Se agrega el player: " + jug.getName() + " al xml que va a viajar");
+			
+			player=new Element("Player");
+			player.setAttribute("name",jug.getName());
+			player.setAttribute("rating",String.valueOf(jug.getRating()));
+			
+			ROOT.addContent(player);
+			
+		}
+		TableServer mesa;
+		Element eleMesa;
+		
+		for (Enumeration e = mesas.elements() ; e.hasMoreElements() ;)
+		{
+			
+			mesa=(TableServer)e.nextElement();
+			//System.out.println(mesa.getTableNumber());
+			jugadores=(Vector)mesa.getPlayers();
+			eleMesa=new Element("Table");
+			eleMesa.setAttribute("number",String.valueOf(mesa.getTableNumber()));
+			for (Enumeration e2 = jugadores.elements() ; e2.hasMoreElements() ;)
+			{
+				jug=(TrucoPlayer)e2.nextElement();
+				player=new Element("Playert");
+				//System.out.println(jug.getName());
+				if (jug == null)
+					player.setAttribute("name","El PUTO");
+				else
+					player.setAttribute("name",jug.getName());
+				
+				eleMesa.addContent(player);
+				
+			}
+			ROOT.addContent(eleMesa);
+			
+		}
+		
+		return doc;
+	}
+	int gameID;
+	int hand;
+	TrucoCard []cartas=new TrucoCard[3];
+	int currentCard=0;
+	public void xmlreadSendCards(Object o)
+	{
+		gameID=0;
+		hand=0;
+		currentCard=0;
+		xmlreadSendCardsAlg(o);
+		
+		
+	}
+	public void xmlreadSendCardsAlg(Object o)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
 /*		String aux;
 	if (o instanceof Element) {
-	    Element element = (Element) o;
-	    aux=element.getName();
-	    if(aux.compareTo("TrucoPlayer")==0) {
+		Element element = (Element) o;
+		aux=element.getName();
+		if(aux.compareTo("TrucoPlayer")==0) {
 		//System.out.println("PLAYER:"+element.getText());
 		user=element.getAttributeValue("name");
-	    }
-	    if(aux.compareTo("Game")==0) {
+		}
+		if(aux.compareTo("Game")==0) {
 		//System.out.println("MESSAGE:"+element.getText());
 		gameID=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		}
 			if(aux.compareTo("Hand")==0)
 			{
 				hand=Integer.parseInt(element.getAttributeValue("number"));
@@ -250,13 +250,13 @@ implements RoomListener, TableListener,TrucoListener
 				currentCard++;
  
 			}
-	    List children = element.getContent();
-	    Iterator iterator = children.iterator();
-	    while (iterator.hasNext()) {
+		List children = element.getContent();
+		Iterator iterator = children.iterator();
+		while (iterator.hasNext()) {
 		Object child = iterator.next();
 		xmlreadSendCardsAlg(child);
-	    }
-	    if(aux.compareTo("SendCards")==0) {
+		}
+		if(aux.compareTo("SendCards")==0) {
 		//Chatpanel.showChatMessage(user,message);
 		TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),TrucoEvent.ENVIAR_CARTAS,cartas);
 				System.out.println("gameid: " + (te.getTrucoGame()).getId() + "\nHand" + te.getNumberOfHand() +"\nPlayer :" + (te.getPlayer()).getName());
@@ -270,22 +270,22 @@ implements RoomListener, TableListener,TrucoListener
 				}
 			}
 	} */
-    }
-    int type;
-    public void xmlReadCanto(Object o)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	int type;
+	public void xmlReadCanto(Object o)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
 /*		String aux;
 	if (o instanceof Element) {
-	    Element element = (Element) o;
-	    aux=element.getName();
-	    if(aux.compareTo("Type")==0) {
-	     type=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		Element element = (Element) o;
+		aux=element.getName();
+		if(aux.compareTo("Type")==0) {
+		 type=Integer.parseInt(element.getAttributeValue("id"));
+		}
 			 if(aux.compareTo("Game")==0) {
 		//System.out.println("MESSAGE:"+element.getText());
 		gameID=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		}
 			if(aux.compareTo("Hand")==0)
 			{
 				hand=Integer.parseInt(element.getAttributeValue("number"));
@@ -293,39 +293,39 @@ implements RoomListener, TableListener,TrucoListener
 			 if(aux.compareTo("Player")==0) {
 		//System.out.println("PLAYER:"+element.getText());
 		user=element.getAttributeValue("name");
-	    }
-	    List children = element.getContent();
-	    Iterator iterator = children.iterator();
-	    while (iterator.hasNext()) {
+		}
+		List children = element.getContent();
+		Iterator iterator = children.iterator();
+		while (iterator.hasNext()) {
 		Object child = iterator.next();
 		xmlReadCanto(child);
-	    }
-	    if(aux.compareTo("Canto")==0) {
+		}
+		if(aux.compareTo("Canto")==0) {
 			  TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
 			  System.out.println("Tipo:"+type);
 			   System.out.println("Game:"+gameID);
 			   System.out.println("Hand:"+hand);
 			   System.out.println("Player:"+user);
-	    }
+		}
 	} */
-    }
-    TrucoCard cartaEnv;
-    
-    int tanto;
-    public void xmlReadCantarTanto(Object o)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	TrucoCard cartaEnv;
+	
+	int tanto;
+	public void xmlReadCantarTanto(Object o)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
 /*				String aux;
 	if (o instanceof Element) {
-	    Element element = (Element) o;
-	    aux=element.getName();
-	    if(aux.compareTo("Type")==0) {
-	     type=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		Element element = (Element) o;
+		aux=element.getName();
+		if(aux.compareTo("Type")==0) {
+		 type=Integer.parseInt(element.getAttributeValue("id"));
+		}
 			 if(aux.compareTo("Game")==0) {
 		//System.out.println("MESSAGE:"+element.getText());
 		gameID=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		}
 			if(aux.compareTo("Hand")==0)
 			{
 				hand=Integer.parseInt(element.getAttributeValue("number"));
@@ -333,45 +333,45 @@ implements RoomListener, TableListener,TrucoListener
 			 if(aux.compareTo("Player")==0) {
 		//System.out.println("PLAYER:"+element.getText());
 		user=element.getAttributeValue("name");
-	    }
+		}
 			if(aux.compareTo("Tanto")==0)
 			{
 				tanto=Integer.parseInt(element.getAttributeValue("tanto"));
 			}
-	    List children = element.getContent();
-	    Iterator iterator = children.iterator();
-	    while (iterator.hasNext()) {
+		List children = element.getContent();
+		Iterator iterator = children.iterator();
+		while (iterator.hasNext()) {
 		Object child = iterator.next();
 		xmlReadCantarTanto(child);
-	    }
-	    if(aux.compareTo("CantarTanto")==0) {
+		}
+		if(aux.compareTo("CantarTanto")==0) {
 				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,tanto);
-	       System.out.println("Tipo:"+type);
+		   System.out.println("Tipo:"+type);
 			   System.out.println("Game:"+gameID);
 			   System.out.println("Hand:"+hand);
 			   System.out.println("Player:"+user);
 			  System.out.println("Tanto"+tanto);
 			 }
-	} 
-    }
-    
-    
-	
+	}
+	}
+ 
+ 
+ 
 	/*
 	}
 	public void xmlReadTerminalMessage(Object o)
 	{
 		String aux;
 	if (o instanceof Element) {
-	    Element element = (Element) o;
-	    aux=element.getName();
-	    if(aux.compareTo("Type")==0) {
-	     type=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		Element element = (Element) o;
+		aux=element.getName();
+		if(aux.compareTo("Type")==0) {
+		 type=Integer.parseInt(element.getAttributeValue("id"));
+		}
 			 if(aux.compareTo("Game")==0) {
 		//System.out.println("MESSAGE:"+element.getText());
 		gameID=Integer.parseInt(element.getAttributeValue("id"));
-	    }
+		}
 			if(aux.compareTo("Hand")==0)
 			{
 				hand=Integer.parseInt(element.getAttributeValue("number"));
@@ -379,40 +379,40 @@ implements RoomListener, TableListener,TrucoListener
 			 if(aux.compareTo("Player")==0) {
 		//System.out.println("PLAYER:"+element.getText());
 		user=element.getAttributeValue("name");
-	    }
+		}
  
-	    List children = element.getContent();
-	    Iterator iterator = children.iterator();
-	    while (iterator.hasNext()) {
+		List children = element.getContent();
+		Iterator iterator = children.iterator();
+		while (iterator.hasNext()) {
 		Object child = iterator.next();
 		xmlReadTerminalMessage(child);
-	    }
-	    if(aux.compareTo("TerminalMessage")==0) {
+		}
+		if(aux.compareTo("TerminalMessage")==0) {
 				System.out.println("Leyento paquete terminall Message");
 				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
-	       System.out.println("Tipo:"+type);
+		   System.out.println("Tipo:"+type);
 			   System.out.println("Game:"+gameID);
 			   System.out.println("Hand:"+hand);
 			   System.out.println("Player:"+user);
  
 			 }
 	} */
-    }
-    
-    
-    //private RoomServer pieza; No
-    //by sacoleiro
-    public void chatMessageRequested(SpaceListener spaceListener, TrucoPlayer player, String htmlMessage)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    public void gameStartRequest(TableEvent ev)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    
+	}
+	
+	
+	//private RoomServer pieza; No
+	//by sacoleiro
+	public void chatMessageRequested(SpaceListener spaceListener, TrucoPlayer player, String htmlMessage)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	public void gameStartRequest(TableEvent ev)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	
 	/*
 	public static Document xmlCreateUserJoinedRoom(RoomEvent te)
 	{
@@ -500,35 +500,37 @@ implements RoomListener, TableListener,TrucoListener
 	}
 	 
 	 */
-    public  Document xmlCreateLogin(RoomEvent te)
-    {
-	
-	Document doc = null;
-	try
+	public  Document xmlCreateLogin(RoomEvent te)
 	{
-	    Element ROOT= new Element("Login");
-	    Element PLAYER= new Element("Player");
-	    Element PASSWORD = new Element("Password");
-	    PLAYER.setText(String.valueOf(te.getUser()));
-	    PASSWORD.setText(String.valueOf(te.getPassword()));
-	    
-	    //PLAYER.setText(String.valueOf("danic"));
-	    //PASSWORD.setText(String.valueOf("cricco"));
-	    
-	    ROOT.addContent(PLAYER);
-	    ROOT.addContent(PASSWORD);
-	    
-	    doc = new Document(ROOT);
-	} catch (java.lang.NullPointerException npe)
-	{
-	    System.err.println("Hay un error al hacer el XMLCREATELOGIN en el Communicator");
-	    npe.printStackTrace();
-	    throw npe;
-	} finally
-	{
-	    return doc;
+		
+		Document doc = null;
+		try
+		{
+			Element ROOT= new Element("Login");
+			Element PLAYER= new Element("Player");
+			Element PASSWORD = new Element("Password");
+			PLAYER.setText(String.valueOf(te.getUser()));
+			PASSWORD.setText(String.valueOf(te.getPassword()));
+			
+			//PLAYER.setText(String.valueOf("danic"));
+			//PASSWORD.setText(String.valueOf("cricco"));
+			
+			ROOT.addContent(PLAYER);
+			ROOT.addContent(PASSWORD);
+			
+			doc = new Document(ROOT);
+		} catch (java.lang.NullPointerException npe)
+		{
+			System.err.println("Hay un error al hacer el XMLCREATELOGIN en el Communicator");
+			npe.printStackTrace();
+			throw npe;
+		} finally
+		{
+			if(doc == null)
+				new Exception("el Docde login es null").printStackTrace(System.out);
+		}
+		return doc;
 	}
-    }
 	/*
  public  void cabecera(Document doc)
   {//saca la cabeza del paquete y envia el paquete al lector correspondiente
@@ -537,7 +539,7 @@ implements RoomListener, TableListener,TrucoListener
 		Iterator iterator = children.iterator();
 		Object child = iterator.next();
 		Element element = (Element) child;
-	    String aux=element.getName();
+		String aux=element.getName();
 		//System.out.println(aux);
 	 
 		if(aux.compareTo("UserJoinedRoom")==0)
@@ -582,7 +584,7 @@ implements RoomListener, TableListener,TrucoListener
 		}
 }
 	 */
-    
+	
 	/*
 	public  void xmlReadLoginOk(Object o)
 	{//este metodo no anda cuando se envian los paquetes a pesar de que anda para leer el Document
@@ -665,16 +667,16 @@ implements RoomListener, TableListener,TrucoListener
 	 
 				}
 			}//el if cuando termina de leer el paquete
-	    }
+		}
 	 
 	}*/
-    
-    public void loginCompleted(RoomEvent re)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    
+	
+	public void loginCompleted(RoomEvent re)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	
 /*
 	public void xmlReadLogin(Object o)
 	{//este metodo no anda cuando se envian los paquetes a pesar de que anda para leer el Document
@@ -706,15 +708,15 @@ implements RoomListener, TableListener,TrucoListener
 	}
 	//System.out.println("Leyendo login");
  
-    }
+	}
  */
-    String user;
-    String password;
-    String message;
-    
-    /** Holds value of property tables. */
-    private Hashtable tables;
-    
+	String user;
+	String password;
+	String message;
+	
+	/** Holds value of property tables. */
+	private Hashtable tables;
+	
 /*
 	public static Document xmlCreateTableClosed(RoomEvent te)
 	{
@@ -731,32 +733,32 @@ implements RoomListener, TableListener,TrucoListener
  
 	}
  */
-    public void loginRequested(RoomEvent te)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    public void loginFailed(RoomEvent te)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    
-    /*
-    public static void main(String[] args) {
-     
-     
+	public void loginRequested(RoomEvent te)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	public void loginFailed(RoomEvent te)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	
+	/*
+	public static void main(String[] args) {
+	 
+	 
 	RoomEvent te=new RoomEvent();
 	Vector jugadores=new Vector();
 	Vector mesas=new Vector();
 	Player jug1=new Player("Daniel",10);
 	Player jug2=new Player("José",20);
-     
+	 
 	Table mesa1=new Table();
 	Table mesa2=new Table();
 	jugadores.add(jug1);
 	jugadores.add(jug2);
 	mesa1.setTableNumber(2);
-     
+	 
 	mesa1.addPlayer(jug1);
 	mesa1.addPlayer(jug2);
 	mesa2.setTableNumber(10);
@@ -766,317 +768,317 @@ implements RoomListener, TableListener,TrucoListener
 	mesas.add(mesa2);
 	te.setTabless(mesas);
 	te.setPlayerss(jugadores);
-     
+	 
 	te.setUser("AAdaniAA");
 	te.setPassword("AAcriccoAAA");
-     
+	 
 	Communicator cc=new Communicator();
 	Document doc=cc.xmlCreateChatMsg(jug1,"Prueba");
 	try {
-     
-	    XMLOutputter serializer = new XMLOutputter("  ", true);
-     
-	    serializer.output(doc, System.out);
-     
+	 
+		XMLOutputter serializer = new XMLOutputter("  ", true);
+	 
+		serializer.output(doc, System.out);
+	 
 	}
 	catch (IOException e) {
-	    System.err.println(e);
+		System.err.println(e);
 	}
 	//cc.cabecera(doc);
-     
-    }
-     */
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param player ...
-     * </p><p>
-     * @param htmlMessage ...
-     * </p><p>
-     *
-     * </p>
-     */
-    public void chatMessageRequested(TrucoPlayer player, String htmlMessage)
-    {
+	 
+	}
+	 */
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * @param player ...
+	 * </p><p>
+	 * @param htmlMessage ...
+	 * </p><p>
+	 *
+	 * </p>
+	 */
+	public void chatMessageRequested(TrucoPlayer player, String htmlMessage)
+	{
 		new Exception("Nada implementado aun :-(     ").printStackTrace();
-
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param player ...
-     * </p><p>
-     * @param htmlMessage ...
-     * </p><p>
-     *
-     * </p>
-     */
-    public void chatMessageSent(TrucoPlayer player, String htmlMessage)
-    {
-	new Exception("").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param ev ...
-     * </p><p>
-     *
-     * </p>
-     */
-    public abstract void createTableRequested(RoomEvent ev);
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param game ...
-     * </p>
-     */
-    public void gameFinished(Game game)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param game ...
-     * </p>
-     */
-    public void gameStarted(Game game)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param player ...
-     * </p><p>
-     *
-     * </p>
-     *
-     * public void playerJoined(Player player) {
-     * }
-     */
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param player ...
-     * </p>
-     */
-    public void playerKicked(TrucoPlayer player)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param player ...
-     * </p>
-     */
-    public void playerLeft(TrucoPlayer player)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    public void playerSit(TrucoPlayer player, int position)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    public void sitRequested(TrucoPlayer player, int position)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    //    /** <p>
-    //     * Does ...
-    //     * </p><p>
-    //     *
-    //     * </p><p>
-    //     *
-    //     * @param ev ...
-    //     * </p>
-    //     */
-    //    public void tableCreated(RoomEvent ev) {
-    //    }
-    //    Se fue al server
-    
-    public void tableJoinRequested(RoomEvent ev)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param ev ...
-     * </p><p>
-     *
-     * </p>
-     */
-    
-    public void tableJoined(RoomEvent ev)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param table ...
-     * </p>
-     */
-    public void tableLocked(Table table)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param ev ...
-     * </p>
-     */
-    public void tableModified(RoomEvent ev)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param re ...
-     * </p>
-     */
-    public void tableRemoved(RoomEvent re)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param table ...
-     * </p>
-     */
-    public void tableUnlocked(Table table)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param ev ...
-     * </p>
-     */
-    public void joinTableRequested(RoomEvent ev)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param game ...
-     * </p>
-     */
-    
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param game ...
-     * </p>
-     */
-    
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param player ...
-     * </p><p>
-     * @param position ...
-     * </p><p>
-     *
-     * </p>
-     */
-    
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param ev ...
-     * </p>
-     */
-    public void sitRequest(TableEvent ev)
-    {
-	new Exception("Nada implementado aun :-(     ").printStackTrace();
-    }
-    
-    /** Getter for property tables.
-     * @return Value of property tables.
-     *
-     */
-    public Hashtable getTables()
-    {
-	return this.tables;
-    }
-    
-    /** Setter for property tables.
-     * @param tables New value of property tables.
-     *
-     */
-    public void setTables(Hashtable tables)
-    {
-	this.tables = tables;
-    }
-    
+		
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * @param player ...
+	 * </p><p>
+	 * @param htmlMessage ...
+	 * </p><p>
+	 *
+	 * </p>
+	 */
+	public void chatMessageSent(TrucoPlayer player, String htmlMessage)
+	{
+		new Exception("").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * @param ev ...
+	 * </p><p>
+	 *
+	 * </p>
+	 */
+	public abstract void createTableRequested(RoomEvent ev);
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param game ...
+	 * </p>
+	 */
+	public void gameFinished(Game game)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param game ...
+	 * </p>
+	 */
+	public void gameStarted(Game game)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * @param player ...
+	 * </p><p>
+	 *
+	 * </p>
+	 *
+	 * public void playerJoined(Player player) {
+	 * }
+	 */
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param player ...
+	 * </p>
+	 */
+	public void playerKicked(TrucoPlayer player)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param player ...
+	 * </p>
+	 */
+	public void playerLeft(TrucoPlayer player)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	public void playerSit(TrucoPlayer player, int position)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	public void sitRequested(TrucoPlayer player, int position)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	//    /** <p>
+	//     * Does ...
+	//     * </p><p>
+	//     *
+	//     * </p><p>
+	//     *
+	//     * @param ev ...
+	//     * </p>
+	//     */
+	//    public void tableCreated(RoomEvent ev) {
+	//    }
+	//    Se fue al server
+	
+	public void tableJoinRequested(RoomEvent ev)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * @param ev ...
+	 * </p><p>
+	 *
+	 * </p>
+	 */
+	
+	public void tableJoined(RoomEvent ev)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param table ...
+	 * </p>
+	 */
+	public void tableLocked(Table table)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param ev ...
+	 * </p>
+	 */
+	public void tableModified(RoomEvent ev)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param re ...
+	 * </p>
+	 */
+	public void tableRemoved(RoomEvent re)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param table ...
+	 * </p>
+	 */
+	public void tableUnlocked(Table table)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param ev ...
+	 * </p>
+	 */
+	public void joinTableRequested(RoomEvent ev)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param game ...
+	 * </p>
+	 */
+	
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param game ...
+	 * </p>
+	 */
+	
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * @param player ...
+	 * </p><p>
+	 * @param position ...
+	 * </p><p>
+	 *
+	 * </p>
+	 */
+	
+	/** <p>
+	 * Does ...
+	 * </p><p>
+	 *
+	 * </p><p>
+	 *
+	 * @param ev ...
+	 * </p>
+	 */
+	public void sitRequest(TableEvent ev)
+	{
+		new Exception("Nada implementado aun :-(     ").printStackTrace();
+	}
+	
+	/** Getter for property tables.
+	 * @return Value of property tables.
+	 *
+	 */
+	public Hashtable getTables()
+	{
+		return this.tables;
+	}
+	
+	/** Setter for property tables.
+	 * @param tables New value of property tables.
+	 *
+	 */
+	public void setTables(Hashtable tables)
+	{
+		this.tables = tables;
+	}
+	
 }
