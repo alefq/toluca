@@ -35,21 +35,22 @@ public class TableGame extends JTable{
      * @param table
      */
     public void insertarFila(Table table) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");
+        System.out.println(getClass().getName()+" tableNumber"+table.getTableNumber());
+    	tableModelGame.insertRow(new RowGame(table.getTableNumber()));
     }
 
     /**
      * @param tableNumber
      */
     public void eliminarFila(int tableNumber) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");      
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");      
     }
 
     /**
      * @param player
      */
     public void removeplayer(TrucoPlayer player) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo"); 
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo"); 
     }
 
     /**
@@ -57,7 +58,7 @@ public class TableGame extends JTable{
      * @param tableNumber
      */
     public void addObserver(TrucoPlayer player, int tableNumber) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");        
     }
 
     /**
@@ -65,7 +66,7 @@ public class TableGame extends JTable{
      * @param b
      */
     public void setGameStatus(int tableNumber, boolean b) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");        
     }
 
     /**
@@ -74,7 +75,7 @@ public class TableGame extends JTable{
      * @param chair
      */
     public void addPlayer(TrucoPlayer player, int tableNumber, int chair) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");        
     }
 
     /**
@@ -82,7 +83,7 @@ public class TableGame extends JTable{
      * @param tableNumber
      */
     public void removeplayer(TrucoPlayer player, int tableNumber) {
-        logger.debug("falta copiar lo que se hacía antes en el RoomUI viejo");        
+        logger.debug("falta copiar lo que se hacï¿½a antes en el RoomUI viejo");        
     }
     
     public int getNumeroDeMesa(int row)

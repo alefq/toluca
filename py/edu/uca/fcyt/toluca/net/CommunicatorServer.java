@@ -81,9 +81,15 @@ public class CommunicatorServer extends Communicator{
 	{
 		super.sendXmlPackage(event);
 	}
+	public void tableCreated(RoomEvent event) {
 	
+		super.sendXmlPackage(event);
+	}
 	
-	
+	public void tableJoined(RoomEvent ev) {
+		super.sendXmlPackage(ev);
+		
+	}
 	
 
 }

@@ -152,8 +152,8 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#tableJoinRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void tableJoinRequested(RoomEvent ev) {
-		// TODO Auto-generated method stub
-		
+
+			System.out.println("Se dispara un tableJoinRequest");
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#loginCompleted(py.edu.uca.fcyt.toluca.event.RoomEvent)

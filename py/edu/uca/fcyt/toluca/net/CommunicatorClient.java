@@ -14,9 +14,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
-import py.edu.uca.fcyt.toluca.event.TableEvent;
-import py.edu.uca.fcyt.toluca.event.TrucoEvent;
-import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 
 
 
@@ -40,6 +37,7 @@ public class CommunicatorClient extends Communicator{
 	public CommunicatorClient()
 	{
 		super(new EventDispatcherClient());
+		((EventDispatcherClient)getEventDispatcher()).setCommClient(this);
 		int retinit = init();
 	}
 	public int init()
@@ -91,4 +89,9 @@ public class CommunicatorClient extends Communicator{
 	public void createTableRequested(RoomEvent ev) {
 		super.sendXmlPackage(ev);
 	}
+	public void tableJoinRequested(RoomEvent ev) {
+
+		super.sendXmlPackage(ev);
+	}
+
 }

@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.Enumeration;
+
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
+
 
 
  
@@ -21,15 +22,22 @@ import py.edu.uca.fcyt.toluca.table.TableServer;
 public abstract class Room 
 implements ChatPanelContainer {
     
-    
+    private final static int MAX_TABLES=20;
     protected String name;
     protected HashMap players; // of type Player??
+	/**
+	 * @return Returns the tablesServers.
+	 */
+	public TableServer[] getTablesServers() {
+		return tablesServers;
+	}
     protected Vector roomListeners; // of type Vector
-    protected Hashtable tables; // of type Table
-    
+    protected Table [] tables; // of type Table
+    protected TableServer [] tablesServers;
     public Room() {
         players = new HashMap();
-        tables = new Hashtable();
+        tables = new Table[MAX_TABLES];
+        tablesServers=new TableServer[MAX_TABLES];
         roomListeners = new Vector();
     }
     
@@ -180,7 +188,7 @@ implements ChatPanelContainer {
     
     public HashMap getHashPlayers(){return players;}
     
-    public Hashtable getHashTable(){return tables;}
+    //public HashMap getHashTable(){return tables;}
         
     public void addTable(Table table) {        /** lock-end */
         if (this instanceof RoomClient) {
@@ -188,11 +196,17 @@ implements ChatPanelContainer {
         } else {
             System.out.println("Voy a agregar en el servidor la tabela: " + table.getOrigin());            
         }
-        tables.put(new Integer(table.getTableNumber()), table); //se carga la tabla nueva pow
+        //tables.put(table.getTableNumber()), table); //se carga la tabla nueva pow
+        tables[table.getTableNumber()]=table;
         System.out.println("Imprimir los tables");
-        py.edu.uca.fcyt.util.HashUtils.imprimirHash(tables);
+        //py.edu.uca.fcyt.util.HashUtils.imprimirHash(tables);
     }
-    
+    public void addTable(TableServer table)
+    {
+    	//tables.put(new Integer(table.getTableNumber()), table); //se carga la tabla nueva pow
+    	
+    	tablesServers[table.getTableNumber()]=table;
+    }
     public TrucoPlayer getPlayer(String keyCode) {
         System.out.println("Voy a buscar al player: " + keyCode);
         return ((TrucoPlayer)players.get(keyCode));
@@ -243,9 +257,30 @@ implements ChatPanelContainer {
      * Remueve una mesa de la Lista de Mesas en juego
      */
     public void removeTable(Table table) {        /** lock-end */
-        tables.remove(table);
+        tables[table.getTableNumber()]=null;
     } 
-    
+    public void removeTable(TableServer table)
+    {
+    	tablesServers[table.getTableNumber()]=null;
+    }
+    public int getAvailableKey()
+    {
+    	
+    	for(int key=0;key<MAX_TABLES;key++)
+    	{
+    		if(tablesServers[key]==null)
+    			return key;
+    	}
+    	return -1;
+    }
+    public TableServer getTableServer(int id)
+    {
+    	return tablesServers[id];
+    }
+    public Table getTable(int id)
+    {
+    	return tables[id];
+    }
 } // end Room
 
 

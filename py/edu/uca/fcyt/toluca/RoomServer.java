@@ -46,7 +46,7 @@ implements ChatPanelContainer
 	 * Representa a las tablas que estan activas en el servidor.
 	 * </p>
 	 */
-	private Vector vTables;
+	
 	
 	///////////////////////////////////////
 	// associations
@@ -86,7 +86,7 @@ implements ChatPanelContainer
 		
 		connManager = new ConnectionManager(this);
 		dbOperations = new DbOperations(null, null, null, this);
-		vTables = new Vector();
+		//vTables = new Vector();
 		//vPlayers = new Vector();
 	} // end RoomServer
 	
@@ -108,8 +108,18 @@ implements ChatPanelContainer
 		//tableServer.addPlayer(player);Comentado porque en el constructor del TableServer
 		//ya se esta haciendo un addPlayer, osea esto esta alpedo
 		//Table table = new Table(player, true);
-		vTables.add(tableServer);
-		fireTableCreated(tableServer);
+		//vTables.add(tableServer);
+		int key=getAvailableKey();
+		if(key>=0)
+		{
+			tableServer.setTableNumber(key);
+			addTable(tableServer);
+			fireTableCreated(tableServer);
+		}
+		else
+		{
+			logger.info("No se pueden crear mas tablas");
+		}
 	} // end createTable
 	
 	/**
@@ -125,18 +135,19 @@ implements ChatPanelContainer
 	protected void fireTableCreated(TableServer table)
 	{
 		//
-		getHashTable().put(new Integer(table.getTableNumber()),table);//Agregado por Cricco 
+		//tHashTable().put(new Integer(table.getTableNumber()),table);//Agregado por Cricco 
 		
 		logger.debug("dentro del firetalbe created del room server" );
 		//Vector players = table.getPlayers();
-		Vector playerstmp = new Vector();
-		playerstmp.add(table.getHost());
+	//ector playerstmp = new Vector();
+		//ayerstmp.add(table.getHost());
 		
 		
 		RoomEvent re = new RoomEvent();
 		re.setType(RoomEvent.TYPE_TABLE_CREATED);
 		//re.setTableNumber(-108);
-		re.addTables(table);
+		//re.addTables(table);
+		re.setTableServer(table);
 		//re.setPlayers(playerstmp);
 		
 		re.setTableNumber(table.getTableNumber());
@@ -152,6 +163,7 @@ implements ChatPanelContainer
 	{
 		TableServer ts = re.getTableServer();
 		ts.addPlayer(re.getPlayer());
+		re.setType(RoomEvent.TYPE_TABLE_JOINED);
 		fireTableJoined(re);
 		
 	}
@@ -221,9 +233,17 @@ implements ChatPanelContainer
 	 */
 	public void removePlayer(TrucoPlayer player) {        /** lock-end */
 		//le quita del vector de players
-		for(Enumeration e=getHashTable().elements();e.hasMoreElements();)
+		TableServer [] tablasServers=getTablesServers();
+		
+		for(int i=0;i<tablasServers.length;i++)
 		{
-			TableServer tabela=(TableServer)e.nextElement();
+			
+			
+			TableServer tabela= tablasServers[i];
+			if(tabela!=null)
+			{
+				
+			
 			Vector jugadores=tabela.getPlayers();
 			if(jugadores.contains(player))
 			{
@@ -231,6 +251,7 @@ implements ChatPanelContainer
 					tabela.standPlayer(te);
 					tabela.kickPlayer(player);
 				
+			}
 			}
 		}
 		players.remove(player.getName());
@@ -340,45 +361,8 @@ implements ChatPanelContainer
 	 */
 	
 	
-	/**
-	 * <p>
-	 * Does ...
-	 * </p><p>
-	 *
-	 * </p><p>
-	 *
-	 * @param _vPlayers ...
-	 * </p>
-	 */
 	
 	
-	/**
-	 * <p>
-	 * Does ...
-	 * </p><p>
-	 *
-	 * @return a Vector with ...
-	 * </p>
-	 */
-	public Vector getVTables()
-	{
-		return vTables;
-	} // end getVTables
-	
-	/**
-	 * <p>
-	 * Does ...
-	 * </p><p>
-	 *
-	 * </p><p>
-	 *
-	 * @param _vTables ...
-	 * </p>
-	 */
-	public void setVTables(Vector _vTables)
-	{
-		vTables = _vTables;
-	}
 	
 	/** Getter for property dbOperations.
 	 * @return Value of property dbOperations.
@@ -499,7 +483,7 @@ implements ChatPanelContainer
 			
 			
 			re.setPlayers(getHashPlayers());
-			re.setTabless(getVTables());
+			re.setTablesServers(getTablesServers());
 			
 			RoomListener ltmp = (RoomListener) pendingConnections.get(jogador.getName());
 			

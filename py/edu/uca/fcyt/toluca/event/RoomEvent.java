@@ -69,7 +69,7 @@ public class RoomEvent {
 	private String username;
 	private String password;
 	private String errorMsg;
-    
+    private TableServer [] tablesServers;
 	/**
 	 * @return Returns the errorMsg.
 	 */
@@ -108,7 +108,7 @@ public class RoomEvent {
 	 * </p>
 	 *
 	 */
-	private Collection tables; // of type Table
+	private HashMap tables; // of type Table
     
 	/**
 	 * <p>
@@ -219,7 +219,7 @@ public class RoomEvent {
     
 	public RoomEvent(){
 		//codigo agregado por el CIT MASTER
-	   tables = new Vector();
+	   tables = new HashMap();
 	   this.players = new HashMap();
 	}
     
@@ -285,22 +285,23 @@ public class RoomEvent {
 	}
     
 	
-	public Collection getTabless() {       
+	public HashMap getTabless() {       
 		return tables;
 	}
     
 	
-	public void setTabless(Collection _tables) {        
+	public void setTabless(HashMap _tables) {        
 		tables = _tables;
 	}
     
-		public void addTables(Table _tables) {       
-		if (! tables.contains(_tables))
-			tables.add(_tables);
+	public void addTables(Table table) {       
+		tables.put(new Integer(table.getTableNumber()),table);
 	}
-
+	public void addTables(TableServer table) {       
+		tables.put(new Integer(table.getTableNumber()),table);
+	}
     
-	public void addTables(TableServer _tables) { 
+	/*public void addTables(TableServer _tables) { 
         
 	
 		try {
@@ -313,7 +314,7 @@ public class RoomEvent {
            
 		}
         
-	} 
+	} */
 
 	
 	public void removeTables(Table _tables) {      
@@ -378,6 +379,18 @@ public class RoomEvent {
 //		
 //	}
 	
+	/**
+	 * @return Returns the tablesServers.
+	 */
+	public TableServer[] getTablesServers() {
+		return tablesServers;
+	}
+	/**
+	 * @param tablesServers The tablesServers to set.
+	 */
+	public void setTablesServers(TableServer[] tablesServers) {
+		this.tablesServers = tablesServers;
+	}
 } 
 
 

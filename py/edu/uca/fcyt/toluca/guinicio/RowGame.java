@@ -11,6 +11,13 @@ public class RowGame {
 
 	private int estado;
 	private int tableNumber;
+
+	/**
+	 * @param tableNumber The tableNumber to set.
+	 */
+	public void setTableNumber(int tableNumber) {
+		this.tableNumber = tableNumber;
+	}
 	private final static String sinUser=new String("vacio");
 	/**
 	 * @return Returns the tableNumber.
@@ -19,9 +26,10 @@ public class RowGame {
 		return tableNumber;
 	}
 	private String [] jugadores;
-	public RowGame(int estado)
+	public RowGame(int tableNumber)
 	{
 		jugadores=new String[8];
+		this.tableNumber=tableNumber;
 	}
 	public void setJugador(int num,String name)
 	{

@@ -28,17 +28,17 @@ public abstract class EventDispatcher {
 		{
 			case RoomEvent.TYPE_CHAT_REQUESTED:chatRequested(event);break;
 			case RoomEvent.TYPE_CHAT_SENT:chatSend(event);break;
-			case RoomEvent.TYPE_CREATE_TABLE_REQUESTED:break;
+			case RoomEvent.TYPE_CREATE_TABLE_REQUESTED:createTableRequest(event);break;
 			case RoomEvent.TYPE_LOGIN_COMPLETED:loginCompleted(event);break;
 			case RoomEvent.TYPE_LOGIN_FAILED:loginFailed(event);break;
 			case RoomEvent.TYPE_LOGIN_REQUESTED: loginRequested(event);break;
 			case RoomEvent.TYPE_PLAYER_JOINED:playerJoined(event);break;
 			case RoomEvent.TYPE_PLAYER_KICKED:break;
 			case RoomEvent.TYPE_PLAYER_LEFT: playerLeft(event);break;
-			case RoomEvent.TYPE_TABLE_CREATED:break;
+			case RoomEvent.TYPE_TABLE_CREATED: tableCreated(event);break;
 			case RoomEvent.TYPE_TABLE_CREATED_SERVER:break;
-			case RoomEvent.TYPE_TABLE_JOIN_REQUESTED:break;
-			case RoomEvent.TYPE_TABLE_JOINED:break;
+			case RoomEvent.TYPE_TABLE_JOIN_REQUESTED:tableJoinRequested(event);break;
+			case RoomEvent.TYPE_TABLE_JOINED:tableJoined(event);break;
 			
 		}
 	}
@@ -78,4 +78,8 @@ public abstract class EventDispatcher {
 	public abstract void loginFailed(RoomEvent event);
 	public abstract void chatRequested(RoomEvent event);
 	public abstract void chatSend(RoomEvent event);
+	public abstract void createTableRequest(RoomEvent event);
+	public abstract void tableCreated(RoomEvent event);
+	public abstract void tableJoinRequested(RoomEvent event);
+	public abstract void tableJoined(RoomEvent event);
 }

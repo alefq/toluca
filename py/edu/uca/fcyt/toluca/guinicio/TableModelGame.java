@@ -14,7 +14,7 @@ public class TableModelGame extends AbstractTableModel{
 	public TableModelGame()
 	{
 		datos=new ArrayList();
-		insertPrueba();
+		//insertPrueba();
 	}
 	private void insertPrueba()
 	{

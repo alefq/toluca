@@ -128,8 +128,6 @@ public class RoomClient extends Room implements ChatPanelContainer,
         re.setPlayer(getRoomPlayer());
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {
-            System.out
-                    .println("A lo mejor no tiene listeners asociados carajo");
             RoomListener ltmp = (RoomListener) iter.next();
             ltmp.tableJoinRequested(re);
         }

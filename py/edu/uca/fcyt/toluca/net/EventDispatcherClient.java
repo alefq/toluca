@@ -13,6 +13,9 @@ import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableServer;
+import sun.rmi.runtime.GetThreadPoolAction;
 
 /**
  * @author dcricco
@@ -26,6 +29,8 @@ public class EventDispatcherClient extends EventDispatcher{
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#loginRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	private TrucoPlayer trucoPlayer;
+	private CommunicatorClient commClient;
+
 	public void loginRequested(RoomEvent event) {
 
 		
@@ -48,6 +53,20 @@ public class EventDispatcherClient extends EventDispatcher{
 			{
 				
 				room.addPlayer((TrucoPlayer) jugadores.get(keyClave));
+			}
+		}
+		
+		System.out.println("El vector de table vale ");
+		System.out.println(event.getTablesServers().length);
+		TableServer [] tables=event.getTablesServers();
+		for(int i=0;i<tables.length;i++)
+		{
+			
+			if(tables[i]!=null)
+			{
+				TrucoPlayer playerOwner=tables[i].getHost();//este player es igual al playerCreador, solo que el playerCreador es la ref en el cliente
+				TrucoPlayer playerCreador=room.getPlayer(playerOwner.getName());
+				addTable(playerCreador,tables[i].getTableNumber());
 			}
 		}
 	}
@@ -73,7 +92,9 @@ public class EventDispatcherClient extends EventDispatcher{
 	public void playerLeft(RoomEvent event) {
 
 		System.out.println(" salioooooo "+event.getPlayer());
-		room.removePlayer(event.getPlayer());
+		TrucoPlayer playerServer=event.getPlayer();
+		
+		room.removePlayer(room.getPlayer(playerServer.getName()));
 	}
 
 	/* (non-Javadoc)
@@ -102,4 +123,90 @@ public class EventDispatcherClient extends EventDispatcher{
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#createTableRequest(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void createTableRequest(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @return Returns the commClient.
+	 */
+	public CommunicatorClient getCommClient() {
+		return commClient;
+	}
+	/**
+	 * @param commClient The commClient to set.
+	 */
+	public void setCommClient(CommunicatorClient commClient) {
+		this.commClient = commClient;
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#tableCreated(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void tableCreated(RoomEvent event) {
+		
+		TableServer tableServer=event.getTableServer();
+		TrucoPlayer playerOwner=tableServer.getHost();//este player es igual al playerCreador, solo que el playerCreador es la ref en el cliente
+		TrucoPlayer playerCreador=room.getPlayer(playerOwner.getName());
+		addTable(playerCreador,tableServer.getTableNumber());
+		
+		
+	}
+	private void addTable(TrucoPlayer playerCreador,int tableNumber)
+	{
+		Table table=null;
+		boolean mostrar=false;
+		if(playerCreador.getName().equals(trucoPlayer.getName()))
+		{//CREO EL PLAYER QUE ACABA DE RESIVIR EL MSG
+			
+			table=new Table(playerCreador,true);
+			mostrar=true;
+		}
+		else
+		{//fue otro el que creo
+			table=new Table(playerCreador,false);
+		}
+		
+		table.setTableNumber(tableNumber);
+		System.out.println("El sila le asigna "+table.getTableNumber());
+		table.addTableListener(commClient);
+		room.addTable(table);
+		table.addPlayer(playerCreador);
+		
+		if(mostrar)
+			table.show();
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#tableJoinRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void tableJoinRequested(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#tableJoined(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void tableJoined(RoomEvent event) {
+
+			TableServer tableServer=event.getTableServer();
+			TrucoPlayer playerServer=event.getPlayer();
+			
+			Table table= room.getTable(tableServer.getTableNumber());
+			TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+			
+			table.addPlayer(playerClient);
+			if(playerClient.getName().equals(trucoPlayer.getName()))
+			{
+				table.show();
+			}
+			if(playerClient==trucoPlayer)
+					System.out.println("andaaaaaaaaaaaaaaaa bien la ref");
+			else
+					System.out.println("waaaaaaaaaaaaring no anda la ref");
+	}
 }
