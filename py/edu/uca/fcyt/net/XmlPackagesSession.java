@@ -58,13 +58,13 @@ public abstract class XmlPackagesSession implements Runnable
 		// Loop until live = false
 		
 		
-		try
-		{
+	
 			while (live)
 			{
 				
-				int c = in.read();
-				
+				int c;
+				try {
+					c = in.read();
 				if (c != XML_PACKAGE_DELIMITER)
 				{
 					rawPacket += (char)c;
@@ -79,22 +79,22 @@ public abstract class XmlPackagesSession implements Runnable
 						XMLDecoder d = new XMLDecoder(inputStream);
 						Object result = d.readObject();
 				
-						inputStream.close();
+						//inputStream.close();
 						logger.debug("Se resive un objeto");
 						receiveObject(result);		
 				
 					rawPacket = "";
 				}
+
+				} catch (IOException e) {
+					logger.info("Fallo la coneccion");
+					connectionFailed();
+				}
+
 					
 			} 
 			
-		}
 		
-		catch (IOException e)
-		{
-			logger.error("Fallo la coneccion");
-			connectionFailed();
-		}
 	}
 	
 	public void sendXmlPackage(Object bean)
