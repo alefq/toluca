@@ -156,6 +156,7 @@ public class CommunicatorServer extends Communicator{
 				super.sendXmlPackage(event);
 		} catch (NullPointerException e) {
 			logger.error("El player es nulo en play de Communicator server!", e);
+			logger.error("El communicator es: " + this);
 			
 		}
 		
@@ -241,12 +242,5 @@ public class CommunicatorServer extends Communicator{
 		
 	}
 	
-	public String toString() {
-		try {
-			return getTrucoPlayer().getName() + ": "+  getSocket().toString();			
-		}catch (NullPointerException e) {
-			return " Truco Player NULO" ;
-		}
 
-	}
 }

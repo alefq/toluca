@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/12/28 22:37:32 $
- * @version $Revision: 1.13 $ 
+ * Last modified: $Date: 2005/01/04 20:12:57 $
+ * @version $Revision: 1.14 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -36,7 +36,7 @@ public class RoomUING extends JApplet {
 //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
 //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20041228-2021";
+    public static final String VERSION = "20050104-1808";
     
     public static final String CLAVE_LOGIN = "claveLogin";
     

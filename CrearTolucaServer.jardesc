@@ -9,6 +9,31 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=toluca"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.inicio"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.state"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.sounds"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Copa"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.animation"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.event"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Basto"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.net"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.sound"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.webmanager"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.audio"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Espada"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.game"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.faces.standard"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.game"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Oro"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.xml"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame.statusGameCliente"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.guinicio"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca"/>
     </selectedElements>
 </jardesc>

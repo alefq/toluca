@@ -8,7 +8,10 @@ package py.edu.uca.fcyt.toluca.game;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import py.edu.uca.fcyt.game.Game;
+import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 
@@ -22,6 +25,7 @@ public class TrucoGame extends Game
 	/** Creates a new instance of trucoGame */
 	LinkedList listenerlist; //lista de todos los listener
 	private int tableNumber;
+//    static Logger logger = Logger.getLogger(RoomServer.class);
 	/**
 	 * @return Returns the tableNumber.
 	 */
@@ -88,6 +92,7 @@ public class TrucoGame extends Game
 	public void addTrucoListener(TrucoListener tl)
 	{
 		listenerlist.add(tl);
+		System.out.println("Se agrega un truco listener al trucogame");
 	}
 	/** configurar los equipos que jugarï¿½n el TrucoGame.
 	 * @param team_1 Equipo 1 que jugarï¿½ el TrucoGame.
@@ -288,9 +293,10 @@ public class TrucoGame extends Game
 		//System.out.println("se envia el mensaje de PlayEvent");
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type,card);
 		event.setTableNumber(getTableNumber());
+		System.out.println("Se va a disparar un evento de play response.  El tamaño de la lista de listeners es: " + listenerlist.size());
 		for(int i=0; i<listenerlist.size();i++)
 		{
-			//System.out.println("firePlayEvent para: " + listenerlist.get(i).getClass().getName());
+			System.out.println("FirePlayEvent para: " + listenerlist.get(i).getClass().getName());
 			//		((TrucoListener)(listenerlist.get(i))).play(event);
 			((TrucoListener)(listenerlist.get(i))).playResponse(event);
 		}
@@ -522,5 +528,22 @@ public class TrucoGame extends Game
 			System.out.println("en TrucoGame getCard devuelve null");
 		}
 		return myCarta;
+	}
+	/**
+	 * @param tptmp
+	 */
+	public void removeTrucoListener(TrucoPlayer tptmp) {
+		System.out.println("Se elimina un truco listener del trucogame, vamos a eliminar a:" + tptmp.getName());
+		for(int i=0; i<listenerlist.size();i++)
+		{
+			TrucoListener comm = ((TrucoListener)(listenerlist.get(i)));
+			if (comm.getAssociatedPlayer().getName() == tptmp.getName()) {
+				listenerlist.remove(i);
+				System.out.println("Eliminamos el listener del player " + comm.getAssociatedPlayer().getName());
+			}
+
+		}
+		
+		
 	}
 }

@@ -329,6 +329,10 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		}
 		getPlayers().remove(tptmp);
 		
+		//TODO: Agregado por aa, quito el jugador de entre los listeners del trucogame
+		TrucoGame tg = getTrucoGame();
+		tg.removeTrucoListener(tptmp);
+		
 		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);
 		firePlayerKicked(te);
 		comprobarTable();
