@@ -49,6 +49,9 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
         System.out.println("El HOST de la tabela es: " + getHost().getName());
     }
+    public TableServer()
+    {
+    }
     
     public void addTableServerListener(TableListener tableListener) {        /**
      * lock-end */

@@ -18,6 +18,12 @@ import py.edu.uca.fcyt.game.Card;
 
 public class TrucoCard extends Card {
 	private byte ValueInGame = 0;	//Guarda el valor de la carta
+	
+	public TrucoCard()
+	{
+		super();
+		
+	}
 	public byte getValueInGame(){
 		return ValueInGame;
 	}

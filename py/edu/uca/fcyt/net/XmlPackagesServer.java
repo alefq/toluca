@@ -12,12 +12,15 @@ import java.io.*;
 import java.util.Vector;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author  psanta
  */
 public class XmlPackagesServer extends ServerSocket implements Runnable {
     
+	static Logger logger = Logger.getLogger(XmlPackagesServer.class);
     private int clientsServed = 0;
     
     java.lang.Class theClass;
@@ -44,31 +47,33 @@ public class XmlPackagesServer extends ServerSocket implements Runnable {
     
     public void run() {
         Socket socket;
-        System.out.println("Server started listening on port: " + getLocalPort());
+        logger.info("Server started listening on port: " + getLocalPort());
         try {
             // Loops forever accepting connections
             while(true) {
                 socket = accept();
-                System.out.println("Connection received");
-                XmlPackagesSession xps = (XmlPackagesSession)theClass.newInstance();                
+                logger.info("Connection received");
+                XmlPackagesSession xps = (XmlPackagesSession)theClass.newInstance();
+              //  socket.setSoTimeout(30000);
                 xps.setSocket(socket);
                 
                 int retinit = xps.init();
                 if (retinit == XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK) {
                     new Thread(xps).start();
+                    System.out.println("antes del sesion started");
                     fireSessionStarted(xps);
                 } else {
-                    System.out.println("Cannot execute init method of " + theClass.getName() +  " successfully: " + xps.getInitErrorMessage(retinit));
+                    logger.error("Cannot execute init method of " + theClass.getName() +  " successfully: " + xps.getInitErrorMessage(retinit));
                 }
             }
         } catch (IOException e) {
-            System.out.println("I/O Exception in server");
+            logger.error("I/O Exception in server");
             e.printStackTrace(System.out);
         } catch (InstantiationException e) {
-            System.out.println("Could not instantiate class: " + theClass.getName());
+            logger.error("Could not instantiate class: " + theClass.getName());
             e.printStackTrace(System.out);
         } catch (IllegalAccessException e) {
-            System.out.println("Illegal access exception in server");
+            logger.error("Illegal access exception in server");
             e.printStackTrace(System.out);
         }
         

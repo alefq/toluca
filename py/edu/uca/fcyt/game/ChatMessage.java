@@ -13,9 +13,12 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
  */
 public class ChatMessage {
    public ChatMessage(TrucoPlayer player, String htmlMessage) {
-       setPlayer(player);
-       setHtmlMessage(htmlMessage);
+	   setPlayer(player);
+	   setHtmlMessage(htmlMessage);
        
+   }
+   public ChatMessage()
+   {
    }
   ///////////////////////////////////////
   // attributes
@@ -26,14 +29,14 @@ public class ChatMessage {
  * Represents ...
  * </p>
  */
-    private TrucoPlayer owner; 
+	private TrucoPlayer owner; 
 
 /**
  * <p>
  * Represents ...
  * </p>
  */
-    private String htmlMessage; 
+	private String htmlMessage; 
 
   ///////////////////////////////////////
   // operations
@@ -47,9 +50,9 @@ public class ChatMessage {
  * @return a String with ...
  * </p>
  */
-    public String getHtmlMessage() {        /** lock-end */
-        return htmlMessage;
-    } // end getHtmlMessage        /** lock-begin */
+	public String getHtmlMessage() {        /** lock-end */
+		return htmlMessage;
+	} // end getHtmlMessage        /** lock-begin */
 
 /**
  * <p>
@@ -61,25 +64,25 @@ public class ChatMessage {
  * @param _htmlMessage ...
  * </p>
  */
-    public void setHtmlMessage(String _htmlMessage) {        /** lock-end */
-        htmlMessage = _htmlMessage;
-    }
+	public void setHtmlMessage(String _htmlMessage) {        /** lock-end */
+		htmlMessage = _htmlMessage;
+	}
     
-    /** Getter for property owner.
-     * @return Value of property owner.
-     *
-     */
-    public TrucoPlayer getPlayer() {
-        return owner;
-    }
+	/** Getter for property owner.
+	 * @return Value of property owner.
+	 *
+	 */
+	public TrucoPlayer getPlayer() {
+		return owner;
+	}
     
-    /** Setter for property owner.
-     * @param owner New value of property owner.
-     *
-     */
-    public void setPlayer(TrucoPlayer owner) {
-        this.owner = owner;
-    }
+	/** Setter for property owner.
+	 * @param owner New value of property owner.
+	 *
+	 */
+	public void setPlayer(TrucoPlayer owner) {
+		this.owner = owner;
+	}
     
  // end setHtmlMessage        /** lock-begin */
 

@@ -35,7 +35,9 @@ public class TrucoGame extends Game
 	
 	
 	
-	
+	public TrucoGame()
+	{
+	}
 	/** Constructor con dos equipos, asi crea un TrucoGame
 	 * @param tm1 Equipo 1 que jugar� el TrucoGame.
 	 * @param tm2 Equipo 1 que jugar� el TrucoGame.

@@ -191,7 +191,8 @@ public class Table implements
 		(
 			actualPlayer, 
 			"Inicia tus mensajes con \\ si no quieres que " +  
-			"salgan en la mesa.", new String[]{"[", "]"}		);
+			"salgan en la mesa.", new String[]{"[", "]"}
+		);
 
 		new Thread(animator).start();
 	}
@@ -922,5 +923,11 @@ public class Table implements
 	{
 		return pManager.getChair(p);
 	}
+	
+	public TableBeanRepresentation getTableBeanRepresentation()
+		{
+			return new TableBeanRepresentation();
+		}
+	
 }
 

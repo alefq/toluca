@@ -5,14 +5,17 @@ package py.edu.uca.fcyt.toluca.event;
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 
-import org.jdom.Document;
-import org.jdom.Element;
+
+
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
 
 import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
-import java.util.*;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+
 
 public class TrucoEvent
 {
@@ -88,7 +91,7 @@ public class TrucoEvent
 	private byte type;  //TIPO DE JUGADA 0 CANTO
 	private TrucoCard[] cards;
 	private TrucoCard card;
-	int tableNumber;//para que el Communicator sepa a quien ejecutarle los metodos
+	private int tableNumber;//para que el Communicator sepa a quien ejecutarle los metodos
 	private int value=-1;
 	/*repartir cartas*/
 	public TrucoEvent()
@@ -308,165 +311,16 @@ public class TrucoEvent
 	}
 	public int getTableNumber()
 	{return tableNumber;}
-	public Document xmlCreateSendCards()
-	{
-		Element ROOT =new Element("SendCards");
-		
-		// Excepcionaba cuante se trataba generar el paquete.
-		// Solución temporal?
-		if (player != null)
-		{
-			Element PLAYER= new Element("TrucoPlayer");
-			PLAYER.setAttribute("name",player.getName());
-			ROOT.addContent(PLAYER);
-		}
-		
-		Element TABLE = new Element("Table");
-		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
-		ROOT.addContent(TABLE);
-		
-		Element HAND = new Element("Hand");
-		HAND.setAttribute("number",String.valueOf(hand));
-		ROOT.addContent(HAND);
-		
-		Element CARDS =new Element("Cards");
-		for (int i=0;i<3;i++)
-		{
-			
-			TrucoCard carta=(TrucoCard)cards[i];
-			Element CARTA=new Element("Carta");
-			CARTA.setAttribute("kind",String.valueOf(carta.getKind()));
-			CARTA.setAttribute("value",String.valueOf(carta.getValue()));
-			CARDS.addContent(CARTA);
-		}
-		ROOT.addContent(CARDS);
-		Document doc = new Document(ROOT);
-		return doc;
-		
-	}
-	public Document xmlCreateCantarTanto()
-	{//envia el tanto cantado por el jugador sea envido,real envido,......
-		Element ROOT = new Element("CantarTanto");
-		
-		Element TIPO =new Element("Type");
-		TIPO.setAttribute("id",String.valueOf(type));
-		ROOT.addContent(TIPO);
-		
-		Element TABLE =new Element("Table");
-		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
-		ROOT.addContent(TABLE);
-		
-		Element HAND = new Element("Hand");
-		HAND.setAttribute("number",String.valueOf(hand));
-		ROOT.addContent(HAND);
-		
-		Element PLAYER =new Element("Player");
-		PLAYER.setAttribute("name",player.getName());
-		ROOT.addContent(PLAYER);
-		
-		Element TANTO = new Element("Tanto");
-		TANTO.setAttribute("tanto",String.valueOf(value));
-		ROOT.addContent(TANTO);
-		
-		Document doc=new Document(ROOT);
-		return doc;
-	}
 	
 	
 	
 	
 	
-	public Document xmlCreateCanto()
-	{//Sirve para enviar los cantos de los player truco-evndio-flor-etc
-		Element ROOT = new Element("Canto");
-		
-		Element TIPO =new Element("Type");
-		TIPO.setAttribute("id",String.valueOf(type));
-		ROOT.addContent(TIPO);
-		
-		Element TABLE =new Element("Table");
-		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
-		ROOT.addContent(TABLE);
-		
-		Element HAND = new Element("Hand");
-		HAND.setAttribute("number",String.valueOf(hand));
-		ROOT.addContent(HAND);
-		
-		// Hago este if porque excepcionaba en el serva.
-		// Hay que ver si esto es realmente lo que hay
-		// que hacer. El npe da cuando se intenta crear
-		// un paquete para el gameStarted.
-		if (player != null)
-		{
-			Element PLAYER =new Element("Player");
-			PLAYER.setAttribute("name",player.getName());
-			ROOT.addContent(PLAYER);
-		}
-		
-		Document doc= new Document(ROOT);
-		return doc;
-	}
-	public Document xmlCreateInfoGame()
-	{
-		//Sirve para enviar mensaje empezo juego etc,
-		Element ROOT = new Element("InfoGame");
-		
-		Element TIPO =new Element("Type");
-		TIPO.setAttribute("id",String.valueOf(type));
-		ROOT.addContent(TIPO);
-		
-		Element TABLE =new Element("Table");
-		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
-		ROOT.addContent(TABLE);
-		
-		Element HAND = new Element("Hand");
-		HAND.setAttribute("number",String.valueOf(hand));
-		ROOT.addContent(HAND);
-		
-		// Hago este if porque excepcionaba en el serva.
-		// Hay que ver si esto es realmente lo que hay
-		// que hacer. El npe da cuando se intenta crear
-		// un paquete para el gameStarted.
-		if (player != null)
-		{
-			Element PLAYER =new Element("Player");
-			PLAYER.setAttribute("name",player.getName());
-			ROOT.addContent(PLAYER);
-		}
-		Document doc= new Document(ROOT);
-		return doc;
-	}
 	
 	
 	
-	public Document xmlCreateCard()
-	{//envia la carta jugada por el jugador PLAYER
-		Element ROOT = new Element("Cardsend");
-		
-		Element TIPO =new Element("Type");
-		TIPO.setAttribute("id",String.valueOf(type));
-		ROOT.addContent(TIPO);
-		
-		Element TABLE =new Element("Table");
-		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
-		ROOT.addContent(TABLE);
-		
-		Element HAND = new Element("Hand");
-		HAND.setAttribute("number",String.valueOf(hand));
-		ROOT.addContent(HAND);
-		
-		Element PLAYER =new Element("Player");
-		PLAYER.setAttribute("name",player.getName());
-		ROOT.addContent(PLAYER);
-		
-		Element CARTA=new Element("Carta");
-		CARTA.setAttribute("kind",String.valueOf(card.getKind()));
-		CARTA.setAttribute("value",String.valueOf(card.getValue()));
-		ROOT.addContent(CARTA);
-		
-		Document doc=new Document(ROOT);
-		return doc;
-	}
+	
+	
 	
 	//SE VA CON EL CANTO
    /*
@@ -492,11 +346,7 @@ public class TrucoEvent
 		Document doc=new Document(ROOT);
 		return doc;
    }*/
-	int tableIdAux;
-	int handAux;
-	String userAux;
-	int typeAux;
-	int tantoAux;
+	
 	
 	
 	//SE VA CON EL CANTO NOMAS
@@ -524,126 +374,7 @@ public class TrucoEvent
 		Document doc=new Document(ROOT);
 		return doc;
    }*/
-	public Document toXml()
-	{
-		Document doc = null;
-		switch(type)
-		{
-			case ENVIAR_CARTAS:
-				doc = xmlCreateSendCards();
-				break;
-			case ENVIDO:
-				doc = xmlCreateCanto();
-				break;
-			case REAL_ENVIDO:
-				doc = xmlCreateCanto();
-				break;
-			case FALTA_ENVIDO:
-				doc = xmlCreateCanto();
-				break;
-			case FLOR:
-				doc = xmlCreateCanto();
-				break;
-			case CANTO_ENVIDO:
-				doc = xmlCreateCantarTanto();
-				break;
-				
-			case CANTO_FLOR:
-				doc = xmlCreateCanto();
-				break;
-				
-			case CONTRA_FLOR:
-				doc = xmlCreateCanto();
-				break;
-				
-			case CONTRA_FLOR_AL_RESTO:
-				doc = xmlCreateCanto();
-				break;
-			case CON_FLOR_ME_ACHICO:
-				doc = xmlCreateCanto();
-				break;
-			case TRUCO:
-				doc = xmlCreateCanto();
-				break;
-			case RETRUCO:
-				doc = xmlCreateCanto();
-				break;
-			case VALE_CUATRO:
-				doc = xmlCreateCanto();
-				break;
-			case QUIERO:
-				doc = xmlCreateCanto();
-				break;
-			case NO_QUIERO:
-				doc = xmlCreateCanto();
-				break;
-			case ME_VOY_AL_MAZO:
-				doc = xmlCreateCanto();
-				break;
-			case CERRARSE:
-				doc = xmlCreateCanto();
-				break;
-			case PASO_ENVIDO:
-				doc = xmlCreateCanto();
-				break;
-			case PASO_FLOR:
-				doc = xmlCreateCanto();
-				break;
-			case TURNO_JUGAR_CARTA:
-				doc = xmlCreateCanto();
-				break;
-				
-			case TURNO_CANTAR_FLOR:
-				doc = xmlCreateCanto();
-				break;
-			case TURNO_RESPONDER_TRUCO:
-				doc = xmlCreateCanto();
-				break;
-			case TURNO_RESPONDER_RETRUCO:
-				doc = xmlCreateCanto();
-				break;
-			case TURNO_RESPONDER_VALECUATRO:
-				doc = xmlCreateCanto();
-				break;
-			case TURNO_RESPONDER_ENVIDO:
-				doc = xmlCreateCantarTanto();
-				break;
-			case TURNO_RESPONDER_REALENVIDO:
-				doc = xmlCreateCantarTanto();
-				break;
-			case TURNO_RESPONDER_FALTAENVIDO:
-				doc = xmlCreateCantarTanto();
-				break;
-			case TURNO_RESPONDER_CONTRAFLOR:
-				doc =xmlCreateCantarTanto();
-				break;
-			case TURNO_RESPONDER_CONTRAFLORALRESTO:
-				doc = xmlCreateCantarTanto();
-				break;
-			case JUGAR_CARTA:
-				doc = xmlCreateCard();
-				break;
-				
-			case FIN_DE_MANO:
-				doc = xmlCreateInfoGame();
-				break;
-			case FIN_DE_JUEGO:
-				doc = xmlCreateInfoGame();
-				break;
-			case INICIO_DE_JUEGO:
-				doc = xmlCreateInfoGame();
-				break;
-			case INICIO_DE_MANO:
-				doc = xmlCreateInfoGame();
-				break;
-			default:
-				System.out.println("tipo de event no encontrado:" + type);
-		}
-		return doc;
-	}
-	/**
-	 * @return
-	 */
+	
 	public TrucoPlay getTrucoPlay()
 	{
 		// TODO Hacer el SWITCH gigantesco, probar y ya está
@@ -762,6 +493,73 @@ public class TrucoEvent
 		return tp;
 	}
 	
+	
+	public static void main(String[] args) {
+		
+		
+		TrucoEvent event=new TrucoEvent();
+		event.setGame(new TrucoGame(new TrucoTeam("Blancos"),new TrucoTeam("Negros")));
+		event.setTableNumber(2);
+		event.setCard(new TrucoCard(2,2));
+		event.setType(TrucoEvent.CANTO_FLOR);
+		event.setTypeEvent((byte)33);
+		event.setValue(3);
+		 
+		XMLEncoder e=	new XMLEncoder(		new BufferedOutputStream(System.out));
+		e.writeObject(event);
+		e.close();
+	}
+	
+
+	/**
+	 * @return
+	 */
+	public TrucoGame getGame() {
+		return game;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getHand() {
+		return hand;
+	}
+
+	/**
+	 * @return
+	 */
+	public byte getType() {
+		return type;
+	}
+
+	/**
+	 * @param cards
+	 */
+	public void setCards(TrucoCard[] cards) {
+		this.cards = cards;
+	}
+
+	/**
+	 * @param game
+	 */
+	public void setGame(TrucoGame game) {
+		this.game = game;
+	}
+
+	/**
+	 * @param i
+	 */
+	public void setHand(int i) {
+		hand = i;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setType(byte b) {
+		type = b;
+	}
+
 } // end TrucoEvent
 
 

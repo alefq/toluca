@@ -10,8 +10,17 @@ package py.edu.uca.fcyt.net;
 
 import java.net.Socket;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.*;
-import org.jdom.*;
+
+import javax.swing.JButton;
+
+
+
+
+import org.apache.log4j.Logger;
+
 
 /**
  *
@@ -19,11 +28,12 @@ import org.jdom.*;
  */
 public abstract class XmlPackagesSession implements Runnable
 {
+	static Logger logger = Logger.getLogger(XmlPackagesSession.class);
 	/** Constants */
 	public static final int XML_PACKAGE_DELIMITER = '{';
 	public static final int XML_PACKAGE_SESSION_INIT_OK = 1;
 	
-	private static final long DEFAULT_SLEEP_TIME = 500;
+	
 	
 	private Socket socket;
 	private BufferedReader in;
@@ -39,128 +49,80 @@ public abstract class XmlPackagesSession implements Runnable
 		use_package_delimiter = true;
 	}
 	
-	public XmlPackagesSession(boolean use_package_delimiter)
-	{
-		this();
-		this.use_package_delimiter = use_package_delimiter;
-	}
+	
+	  
 	
 	public void run()
 	{
 		String rawPacket = "";
 		// Loop until live = false
+		
+		
 		try
 		{
 			while (live)
 			{
-				if (in.ready())
+				
+				int c = in.read();
+				
+				if (c != XML_PACKAGE_DELIMITER)
 				{
-					if (use_package_delimiter)
-					{
-						int c = in.read();
-						//System.out.println("Debug: " + c);
-						if (c != XML_PACKAGE_DELIMITER)
-						{
-							rawPacket += (char)c;
-						} else
-						{
-							//System.out.println("Got an XML package. I am going to instantiate an XMLParser object...");
-							//XMLParser xp = new XMLParser(rawPacket.trim());
-							//System.out.println("I am going to parse the string passed to the XMLParser...");
-							try
-							{
-								Element eReceived = py.edu.uca.fcyt.xml.Parser.getElement(rawPacket.trim());
-								//System.out.println("Before sending the parsed packed to receiveXmlPackage method: \n" + rawPacket);
-								receiveXmlPackage(eReceived);
-							} catch (JDOMException e)
-							{
-								e.printStackTrace(System.out);
-								System.out.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method: " + e.getMessage());
-								receiveXmlPackageWithParsingError(rawPacket.trim());
-							}
-							rawPacket = "";
-						}
-					} else
-					{
-						//System.out.println("Going to read something until in.ready() = false");
-						while (in.ready())
-						{
-							int c=in.read();
-							rawPacket+=(char)c;
-						}
-						//System.out.println("Read: " + rawPacket);
-						// Pre-parsing the XML
-						int ind;
-						do
-						{
-							Element eReceived;
-							ind = rawPacket.indexOf("<?", 2);
-							if (ind == -1)
-							{
-								try
-								{
-									eReceived = py.edu.uca.fcyt.xml.Parser.getElement(rawPacket.trim());
-									receiveXmlPackage(eReceived);
-								} catch (JDOMException e)
-								{
-									System.out.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
-									receiveXmlPackageWithParsingError(rawPacket.trim());
-								}
-							} else
-							{
-								String subPacket = rawPacket.substring(0, ind).trim();
-								try
-								{
-									eReceived = py.edu.uca.fcyt.xml.Parser.getElement(subPacket);
-									receiveXmlPackage(eReceived);
-								} catch (JDOMException e)
-								{
-									System.out.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
-									receiveXmlPackageWithParsingError(subPacket);
-								}
-								rawPacket = rawPacket.substring(ind);
-							}
-						} while (ind != -1);
-						rawPacket = "";
-					}
+					rawPacket += (char)c;
+					
 				} else
 				{
-					try
-					{
-						Thread.sleep(DEFAULT_SLEEP_TIME);
-					} catch (InterruptedException e)
-					{
-						System.out.println("System interrupted. Cannot continue");
-					}
+				
+					
+						String trimPacket=rawPacket.trim();
+				
+						StringBufferInputStream inputStream=new StringBufferInputStream(trimPacket);
+						XMLDecoder d = new XMLDecoder(inputStream);
+						Object result = d.readObject();
+				
+						inputStream.close();
+						receiveObject(result);		
+				
+					rawPacket = "";
 				}
-			}
-		} catch (IOException e)
+					
+			} 
+			
+		}
+		
+		catch (IOException e)
 		{
-			System.out.println("I/O Exception while receiving package");
-			e.printStackTrace(System.out);
+			logger.error("Fallo la coneccion");
+			connectionFailed();
 		}
 	}
 	
-	public void sendXmlPackage(Element xmlPackage)
+	public void sendXmlPackage(Object bean)
 	{
-		System.out.println("Not yet implemented!");
+		logger.debug("enviando el paquete xml");
+		ByteArrayOutputStream outStream=new ByteArrayOutputStream();
+		XMLEncoder e=new XMLEncoder(new BufferedOutputStream(outStream));
+		e.writeObject(new JButton("Hello, world"));
+		e.close();
+		
+		sendXmlPackage(new String (outStream.toByteArray()));
+		
 	}
 	
 	public void sendXmlPackage(String xmlRaw)
 	{
-		//System.out.println("I am going to send to the socket: \n" + xmlRaw);
+		System.out.println("I am going to send to the socket: \n" + xmlRaw);
 		out.print(xmlRaw);
 		if (use_package_delimiter)
 			out.write(XML_PACKAGE_DELIMITER);
 		out.flush();
 	}
 	
-	public abstract int init();
-	public abstract String getInitErrorMessage(int errcode);
 	
 	
-	public abstract void receiveXmlPackage(Element xmlPackage);
-	public abstract void receiveXmlPackageWithParsingError(String rawXmlPackage);
+	
+	
+	
+	
 	
 	/** Getter for property socket.
 	 * @return Value of property socket.
@@ -185,5 +147,9 @@ public abstract class XmlPackagesSession implements Runnable
 	{
 		socket.close();
 	}
+	public abstract void connectionFailed();
+	public abstract void receiveObject(Object bean);
+	public abstract int init();
+	public abstract String getInitErrorMessage(int errcode);
 }
 
