@@ -481,4 +481,12 @@ public class EventDispatcherClient extends EventDispatcher{
 		trucoGameClient.playResponse(playerClient,cartaClient);
 	}
 
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerConfirmado(py.edu.uca.fcyt.toluca.game.TrucoPlay)
+	 */
+	public void playerConfirmado(TrucoPlay event) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -284,4 +284,15 @@ public class EventDispatcherServer extends EventDispatcher{
 			
 		
 	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerConfirmado(py.edu.uca.fcyt.toluca.game.TrucoPlay)
+	 */
+	public void playerConfirmado(TrucoPlay event) {
+		
+		TableServer tableServer=room.getTableServer(event.getTableNumber());
+		TrucoGame trucoGame=tableServer.getTrucoGame();
+		TrucoPlayer playerCliente=event.getPlayer();
+		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
+		trucoGame.startHand(playerServidor);
+	}
 }

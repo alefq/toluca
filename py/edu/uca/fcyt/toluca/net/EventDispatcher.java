@@ -137,7 +137,7 @@ public abstract class EventDispatcher {
 			case TrucoPlay.NO_QUIERO:play(event);break;
 			case TrucoPlay.PASO_ENVIDO:play(event);break;
 			case TrucoPlay.PASO_FLOR:play(event);break;
-			case TrucoPlay.PLAYER_CONFIRMADO:break;
+			case TrucoPlay.PLAYER_CONFIRMADO:playerConfirmado(event);break;
 			case TrucoPlay.QUIERO:play(event);break;
 			case TrucoPlay.REAL_ENVIDO:play(event);break;
 			case TrucoPlay.RETRUCO:play(event);break;
@@ -206,6 +206,6 @@ public abstract class EventDispatcher {
 	public abstract void infoGame(TrucoEvent event);
 	public abstract void tirarCarta(TrucoEvent event);
 	public abstract void play(TrucoPlay event);
-	
+	public abstract void playerConfirmado(TrucoPlay event);
 	
 }
