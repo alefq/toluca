@@ -24,7 +24,7 @@ class TableCard implements Animable, StateListener
 	final public static int CARD_DIAMETER = CARD_RADIUS * 2;
 	
 	// BufferedImage para el dorso
-	final private static BufferedImage biBack = createBack();
+	final private BufferedImage biBack;
 	final private static Hashtable images = getImages();
 	
 	private BufferedImage biCard;		// BufferedImage para la carta
@@ -39,6 +39,7 @@ class TableCard implements Animable, StateListener
      */
 	public TableCard()
 	{
+		biBack = createBack();
 		states = new StatesTransitioner();
 		stateListeners = new LinkedList();
 		states.addListener(this);
@@ -90,7 +91,7 @@ class TableCard implements Animable, StateListener
 	/** 
 	 * Crea la imagen del dorso y la retorna
 	 */
-	private static BufferedImage createBack()
+	private BufferedImage createBack()
 	{
 		BufferedImage back;
 
@@ -100,7 +101,9 @@ class TableCard implements Animable, StateListener
 			BufferedImage.TYPE_3BYTE_BGR
 		);
 
-		Util.copyImage(new ImageIcon(Util.getImagesDir() + "dorso.gif"), back);
+		//Util.copyImage(new ImageIcon(Util.getImagesDir() + "dorso.gif"), back);
+		Util.copyImage(new ImageIcon(
+		getClass().getResource("/py/edu/uca/fcyt/toluca/images/" + "dorso.gif")), back);
 
 		return back;
 	}

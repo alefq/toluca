@@ -236,7 +236,7 @@ public class TrucoGame extends Game {
     }
     
     /** Enviar las cartas a cada jugador.
-     * @deprecated No esta disponible.
+     *
      */    
     public void fireCardsDealt(){
         TrucoEvent event = new TrucoEvent(this,TrucoEvent.ENVIAR_CARTAS);

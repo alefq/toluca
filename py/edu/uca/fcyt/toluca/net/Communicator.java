@@ -905,7 +905,9 @@ implements RoomListener, TableListener,TrucoListener {
      *
      * </p>
      */
+        
     public void tableJoined(RoomEvent ev) {
+        
     }
     
     /** <p>

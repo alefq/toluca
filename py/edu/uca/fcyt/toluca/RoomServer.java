@@ -7,17 +7,12 @@ import py.edu.uca.fcyt.toluca.db.*;
 import py.edu.uca.fcyt.toluca.net.*;
 import py.edu.uca.fcyt.game.*;
 
-import org.jdom.*;
-
-
-
 /** Java class "RoomServer.java" generated from Poseidon for UML.
  *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 import java.util.*;
 import java.util.Vector;
-import java.util.Collections.*;
 
 /**
  * <p>
@@ -102,7 +97,7 @@ implements ChatPanelContainer {
      */
     public void createTable(TrucoPlayer player) {
         // your code here
-        System.err.println("Dentor del create table del room server");
+        System.err.println("Dentor del create table del room server: " + player.getName());
         TableServer tableServer= new TableServer(player);
         
         tableServer.addPlayer(player);
@@ -123,18 +118,19 @@ implements ChatPanelContainer {
      */
     protected void fireTableCreated(TableServer table) {
         //
-        System.out.println("dentro del firetalbe created del room server");
-        Vector players = table.getPlayers();
+        System.out.println("dentro del firetalbe created del room server" );
+        //Vector players = table.getPlayers();
+        Vector playerstmp = new Vector();
+        playerstmp.add(table.getHost());
         
         
-
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_CREATED);
         //re.setTableNumber(-108);
         re.addTables(table);
-        re.setPlayers(players);
+        re.setPlayers(playerstmp);
         
-        re.setTableNumber(table.getTableNumber());  
+        re.setTableNumber(table.getTableNumber());
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -143,6 +139,9 @@ implements ChatPanelContainer {
     } // end fireTableCreated
     
     public void joinTable(RoomEvent re) {
+        TableServer ts = re.getTableServer();
+        ts.addPlayer(re.getPlayer());
+        fireTableJoined(re);
         
     }
     /**
@@ -155,8 +154,15 @@ implements ChatPanelContainer {
      * @param table ...
      * </p>
      */
-    public void fireTableJoined(Table table) {
-        // your code here
+    private void fireTableJoined(RoomEvent re) {
+        Iterator iter = roomListeners.listIterator();
+        while(iter.hasNext()) {
+            RoomListener ltmp = (RoomListener)iter.next();
+            ltmp.tableJoined(re);
+        }
+        
+        
+        
     } // end fireTableJoined
     
     /**
@@ -479,7 +485,7 @@ implements ChatPanelContainer {
         int i =0;
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
-            System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());            
+            System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }
@@ -487,7 +493,7 @@ implements ChatPanelContainer {
     public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
         
     }
-        
+    
 } // end RoomServer
 
 

@@ -62,7 +62,8 @@ public abstract class XmlPackagesSession implements Runnable {
                                 //System.out.println("Before sending the parsed packed to receiveXmlPackage method: \n" + rawPacket);
                                 receiveXmlPackage(eReceived);
                             } catch (JDOMException e) {
-                                System.err.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method");
+                                e.printStackTrace();
+                                System.err.println("Coult not parse XML package, sending it to receiveXmlPackageWithParsingError method: " + e.getMessage());
                                 receiveXmlPackageWithParsingError(rawPacket.trim());
                             }
                             rawPacket = "";

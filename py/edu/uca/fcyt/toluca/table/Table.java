@@ -262,6 +262,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
      */
     public void sitPlayer(TrucoPlayer player, int chair) 
     {
+        System.out.println("En la mesa de " + getPlayer().getName() + " voy a sentarlo a " + player.getName() + " - " + chair);
     	Face face;
     	
         pManager.sitPlayer(player, chair);
@@ -270,8 +271,12 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
         
         face = fManager.getFace(chair);
         face.setName(player.getName());
-        face.setFacesDir(Util.getImagesDir() + "faces/standard/");
-        
+        //face.setFacesDir(Util.getImagesDir() + "faces/standard/");
+	face.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
+        System.out.println("----------------- TABLA DE: " + actualPlayer.getName() + "-----------------");
+        System.out.println("evenTeams: " + pManager.evenTeams());
+        System.out.println("getActualChair: " + pManager.getActualChair());
+        System.out.println("isSitted: " + pManager.isSitted(actualPlayer));
 		jtTable.buttons[0].setEnabled
 		(
 			pManager.evenTeams() && 
@@ -294,7 +299,8 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
         
         face = fManager.getFace(chair);
         face.setName("");
-        face.setFacesDir(null);
+	//face.setFacesDir(null);
+	face.loadFacesFromURL(null);
         
        	jtTable.buttons[0].setEnabled(pManager.evenTeams());
         
@@ -783,7 +789,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 	
     public String getOrigin()
     {
-    	return null;
+    	return String.valueOf(getTableNumber());
     }
     
     public void finish()

@@ -93,9 +93,12 @@ class TableEventManager
      */
     public void fireGameStartRequest() 
     {
+        System.out.println("//////////////////////////////////////////////////////");
+        System.out.println("Voy a disparar un fireGameStartRequest");
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
+            System.err.println("iterando...");
             ((TableListener)iter.next()).gameStartRequest
             (
             	new TableEvent
@@ -161,7 +164,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerStandRequest,
-            		table, null, chair
+            		table, table.getPlayer(), chair
             	)
             );
         }
@@ -181,7 +184,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerStanded,
-            		table, null, -1
+            		table, table.getPlayer(), -1
             	)
             );
         }
@@ -260,7 +263,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerSitRequest,
-            		table, null, chair
+            		table, table.getPlayer(), chair
             	)
             );
         }

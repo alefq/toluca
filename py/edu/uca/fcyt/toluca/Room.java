@@ -20,14 +20,14 @@ public abstract class Room implements ChatPanelContainer {
     
     
     protected String name;
-    protected Vector players; // of type Player??
+    protected Hashtable players; // of type Player??
     protected Vector roomListeners; // of type Vector
-    protected Vector table; // of type Table
+    protected Hashtable tables; // of type Table
     
     public Room() {
-        players = new Vector();
+        players = new Hashtable();
+        tables = new Hashtable();
         roomListeners = new Vector();
-        table = new Vector();
     }
     
     ///////////////////////////////////////
@@ -119,6 +119,7 @@ public abstract class Room implements ChatPanelContainer {
     } // end addRoomListener        /** lock-begin */
     
     /**
+     * @deprecated
      * <p>
      * Se ejecuta cuando un jugador trata de unirse a la tabla.
      * Informa de esto a los listeners registrados
@@ -134,6 +135,7 @@ public abstract class Room implements ChatPanelContainer {
     } // end joinTable        /** lock-begin */
     
     /**
+     * @deprecated
      * <p>
      * Recorre el vector de listeners y ejecuta en cada uno
      * de los objetos del mismo, el metodo tableJoined.
@@ -163,7 +165,28 @@ public abstract class Room implements ChatPanelContainer {
      * </p>
      */
     public void addPlayer(TrucoPlayer player) {
-        players.add(player); //se carga al vector de jugadores
+        if (this instanceof RoomClient) {
+            System.out.println("Voy a agregar en el cliente: " + player.getName());
+        } else {
+            System.out.println("Voy a agregar en el servidor: " + player.getName());            
+        }
+        players.put(player.getName(), player); //se carga al vector de jugadores
+        py.edu.uca.fcyt.util.HashUtils.imprimirHash(players);
+    }
+
+    public void addTable(Table table) {        /** lock-end */
+        if (this instanceof RoomClient) {
+            System.out.println("Voy a agregar en el cliente la tabela: " + table.getOrigin());
+        } else {
+            System.out.println("Voy a agregar en el servidor la tabela: " + table.getOrigin());            
+        }
+        tables.put(table.getOrigin(), table); //se carga al vector de jugadores
+        py.edu.uca.fcyt.util.HashUtils.imprimirHash(tables);
+    }
+    
+    public TrucoPlayer getPlayer(String keyCode) {
+        System.out.println("Voy a buscar al player: " + keyCode);
+        return ((TrucoPlayer)players.get(keyCode));
     }
     
     /**
@@ -191,12 +214,12 @@ public abstract class Room implements ChatPanelContainer {
      * </p>
      */
     public void modifyPlayer(TrucoPlayer player) {        /** lock-end */
-        for(int i=0; i<players.size(); i++){
+        /*for(int i=0; i<players.size(); i++){
             if( players.get(i) == player){
                 players.setElementAt(player, i);
                 i = players.size()+10;
             }
-        }
+        } */
     } // end modifyPlayer        /** lock-begin */
 
     public String getOrigin() {

@@ -9,8 +9,6 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
-
 public class TrucoDeck {
     private byte indiceArriba;
     private byte indiceAbajo;

@@ -1,9 +1,7 @@
 package py.edu.uca.fcyt.game;
 
-import java.lang.*;
 import javax.swing.*;
 import java.util.*;
-import py.edu.uca.fcyt.toluca.table.*;
 
 
 public class Card
@@ -59,7 +57,11 @@ public class Card
 	{
 		String[] kinds = new String[] {"Oro", "Espada", "Copa", "Basto"};
 
-		return new ImageIcon(Util.getImagesDir() + kinds[kind - 1] + "/" + value + ".gif");
+		//return new ImageIcon(Util.getImagesDir() + kinds[kind - 1] + "/" + value + ".gif");
+		return new ImageIcon(
+		getClass().getResource(
+		"/py/edu/uca/fcyt/toluca/images/" + kinds[kind - 1] + "/" + value + ".gif")
+		);
 	}
 	
 	/**

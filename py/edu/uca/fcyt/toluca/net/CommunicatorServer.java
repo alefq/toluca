@@ -64,6 +64,25 @@ extends Communicator {
         
         //te.xmlCreateGameStarted("Hola", "Hola");
         
+        TrucoGame tGame;
+        TrucoTeam tTeams[];
+        
+        System.out.println("Requesting game start...");
+        
+        tTeams = te.getTableServer().createTeams();
+        
+        // se crea el TrucoGame con los teams creados
+        tGame = new TrucoGame(tTeams[0], tTeams[1]);
+        tGame.addTrucoListener(this);
+        Document doc = te.xmlCreateGameStarted("0", "1");
+        
+        super.sendXmlPackage(doc);
+        
+        // se llama al 'startGame' de todas las tablas
+        
+        // da la orden de inicio de juego a 'tGame'
+        //tGame.startGame();
+        
         
     }
     /** Creates a new instance of ChatSessionServer */
@@ -85,21 +104,26 @@ extends Communicator {
     private int i = 0;
     
     public void receiveXmlPackage(Element xmlPackage) {
-        System.out.println("Vino un paquete: " + xmlPackage.getName());
-        Document doc=new Document(xmlPackage);
-        
         //		doc.addContent(xmlPackage);
         try {
             
             XMLOutputter serializer = new XMLOutputter("  ", true);
-            
-            serializer.output(doc, System.out);
+            serializer.output(xmlPackage, System.out);
             
         }
         catch (IOException e) {
             System.err.println(e);
         }
-        System.err.println("//////////////////////////////////////////");
+        System.out.println("Vino un paquete: " + xmlPackage.getName());
+        Document doc=new Document();
+        if (xmlPackage.getParent() != null) {
+            Element parent = xmlPackage.getParent();
+            System.out.println("El PADRE: " + parent.getName());
+        } else {
+            System.out.println("El Padre es nuuuuuulo");
+        }
+        doc.setRootElement(xmlPackage);
+        System.out.println("//////////////////////////////////////////");
         cabecera(doc);
 /*
                  TrucoPlayer p=new TrucoPlayer("Dani",10);
@@ -144,7 +168,7 @@ extends Communicator {
     }
     public void loginCompleted(RoomEvent re){
         //RoomEvent te;
-    
+        
 /*
         RoomEvent te=new RoomEvent();
         Vector jugadores=new Vector();
@@ -282,6 +306,29 @@ extends Communicator {
             }
         }
     }
+    
+    public Document xmlCreateTableJoined(RoomEvent re){
+        
+        Element ROOT=new Element("TableJoined");
+        Element PLAYER=new Element("Player");
+        PLAYER.setAttribute("name", re.getPlayer().getName());
+        Element TABLE=new Element("Table");
+        TABLE.setAttribute("id", String.valueOf(re.getTableServer().getTableNumber()));
+        ROOT.addContent(PLAYER);
+        ROOT.addContent(TABLE);
+        Document doc = new Document(ROOT);
+        return doc;
+        
+    }
+    
+    public void tableJoined(RoomEvent ev) {
+        Document doc;
+        
+        doc = xmlCreateTableJoined(ev);
+        super.sendXmlPackage(doc);
+        
+    }
+    
     public  void cabecera(Document doc) {//saca la cabeza del paquete y envia el paquete al lector correspondiente
         
         List children = doc.getContent();
@@ -346,7 +393,7 @@ extends Communicator {
     }
     int posAux;//solo sirve para este metodo el de abajo xmlReadPlayerSitRequest
     int idAux;//solo sirve para el metodo de abajo xmlReadPlayerSitRequest
-    
+    String otroPlayerName = "";
     public void xmlReadPlayerSitRequest(Object o) {//en verdad jugador no se usa porque creemos que como el communicator ya tiene su player entonces con
         //ese player es suficiente
         String aux;
@@ -357,7 +404,9 @@ extends Communicator {
             
             if(aux.compareTo("Pos")==0) {
                 posAux=Integer.parseInt(element.getAttributeValue("pos"));
-                
+            }
+            if(aux.compareTo("Player")==0) {
+                otroPlayerName=element.getAttributeValue("name");
             }
             if(aux.compareTo("Table")==0) {
                 
@@ -379,7 +428,7 @@ extends Communicator {
                 try {
                     String tid = String.valueOf(idAux);
                     TableServer tabela = (TableServer)getTables().get(tid);
-                    tabela.sitPlayer(player,posAux);
+                    tabela.sitPlayer(pieza.getPlayer(otroPlayerName),posAux);
                 } catch (java.lang.NullPointerException e) {
                     System.err.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadPlayerSitRequest ");
                     e.printStackTrace();
@@ -548,9 +597,9 @@ extends Communicator {
                 xmlReadCreateTable(child);
             }
             if(aux.compareTo("CreateTable")==0) {
-                System.out.println("Dentro del Communicator Server. Player = " + user);
+                System.out.println("Dentro del Communicator Server. Player = " + user + "/" + player.getName());
                 //pieza.createTable(new TrucoPlayer(user));
-                pieza.createTable(player);
+                pieza.createTable(pieza.getPlayer(user));
             }
         }
     }
@@ -578,7 +627,7 @@ extends Communicator {
         System.out.println("Antes de mandar el XML en el CREATE TABLE DEL SERVA");
         super.sendXmlPackage(doc);
     }
-    
+    String tableid;
     public void xmlReadTableJoinRequest(Object o) {
         String aux;
         System.out.println("Leyendo el paquete");
@@ -588,31 +637,62 @@ extends Communicator {
             
             if(aux.compareTo("Table")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
-                String tableid=element.getAttributeValue("id");
+                tableid=element.getAttributeValue("id");
                 System.out.println("El table id es"+tableid);
+            }
+            if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
             }
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
                 Object child = iterator.next();
-                xmlReadChatMsg(child);
+                xmlReadTableJoinRequest(child);
             }
             if(aux.compareTo("TableJoinRequest")==0) {
                 //Chatpanel.showChatMessage(user,message);
+               /* TableServer tstmp = (TableServer)getTables().get(tableid);
+                if (tstmp == null) {
+                    System.out.println("TABLA NUUUUUUUUUUUUUUULA :(( :((!!!!");
+                } else {
+                    TrucoPlayer tptmp = pieza.getPlayer(userAux);
+                    if (tptmp == null) {
+                        System.out.println("Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
+                    } else {
+                        tstmp.addPlayer(tptmp);
+                    }
+                }*/
+                try {
+                    TableServer tstmp = (TableServer)getTables().get(tableid);
+                    TrucoPlayer tptmp = pieza.getPlayer(userAux);
+                    
+                    
+                    RoomEvent re = new RoomEvent();
+                    re.setPlayer(tptmp);
+                    re.setTableServer(tstmp);
+                    re.setType(re.TYPE_TABLE_JOINED);
+                    pieza.joinTable(re);
+                    
+                } catch (NullPointerException npe) {
+                    System.out.println("TABLA NUUUUUUUUUUUUUUULA :(( :((!!!!");
+                    System.out.println("Player NUUUUUUUUUUUUULO :(( :(( ::((@!!!!!");
+                    npe.printStackTrace();
+                }
                 
             }
         }
     }
-    public Document xmlCreateTableCreated(RoomEvent te) {
+    public Document xmlCreateTableCreated(RoomEvent re) {
         System.out.println("Cricco quiere ver su pakochi");
         Element ROOT= new Element("TableCreated");
         
         Element PLAYER=new Element("Player");
-        Vector Jugadores = (Vector)te.getPlayerss();
+        Vector Jugadores = (Vector)re.getPlayerss();
         TrucoPlayer jug = (TrucoPlayer)(Jugadores.get(0));
         PLAYER.setAttribute("name",jug.getName());
         Element TABLE = new Element("Table");
-        TABLE.setAttribute("id",String.valueOf(te.getTableNumber()));
+        TABLE.setAttribute("id",String.valueOf(re.getTableNumber()));
         
         ROOT.addContent(PLAYER);
         ROOT.addContent(TABLE);

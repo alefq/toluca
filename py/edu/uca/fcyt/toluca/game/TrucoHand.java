@@ -6,7 +6,6 @@
 
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.statusGame.*;
 import py.edu.uca.fcyt.toluca.event.*;
 
@@ -14,7 +13,7 @@ import java.util.*;
 
 /** constructor
  * @author Julio Rey || Cristian Benitez
- * @deprecated
+ *
  */
 public class TrucoHand {
     

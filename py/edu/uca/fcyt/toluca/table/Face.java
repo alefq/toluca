@@ -642,6 +642,7 @@ class Face implements Animable
 	
 	/**
      * Carga el vector de caritas
+	 * @deprecated Usar loadFacesFromURL (applet compilant)
      */
 	synchronized public void setFacesDir(String dir)
 	{
@@ -669,6 +670,43 @@ class Face implements Animable
 				Util.copyImage(fIcon, faces[i]);
 			}
 		}
+	}
+	
+	/**
+	 * Carga el vector de caritas
+	 */
+	synchronized public void loadFacesFromURL(String baseURL)
+	{
+	    ImageIcon fIcon;
+	    
+	    if (baseURL == null)
+		faces = null;
+	    else
+	    {
+		faces = new BufferedImage[10];
+		
+		for (int i = 0; i < faces.length; i++)
+		{
+		    fIcon = new ImageIcon
+		    (
+		    getClass().getResource(baseURL + i + ".jpg")
+		    );
+		    if(fIcon != null)
+		    {			
+			faces[i] = new BufferedImage
+			(
+			fIcon.getIconWidth(), fIcon.getIconHeight(),
+			BufferedImage.TYPE_3BYTE_BGR
+			);
+			
+			Util.copyImage(fIcon, faces[i]);
+		    } else
+		    {
+			System.out.println("No se pudo crear el Icon con : " + baseURL);
+			System.out.println("El URL intentado fue: " + baseURL + i + ".jpg");
+		    }
+		}
+	    }
 	}
 	
 

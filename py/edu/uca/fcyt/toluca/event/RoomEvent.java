@@ -207,6 +207,12 @@ public class RoomEvent {
     
     public static final int TYPE_TABLE_CREATED_SERVER = 13;
     
+    /** Holds value of property player. */
+    private TrucoPlayer player;
+    
+    /** Holds value of property tableServer. */
+    private TableServer tableServer;
+    
     public RoomEvent(){
         //codigo agregado por el CIT MASTER
        tables = new Vector();
@@ -254,7 +260,7 @@ public class RoomEvent {
         return password;
     }
     public void setUser(String user) {
-        this.username=new String(user);
+        this.username=user;
     }
     public String getUser() {
         return username;
@@ -430,6 +436,38 @@ public class RoomEvent {
      */
     public void setTableNumber(int tableNumber) {
         this.tableNumber = tableNumber;
+    }
+    
+    /** Getter for property player.
+     * @return Value of property player.
+     *
+     */
+    public TrucoPlayer getPlayer() {
+        return this.player;
+    }
+    
+    /** Setter for property player.
+     * @param player New value of property player.
+     *
+     */
+    public void setPlayer(TrucoPlayer player) {
+        this.player = player;
+    }
+    
+    /** Getter for property tableServer.
+     * @return Value of property tableServer.
+     *
+     */
+    public TableServer getTableServer() {
+        return this.tableServer;
+    }
+    
+    /** Setter for property tableServer.
+     * @param tableServer New value of property tableServer.
+     *
+     */
+    public void setTableServer(TableServer tableServer) {
+        this.tableServer = tableServer;
     }
     
     // end removeTables        /** lock-begin */

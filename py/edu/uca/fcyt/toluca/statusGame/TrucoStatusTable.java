@@ -1,6 +1,5 @@
 package py.edu.uca.fcyt.toluca.statusGame;
 
-import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 
 

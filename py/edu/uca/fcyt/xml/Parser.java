@@ -18,7 +18,7 @@ import java.util.Vector;
  */
 public class Parser {
     
-    public static Element getElement(String xml) throws JDOMException {
+    public static Element getElement(String xml) throws JDOMException, IOException {
         Document doc = (new SAXBuilder()).build( new StringReader(xml));
         return doc.getRootElement();
     }

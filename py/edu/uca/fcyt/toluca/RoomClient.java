@@ -5,6 +5,9 @@ package py.edu.uca.fcyt.toluca;
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.ListIterator;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.JOptionPane;
@@ -31,6 +34,7 @@ public class RoomClient extends Room
     private RoomUI rui;
     private CommunicatorClient cc;
     private TrucoPlayer roomPlayer;
+    
     ///////////////////////////////////////
     // operations
     
@@ -65,7 +69,9 @@ public class RoomClient extends Room
     }
 
     public void addTable(Table table) {        /** lock-end */
-         // mainTable.insertarFila(); /* Agregamos una fila a la tabla */
+        super.addTable(table);
+        System.out.println("desde el roomClient se inserta mesa.");        
+         mainTable.insertarFila(table); /* Agregamos una fila a la tabla */
         
     } // end addTable        /** lock-begin */
     
@@ -102,6 +108,14 @@ public class RoomClient extends Room
         }
     } // end fireChatMessageRequested        /** lock-begin */
     
+    
+    /*
+     * Este metodo se ejecuta cuando se presiona el Join
+     */
+    public void joinTableRequest(int tableNumber){
+        fireTableJoinRequested(tableNumber);
+    }
+    
     /**
      * <p>
      * Informa a todos los <i>listeners</i> registrados que se esta intentando
@@ -111,11 +125,14 @@ public class RoomClient extends Room
      * </p>
      */
     private void fireTableJoinRequested(int tableNumber) {        /** lock-end */
+        System.out.println("Voy a disparar el tableJoinRequest sobre la tabela: " + tableNumber);
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_JOIN_REQUESTED);
         re.setTableNumber(tableNumber);
+        re.setPlayer(getRoomPlayer());
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
+            System.out.println("A lo meor no tiene listeners asociados carajo");
             RoomListener ltmp = (RoomListener)iter.next();
             ltmp.tableJoinRequested(re);
         }
@@ -135,6 +152,7 @@ public class RoomClient extends Room
         re.setUser(roomPlayer.getName());
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
+            System.out.println("A lo meor no tiene listeners asociados carajo");
             RoomListener ltmp = (RoomListener)iter.next();
             ltmp.createTableRequested(re);
         }
@@ -183,12 +201,15 @@ public class RoomClient extends Room
         System.out.println("Login completed???");
         chatPanel = new ChatPanel(this, player);
         rui.addChatPanel(chatPanel);
-        roomPlayer = player;
-        //addPlayer(player);
+        setRoomPlayer(player);
     } // end loginCompleted        /** lock-begin */
 
     public void joinTable(RoomEvent re) {
+        Vector col = new Vector();
+        col = (Vector) re.getPlayerss();
+        int tableNumber = re.getTableNumber();
         
+        mainTable.addPlayer( (TrucoPlayer) col.elementAt(0),tableNumber);
     }
 
 

@@ -107,7 +107,8 @@ class FaceManager implements Animable
             	Math.PI * (2.0 / pManager.getPlayerCount() * i + 1)
             );
             
-            face.setFacesDir(Util.getImagesDir() + "/faces/standard/");
+            //face.setFacesDir(Util.getImagesDir() + "/faces/standard/");
+	    face.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
 
         	// agrega la carita 
             faces.add(face);

@@ -39,8 +39,10 @@ implements TrucoListener, ChatPanelContainer {
         players = new Vector();
         pManager = new PlayerManager(6);
         addPlayer(host);
+        setHost(host);
         setTableNumber(nextTableNumber++);
         System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
+        System.out.println("El HOST de la tabela es: " + getHost().getName());
     }
     
     public void addTableServerListener(TableListener tableListener) {        /**
@@ -54,13 +56,42 @@ implements TrucoListener, ChatPanelContainer {
         
         if (player == getHost())
             pManager.setActualPlayer(getHost());
-                        
+        
         System.out.println(player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
     }
     
     public void startGame() {
         
+ 
+        fireGameStarted(
+            new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
+            );
+        
     }
+    
+    public TrucoTeam[] createTeams() {
+        TrucoTeam tTeams[];
+        TrucoPlayer player;
+        
+        // se crean los teams
+        tTeams = new TrucoTeam[] {
+            new TrucoTeam("Rojo"),
+            new TrucoTeam("Azul")
+        };
+        
+        // se agregan los players a los teams
+        for (int i = 0, j = 0; i < 6; i++) {
+            player = pManager.getPlayer(i);
+            if (player != null) {
+                tTeams[j].addPlayer(player);
+                //		        System.out.println("Team " + j + ": player " + player.getName());
+                j = (j + 1) % 2;
+            }
+        }
+        
+        return tTeams;
+    }
+    
     
     public void cardsDeal(TrucoEvent event) {
     }
@@ -118,7 +149,15 @@ implements TrucoListener, ChatPanelContainer {
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }
+    protected void fireGameStarted(TableEvent te) {
+        Iterator iter = tableListeners.listIterator();
 
+        while(iter.hasNext()) {
+            TableListener ltmp = (TableListener)iter.next();
+            System.out.println("VOY A DISPARAR UN GAME STARTED EN EL SERVA.");
+            ltmp.gameStarted(te);
+        }
+    }    
     
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
         Iterator iter = tableListeners.listIterator();
@@ -130,7 +169,7 @@ implements TrucoListener, ChatPanelContainer {
             ltmp.playerSit(te);
         }
     }
-        
+    
     public void showChatMessage(TrucoPlayer player, String htmlMessage) {
     }
     

@@ -8,6 +8,7 @@ package py.edu.uca.fcyt.toluca;
 
 import javax.swing.*;
 
+import py.edu.uca.fcyt.toluca.table.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.game.*;
 
@@ -40,9 +41,8 @@ public class RoomUI extends javax.swing.JApplet
         jpMain = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jpBotones = new javax.swing.JPanel();
-        jbUno = new javax.swing.JButton();
         jbCreateTable = new javax.swing.JButton();
-        jSPtabla = new javax.swing.JScrollPane();
+        jbJoin = new javax.swing.JButton();
         jpTabla = new javax.swing.JPanel();
         jpChatRanking = new javax.swing.JPanel();
         jpRanking = new javax.swing.JPanel();
@@ -62,15 +62,6 @@ public class RoomUI extends javax.swing.JApplet
         jPanel1.setBackground(new java.awt.Color(102, 153, 0));
         jpBotones.setLayout(new javax.swing.BoxLayout(jpBotones, javax.swing.BoxLayout.Y_AXIS));
 
-        jbUno.setBackground(new java.awt.Color(204, 204, 0));
-        jbUno.setFont(new java.awt.Font("Dialog", 1, 10));
-        jbUno.setForeground(new java.awt.Color(102, 102, 0));
-        jbUno.setText("Play Now");
-        jbUno.setMaximumSize(new java.awt.Dimension(100, 20));
-        jbUno.setMinimumSize(new java.awt.Dimension(100, 20));
-        jbUno.setPreferredSize(new java.awt.Dimension(100, 20));
-        jpBotones.add(jbUno);
-
         jbCreateTable.setBackground(new java.awt.Color(204, 204, 0));
         jbCreateTable.setFont(new java.awt.Font("Dialog", 0, 10));
         jbCreateTable.setForeground(new java.awt.Color(102, 102, 0));
@@ -86,12 +77,25 @@ public class RoomUI extends javax.swing.JApplet
 
         jpBotones.add(jbCreateTable);
 
+        jbJoin.setBackground(new java.awt.Color(204, 204, 0));
+        jbJoin.setFont(new java.awt.Font("Dialog", 1, 10));
+        jbJoin.setForeground(new java.awt.Color(102, 102, 0));
+        jbJoin.setText("Join");
+        jbJoin.setMaximumSize(new java.awt.Dimension(100, 20));
+        jbJoin.setMinimumSize(new java.awt.Dimension(100, 20));
+        jbJoin.setPreferredSize(new java.awt.Dimension(100, 20));
+        jbJoin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbJoinActionPerformed(evt);
+            }
+        });
+
+        jpBotones.add(jbJoin);
+
         jPanel1.add(jpBotones);
 
         jpTabla.setBackground(new java.awt.Color(102, 153, 0));
-        jSPtabla.setViewportView(jpTabla);
-
-        jPanel1.add(jSPtabla);
+        jPanel1.add(jpTabla);
 
         jpMain.add(jPanel1);
 
@@ -111,24 +115,35 @@ public class RoomUI extends javax.swing.JApplet
 
     }//GEN-END:initComponents
 
+    private void jbJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbJoinActionPerformed
+        // aca se mira si el player selecciono alguna mesa para jugar
+        int numeroDeFila = mainTable.isRowSelected();
+        System.out.println("numeroDeFila=" + numeroDeFila);
+        if( numeroDeFila >= 0){
+            numeroDeFila = mainTable.getNumeroDeMesa(numeroDeFila);
+            System.out.println("Se presiono el join..." +numeroDeFila);
+            roomClient.joinTableRequest(numeroDeFila);
+        }
+    }//GEN-LAST:event_jbJoinActionPerformed
+
     private void jbCreateTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCreateTableActionPerformed
         // Add your handling code here:
         roomClient.createTableRequest();
     }//GEN-LAST:event_jbCreateTableActionPerformed
     
+       
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jpChat;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jpBotones;
     private javax.swing.JPanel jpTabla;
-    private javax.swing.JScrollPane jSPtabla;
     private javax.swing.JPanel jpMain;
-    private javax.swing.JButton jbUno;
     private javax.swing.JButton jbCreateTable;
     private javax.swing.JPanel jpChatRanking;
     private javax.swing.JPanel jpLogo;
     private javax.swing.JPanel jpRanking;
+    private javax.swing.JButton jbJoin;
     // End of variables declaration//GEN-END:variables
     
     private void custInitComponents()
@@ -157,7 +172,9 @@ public class RoomUI extends javax.swing.JApplet
         roomClient.setRankTable(rankTable);
         
         // esto es para probar nomas, sacar despues!!
-        mainTable.insertarFila();
+        //Table table = new Table();
+        //table.setTableNumber(5);
+        //mainTable.insertarFila(table);
         
         
         jpChatRanking.validate();

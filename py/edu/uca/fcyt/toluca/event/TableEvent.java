@@ -116,7 +116,7 @@ public class TableEvent {
         return id & ~(PLAYER_MASK | VALUE_MASK);
     }
     private Document xmlCreatePlayerSitRequest() {//del cliente al servidor para
-        System.err.println("//////////////////////////////////////////Dentro de xmlCreatePlayerSitRequest name del player es nulo " + (player.getName()==null) );
+        System.err.println("//////////////////////////////////////////Dentro de xmlCreatePlayerSitRequest name del player es nulo " + (player==null) );
         
         Element ROOT=new Element("PlayerSitRequest");
         Element TABLE=new Element("Table");
@@ -171,7 +171,11 @@ public class TableEvent {
         NOMBRE2.setAttribute("equipo2",team2);
         
         Element TABLE=new Element("Table");
-        TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
+        if (getTable() == null) {
+            TABLE.setAttribute("id",String.valueOf((getTableServer()).getTableNumber()));
+        } else {
+            TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
+        }
         ROOT.addContent(TABLE);
         ROOT.addContent(NOMBRE1);
         ROOT.addContent(NOMBRE2);

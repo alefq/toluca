@@ -21,8 +21,6 @@ public class MainTableModel extends AbstractTableModel{
     final String[] columnNames =    {  "Mesa#", "Observar", "Jugador1", "Jugador2", 
                     "Jugador3", "Jugador4", "Jugador5", "Jugador6", "Observando"  };
     
-    static int numeroDeFilas = 0;
-    
     Vector filas= new Vector();
     
     /*
@@ -37,6 +35,11 @@ public class MainTableModel extends AbstractTableModel{
      */
     public int getRowCount() {
         return filas.size();
+    }
+    
+    public int getNumeroDeMesa(int row){
+        Fila fila = (Fila) filas.elementAt(row);
+        return fila.getFilaNumber();
     }
     
     /*
@@ -76,9 +79,6 @@ public class MainTableModel extends AbstractTableModel{
     }
     
     public boolean isCellEditable(int row, int col) {
-        if(col>0 && col<7){
-            return true;
-        }
         return false;
     }
     
@@ -101,13 +101,12 @@ public class MainTableModel extends AbstractTableModel{
     /*
      * Se inserta una fila/mesa
      */ 
-    public void insertRow() {
-        numeroDeFilas++;
-        Fila fila = new Fila(numeroDeFilas);
+    public void insertRow(int numeroDeMesa) {
+        Fila fila = new Fila(numeroDeMesa);
         Object[] obj = new Object[1];
         obj[0] = fila;
         
-        System.out.println("Se inserta mesa numero=" + numeroDeFilas);
+        System.out.println("Se inserta mesa numero=" + numeroDeMesa);
         insertRow( obj, getRowCount());
     }
     
@@ -146,6 +145,18 @@ public class MainTableModel extends AbstractTableModel{
                 fireTableDataChanged();
                 i = filas.size() + 10;
             }
+        }
+    }
+    /*
+     * Se le agrega al player a la mesa numero tableNumber
+     */
+    public void addPlayer(TrucoPlayer player, int tableNumber){
+        Fila fila = new Fila();
+        
+        for(int i=0; i<filas.size(); i++){
+            fila = (Fila) filas.get(i);
+            if( fila.getFilaNumber() == tableNumber)
+                fila.addPlayer(player);
         }
     }
     

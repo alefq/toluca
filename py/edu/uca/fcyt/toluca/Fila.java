@@ -56,6 +56,13 @@ public class Fila {
     } 
     
     /*
+     * Inserta al final al player
+     */
+    public void addPlayer(TrucoPlayer player){
+        jugadores.add(player);
+    }
+    
+    /*
      * Retorna el Player que se encuentra en la posicion index de la fila
      */
     public TrucoPlayer getPlayer(int index){

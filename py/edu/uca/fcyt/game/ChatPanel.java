@@ -56,8 +56,9 @@ public class ChatPanel extends javax.swing.JPanel {
     }
     
     private void sendChatMessage() {
+        System.out.println("getPlayer == null en el Chat: " + (getPlayer() == null));
         cpc.sendChatMessage(getPlayer(), jtInput.getText());
-        jtInput.setText(null);
+        jtInput.setText("");
     }
     
     /** This method is called from within the constructor to
