@@ -30,7 +30,7 @@ class TableText implements Animable, StateListener
 	private int offX, offY;
 	private Shape outLine;  
 	private int width, height;
-	private int penWidth; 
+	private float penWidth; 
 	private double fillAngle;
 	private int fillX, fillY;
 	private Vector sListeners;
@@ -43,7 +43,7 @@ class TableText implements Animable, StateListener
 	/** Crea un nuevo objeto TableText con string </code>text</code> */
 	public TableText
 	(
-		String text, Font font, int penWidth, double fillAngle
+		String text, Font font, float penWidth, double fillAngle
 	)
 	{
 		tStates = new StatesTransitioner();

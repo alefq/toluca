@@ -27,14 +27,14 @@ public class TableEvent {
     public static int EVENT_signSendRequest = 11;
     public static int EVENT_signSent = 12;
     public static int EVENT_showPlayed = 13;
-	public static int EVENT_playerLeft = 14;
+    public static int EVENT_playerLeft=14;
     private static int PLAYER_MASK = 0x4000;
     private static int VALUE_MASK = 0x8000;
     
     private int event;
     private Table table;
     private TableServer tableServer;
-    private TrucoPlayer player;
+	private TrucoPlayer[] player;
     private int value;
     
     /**
@@ -44,33 +44,46 @@ public class TableEvent {
      * @param player	jugador asociado
      * @param value		valor asociado
      */
-    public TableEvent
-    (
-    int event, Table table, TrucoPlayer player, int value
-    ) {
+	public TableEvent
+	(
+		int event, Table table, TrucoPlayer player1, 
+		TrucoPlayer player2, int value
+	) 
+	{
         // verificaciones ("comentarizado" para el ejemplo)
         Util.verifParam(table != null, "Parámetro 'table' nulo");
         
         this.event = event;
         this.table = table;
         this.value = value;
-        this.player = player;
+		this.player = new TrucoPlayer[]
+		{
+				player1, player2
+		};
     }
-    public TableEvent
-    (
-    int event, TableServer table, TrucoPlayer player, int value
-    ) {
+	public TableEvent
+	(
+		int event, TableServer table, 
+		TrucoPlayer player1, TrucoPlayer player2, 
+		int value
+	) {
         // verificaciones ("comentarizado" para el ejemplo)
         Util.verifParam(table != null, "Parámetro 'table' nulo");
         
         this.event = event;
         this.tableServer = table;
         this.value = value;
-        this.player = player;
+		this.player = new TrucoPlayer[]
+		{
+				player1, player2
+		};
     }
     
-    /** Retorna el jugador asociado */
-    public TrucoPlayer getPlayer() { return player; }
+	/** Retorna el jugador asociado */
+	public TrucoPlayer getPlayer(int index) 
+	{ 
+		return player[index]; 
+	}
     
     /** Retorna el valor asociado */
     public int getValue() { return value; }
@@ -117,6 +130,61 @@ public class TableEvent {
     public static int getEventFromID(int id) {
         return id & ~(PLAYER_MASK | VALUE_MASK);
     }
+	private Document xmlCreateSignSent()
+	{
+		Element ROOT=new Element("SignSent");
+		Element PLAYER=new Element("Player");
+		Element TABLE=new Element("Table");
+				TABLE.setAttribute("id",String.valueOf((getTableServer()).getTableNumber()));
+    	
+		PLAYER.setAttribute("name",getPlayer(0).getName());
+		PLAYER.setAttribute("name2",getPlayer(1).getName());
+		PLAYER.setAttribute("sign",String.valueOf(getValue()));
+		ROOT.addContent(PLAYER);
+		ROOT.addContent(TABLE);
+		Document doc=new Document(ROOT);
+		return doc;
+	}
+    private Document xmlCreateSignSendRequest()
+    {
+    	Element ROOT=new Element("SignSendRequest");
+    	Element PLAYER=new Element("Player");
+		Element TABLE=new Element("Table");
+					TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
+    	
+    	PLAYER.setAttribute("name",getPlayer(0).getName());
+		PLAYER.setAttribute("name2",getPlayer(1).getName());
+
+    	PLAYER.setAttribute("sign",String.valueOf(getValue()));
+		ROOT.addContent(PLAYER);
+		ROOT.addContent(TABLE);
+		Document doc=new Document(ROOT);
+		return doc;
+    }
+	private Document xmlCreatePlayerStandRequest()
+	{
+			Element ROOT=new Element("PlayerStandRequest");
+			Element TABLE=new Element("Table");
+			TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
+			TABLE.setAttribute("chair",String.valueOf(getValue()));
+		
+		
+			ROOT.addContent(TABLE);
+			Document doc=new Document(ROOT);
+			return doc;		
+	}
+	private Document xmlCreatePlayerStand()
+	{
+			Element ROOT=new Element("PlayerStand");
+			Element TABLE=new Element("Table");
+			TABLE.setAttribute("id",String.valueOf(getTableServer().getTableNumber()));
+			TABLE.setAttribute("chair",String.valueOf(getValue()));
+		
+		
+			ROOT.addContent(TABLE);
+			Document doc=new Document(ROOT);
+			return doc;		
+	}
     private Document xmlCreatePlayerSitRequest() {//del cliente al servidor para
         System.out.println("//////////////////////////////////////////Dentro de xmlCreatePlayerSitRequest name del player es nulo " + (player==null) );
         
@@ -127,7 +195,7 @@ public class TableEvent {
         POS.setAttribute("pos",String.valueOf(getValue()));
         
         Element PLAYER=new Element("Player");
-        PLAYER.setAttribute("name",player.getName());
+        PLAYER.setAttribute("name",player[0].getName());
         
         ROOT.addContent(POS);
         ROOT.addContent(PLAYER);
@@ -146,7 +214,7 @@ public class TableEvent {
         POS.setAttribute("pos",String.valueOf(getValue()));
         
         Element PLAYER=new Element("Player");
-        PLAYER.setAttribute("name",player.getName());
+        PLAYER.setAttribute("name",player[0].getName());
         
         ROOT.addContent(POS);
         ROOT.addContent(PLAYER);
@@ -197,8 +265,93 @@ public class TableEvent {
         if(event ==EVENT_gameStartRequest) {
             doc=xmlCreateGameStartRequest();
         }
-            return doc;
+        
+        if (event == EVENT_playerKickRequest ) {
+			doc = xmlCreatePlayerKickedRequest();        	
         }
+        
+		if (event == EVENT_playerKicked ) {
+			doc = xmlCreatePlayerKicked();        	
+		}
+		if(event ==EVENT_playerLeft)
+		{
+			doc = xmlCreatePlayerLeft();
+		}
+		if(event==EVENT_playerStandRequest)
+		{
+			doc= xmlCreatePlayerStandRequest();
+		}
+		if(event==EVENT_playerStanded)
+		{
+			doc= xmlCreatePlayerStand();
+		}
+		if(event==EVENT_signSendRequest)
+		{
+			doc= xmlCreateSignSendRequest();
+		}		
+		if(event==EVENT_signSent)
+		{
+			doc= xmlCreateSignSent();
+		}
+		
+        return doc;
+    }
+	/**
+	 * @return
+	 */
+	private Document xmlCreatePlayerKicked() {
+		Element ROOT=new Element("TableLeft");
+		Element TABLE=new Element("Table");
+		TABLE.setAttribute("id",String.valueOf((getTableServer()).getTableNumber()));
+		Element POS=new Element("Pos");
+		POS.setAttribute("pos",String.valueOf(getValue()));
+        
+		Element PLAYER=new Element("Player");
+		PLAYER.setAttribute("name",player[0].getName());
+        
+		ROOT.addContent(POS);
+		ROOT.addContent(PLAYER);
+		ROOT.addContent(TABLE);
+		Document doc=new Document(ROOT);
+		return doc;
+	}
+	/**
+	 * @return
+	 */
+	private Document xmlCreatePlayerLeft() {
+			Element ROOT=new Element("TableLeftRequest");
+			Element TABLE=new Element("Table");
+			TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
+			Element POS=new Element("Pos");
+			POS.setAttribute("pos",String.valueOf(getValue()));
+        
+			Element PLAYER=new Element("Player");
+			System.out.println("El player dentro del xmlCreatePlayer KickRequest Player: " +player);
+			PLAYER.setAttribute("name",getTable().getPlayer().getName());
+        
+			ROOT.addContent(POS);
+			ROOT.addContent(PLAYER);
+			ROOT.addContent(TABLE);
+			Document doc=new Document(ROOT);
+			return doc;
+		}
+	private Document xmlCreatePlayerKickedRequest() {
+		Element ROOT=new Element("TableLeftRequest");
+		Element TABLE=new Element("Table");
+		TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
+		Element POS=new Element("Pos");
+		POS.setAttribute("pos",String.valueOf(getValue()));
+        
+		Element PLAYER=new Element("Player");
+		System.out.println("El player dentro del xmlCreatePlayer KickRequest Player: " +player);
+		PLAYER.setAttribute("name",player[0].getName());
+        
+		ROOT.addContent(POS);
+		ROOT.addContent(PLAYER);
+		ROOT.addContent(TABLE);
+		Document doc=new Document(ROOT);
+		return doc;
+	}
         
         /**
          * Ejemplo de uso. La máscara juega el rol de tipo de

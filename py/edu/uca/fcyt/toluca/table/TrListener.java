@@ -16,6 +16,8 @@ import py.edu.uca.fcyt.toluca.game.PointsDetail;
 import java.awt.Color;
 import javax.swing.JLabel;
 
+import com.sun.rsasign.t;
+
 /**
  * Escucha los eventos del juego
  */
@@ -44,7 +46,8 @@ class TrListener implements TrucoListener
 	{
 		System.out.println("Game started for player " + getAssociatedPlayer().getName());
 //		new Throwable("").printStackTrace(System.out);
-		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Ok");
+		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
+		table.getJTrucoTable().getJButton("Ayuda").setEnabled(false);
 	}
 	
 	/**
@@ -128,15 +131,12 @@ class TrListener implements TrucoListener
 						event.getPlayer(), val,	true
 					);
 
-					////////////////////
-					// CODIGO NUEVO   //
 					jlSaying.setText
 					(
 						jlSaying.getText() + 
 						(jlSaying.getText().equals("Canto: ") ? "" : " - ") + 
 						" " + val + (team == 0 ? "(R)" : "(A)") 
 					);
-					////////////////////
 				}
 
 				break;
@@ -149,8 +149,6 @@ class TrListener implements TrucoListener
 				{
 					drawBalloon(event.getPlayer(), name, true);
 
-					////////////////////
-					// CODIGO NUEVO   //
 					if (type ==  TrucoEvent.TRUCO)
 						jlSaying.setText("Canto: ");
 						
@@ -160,7 +158,6 @@ class TrListener implements TrucoListener
 						(jlSaying.getText().equals("Canto: ") ? "" : " - ") + 
 						" " + name + (team == 0 ? "(R)" : "(A)") 
 					);
-					////////////////////
 				}
 				catch(InvalidParameterException ex)
 				{
@@ -250,11 +247,8 @@ class TrListener implements TrucoListener
 		int pun1, pun2;
 		TrucoGame tGame;
 		
-		////////////////////
-		/// CODIGO NUEVO ///
 		table.flash(false);
-		////////////////////
-		
+
 		System.out.println("End of hand for player " + getAssociatedPlayer().getName());
 		
 		tGame = table.getTGame();
@@ -270,9 +264,16 @@ class TrListener implements TrucoListener
 		
 		vPoints = tGame.getDetallesDeLaMano();
 		 
-		sStrings = new String[vPoints.size()];
-		for (int i = 0; i < sStrings.length; i++)
+		sStrings = new String[vPoints.size() + (table.getStatus() == Table.WATCH ? 0 : 1)];
+		for (int i = 0; i < vPoints.size(); i++)
 			sStrings[i] = ((PointsDetail) vPoints.get(i)).aString();
+
+		if (table.getStatus() != Table.WATCH)
+		{			
+			sStrings[sStrings.length - 1] = "Presiona Ok para continuar";
+			table.setStatus(Table.WAIT);
+			table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
+		}
 			
 		table.getTTextAnimator().showStrings
 		(
@@ -283,10 +284,7 @@ class TrListener implements TrucoListener
 				Color.ORANGE
 			}, -50, 500, 15000
 		);
-		///////////////////
 		
-		table.setStatus(Table.WAIT);
-		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
 		endOfHand = true;
 	}
 	
@@ -303,15 +301,17 @@ class TrListener implements TrucoListener
 		for (int i = 0; i < 3; i++)
 			System.out.println(cards[i].getDescription());
 		
-		// carga las señas
-		for (int i = 0; i < 3; i++)
-		{
-			sign = Sign.getSign(cards[i]);
-			if (sign != Sign.NONE) table.addSign(sign);
-		}
-		
 		if (event.getPlayer() == getAssociatedPlayer())
+		{
+			// carga las señas
+			for (int i = 0; i < 3; i++)
+			{
+				sign = Sign.getSign(cards[i]);
+				if (sign != Sign.NONE) table.addSign(sign);
+				System.out.println(table.getPlayer().getName() + " con seña " + Sign.getName(sign));
+			}
 			getCManager().showCards(cards);
+		}
 	}
 	
 	public void handStarted(TrucoEvent event)
@@ -320,10 +320,7 @@ class TrListener implements TrucoListener
 		int dealPos, turnPos;
 		CardManager cManager;
 
-		///////////////////
-		// CODIGO NUEVO ///
 		table.getTTextAnimator().clearAll();
-		///////////////////
 		
 		table.getJTrucoTable().jlSaying.setText("Canto: ");
 		
@@ -348,13 +345,14 @@ class TrListener implements TrucoListener
 		cManager.take();
 		cManager.putDeckInTable
 		(
-		playerCount() * 3 * 250 + 100, turnPos
+			playerCount() * 3 * 250 + 100, turnPos
 		);
 	}
 	
 	public void endOfGame(TrucoEvent event)
 	{
 		System.out.println("End of game for player " + table.getPlayer());
+		table.getJTrucoTable().getJButton("Ayuda").setEnabled(true);
 		table.initialize();
 		table.getTEventMan().fireGameFinished();
 	}
@@ -387,12 +385,12 @@ class TrListener implements TrucoListener
 			face.pushText(null, false, 100);
 		}
 		
-		// muestra el mensaje también en el chat si está jugando
-		if (!(table.getStatus() == Table.WATCH))
-			table.getJTrucoTable().jpChat.showChatMessage
-			(
-				player, text
-			);
+//		// muestra el mensaje también en el chat si está jugando
+//		if (!(table.getStatus() == Table.WATCH))
+//			table.getJTrucoTable().jpChat.showChatMessage
+//			(
+//				player, text
+//			);
 	}
 	
 	/** Retorna el animador */

@@ -7,7 +7,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 /** 
  * Maneja la posicion de los jugadores en la mesa
  */
-public class PlayerManager
+class PlayerManager
 {
 
 	protected TrucoPlayer actualPlayer;
@@ -46,7 +46,7 @@ public class PlayerManager
 	 * Para al jugador en una silla
 	 * @param chair		Silla
 	 */
-	public void standPlayer(int chair)
+	public TrucoPlayer standPlayer(int chair)
 	{
 		TrucoPlayer player;
 		
@@ -56,6 +56,7 @@ public class PlayerManager
  		if (actualPlayer == player) actualPlayer = null; 
 
 		players.set(chair, null);
+		return player;
 	}
 	
 	public void setActualPlayer(TrucoPlayer p)
@@ -126,10 +127,9 @@ public class PlayerManager
 		
 		teamCount = new int[2]; 
 		
-		for (int i = 0; i < getPlayerCount(); i+=2)
+		for (int i = 0; i < getPlayerCount(); i++)
 		{
-			teamCount[0] += (getPlayer(i) != null) ? 1 : 0;
-			teamCount[1] += (getPlayer(i+1) != null) ? 1 : 0;
+			teamCount[i%2] += (getPlayer(i) != null) ? 1 : 0;
 		}
 		
 		return teamCount;

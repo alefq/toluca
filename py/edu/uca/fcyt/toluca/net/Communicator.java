@@ -204,7 +204,7 @@ implements RoomListener, TableListener,TrucoListener
 				}else{
 				
 					player.setAttribute("name",jug.getName());
-					int chair=mesa.getPlayerManager().getChair(jug);
+					int chair=mesa.getChair(jug);
 					player.setAttribute("chair",String.valueOf(chair));
 				}
 				eleMesa.addContent(player);

@@ -36,7 +36,9 @@ public class CommunicatorServer extends Communicator
 	}
 	public void signSent(TableEvent te)
 	{
-		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
+		//new Throwable("nada implementado aun :-(").printStackTrace(System.out);
+		Document doc=te.toXml();
+		super.sendXmlPackage(doc);
 	}
 	public void playerSit(TableEvent te)
 	{
@@ -59,7 +61,9 @@ public class CommunicatorServer extends Communicator
 	}
 	public void playerStanded(TableEvent te)
 	{
-		new Throwable("nada implementado aun :-(").printStackTrace(System.out);
+		//new Throwable("nada implementado aun :-(").printStackTrace(System.out);
+		Document doc=te.toXml();
+		super.sendXmlPackage(doc);
 	}
 	public void playerStandRequest(TableEvent te)
 	{
@@ -259,6 +263,102 @@ public class CommunicatorServer extends Communicator
 			
 		}
 	}
+	String signjugador;
+	String signjugador2;
+	String signAux;
+	String signTable;//variables chanchas
+	public void xmlReadSignSendRequest(Object o)
+		{
+					String aux;
+					if (o instanceof Element)
+					{
+						Element element = (Element) o;
+						aux = element.getName();
+						if (aux.compareTo("Player") == 0)
+						{
+								signjugador=element.getAttributeValue("name");
+								signAux=element.getAttributeValue("sign");					
+							    signjugador2=element.getAttributeValue("name2");						
+						}
+						if (aux.compareTo("Table") == 0)
+						{
+								signTable=element.getAttributeValue("id");
+															
+						}
+						List children = element.getContent();
+						Iterator iterator = children.iterator();
+						while (iterator.hasNext())
+						{
+							Object child = iterator.next();
+							xmlReadSignSendRequest(child);
+						}
+						if(aux.compareTo("SignSendRequest")==0){
+							System.out.println("El player es : "+signjugador);
+							System.out.println("La seña es: "+signAux);
+							System.out.println("La table : "+signTable);
+							
+							TrucoPlayer jug=pieza.getPlayer(signjugador);
+							TrucoPlayer jug2=pieza.getPlayer(signjugador2);
+							TableServer tabela=(TableServer)pieza.getHashTable().get(new Integer(signTable));
+							TableEvent te=new TableEvent(TableEvent.EVENT_signSent,tabela,jug,jug2,Integer.parseInt(signAux));
+							tabela.showSign(te);
+						
+						}
+					}
+	
+		}
+	public void xmlReadPlayerLeftRoomRequest(Object o)
+	{
+				String aux;
+				if (o instanceof Element)
+				{
+					Element element = (Element) o;
+					aux = element.getName();
+					if (aux.compareTo("Player") == 0)
+					{
+							String jugname=element.getAttributeValue("name");
+							System.out.println("El player que va a salir es"+jugname);
+							TrucoPlayer jug=pieza.getPlayer(jugname);
+							pieza.removePlayer(jug);
+							
+					}
+					List children = element.getContent();
+					Iterator iterator = children.iterator();
+					while (iterator.hasNext())
+					{
+						Object child = iterator.next();
+						xmlReadPlayerLeftRoomRequest(child);
+					}
+				}
+	
+	}
+	public void xmlReadPlayerStandRequest(Object o)
+		{
+			String aux;
+			if (o instanceof Element)
+			{
+				Element element = (Element) o;
+				aux = element.getName();
+				if (aux.compareTo("Table") == 0)
+				{
+						String tableid=element.getAttributeValue("id");
+						String chair=element.getAttributeValue("chair");
+						System.out.println("La tabla es: "+tableid+"La silla es: "+chair);
+						TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tableid)));
+						TableEvent te=new TableEvent(TableEvent.EVENT_playerStanded,tabela,null,null,Integer.parseInt(chair));
+						
+						tabela.standPlayer(te);
+				}
+				List children = element.getContent();
+				Iterator iterator = children.iterator();
+				while (iterator.hasNext())
+				{
+					Object child = iterator.next();
+					xmlReadPlayerStandRequest(child);
+				}
+			}
+	
+		}
 	public void xmlReadChatMsg(Object o)
 	{
 		String aux;
@@ -483,6 +583,18 @@ public class CommunicatorServer extends Communicator
 		if (aux.compareTo("TableLeftRequest")== 0){
 			xmlReadTableLeftRequest(child);
 		}
+		if(aux.compareTo("PlayerStandRequest")==0){
+			xmlReadPlayerStandRequest(child);
+		}
+		if(aux.compareTo("PlayerLeftRoomRequest")==0){
+				xmlReadPlayerLeftRoomRequest(child);
+		}
+		if(aux.compareTo("SignSendRequest")==0){
+				xmlReadSignSendRequest(child);
+		}		
+		
+		
+		
 
 	}
 	/**
@@ -683,7 +795,7 @@ public class CommunicatorServer extends Communicator
 					//La linea de arrriba fue cambiada por cricco ahora se usa la de abajo
 					TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tid)));
 					System.out.println("********#######Dentro de sit 1\n"+tabela);
-					if(tabela.getPlayerManager().getChair(pieza.getPlayer(otroPlayerName))>=0)
+					if(tabela.getChair(pieza.getPlayer(otroPlayerName))>=0)
 					{
 						System.out.println("El player ya esta sentado jodetec citttt");
 					} 
@@ -793,7 +905,22 @@ public class CommunicatorServer extends Communicator
 		Document doc = event.toXml();
 		super.sendXmlPackage(doc);
 	}
-	
+public Document xmlCreatePlayerLeftRoom(RoomEvent re)
+{
+	Element ROOT=new Element("PlayerLeftRoom");
+	Element PLAYER=new Element("Player");
+	PLAYER.setAttribute("name",re.getUser());
+	ROOT.addContent(PLAYER);
+	Document doc=new Document(ROOT);
+	return doc;
+}
+	public void playerLeft(RoomEvent re)
+	{
+		System.out.println("Voy a avisar que : "+player.getName()+"salio");
+		Document doc=xmlCreatePlayerLeftRoom(re);
+		super.sendXmlPackage(doc);
+		
+	}
 	public void endOfGame(TrucoEvent event)
 	{
 		Document doc = event.toXml();

@@ -79,7 +79,7 @@ class CardManager implements Animable
 
 
 		for (int i = 0; i < playerCount; i++)
-			players[i].pushState(players[dealer], 0);
+			players[i].pushState(players[dealer], 1, 0);
 	}
 
 	/** Reparte las cartas */
@@ -92,24 +92,6 @@ class CardManager implements Animable
 		// verificaciones
 		Util.verifParam(dealer < playerCount, "Parámetro 'dealer' inválido");
 
-//		for (int i = 0; i < players.length; i++)
-//		{
-//			for (int j = 0; j < 3; j++)
-//			{
-//				
-//				tCard = players[i].getTableCard(j);
-//			
-//				if (touch)
-//					startPause = ((i + playerCount - dealer - 1) * 3 + j) % (3 * players.length) * 250;
-//				else 
-//					startPause = ((j + 1) * playerCount + i - dealer - 1) % (3 * playerCount) * 250;
-//
-//				tCard.pushPause(startPause);
-//				players[i].setDraw(j, 350);
-////				tCard.pushPause(2000 - startPause);
-//				tCard.pushPause(players.length * 3 * 250 - 100 - (250 * (playerCount - i - 1 + dealer) % (3 * playerCount)) - startPause);
-//			}
-//		}
 		Integer dealInt;
 		
 		dealInt = new Integer(dealer);
@@ -258,7 +240,7 @@ class CardManager implements Animable
 		);
 
 		for (int i = 0; i < playerCount; i++)
-			players[i].pushState(players[dealer], 1000);
+			players[i].pushState(players[dealer], 1, 1000);
 	}
 
 //	/** Asigna las cartas del jugador actual */
@@ -292,7 +274,7 @@ class CardManager implements Animable
 	synchronized public void showPlayed(int player)
 	{
 		players[player].setShowPlayed(false, 500);
-		players[player].pushPause(500);
+		players[player].pushPause(1500);
 		players[player].setShowPlayed(true, 500);
 	}
 
@@ -468,6 +450,8 @@ class CardManager implements Animable
 	{
 		for (int i = 0; i < players.length; i++)
 			players[i].setOut(biOut, afTrans);
+			
+		tDeck.setOut(biOut, afTrans);
 	}
 
 }

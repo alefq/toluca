@@ -21,7 +21,10 @@ class TableDeck implements Animable
 		// crea los TableCards
 		cards = new TableCard[nCards];
 		for (int i = 0; i < cards.length; i++)
+		{
 			cards[i] = new TableCard();
+			cards[i].setBlackOutline(i < cards.length - 1);
+		}
 	}
 
 	// agrega una nueva posición del maso

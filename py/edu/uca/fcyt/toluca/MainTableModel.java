@@ -6,6 +6,7 @@
 
 package py.edu.uca.fcyt.toluca;
 
+
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
@@ -60,16 +61,17 @@ public class MainTableModel extends AbstractTableModel
             else if(col==1)
                 ret = "Observar";
                 else if(col>1 && col<8)
-                    ret = fila.getPlayerName(col);
+                    ret = fila.getPlayerName(col-2);
                   //  ret = String.valueOf( fila.getPlayer(col));
                     else if(col==8)
-                        for(int i=0; i<fila.cuantosObservadores();i++)
+                        for(int i=0; i<fila.cuantosObservadores();i++){
                             ret = ret.concat( String.valueOf( fila.getObservador(i) ));
-			else
+                            ret = ret.concat(", ");
+                        }
+                        else
                             System.out.println("Columna no definida");
         }//if row < filas.size()
-        System.out.println("///*******Sin NULL???****//////////////");
-        System.out.println("El valor para la tabla es= " + ret);
+       
 	return ret;
     }
 	   
@@ -94,14 +96,30 @@ public class MainTableModel extends AbstractTableModel
     public void setValueAt(Object value, int row, int col)
     {
         Fila fila = (Fila) filas.get(row);
-	if (col>1 && col<8)
-            fila.setPlayer( (TrucoPlayer) value, col);
-	else if( col == 8)
-            fila.setObservador((TrucoPlayer) value);
-		   
+        System.out.println("Dentro de setValueAt Clase Main Table Model");
+        fila.impJugadores();
+		if (col>1 && col<8){
+            System.out.println("Agregando el player a la Tabla Principal");
+            fila.setPlayer(value, col-2);
+        } else if( col == 8){
+            System.out.println("Agregando el observador a la Tabla Principal");
+            fila.setObservador(value);
+        }
         fireTableDataChanged();
     }
-	   
+
+    /*
+     * Se le agrega al player como observador
+     */
+    public void addObserver(TrucoPlayer player, int TableNumber){
+       Fila filaTmp = new Fila();
+       for(int i=0; i<filas.size(); i++){
+            filaTmp = (Fila) filas.get(i);
+            if( filaTmp.getFilaNumber() == TableNumber)
+                setValueAt(player.getName(), i, 8);
+       }
+    }
+    
     /*
     * Se inserta una fila/mesa
     */
@@ -124,15 +142,15 @@ public class MainTableModel extends AbstractTableModel
     }
 	   
     /*
-    * Elimina la mesa numero row de la tabla.
+    * Elimina la mesa numero "tableNumber" de la Tabla.
     */
-    public void removeRow(int row)
+    public void removeRow(int tableNumber)
     {
         Fila fila = new Fila();
 	for(int i=0; i<filas.size();i++)
 	{                                       //recorre el vector de filas
             fila = (Fila)filas.get(i);
-            if( fila.getFilaNumber() == row)
+            if( fila.getFilaNumber() == tableNumber)
             {                                   //busca la fila que me interesa
                 filas.remove(i);
 		System.out.println("Aca se remueve la fila");
@@ -154,7 +172,7 @@ public class MainTableModel extends AbstractTableModel
             fila = (Fila)filas.get(i);
             if( fila.getFilaNumber() == row)
             {                                   // si es la fila correcta
-                filas.set(i,player);          // se modifica el player
+                filas.set(i,player.getName());          // se modifica el player
 		fireTableDataChanged();
 		i = filas.size() + 10;
             }
@@ -164,16 +182,24 @@ public class MainTableModel extends AbstractTableModel
     /*
     * Se le agrega al player a la mesa numero tableNumber
     */
-    public void addPlayer(TrucoPlayer player, int tableNumber)
+    public void addPlayer(TrucoPlayer player, int tableNumber, int chair)
     {
         new Exception("").printStackTrace(System.out);
-	Fila fila = new Fila();
+		Fila fila=null;
 	   
-	for(int i=0; i<filas.size(); i++)
-	{
+		for(int i=0; i<filas.size(); i++)
+		{
             fila = (Fila) filas.get(i);
             if( fila.getFilaNumber() == tableNumber)
-                fila.addPlayer(player);
+            {
+            	System.out.println("Agregando el player a la Tabla numero:"+tableNumber);
+            	System.out.println("El player: "+player.getName()+" Silla: "+chair);
+            	fila.impJugadores();
+            	setValueAt(player.getName(), i, chair + 2);
+            	System.out.println("Despues de setear dentro de addplayer mtm");
+            	fila.impJugadores();
+                //fila.addPlayer(player.getName());
+			}
         }
     }
 	   
@@ -182,23 +208,16 @@ public class MainTableModel extends AbstractTableModel
     * Si el player quiere observar, se controla que no este observando ya.
     * Si el player quiere jugar, se controla que no juegue dos veces en la misma mesa.
     */
+    /*
     public void addPlayer(TrucoPlayer player, int row, int column)
     {
         Fila fila = (Fila) filas.get(row);
-	if( fila.isPlayer(player) == 0)   // si no esta jugando en la mesa
-	{
-            if(column == 1)         //si quiere observar
-            {
-                if( fila.isObservador(player) == false) //si no esta de observador
-                    setValueAt(player, row, column);
-            } else if ( column>1 && column<8){ //si quiere jugar
-		setValueAt(player, row, column);
-            }
-	} else {                // si ya esta en esta mesa
-            System.out.println("El jugador ya se encuentra en esa mesa");
-	}
-    }
-	   
+		if( fila.isPlayer(player.getName()) == 0)   // si no esta jugando en la mesa
+             if ( column>1 && column<8) //si quiere jugar
+				setValueAt(player.getName(), row, column);
+        
+    }deprecated by Leti P
+	  */ 
     /*
     * El jugador "player" se elimina de la tabla principal.
     * Se le elimina de todas las mesas donde este jugando.
@@ -206,19 +225,41 @@ public class MainTableModel extends AbstractTableModel
     public void removePlayer(TrucoPlayer player)
     {
         Fila fila = new Fila();
-	int columnaJugador = 0;
-		   
-	for(int i=0; i<filas.size();i++)
-	{
-            fila = (Fila)filas.get(i);
-            columnaJugador = fila.isPlayer(player);
-            if( columnaJugador > 0)
-            {
-                setValueAt( new String("Libre"), i, columnaJugador - 1);
-            }
-	}
+		int columnaJugador = 0;
+			   
+		for(int i=0; i<filas.size();i++)
+		{
+	    	fila = (Fila)filas.get(i);
+	        columnaJugador = fila.isPlayer(player.getName());
+	        if( columnaJugador > 0)
+	        {
+	            setValueAt( new String("Libre"), i, columnaJugador - 1);
+	        }
+		}
     }
-	   
+    
+    /*
+     * El jugador "player" se elimina de la mesa "tableNumber"
+     */
+    public void removePlayer(TrucoPlayer player, int tableNumber){
+        
+        Fila fila = new Fila();
+        int chair = 0;
+        for(int i=0; i<filas.size(); i++){
+            fila = (Fila)filas.get(i);
+            if ( fila.getFilaNumber()== tableNumber){
+            	chair = fila.isPlayer(player.getName()) - 1;
+            	System.out.println("Se levanto="+ player.getName()+" de la mesa"+tableNumber+" de la silla="+chair);
+				
+				setValueAt( new String("Libre"), i, chair+2);
+                
+                //fila.removePlayer(player.getName());
+               // fireTableDataChanged();
+            }
+        }
+    }
+    
+    
     /*
      * Se modifican los datos del jugador "player" en la tabla principal.
      */
@@ -230,12 +271,41 @@ public class MainTableModel extends AbstractTableModel
 	for(int i=0; i<filas.size();i++)
 	{
             fila = (Fila)filas.get(i); // se mira una fila
-            columnaJugador = fila.isPlayer(player); //se ve si el jugador esta en esa fila
+            columnaJugador = fila.isPlayer(player.getName()); //se ve si el jugador esta en esa fila
             if( columnaJugador > 0)
             {
-                setValueAt( player, i, columnaJugador - 1);
+                setValueAt( player.getName(), i, columnaJugador - 1);
             }
 	}
     }
-	   
+    
+    /*
+     * Setea el status de la mesa "tableNumber".
+     */
+    public void setGameStatus(int tableNumber, boolean status)
+    {
+        Fila fila = new Fila();
+	for(int i=0; i<filas.size(); i++)
+	{                                       //recorre el vector de filas
+            fila = (Fila)filas.get(i);
+            if( fila.getFilaNumber() == tableNumber)
+            {                                   //busca la fila que me interesa
+                fila.setGameStatus(status);     // setea el status de la mesa
+		i = filas.size() + 10;          // para que salga del ciclo
+            }
+	}
+    }
+    
+    /*
+     * Retorna el status de la mesa que se encuentra almacenada en la 
+     * fila "row" de la Tabla Principal
+     */
+    public boolean getGameStatus(int row){
+        
+        Fila fila = new Fila();
+	fila = (Fila)filas.get(row);
+        return fila.getGameStatus();
+        
+    }
+    
 }// Fin de la Clase MainTableModel

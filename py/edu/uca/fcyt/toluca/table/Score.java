@@ -117,7 +117,7 @@ class Score extends JPanel implements ComponentListener {
 		g.setColor(Color.BLACK);
 		g.drawRect(x,y,20,5);		
 		
-		//Dibuja la punta del fosforo
+
 		g.setColor(Color.RED);
 		if(posicion == ARRIBA){
 			g.fillOval(x-9, y-2, ballDim, ballDim);

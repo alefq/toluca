@@ -18,15 +18,18 @@ class JTrucoTable extends JPanel implements ComponentListener
 {
 	public static final int BUTTON_INICIAR_OK = 0;
 	public static final int BUTTON_HECHAR = 1;
+	public static final int BUTTON_AYUDA = 2;
+
 	// paneles
 	protected JPanel jpPlayers; 	// panel de jugadores
 	protected ChatPanel jpChat;		// panel de chat
 	protected JPanel jpLeftPanel;	// panel izquierdo
 	protected Score score;			// panel de puntajes
-	protected Watchers jpWatchers;	// observadores
+	protected JPlayers jpWatchers;	// observadores
 	protected PlayTable pTable;
 	protected JButton[] buttons;
 	protected JLabel jlSaying;
+	protected Actions actions;
 
 	/**
 	 * Construye un JTrucoTable con ptListener
@@ -40,7 +43,7 @@ class JTrucoTable extends JPanel implements ComponentListener
 		jpPlayers = new JPanel();
 		jpChat = new ChatPanel(table, table.getPlayer());
 		score = new Score(30);
-		jpWatchers = new Watchers();
+		jpWatchers = new JPlayers();
 
 		// agrega
 		jpPlayers.add(jlSaying = new JLabel("Canto: "));
@@ -63,14 +66,16 @@ class JTrucoTable extends JPanel implements ComponentListener
 			buttons = new JButton[]
 			{
 				new JButton("Iniciar"),
-				new JButton("Echar")
+				new JButton("Echar"),
+				new JButton("Ayuda")
 			};
 		}
 		else
 		{
 			buttons = new JButton[]
 			{
-				new JButton("Iniciar")
+				new JButton("Iniciar"),
+				new JButton("Ayuda")
 			};
 		}
 		
@@ -82,7 +87,7 @@ class JTrucoTable extends JPanel implements ComponentListener
 		jpLeftPanel.setLayout(new BoxLayout(jpLeftPanel, BoxLayout.Y_AXIS));
 		jpLeftPanel.add(obs);
 		jpLeftPanel.add(jpWatchers);
-		jpLeftPanel.add(new Actions(buttons, table));
+		jpLeftPanel.add(actions = new Actions(buttons, table, table));
 		jpLeftPanel.setPreferredSize(new Dimension(125,200));
 
 //		pTable.setBorder(new EtchedBorder());
@@ -123,5 +128,13 @@ class JTrucoTable extends JPanel implements ComponentListener
 
 	private void resizeComponents()
 	{
+	}
+	
+	public JButton getJButton(String text)
+	{
+		for (int i = 0; i < buttons.length; i++)
+			if (buttons[i].getText().equals(text)) return buttons[i];
+		
+		return null;
 	}
 }

@@ -20,32 +20,12 @@ public class Animator implements Runnable, ObjectsPainter
 	protected Vector anims; // c. en la mesa
 	private Vector faces; // caritas
 	public boolean drawComplete;
-	private static int delay = 20;
-//	private static final long delayDelta = getDelta();
+	private int delay = 20;
 	private static int animCount = 0;
 	private boolean alive = true;
 	private static boolean counterAlive;
 	private BufferedImage[] biOut;
 	private AffineTransform afTrans;
-	
-	private static void startCalc()
-	{
-		Thread ret;
-		
-		new Thread()
-		{
-			public void run()
-			{
-				counterAlive = true;
-				
-				while(counterAlive)
-				{
-					calcDelay();
-					Util.wait(this, 1000);
-				}
-			}
-		}.start();
-	}
 	
 	/**
      * Construye un nuevo Animator con 'gPainter' asociado
@@ -55,10 +35,7 @@ public class Animator implements Runnable, ObjectsPainter
 		this.gPainter = gPainter;
 		anims = new Vector(0, 3);
 		faces = new Vector(0, 2);
-//		delay += delayDelta;
 		animCount ++;
-//		if (animCount == 1) startCalc();
-//		calcDelay();
 	}
 	
 	/**
@@ -177,27 +154,6 @@ public class Animator implements Runnable, ObjectsPainter
 		return (Animable) anims.get(index);
 	}
 	
-	private static int getDelta()
-	{
-    	long start;
-    	long sum = 0;
-    	
-    	start = System.currentTimeMillis();
-    	while(start + 10 > System.currentTimeMillis())
-    		sum ++;
-    		
-    	return (int) (1000000 /  (sum + 1));
-	}
-	
-	private static void calcDelay()
-	{
-		int delta = getDelta();
-		delay = (int) (delay * .6 + animCount * delta * .4);
-		delay = 20;
-		// TODO ¡Frames per second!
-//		System.out.println("Delay: " + delay);
-	}
-	
 	/**
      * Finaliza la ejecución de este animador
      */
@@ -225,4 +181,8 @@ public class Animator implements Runnable, ObjectsPainter
 			((Animable) anims.get(i)).setOut(biOut, afTrans);
 	}
 
+	public void setDelay(int delay)
+	{
+		this.delay = delay;
+	}
 }

@@ -6,8 +6,11 @@ import java.awt.image.BufferedImage;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 
 import javax.swing.ImageIcon;
+import java.awt.Color;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.toluca.table.animation.Animable;
@@ -34,7 +37,8 @@ class TableCard implements Animable, StateListener
 	private LinkedList stateListeners;	// listeners de eventos
 	private BufferedImage[] biOut;
 	private AffineTransform afTrans;
-	
+	private Graphics2D[] grOut;
+	private boolean blackOutline = false;
 
 	/**
      * Construye un TableCard sin carta en él
@@ -46,28 +50,6 @@ class TableCard implements Animable, StateListener
 		stateListeners = new LinkedList();
 		states.addListener(this);
 	}
-	
-	/**
-     * Establece el Card asociado con este TableCard
-     */
-//	synchronized public void setCard(Card card)
-//	{
-//		// verificaciones
-//		Util.verifParam(card != null, "Parámetro 'card' es nulo");
-//		
-//		// si no hay BufferedImage, crearlo
-//		if (biCard == null) biCard = new BufferedImage
-//		(
-//			CARD_WIDTH, CARD_HEIGHT,
-//			BufferedImage.TYPE_3BYTE_BGR
-//		);
-//		
-//		// copia la imágen de la carta en el BufferedImage 'img'
-//		Util.copyImage(card.getImageIcon(), biCard);
-//
-//		// Guarda la referencia a la carta
-//		this.card = card;
-//	}
 	
 	/** 
 	 * Agrega un nuevo estado a la cola de estados a animar,
@@ -110,26 +92,12 @@ class TableCard implements Animable, StateListener
 		return back;
 	}
 	
-//	/**
-//     * Devuelve una cadena identificadora del TableCard
-//     */
-//	public String toString()
-//	{
-//		String ret;
-//		ret = super.toString();
-//		if (card != null)
-//			ret += " [" + card.getValue() 
-//				+ " of " + Util.getKindName(card.getKind()) + "]";
-//				
-//		return ret;
-//	}
-
 	public void paint(int buffIndex)
 	{
 		int centX, centY;
 		BufferedImage biCard;
 		TCardState cState;
-		AffineTransform afTrans;
+		AffineTransform afTrans, oldAfTrans;
 		
 		if (this.afTrans == null) return;
 		if (this.biOut == null) return; 
@@ -169,31 +137,26 @@ class TableCard implements Animable, StateListener
 			(int) - centX,
 			(int) - centY
 		);
-
-		// dibuja la imagen 'bfIn' en 'bfOut
-		new AffineTransformOp
-		(
-			afTrans, AffineTransformOp.TYPE_BILINEAR
-		).filter(biCard, this.biOut[buffIndex]);
-	}
+		
+		
+		if (blackOutline)
+		{
+			oldAfTrans = grOut[buffIndex].getTransform();
+			grOut[buffIndex].setTransform(afTrans); 
 	
-//    public void clear(Graphics2D grOut)
-//    {
-//    	TCardState cState;
-//    	
-//    	cState = (TCardState) states.getCurrState();
-//    	
-//    	if (cState == null) return;
-////		grOut.setColor(new Color((int) (Math.random() * Math.pow(2, 24))));
-//		grOut.setColor(Color.GREEN.darker());
-//		grOut.fillRect
-//		(
-//			(int) cState.x - TableCard.CARD_RADIUS,
-//			(int) cState.y - TableCard.CARD_RADIUS,
-//			(int) TableCard.CARD_DIAMETER, 
-//			(int) TableCard.CARD_DIAMETER
-//		);
-//	}
+			grOut[buffIndex].drawRoundRect
+			(
+				3, 3, CARD_WIDTH-6, CARD_HEIGHT-6, 2, 2 			
+			);
+			grOut[buffIndex].setTransform(oldAfTrans);
+		}
+		else
+			// dibuja la imagen 'bfIn' en 'bfOut
+			new AffineTransformOp
+			(
+				afTrans, AffineTransformOp.TYPE_BILINEAR
+			).filter(biCard, biOut[buffIndex]);
+	}
 	
 	/**
      * Agrega una pausa a la cola de estados
@@ -320,6 +283,13 @@ class TableCard implements Animable, StateListener
 	{
 		this.biOut = biOut;
 		this.afTrans = afTrans;
+		grOut = new Graphics2D[biOut.length];
+		for (int i = 0; i < biOut.length; i++)
+		{
+			grOut[i] = biOut[i].createGraphics();
+			grOut[i].setStroke(new BasicStroke(5)); 
+			grOut[i].setColor(Color.BLACK);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -329,6 +299,12 @@ class TableCard implements Animable, StateListener
 	{
 		// TODO Auto-generated method stub
 
+	}
+	
+	/** Establece si la carta se muestra o se muestra un borde negro */
+	public void setBlackOutline(boolean on)
+	{
+		blackOutline = on;
 	}
 
 }

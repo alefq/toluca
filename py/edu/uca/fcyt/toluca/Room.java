@@ -3,12 +3,15 @@ package py.edu.uca.fcyt.toluca;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-
+import java.util.Enumeration;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableServer;
+
+
  
 /**
  *
@@ -173,8 +176,11 @@ implements ChatPanelContainer {
         System.out.println("Va a imprimr el hash de players by Cricco");
         py.edu.uca.fcyt.util.HashUtils.imprimirHash(players);
     }
-	public Hashtable getHashPlayers(){return players;}
-	public Hashtable getHashTable(){return tables;}
+    
+    public Hashtable getHashPlayers(){return players;}
+    
+    public Hashtable getHashTable(){return tables;}
+        
     public void addTable(Table table) {        /** lock-end */
         if (this instanceof RoomClient) {
             System.out.println("Voy a agregar en el cliente la tabela: " + table.getOrigin());
@@ -202,10 +208,13 @@ implements ChatPanelContainer {
      * @param player El jugador que hay que sacar
      * </p>
      */
-    public void removePlayer(TrucoPlayer player) {        /** lock-end */
-        players.remove(player);
-    } // end removePlayer        /** lock-begin */
-    
+// end removePlayer        /** lock-begin */
+   public void removePlayer(TrucoPlayer player) {        /** lock-end */
+	   //le quita del vector de players
+	 
+	   players.remove(player);
+	 //  firePlayerLeft();
+   }     
     /**
      * <p>
      * Modifcar los datos del jugador que esta en el Room
@@ -227,6 +236,14 @@ implements ChatPanelContainer {
     public String getOrigin() {
         return "room";
     }
+    
+    /*
+     * Metodo nuevo.
+     * Remueve una mesa de la Lista de Mesas en juego
+     */
+    public void removeTable(Table table) {        /** lock-end */
+        tables.remove(table);
+    } 
     
 } // end Room
 

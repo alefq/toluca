@@ -30,6 +30,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableServer;
 /**
  *
  * @author  PABLO JAVIER
@@ -76,7 +77,7 @@ public class CommunicatorClient extends Communicator
 		try
 		{
 			//setSocket(new Socket("interno.roshka.com.py", 6767));
-			setSocket(new Socket("ray-ray.roshka.com.py", 6767));
+			setSocket(new Socket("localhost", 6767));
 			//setSocket(new Socket("localhost", 6767));
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 		} catch (UnknownHostException e)
@@ -120,7 +121,49 @@ public class CommunicatorClient extends Communicator
 	{
 		System.out.println("El XML tiene errores:\n" + rawXmlPackage);
 	}
+	String signjugador;
+	String signjugador2;
+	String signAux;
+	String signTable;
+	public void xmlReadSignSent(Object o)
+			{
+						String aux;
+						if (o instanceof Element)
+						{
+							Element element = (Element) o;
+							aux = element.getName();
+							if (aux.compareTo("Player") == 0)
+							{
+									signjugador=element.getAttributeValue("name");
+									signAux=element.getAttributeValue("sign");					
+								    signjugador2=element.getAttributeValue("name2");
+							}
+							if (aux.compareTo("Table") == 0)
+							{
+									signTable=element.getAttributeValue("id");
+															
+							}
+							List children = element.getContent();
+							Iterator iterator = children.iterator();
+							while (iterator.hasNext())
+							{
+								Object child = iterator.next();
+								xmlReadSignSent(child);
+							}
+							if(aux.compareTo("SignSent")==0){
+								System.out.println("El player es : "+signjugador);
+								System.out.println("La seña es: "+signAux);
+								System.out.println("La table : "+signTable);
+							
+								TrucoPlayer jug=pieza.getPlayer(signjugador);
+								TrucoPlayer jug2=pieza.getPlayer(signjugador2);
+								Table tabela=(Table)pieza.getHashTable().get(new Integer(signTable));
+								TableEvent te=new TableEvent(TableEvent.EVENT_signSent,tabela,jug,jug2,Integer.parseInt(signAux));
+								tabela.showSign(te);
+							}
+						}
 	
+			}
 	public void loginRequested(RoomEvent te)
 	{
 		//peticion de loginc
@@ -149,14 +192,52 @@ public class CommunicatorClient extends Communicator
 		doc = super.xmlCreateChatMsg(chatPanelContainer, jug, htmlMessage);
 		super.sendXmlPackage(doc);
 	}
+	public Document xmlCreatePlayerLeftRoom(RoomEvent re)
+	{
+		Element ROOT=new Element("PlayerLeftRoomRequest");
+		Element PLAYER=new Element("Player");
+		PLAYER.setAttribute("name",re.getUser());
+		ROOT.addContent(PLAYER);
+		Document doc=new Document(ROOT);
+		return doc;
+	}
+	public void xmlReadPlayerLeftRoom(Object o)
+		{
+					String aux;
+					if (o instanceof Element)
+					{
+						Element element = (Element) o;
+						aux = element.getName();
+						if (aux.compareTo("Player") == 0)
+						{
+								String jugname=element.getAttributeValue("name");
+								System.out.println("El player que va a salir es"+jugname);
+								TrucoPlayer jug=pieza.getPlayer(jugname);
+								pieza.removePlayer(jug);
+							
+						}
+						List children = element.getContent();
+						Iterator iterator = children.iterator();
+						while (iterator.hasNext())
+						{
+							Object child = iterator.next();
+							xmlReadPlayerLeftRoom(child);
+						}
+					}
 	
+		}
 	public void playerLeft(TableEvent te)
 	{
+		System.out.println("\n SE EJECUTA EL PLAYER LEFT EN EL CLIENTE \n");
 		Document doc = te.toXml();
 		sendXmlPackage(doc);
 	}
 	
-
+	public void playerLeft(RoomEvent re) {
+		//	new Exception("Not implemented yet");		
+		Document doc=xmlCreatePlayerLeftRoom(re);
+		super.sendXmlPackage(doc);
+	}
 	public void xmlReadChatMsg(Object o)
 	{
 		String aux;
@@ -459,6 +540,16 @@ public class CommunicatorClient extends Communicator
 		{
 			xmlReadInfoGame(child);
 		}
+		if(aux.compareTo("PlayerStand")==0){
+			xmlReadPlayerStand(child);
+		}
+		if(aux.compareTo("PlayerLeftRoom")==0){
+			xmlReadPlayerLeftRoom(child);
+		}
+		if(aux.compareTo("SignSent")==0){
+			xmlReadSignSent(child);
+		}		
+		
 	}
 	
 	
@@ -1126,6 +1217,8 @@ public class CommunicatorClient extends Communicator
 					py.edu.uca.fcyt.util.HashUtils.imprimirHash(pieza.getHashTable());
 					System.out.println("La tabla en la que se va a sentar es: "+tabela);
 					tabela.sitPlayer(pieza.getPlayer(userAux2), posAux);
+					pieza.setearPlayerTable(pieza.getPlayer(userAux2),tabela,posAux);
+					
 				} catch (java.lang.NullPointerException e)
 				{
 					System.out.println(
@@ -1234,7 +1327,34 @@ public class CommunicatorClient extends Communicator
 			}
 		}
 	}
+	public void xmlReadPlayerStand(Object o)
+			{
+				String aux;
+				if (o instanceof Element)
+				{
+					Element element = (Element) o;
+					aux = element.getName();
+					if (aux.compareTo("Table") == 0)
+					{
+							String tableid=element.getAttributeValue("id");
+							String chair=element.getAttributeValue("chair");
+							System.out.println("La tabla es: "+tableid+"La silla es: "+chair);
+							Table tabela=(Table)(pieza.getHashTable().get(new Integer(tableid)));
+							TableEvent te=new TableEvent(TableEvent.EVENT_playerStandRequest,tabela,null,null,Integer.parseInt(chair));
+							
+							pieza.borrarPlayerTable(tabela.getPlayerInChair(Integer.parseInt(chair)),tabela);
+							tabela.standPlayer(Integer.parseInt(chair));
+					}
+					List children = element.getContent();
+					Iterator iterator = children.iterator();
+					while (iterator.hasNext())
+					{
+						Object child = iterator.next();
+						xmlReadPlayerStand(child);
+					}
+				}
 	
+			}
 	public void xmlReadTableCreated(Object o)
 	{
 		String aux;
@@ -1342,6 +1462,7 @@ public class CommunicatorClient extends Communicator
 				if(chair >=0)
 				{
 					tabela.sitPlayer(jug,chair);
+					pieza.setearPlayerTable(jug,tabela,chair);
 				}
 				else
 				{
@@ -1643,6 +1764,10 @@ public class CommunicatorClient extends Communicator
 	
 	public void playerStandRequest(TableEvent event)
 	{
+		
+		Document doc=event.toXml();
+		super.sendXmlPackage(doc);
+		System.out.println("Se envio paquete para player Stand");
 	}
 	
 	public void playerStanded(TableEvent event)
@@ -1657,8 +1782,9 @@ public class CommunicatorClient extends Communicator
 	
 	public void signSendRequest(TableEvent event)
 	{
-		new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
-		
+		//new Exception("Nada implementado aun :-(   ").printStackTrace(System.out);
+		Document doc=event.toXml();
+		super.sendXmlPackage(doc);
 	}
 	
 	public void playerJoined(TrucoPlayer player)
@@ -1674,13 +1800,17 @@ public class CommunicatorClient extends Communicator
 		
 	}
 	
-		/*  public static void main(String[] args)
+		 public static void main(String[] args)
 		{
-				RoomEvent te=new RoomEvent();
-								te.setTableNumber(10);
+	
+		 TableServer tabela=new TableServer(new TrucoPlayer("culo"));
+		 tabela.setTableNumber(500);
+		 TableEvent te=new TableEvent(TableEvent.EVENT_signSent,tabela,new TrucoPlayer("La fani",33),null,2);
 		 
+				CommunicatorServer cs=new CommunicatorServer();
 				CommunicatorClient cc=new CommunicatorClient();
-								Document doc=cc.xmlCreateTableJoinRequested(te);
+				Document doc=te.toXml();
+				
 				try {
 		 
 				XMLOutputter serializer = new XMLOutputter("  ", true);
@@ -1691,15 +1821,7 @@ public class CommunicatorClient extends Communicator
 				catch (IOException e) {
 				System.out.println(e);
 				}
-				//        cc.
-		 (doc);
-		}*/
-	/*private TrucoPlayer getPlayer (String youName){
-		TrucoPlayer tp = equipo1.getPlayer(youName);
-		if (tp == null){
-			return equipo2.getPlayer(youName);
-		}
-		return tp;
-	}*/
+				cc.cabecera(doc);
+		}//termina el main
 	
 }

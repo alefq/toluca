@@ -101,29 +101,46 @@ public class JButtonTable extends JPanel {
      * retorna en numero de mesa de que esta en la fila i.
      */
     public int getNumeroDeMesa(int rowNumber){
-       return mtm.getNumeroDeMesa(rowNumber); 
+       if ( rowNumber >=0 && rowNumber < mtm.getRowCount() )
+           return mtm.getNumeroDeMesa(rowNumber); 
+       else
+           return -1;
     }
     
     /*
      * Este metodo mete en la mesa numero "tableNumber" al
      * jugador "player", 
      */ 
-    void addPlayer(TrucoPlayer player, int tableNumber){
-        mtm.addPlayer(player, tableNumber);
+    void addPlayer(TrucoPlayer player, int tableNumber, int chair){
+        mtm.addPlayer(player, tableNumber, chair);
     }
     
     /*
      * Este metodo sirve cuando el jugador hace click en un boton
      * de la tabla.
      */
-    void addPlayer(TrucoPlayer player, int row, int col){
+   /* void addPlayer(TrucoPlayer player, int row, int col){
         mtm.addPlayer(player, row, col);
     }
+    */
+    void addObserver(TrucoPlayer player, int tableNumber){
+        mtm.addObserver(player, tableNumber);
+    }
     
+    /*
+     * Remueve al player de todas las mesas de la Tabla Principal
+     */
     void removeplayer(TrucoPlayer player){
         mtm.removePlayer(player);	
     }
 
+    /*
+     * Remueve al player de la mesa "tableNumber" de la Tabla Principal
+     */
+    public void removeplayer(TrucoPlayer player, int tableNumber){
+        mtm.removePlayer(player, tableNumber);
+    }
+    
     void modifyplayer(TrucoPlayer player){
         mtm.modifyPlayer(player);
     }
@@ -133,9 +150,12 @@ public class JButtonTable extends JPanel {
         mtm.insertRow(table.getTableNumber());
     }
         
-    void eliminarFila(int row){
+    /*
+     * Elimina de la Tabla Principal a la mesa numero "tableNumber"
+     */
+    void eliminarFila(int tableNumber){
          System.out.println("Se quiere remover la fila en el MainTable");
-        mtm.removeRow(row);
+        mtm.removeRow(tableNumber);
     }
     
     /*
@@ -150,6 +170,27 @@ public class JButtonTable extends JPanel {
                 
         return -1;
     }
+    
+    /*
+     * Setea el status de juego de una mesa
+     */
+    public void setGameStatus(int tableNumber, boolean status){
+        mtm.setGameStatus(tableNumber, status);
+    }
+    
+    /*
+     * Recibe un numero de fila de la Tabla Principal
+     * y retorna "true" si el juego ya empezo, "false" de lo contrario
+     */
+    public boolean isGameStarted(int row){
+        
+        if ( mtm.getGameStatus(row) == true)
+            return true;
+        else
+            return false;
+               
+    }
+    
     
     /*
      * Este renderer es provisorio, sirve para las celdas

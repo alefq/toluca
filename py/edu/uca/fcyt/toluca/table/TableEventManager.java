@@ -91,7 +91,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_gameStartRequest,
-            		table, null, -1
+            		table, null, null,-1
             	)
             );
         }
@@ -113,7 +113,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_gameStarted,
-            		table, null, -1
+            		table, null, null,-1
             	)
             );
         }
@@ -133,7 +133,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_gameFinished,
-            		table, null, -1
+            		table, null, null,-1
             	)
             );
         }
@@ -155,7 +155,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerStandRequest,
-            		table, table.getPlayer(), chair
+            		table, table.getPlayer(), null,chair
             	)
             );
         }
@@ -165,7 +165,7 @@ class TableEventManager
      * Dispara el 'gameFinished' de todos los
      * TableListeners registrados
      */
-    public void firePlayerStanded() 
+    public void firePlayerStanded(TrucoPlayer player) 
     {
 		table.setCursor(Cursor.DEFAULT_CURSOR);
     	
@@ -177,7 +177,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerStanded,
-            		table, table.getPlayer(), -1
+            		table, player, null,-1
             	)
             );
         }
@@ -197,7 +197,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerKickRequest,
-            		table, player, -1
+            		table, player, null,-1
             	)
             );
         }
@@ -217,7 +217,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerKicked,
-            		table, player, -1
+            		table, player, null,-1
             	)
             );
         }
@@ -237,7 +237,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerLeft,
-            		table, null, -1
+            		table, null, null,-1
             	)
             );
         }
@@ -258,7 +258,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerSitRequest,
-            		table, table.getPlayer(), chair
+            		table, table.getPlayer(), null,chair
             	)
             );
         }
@@ -279,7 +279,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerSit,
-            		table, null, -1
+            		table, null, null,-1
             	)
             );
         }
@@ -291,6 +291,7 @@ class TableEventManager
      */
     public void fireSignSendRequest(TrucoPlayer dest, int sign)
     {
+    	System.out.println(table.getPlayer().getName() + " tiro seña " + Sign.getName(sign));
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
@@ -299,7 +300,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_signSendRequest,
-            		table, dest, sign
+            		table, table.getPlayer(), dest, sign
             	)
             );
         }
@@ -309,7 +310,7 @@ class TableEventManager
      * Dispara el evento 'sendSign' de todos los
      * TableListeners registrados
      */
-    public void fireSignSent()
+    public void fireSignSent(TrucoPlayer dest)
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -319,7 +320,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_signSent,
-            		table, null, -1
+            		table, table.getPlayer(), dest, -1
             	)
             );
         }
@@ -339,7 +340,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_showPlayed,
-            		table, null, chair
+            		table, null, null,chair
             	)
             );
         }

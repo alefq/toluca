@@ -217,8 +217,38 @@ implements ChatPanelContainer
 	 * @param player ...
 	 * </p>
 	 */
+	public void removePlayer(TrucoPlayer player) {        /** lock-end */
+		//le quita del vector de players
+		for(Enumeration e=getHashTable().elements();e.hasMoreElements();)
+		{
+			TableServer tabela=(TableServer)e.nextElement();
+			Vector jugadores=tabela.getPlayers();
+			if(jugadores.contains(player))
+			{
+					TableEvent te=new TableEvent(TableEvent.EVENT_playerStanded,tabela,null,null,tabela.getChair(player));
+					tabela.standPlayer(te);
+					tabela.kickPlayer(player);
+				
+			}
+		}
+		players.remove(player);
+		vPlayers.remove(player);
+		firePlayerLeft(player);
+	} 
 	public void firePlayerLeft(TrucoPlayer player)
 	{
+		Iterator iter = roomListeners.listIterator();
+		
+		RoomEvent re = new RoomEvent();
+		re.setType(RoomEvent.TYPE_PLAYER_LEFT);
+		re.setUser(player.getName());
+		
+		while(iter.hasNext())
+		{
+			RoomListener ltmp = (RoomListener)iter.next();
+			ltmp.playerLeft(re);
+		}
+		
 		// your code here
 	} // end firePlayerLeft
 	

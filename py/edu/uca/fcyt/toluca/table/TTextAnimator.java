@@ -294,7 +294,7 @@ class TTextAnimator implements Animable, StateListener
 			{
 				tText = new TableText
 				(
-					lines[j], font, 1, Math.PI * .5
+					lines[j], font, .6f, Math.PI * .5
 				);
 				ttGroup.addTText(tText);
 	

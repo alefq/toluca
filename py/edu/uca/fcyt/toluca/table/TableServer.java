@@ -80,7 +80,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		//primero disparamos el evento, asi los cc se registran
 		// como listeners del tgame
 		fireGameStarted(
-		new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
+		new TableEvent(TableEvent.EVENT_gameStarted, this, null, null,-1)
 		);
 
         //empieza realmente el juego y se disparan los eventos correspondientes
@@ -99,12 +99,10 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         };
         
         // se agregan los players a los teams
-        for (int i = 0, j = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             player = pManager.getPlayer(i);
             if (player != null) {
-                tTeams[j].addPlayer(player);
-                //		        System.out.println("Team " + j + ": player " + player.getName());
-                j = (j + 1) % 2;
+                tTeams[i % 2].addPlayer(player);
             }
         }
         
@@ -191,7 +189,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
             System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
-            TableEvent te= new TableEvent(TableEvent.EVENT_playerSit,this, jogador, chair);
+            TableEvent te= new TableEvent(TableEvent.EVENT_playerSit,this, jogador, null,chair);
             ltmp.playerSit(te);
         }
     }
@@ -215,7 +213,8 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         this.host = host;
     }
     
-    public void addPlayer(TrucoPlayer player) {
+    public void addPlayer(TrucoPlayer player) 
+    {
         players.add(player);
     }
     
@@ -280,7 +279,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		System.out.println("Se fue: " + tptmp.getName());
 		getPlayers().remove(tptmp);
 		
-		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, 0);
+		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);
 		firePlayerKicked(te);
 	}
 

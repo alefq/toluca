@@ -382,7 +382,10 @@ class TablePlayer implements Animable, TableCardListener
 	 * Pone la posición y ángulo de la carta a la posición
 	 * de colección de un cierto TablePlayer
 	 */
-	synchronized public void pushState(TablePlayer tPlayer, long duration)
+	synchronized public void pushState
+	(
+		TablePlayer tPlayer, float scale, long duration
+	)
 	{
 		TableCard tCard;
 		Card card;
@@ -414,7 +417,7 @@ class TablePlayer implements Animable, TableCardListener
 				(int) (tPlayer.posX * 2),
 				(int) (tPlayer.posY * 3.4f),
 				tPlayer.angle,
-				Util.cardScale, 
+				Util.cardScale * scale, 
 				card, duration
 			);
 		}

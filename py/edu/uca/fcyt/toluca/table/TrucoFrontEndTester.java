@@ -223,7 +223,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         Table table;
         TrucoPlayer player;
         
-        player = event.getPlayer();
+        player = event.getPlayer(0);
         
         System.out.println("Kick request for " + player.getName());
         
@@ -242,7 +242,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
     public void playerKicked(TableEvent event) {
         System.out.println
         (
-        event.getPlayer().getName() +
+        event.getPlayer(0).getName() +
         " kicked of table of " +
         event.getTable().getPlayer().getName()
         );
@@ -360,12 +360,12 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
     }
     
     public void showPlayed(TableEvent event) {
-        Enumeration tEnum;
-        
-        tEnum = tables.elements();
-        while (tEnum.hasMoreElements()) {
-            ((Table) tEnum.nextElement()).showPlayed(event.getValue());
-        }
+//        Enumeration tEnum;
+//        
+//        tEnum = tables.elements();
+//        while (tEnum.hasMoreElements()) {
+//            ((Table) tEnum.nextElement()).showPlayed(event.getValue());
+//        }
     }
     
     public void playerStandRequest(TableEvent event) 

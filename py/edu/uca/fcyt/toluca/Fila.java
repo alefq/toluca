@@ -6,6 +6,7 @@
 
 package py.edu.uca.fcyt.toluca;
 
+
 import java.util.Vector;
 
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
@@ -16,7 +17,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
  */
 public class Fila
 {
-	
+	boolean gameStarted;  // indica si el juego ya empezo en la mesa
 	int numeroFila = 0;
 	Vector jugadores;
 	Vector observadores;
@@ -25,15 +26,17 @@ public class Fila
 	public Fila(){
             observadores = new Vector();
             jugadores = new Vector();
+            gameStarted = false;
             for(int i=0;i<6;i++){
-		jugadores.add("Libre");
+				jugadores.add("Libre");
             }
             System.out.println("Se instancia una fila.");
 	}
 	
-	/** Creates a new instance of Fila */
+	/** Crea una nueva instancia de Fila */
 	public Fila(int numero){
             numeroFila = numero;
+            gameStarted = false;
             observadores = new Vector();
             jugadores = new Vector();
 		
@@ -42,6 +45,17 @@ public class Fila
             }
 	}
 	
+        public void setGameStatus(boolean gameStatus){
+            gameStarted = gameStatus;
+        }
+        
+        /*
+         * Retorna "true" si el juego ya comenzo en la mesa,
+         * "false" de lo contrario
+         */
+        public boolean getGameStatus(){
+            return gameStarted;
+        }
 	/*
 	 * Devuelve el numero de esta fila
 	 */
@@ -52,21 +66,42 @@ public class Fila
 	/*
 	 * En la posicion index de la fila se inserta el Player
 	 */
-	public void setPlayer(TrucoPlayer player, int index){
+	public void setPlayer(Object player, int index){
             
-            if ( index>=0 && index< jugadores.size() )
-		jugadores.setElementAt(player,index);
+    	if ( index>=0 && index< jugadores.size() ){
+    		System.out.println("agregoPplayer en la pos="+index);
+			jugadores.setElementAt(player,index);}
 	}
-	
+	public void impJugadores()
+	{
+		System.out.println("Contenido de jugadores");
+		for(int i=0;i<6;i++)
+		{
+			System.out.println(jugadores.get(i));
+		}
+	}
 	/*
 	 * Inserta al final al player
 	 */
-	public void addPlayer(TrucoPlayer player){
+	public void addPlayer(String player){
             
             if(jugadores.size() < 6)
 		jugadores.add(player);
 	}
 	
+        /*
+	 * Elimina al final al player
+	 */
+	public void removePlayer(String player){
+            
+            int index = 0;
+            if(jugadores.size() > 0){
+                index = jugadores.indexOf(player);
+                jugadores.setElementAt("Libre", index);
+
+            }
+	}
+        
 	/*
 	 * Retorna el Player que se encuentra en la posicion index de la fila
 	 */
@@ -90,7 +125,7 @@ public class Fila
             String ret = "Libre";
             if(index>=0 && index< jugadores.size() )
                 if( jugadores.elementAt(index) != "Libre")
-                    ret = ( (TrucoPlayer)jugadores.elementAt(index)).getName();
+                    ret = jugadores.elementAt(index).toString();
             
             return ret;
         }
@@ -99,7 +134,8 @@ public class Fila
 	/*
 	 * Ingresa un Player como un observador de esta fila/mesa
 	 */
-	public void setObservador(TrucoPlayer player){
+	public void setObservador(Object player){
+            if( !observadores.contains(player))
 		observadores.add(player);
 	}
 	
@@ -107,7 +143,7 @@ public class Fila
 	 * Devuelve true si el player esta observando en la fila/mesa
 	 * false, de lo contrario;
 	 */
-	public boolean isObservador(TrucoPlayer player){
+	public boolean isObservador(String player){
 		return observadores.contains(player);
 	}
 	
@@ -115,7 +151,7 @@ public class Fila
 	 * Retorna la posición del jugador, si este se encuentra en esa fila.
 	 * De lo contrario, retorna 0.
 	 */
-	public int isPlayer(TrucoPlayer player){
+	public int isPlayer(String player){
 		int ret = 0;
 		if( jugadores.contains(player) )
 			ret = jugadores.indexOf(player) + 1;
@@ -131,11 +167,11 @@ public class Fila
 	 * Devuelve el observador que se encuentra en la posicion index del
 	 * vector de observadores en esta fila/mesa.
 	 */
-	public TrucoPlayer getObservador(int index){
+	public String getObservador(int index){
 		//TrucoPlayer ret = new TrucoPlayer();
-		TrucoPlayer ret = null;
+		String ret = "";
 		if( index< observadores.size())
-			ret = (TrucoPlayer) observadores.elementAt(index);
+			ret = observadores.elementAt(index).toString();
 		
 		return ret;
 	}
