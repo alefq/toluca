@@ -26,15 +26,15 @@ public abstract class EventDispatcher {
 	System.out.println("DispatchEvent: Se resive un evento RoomEvent");
 		switch(event.getType())
 		{
-			case RoomEvent.TYPE_CHAT_REQUESTED:break;
-			case RoomEvent.TYPE_CHAT_SENT:break;
+			case RoomEvent.TYPE_CHAT_REQUESTED:chatRequested(event);break;
+			case RoomEvent.TYPE_CHAT_SENT:chatSend(event);break;
 			case RoomEvent.TYPE_CREATE_TABLE_REQUESTED:break;
 			case RoomEvent.TYPE_LOGIN_COMPLETED:loginCompleted(event);break;
-			case RoomEvent.TYPE_LOGIN_FAILED:break;
+			case RoomEvent.TYPE_LOGIN_FAILED:loginFailed(event);break;
 			case RoomEvent.TYPE_LOGIN_REQUESTED: loginRequested(event);break;
 			case RoomEvent.TYPE_PLAYER_JOINED:playerJoined(event);break;
 			case RoomEvent.TYPE_PLAYER_KICKED:break;
-			case RoomEvent.TYPE_PLAYER_LEFT:break;
+			case RoomEvent.TYPE_PLAYER_LEFT: playerLeft(event);break;
 			case RoomEvent.TYPE_TABLE_CREATED:break;
 			case RoomEvent.TYPE_TABLE_CREATED_SERVER:break;
 			case RoomEvent.TYPE_TABLE_JOIN_REQUESTED:break;
@@ -74,4 +74,8 @@ public abstract class EventDispatcher {
 	public abstract void loginRequested(RoomEvent event);
 	public abstract void loginCompleted(RoomEvent event);
 	public abstract void playerJoined(RoomEvent event);
+	public abstract void playerLeft(RoomEvent event);
+	public abstract void loginFailed(RoomEvent event);
+	public abstract void chatRequested(RoomEvent event);
+	public abstract void chatSend(RoomEvent event);
 }

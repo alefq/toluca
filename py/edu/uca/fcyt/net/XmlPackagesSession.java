@@ -57,14 +57,28 @@ public abstract class XmlPackagesSession implements Runnable
 		String rawPacket = "";
 		// Loop until live = false
 		
-		
+		logger.debug("el descriptor de socket en el thread es:" + socket);
+		try {
 	
 			while (live)
 			{
 				
-				int c;
-				try {
-					c = in.read();
+				int c=0;
+				
+					
+						
+						
+				
+				c = in.read();
+			//	logger.debug("llego un antes del if " +c );
+				if(c==-1)
+				{
+					live=false;
+					connectionFailed();
+					
+				}
+						
+					
 				if (c != XML_PACKAGE_DELIMITER)
 				{
 					rawPacket += (char)c;
@@ -86,13 +100,16 @@ public abstract class XmlPackagesSession implements Runnable
 					rawPacket = "";
 				}
 
-				} catch (IOException e) {
-					logger.info("Fallo la coneccion");
-					connectionFailed();
-				}
+			
 
 					
-			} 
+			}
+			
+		} catch (IOException e) {
+			live=false;
+			connectionFailed();
+		}
+
 			
 		
 	}
@@ -111,7 +128,7 @@ public abstract class XmlPackagesSession implements Runnable
 	
 	public void sendXmlPackage(String xmlRaw)
 	{
-		System.out.println("I am going to send to the socket: \n" + xmlRaw);
+		//System.out.println("I am going to send to the socket: \n" + xmlRaw);
 		out.print(xmlRaw);
 		if (use_package_delimiter)
 			out.write(XML_PACKAGE_DELIMITER);
@@ -146,7 +163,10 @@ public abstract class XmlPackagesSession implements Runnable
 	
 	public void close() throws IOException
 	{
+		in.close();
+		out.close();
 		socket.close();
+		
 	}
 	public abstract void connectionFailed();
 	public abstract void receiveObject(Object bean);

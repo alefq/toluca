@@ -9,6 +9,7 @@ package py.edu.uca.fcyt.toluca.net;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
@@ -63,6 +64,41 @@ public class EventDispatcherClient extends EventDispatcher{
 			trucoPlayer=event.getPlayer();
 			((RoomClient)room).loginCompleted(trucoPlayer);
 		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerLeft(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void playerLeft(RoomEvent event) {
+
+		System.out.println(" salioooooo "+event.getPlayer());
+		room.removePlayer(event.getPlayer());
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#loginFailed(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void loginFailed(RoomEvent event) {
+		
+		((RoomClient)room).loginFailed(event.getErrorMsg());
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#chatRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void chatRequested(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#chatSend(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void chatSend(RoomEvent event) {
+		ChatMessage chatMessage=event.getChatMessage();
+		if(chatMessage.getOrigin().equals("room"))
+			room.showChatMessage(chatMessage.getPlayer(),chatMessage.getHtmlMessage());
 		
 	}
 

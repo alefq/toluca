@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/13 18:19:06 $
- * @version $Revision: 1.2 $ 
+ * Last modified: $Date: 2004/09/13 22:48:22 $
+ * @version $Revision: 1.3 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -266,7 +266,7 @@ public class RoomUING extends JApplet {
      * 
      * @return py.edu.uca.fcyt.game.ChatPanel
      */
-    private ChatPanel getChatPanel() {
+    public ChatPanel getChatPanel() {
         if (chatPanel == null) {
             chatPanel = new ChatPanel();
         }
@@ -307,8 +307,8 @@ public class RoomUING extends JApplet {
      */
     public RoomUING() {
         super();
-        init();
-        login();
+        //init();
+       
     }
 
     /**
@@ -322,6 +322,7 @@ public class RoomUING extends JApplet {
         loadAppletParameters();
         this.setSize(750, 470);
         this.setContentPane(getJContentPane());
+        login();
     }
 
     /**
@@ -384,9 +385,9 @@ public class RoomUING extends JApplet {
         ld.show();
         roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
         getChatPanel().setCpc(roomClient);
-        chatPanel = new ChatPanel(roomClient);
-        setChatPanel(chatPanel);
-        roomClient.setChatPanel(chatPanel);
+        
+        System.out.println("El chatpanel del roomui es "+chatPanel);
+        roomClient.setChatPanel(getChatPanel());
         roomClient.setMainTable(getTableGame());
         roomClient.setRankTable(getTableRanking());
         getPanelComandos().setRoomClient(roomClient);

@@ -39,7 +39,7 @@ implements ChatPanelContainer
 	 */
 	private java.util.Properties properties;
 	
-	
+	public final static int TIME_OUT=10000;
 	
 	/**
 	 * <p>
@@ -233,7 +233,7 @@ implements ChatPanelContainer
 				
 			}
 		}
-		players.remove(player);
+		players.remove(player.getName());
 		//vPlayers.remove(player);
 		firePlayerLeft(player);
 	} 
@@ -243,8 +243,7 @@ implements ChatPanelContainer
 		
 		RoomEvent re = new RoomEvent();
 		re.setType(RoomEvent.TYPE_PLAYER_LEFT);
-		re.setUser(player.getName());
-		
+		re.setPlayer(player);
 		while(iter.hasNext())
 		{
 			RoomListener ltmp = (RoomListener)iter.next();
@@ -302,7 +301,11 @@ implements ChatPanelContainer
 		}
 		catch (LoginFailedException le)
 		{
-			throw le;
+			RoomEvent event=new RoomEvent();
+			event.setType(RoomEvent.TYPE_LOGIN_FAILED);
+			event.setUser(username);
+			cs.loginFailed(event);
+			
 		}
 	} // end login
 	
@@ -552,6 +555,7 @@ implements ChatPanelContainer
 		while(iter.hasNext())
 		{
 			RoomListener ltmp = (RoomListener)iter.next();
+			System.out.println("Jogador vale "+jogador+ " el mensaje es"+htmlMessage);
 			logger.debug(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
 			ltmp.chatMessageSent(this, jogador, htmlMessage);
 		}

@@ -3,6 +3,7 @@ package py.edu.uca.fcyt.toluca.net;
 import org.apache.log4j.Logger;
 
 
+import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.LoginFailedException;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
@@ -43,6 +44,39 @@ public class EventDispatcherServer extends EventDispatcher{
 	 */
 	public void playerJoined(RoomEvent event) {
 		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerLeft(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void playerLeft(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#loginFailed(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void loginFailed(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#chatRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void chatRequested(RoomEvent event) {
+ 
+		ChatMessage chatMsg=event.getChatMessage();
+		logger.debug("Llego un chat Requested de :");
+		logger.debug(chatMsg.getPlayer());
+		logger.debug(chatMsg.getHtmlMessage());
+		if(chatMsg.getOrigin().equals("room"))
+			room.sendChatMessage(chatMsg.getPlayer(),chatMsg.getHtmlMessage());
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#chatSend(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void chatSend(RoomEvent event) {
+		
 		
 	}
 	

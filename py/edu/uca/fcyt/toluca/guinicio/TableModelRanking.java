@@ -2,6 +2,7 @@
 package py.edu.uca.fcyt.toluca.guinicio;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -65,6 +66,25 @@ public class TableModelRanking extends AbstractTableModel{
 		datos.remove(row);
 		fireTableRowsDeleted(row, row);
 
+	}
+	public void deletePlayer(String name)
+	{
+		Iterator it=datos.iterator();
+		int cont=-1;
+		boolean seguir=true;
+		while(it.hasNext()&&seguir)
+		{
+			RowRanking row=(RowRanking) it.next();
+			cont++;
+			if(row.getUser().equals(name))
+			{
+				System.out.println("Se encontro "+name+ " en el renglon "+cont);
+				seguir=false;
+			}
+			
+		}
+		deleteRow(cont);
+		
 	}
 	public String getColumnName(int col)
 	{

@@ -171,6 +171,7 @@ public class DbOperations {
         //verificar el password
         // if (password = Player.getPassword() )
         return p;
+        //throw new LoginFailedException("No anda tu password");
         // else
         //throw new LoginFailedException();
         
@@ -193,7 +194,7 @@ public class DbOperations {
     public TrucoPlayer getPlayer(final java.lang.String uname) {
     	Random rand = new Random();
     	
-        return new TrucoPlayer( uname , rand.nextInt());
+       return new TrucoPlayer( uname , rand.nextInt());
     }
     
  // end authenticatePlayer        

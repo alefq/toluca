@@ -14,6 +14,8 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
+import py.edu.uca.fcyt.toluca.RoomServer;
+
 /**
  *
  * @author  psanta
@@ -53,8 +55,9 @@ public class XmlPackagesServer extends ServerSocket implements Runnable {
             while(true) {
                 socket = accept();
                 logger.info("Connection received");
+                logger.info("el descriptor de socket es: " + socket);
                 XmlPackagesSession xps = (XmlPackagesSession)theClass.newInstance();
-              //  socket.setSoTimeout(30000);
+                //socket.setSoTimeout(RoomServer.TIME_OUT);
                 xps.setSocket(socket);
                 
                 int retinit = xps.init();

@@ -4,6 +4,7 @@ package py.edu.uca.fcyt.toluca.net;
 
 import org.apache.log4j.Logger;
 
+import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
@@ -200,15 +201,26 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageRequested(py.edu.uca.fcyt.game.ChatPanelContainer, py.edu.uca.fcyt.toluca.game.TrucoPlayer, java.lang.String)
 	 */
 	public void chatMessageRequested(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
-		// TODO Auto-generated method stub
-		
+
+			RoomEvent event=new RoomEvent();
+			event.setType(RoomEvent.TYPE_CHAT_REQUESTED);
+			ChatMessage chatMsg=new ChatMessage(player,htmlMessage);
+			chatMsg.setOrigin(cpc.getOrigin());
+			event.setChatMessage(chatMsg);
+			super.sendXmlPackage(event);
+			
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.game.ChatPanelContainer, py.edu.uca.fcyt.toluca.game.TrucoPlayer, java.lang.String)
 	 */
 	public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
-		// TODO Auto-generated method stub
-		
+
+		RoomEvent event=new RoomEvent();
+		event.setType(RoomEvent.TYPE_CHAT_SENT);
+		ChatMessage chatMsg=new ChatMessage(player,htmlMessage);
+		chatMsg.setOrigin(cpc.getOrigin());
+		event.setChatMessage(chatMsg);
+		super.sendXmlPackage(event);
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#play(py.edu.uca.fcyt.toluca.event.TrucoEvent)

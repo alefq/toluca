@@ -78,8 +78,17 @@ public class CommunicatorClient extends Communicator{
 		
 		comm.sendXmlPackage(new JButton("Hello, world"));
 		
+		
+		try {
+			comm.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		while(true)
 				;
 	}
-	
+	public void createTableRequested(RoomEvent ev) {
+		super.sendXmlPackage(ev);
+	}
 }

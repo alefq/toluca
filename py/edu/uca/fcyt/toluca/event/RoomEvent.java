@@ -68,7 +68,20 @@ public class RoomEvent {
 	private int tableNumber;
 	private String username;
 	private String password;
+	private String errorMsg;
     
+	/**
+	 * @return Returns the errorMsg.
+	 */
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+	/**
+	 * @param errorMsg The errorMsg to set.
+	 */
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
 	/**
 	 * <p>
 	 * Representa el mensaje de chat que el usuario envia o recibe en el Room

@@ -64,7 +64,8 @@ public class ChatPanel extends javax.swing.JPanel {
     }
     
     private void sendChatMessage() {
-        System.out.println("getPlayer == null en el Chat: " + (getPlayer() == null));
+        
+        System.out.println(getClass().getName()+" getplayer "+getPlayer());
         cpc.sendChatMessage(getPlayer(), jtInput.getText());
         jtInput.setText("");
     }
@@ -169,6 +170,7 @@ public class ChatPanel extends javax.swing.JPanel {
      *
      */
     public void setPlayer(TrucoPlayer player) {
+    	System.out.println("ChatPanel.setPlayer: Se setea el player "+player);
         this.player = player;
     }
     
@@ -183,7 +185,7 @@ public class ChatPanel extends javax.swing.JPanel {
     
     public static void main(String[] args) {
         TrucoPlayer pepito = new TrucoPlayer("Don Pepito", 8);
-        TrucoPlayer jose = new TrucoPlayer("Don José", 8);
+        TrucoPlayer jose = new TrucoPlayer("Don Josï¿½", 8);
         ChatPanel cp = new ChatPanel(null, pepito);
         JFrame jf = new JFrame("Chat paaaaaanel!");
         jf.getContentPane().add(cp);
@@ -191,6 +193,6 @@ public class ChatPanel extends javax.swing.JPanel {
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.show();
         //        cp.showChatMessage(jose, "Hola don Pepito");
-        //        cp.showChatMessage(pepito, "Hola don José");
+        //        cp.showChatMessage(pepito, "Hola don Josï¿½");
     }
 }

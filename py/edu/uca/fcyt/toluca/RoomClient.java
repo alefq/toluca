@@ -147,17 +147,19 @@ public class RoomClient extends Room implements ChatPanelContainer,
     private void fireTableCreateRequested() {
         /** lock-end */
         RoomEvent re = new RoomEvent();
-        re.setUser(roomPlayer.getName());
+        re.setType(RoomEvent.TYPE_CREATE_TABLE_REQUESTED);
+        re.setPlayer(roomPlayer);
+        
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {
-            System.out.println("A lo meor no tiene listeners asociados carajo");
+            
             RoomListener ltmp = (RoomListener) iter.next();
             ltmp.createTableRequested(re);
         }
     } // end fireTableCreateRequested /** lock-begin */
 
     public void sendChatMessage(TrucoPlayer player, String htmlMessage) {
-        fireChatMessageRequested(player, htmlMessage);
+        fireChatMessageRequested(player, htmlMessage,getOrigin());
     }
 
     /**
@@ -178,12 +180,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *            El mensaje que se esta enviando
      *            </p>
      */
-    private void fireChatMessageRequested(TrucoPlayer player, String htmlMessage) {
+    private void fireChatMessageRequested(TrucoPlayer player, String htmlMessage,String origin) {
         /** lock-end */
-        ChatMessage chatmsg = new ChatMessage(player, htmlMessage);
-        RoomEvent re = new RoomEvent();
-        re.setType(RoomEvent.TYPE_CHAT_REQUESTED);
-        re.setChatMessage(chatmsg);
+        
+        
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {
             RoomListener ltmp = (RoomListener) iter.next();
@@ -294,8 +294,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
     public void loginCompleted(TrucoPlayer player) {
         /** lock-end */
         
-        chatPanel = new ChatPanel(this, player);
-        rui.addChatPanel(chatPanel);
+        //chatPanel = new ChatPanel(this, player);
+        //rui.addChatPanel(chatPanel);
+        chatPanel.setPlayer(player);
+        System.out.println("el chatpanel del room es "+chatPanel);
         setRoomPlayer(player);
         player.setFullName(player.getName());
         rui.setOwner(player);
@@ -314,10 +316,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
         // mainTable.addPlayer( (TrucoPlayer) col.elementAt(0),tableNumber);
     }
 
-    public void loginFailed() {
+    public void loginFailed(String msg) {
         /** lock-end */
-        JOptionPane.showMessageDialog(new JButton(), new JLabel()
-                + ": Login Failed!");
+        JOptionPane.showMessageDialog(new JButton(), ": Login Failed! "+msg);
+        
     }
 
     /**

@@ -1,5 +1,7 @@
 package py.edu.uca.fcyt.toluca.net;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 
@@ -48,8 +50,13 @@ public class CommunicatorServer extends Communicator{
 	public void connectionFailed()
 	{
 		logger.info("Fallo la coneccion de "+getTrucoPlayer());
+		roomServer.removePlayer(getTrucoPlayer());
+		try {
+			close();
+		} catch (IOException e) {
 		
-		
+			e.printStackTrace();
+		}
 	}
 	public void playerJoined(TrucoPlayer player) {
 
@@ -66,8 +73,14 @@ public class CommunicatorServer extends Communicator{
 		super.sendXmlPackage(event);
 	}
 	
-	
-	
+	public void playerLeft(RoomEvent event)
+	{
+		super.sendXmlPackage(event);
+	}
+	public void loginFailed(RoomEvent event)
+	{
+		super.sendXmlPackage(event);
+	}
 	
 	
 	
