@@ -65,6 +65,7 @@ class TrListener implements TrucoListener
 		player = event.getPlayer();
 		pos = getPManager().getPos(player);
 		name = Util.getEventName(type);
+		//si name da null quiere decir q no fue ninguna jugada que se cante. ale
 		
 		System.out.println();
 		System.out.println

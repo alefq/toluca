@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
-import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 
@@ -187,7 +187,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
     /** Invocado cuando se desea iniciar el juego */
     public void gameStartRequest(TableEvent event) {
         Enumeration tEnum;
-        TrucoGame tGame;
+        TrucoGameClient tGame;
         TrucoTeam tTeams[];
         
         System.out.println("Requesting game start...");
@@ -195,7 +195,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         tTeams = event.getTable().createTeams();
         
         // se crea el TrucoGame con los teams creados
-        tGame = new TrucoGame(tTeams[0], tTeams[1]);
+        tGame = new TrucoGameClient(tTeams[0], tTeams[1]);
         
         // se llama al 'startGame' de todas las tablas
         tEnum = tables.elements();

@@ -17,6 +17,7 @@ import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
@@ -41,7 +42,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     private CardManager cManager;		// manejador de cartas
     private PopupTrucoPlays pTrucoPlays; // popup de jugadas
     private Vector players;
-    private TrucoGame tGame;			// juego de truco asociado
+    private TrucoGameClient tGame;			// juego de truco asociado
     private boolean host;				// es o no el host
     private PlayerManager pManager;	// manejador de jugadores
     private TrucoPlayer actualPlayer; // jugador actual
@@ -210,7 +211,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     }
     
     /** Inicia el juego de esta mesa con Game 'game'*/
-    public void startGame(TrucoGame game) 
+    public void startGame(TrucoGameClient game) 
     {
     	long rem;
     	

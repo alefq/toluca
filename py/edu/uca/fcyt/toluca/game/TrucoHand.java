@@ -623,6 +623,7 @@ public class TrucoHand {
      * @throws InvalidPlayExcepcion Tita en caso de detectarse una jugada inválida.
      */    
     public void play(TrucoPlay tp) throws InvalidPlayExcepcion{
+    	System.out.println("Voy a jugar: " + tp.getType() + " soy: " + tp.getPlayer().getName());
         try{
             switch(tp.getType()){
                 case  62: /*Jugar carta*/
