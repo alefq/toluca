@@ -23,7 +23,32 @@ public class ChatMessage {
   ///////////////////////////////////////
   // attributes
 
+   private String origin;
 
+/**
+ * @return Returns the origin.
+ */
+public String getOrigin() {
+	return origin;
+}
+/**
+ * @param origin The origin to set.
+ */
+public void setOrigin(String origin) {
+	this.origin = origin;
+}
+/**
+ * @return Returns the owner.
+ */
+public TrucoPlayer getOwner() {
+	return owner;
+}
+/**
+ * @param owner The owner to set.
+ */
+public void setOwner(TrucoPlayer owner) {
+	this.owner = owner;
+}
 /**
  * <p>
  * Represents ...
