@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,9 +98,11 @@ implements ChatPanelContainer, TableListener {
     } // end RoomServer
 
     /**
+     * @throws ClassNotFoundException
+     * @throws SQLException
      *  
      */
-    private void init() {
+    private void init() throws SQLException, ClassNotFoundException {
         logger.info("Instanciando el ConnectionManager");
 
         connManager = new ConnectionManager(this);
@@ -336,8 +339,9 @@ implements ChatPanelContainer, TableListener {
      * @param password
      *            ...
      *            </p>
+     * @throws SQLException
      */
-    public void login(String username, String password, CommunicatorServer cs) //throws
+    public void login(String username, String password, CommunicatorServer cs) 
     // py.edu.uca.fcyt.toluca.LoginFailedException
     {
         // your code here
@@ -365,7 +369,13 @@ implements ChatPanelContainer, TableListener {
             event.setUser(username);
             event.setErrorMsg(le.getMessage());
             cs.loginFailed(event);
-
+        } catch (SQLException e) {
+            logger.info("Fallo el intento de logearse de " + username);
+            RoomEvent event = new RoomEvent();
+            event.setType(RoomEvent.TYPE_LOGIN_FAILED);
+            event.setUser(username);
+            event.setErrorMsg(e.getMessage());
+            cs.loginFailed(event);
         }
     } // end login
 

@@ -5,6 +5,9 @@ package py.edu.uca.fcyt.toluca.db;
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
@@ -49,6 +52,10 @@ public class DbOperations {
      */
     private RoomServer roomServer;
 
+	public static final String DBURL = "dburl";
+	public static final String USER_NAME = "uname";
+	public static final String PASSWORD = "password";	
+
     ///////////////////////////////////////
     // operations
 
@@ -70,7 +77,7 @@ public class DbOperations {
      */
     public void createPlayer(String email, String upass, String uname)
             throws SQLException {
-        // your code here
+
     } // end createPlayer
 
     /**
@@ -176,13 +183,15 @@ public class DbOperations {
      *            Password o contrasena
      * @return Player el objeto Player o una excepcion de Login
      *         </p>
+     * @throws LoginFailedException
+     * @throws SQLException
      */
     public TrucoPlayer authenticatePlayer(String username, String password)
-            throws LoginFailedException {
+            throws SQLException, LoginFailedException {
 
-        TrucoPlayer p = getPlayer(username);
-        //verificar el password
-        // if (password = Player.getPassword() )
+    	
+    	
+        TrucoPlayer p = getPlayer(username, password);
         return p;
         //throw new LoginFailedException("No anda tu password");
         // else
@@ -209,49 +218,64 @@ public class DbOperations {
         this.roomServer = roomServer;
     }
 
-    public TrucoPlayer getPlayer(final java.lang.String uname) {
-
+    public TrucoPlayer getPlayer(String uname, String logPassword) throws SQLException, LoginFailedException {
+    	String password = null;
+    	int puntaje;
     	
-    	//Random rand = new Random();
-    	// TODO: poner el ránking real.
-        return new TrucoPlayer(uname, 1200);
+    	final String sqlLogin = "SELECT \"PASSWORD\", PUNTAJE from JUGADORES where JUGADOR = ?";
+    	
+    	PreparedStatement ps = conn.prepareStatement(sqlLogin);
+    	ps.setString(1, uname);
+    	ResultSet rs = ps.executeQuery();
+    	
+    	if (rs.next()) {
+    		password = rs.getString(1);
+    		puntaje = rs.getInt(2);
+    	} else
+    		throw new LoginFailedException("El usuario: " + uname + " es incorrecto:" );
+
+    	if (!password.equals(logPassword))
+    		throw new LoginFailedException("El password es incorrecto para el usuario: " + uname);
+    	
+        return new TrucoPlayer(uname, puntaje);
         //return new TrucoPlayer(uname, rand.nextInt());
     }
 
     // end authenticatePlayer
 
-    /**
-     * <p>
-     * Does ...
-     * </p>
-     * <p>
-     * 
-     * @param dbUrl
-     *            ...
-     *            </p>
-     *            <p>
-     * @param dbUsername
-     *            ...
-     *            </p>
-     *            <p>
-     * @param dbPassword
-     *            ...
-     *            </p>
-     */
-    public DbOperations(String dbUrl, String dbUsername, String dbPassword,
-            RoomServer rs) {
-        // your code here
-        setRoomServer(rs);
-    } // end DbOperations
 
     /**
      * @param properties
      * @param server
+     * @throws ClassNotFoundException
+     * @throws SQLException
      */
-    public DbOperations(Properties properties, RoomServer server) {
+    public DbOperations(Properties properties, RoomServer server) throws SQLException, ClassNotFoundException {
 
-        // TODO Auto-generated constructor stub
+    	this.roomServer = server;
+    	initConnection(properties);
+    	
     }
+
+	/**
+	 * @param properties
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	private void initConnection(Properties properties) throws SQLException, ClassNotFoundException {
+
+		String dburl = properties.getProperty(DBURL);
+		String username = properties.getProperty(USER_NAME);
+		String password = properties.getProperty(PASSWORD);
+		
+		if (dburl == null || username == null || password == null) 
+			throw new SQLException();
+		
+		Class.forName("org.firebirdsql.jdbc.FBDriver");
+		conn = DriverManager.getConnection(	dburl,	username,	password);
+		
+	}
+
 
 } // end DbOperations
 
