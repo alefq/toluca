@@ -103,6 +103,8 @@ public class TrucoHand {
     protected int puntosParaEnvido;
     protected int pointsOfHandDetail = PointsDetail.NO_SE_CANTO_TRUCO;
     
+    protected boolean jugadadequieroycanto = false; /*esto es una verguenza!!!!!!! pero no se ocurrio otra cosa. julio rey*/
+    
    
     public TrucoHand() {
         
@@ -356,7 +358,7 @@ public class TrucoHand {
             TrucoCard cartaAMostrar = statusTable.getCardNoPlayingForEnvido(resultadoEnvido);
             if (cartaAMostrar != null){
                 if (statusTable.jugarCartaOffLine(resultadoEnvido,cartaAMostrar))
-                    game.firePlayEvent(playerAMostrarCartas,cartaAMostrar,TrucoEvent.JUGAR_CARTA);
+                    game.firePlayResponseEvent(playerAMostrarCartas,cartaAMostrar,TrucoEvent.JUGAR_CARTA);
                 else
                     System.out.println("--------------------------------------------\nNo puede mostrar las cartas-vericar porque posiblemente es error!! en TrucoHand FinDeMano_ControlarEnvido"+resultadoEnvido);
             }
@@ -371,7 +373,7 @@ public class TrucoHand {
                     if (cartaAMostrar != null){
                         statusTable.jugarCartaOffLine(i,cartaAMostrar);
                         System.out.println("mostrar "+cartaAMostrar.getValue()+"de:"+cartaAMostrar.getKind()+"del Player"+teams[i%2].getTrucoPlayerNumber(i/2));
-                        game.firePlayEvent(teams[i%2].getTrucoPlayerNumber(i/2),cartaAMostrar,TrucoEvent.JUGAR_CARTA);
+                        game.firePlayResponseEvent(teams[i%2].getTrucoPlayerNumber(i/2),cartaAMostrar,TrucoEvent.JUGAR_CARTA);
                     }
                     else{
                         System.out.println("Error en display fin de Flor, avisar a gente de Truco Game");
@@ -389,6 +391,7 @@ public class TrucoHand {
         System.out.println(playTurnNumber + "-"+primerTurnoNumber+"quieroycanto="+quieroYCanto.getName()+";"+playTurn.getName());
         if (quieroYCanto == playTurn && envidoTurnNumber == primerTurnoNumber){
             try{
+                jugadadequieroycanto = true;
                 play(new TrucoPlay(playTurn,TrucoPlay.CANTO_ENVIDO, statusTable.getValueOfEnvido(primerTurnoNumber)));
             }
             catch(InvalidPlayExcepcion e){
@@ -689,7 +692,7 @@ public class TrucoHand {
                     meVoyAlMazo(tp);
                     break;
                 default:
-                    throw(new InvalidPlayExcepcion ("error grave - TrucoPlay no definido"));
+                    throw(new InvalidPlayExcepcion ("error grave - TrucoPlay no definido"+tp.getType()));
             }
         }
         catch(InvalidPlayExcepcion e){
@@ -762,14 +765,20 @@ public class TrucoHand {
     protected void rondaEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
 
     	if(tp.getPlayer() != playTurn)
-    		throw (new InvalidPlayExcepcion("TrucoHand - rondaEnvido(TrucoPlay): no es tu turno"+estadoActual));
+    		throw (new InvalidPlayExcepcion(tp.getPlayer().getName()+"TrucoHand - rondaEnvido(TrucoPlay): no es tu turno"+playTurn.getName()));
     	if(estadoActual != RONDA_DE_ENVIDO )
     		throw (new InvalidPlayExcepcion("TrucoHand - rondaEnvido(TrucoPlay): no es ronda de envido"+estadoActual));
 
         if(tp.getType() == TrucoPlay.CANTO_ENVIDO){
     		if(!statusTable.jugarEnvido(envidoTurnNumber,tp.getValue()))
     			throw (new InvalidPlayExcepcion(tp.getPlayer().getName()+"TrucoHand - rondaEnvido(TrucoPlay): no puedes cantar ese envido: ("+tp.getValue()+")"));
-    		game.firePlayEvent(tp.getPlayer(),TrucoEvent.CANTO_ENVIDO,tp.getValue());
+                if (jugadadequieroycanto == true){
+                    game.firePlayResponseEvent(tp.getPlayer(),TrucoEvent.CANTO_ENVIDO,tp.getValue());
+                }
+                else{
+                    game.firePlayEvent(tp.getPlayer(),TrucoEvent.CANTO_ENVIDO,tp.getValue());
+                }
+                jugadadequieroycanto = false;
     	}
     	else{
                 System.out.println("paso el Envido");

@@ -101,7 +101,7 @@ public class TrucoGameClient extends TrucoGame
     public TrucoPlayer getAssociatedPlayer(){
         return null;
     }
-    public void play (TrucoPlay tp) throws InvalidPlayExcepcion{
+    synchronized public void play (TrucoPlay tp) throws InvalidPlayExcepcion{
         try{
             trucoHandCli.play(tp);
         }

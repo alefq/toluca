@@ -222,6 +222,9 @@ public class TrucoEvent {
    			case 22:
    				typeevent = 22;
    				break;
+                        case 23:     
+                                typeevent = 23;
+   				break;
    			case 31:
    				typeevent = 31;
    				break;
@@ -254,6 +257,7 @@ public class TrucoEvent {
                                 typeevent = -1;
                                 break;
    		}
+                System.out.println("evento "+type +"a"+typeevent+"!");
    		tp.setType(typeevent);
    		tp.setCard(carta);
    		tp.setValue(value);
@@ -497,7 +501,7 @@ public Document xmlCreateSendCards()
 				doc = xmlCreateCanto();
 				break;
 			case CANTO_ENVIDO:
-				doc = xmlCreateCanto();
+				doc = xmlCreateCantarTanto();
 				break;
 
 			case CANTO_FLOR:

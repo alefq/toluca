@@ -12,6 +12,7 @@ import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+import py.edu.uca.fcyt.toluca.event.*;
 /**
  * <p>
  *
@@ -346,6 +347,83 @@ public class TrucoPlay
 	Element element = (Element) child;
 	String aux=element.getName();
 	prueba.xmlReadTrucoPlay(child);
+    }
+    public TrucoEvent toTrucoEvent(){
+        TrucoEvent ev = new TrucoEvent();
+        ev.setPlayer(player);
+        ev.setTableNumber(tableNumber);
+        byte typeevent = 0;
+        TrucoCard carta = null;
+   		switch (type){
+   			case 1:
+   				typeevent = 1;
+   				break;
+   			case 2:
+   				typeevent = 2;
+   				break;
+   			case 3:
+   				typeevent = 3;
+   				break;
+   			case 11:
+   				typeevent = 11;
+   				break;
+   			case 12:
+   				typeevent = 12;
+   				break;
+   			case 13:
+   				typeevent = 13;
+   				break;
+   			case 14:
+   				typeevent = 14;
+   				break;
+   			case 21:
+   				typeevent = 21;
+   				break;
+   			case 22:
+   				typeevent = 22;
+   				break;
+   			case 31:
+   				typeevent = 31;
+   				break;
+   			case 32:
+   				typeevent = 32;
+   				break;
+   			case 33:
+   				typeevent = 33;
+   				break;
+   			case 62:
+   				typeevent = 61;
+   				carta = card;
+   				break;
+   			case 61:
+   				typeevent = 62;
+   				break;
+   			case 65:
+   				typeevent = 63;
+   				break;
+   			case 63:
+   				typeevent = 64;
+   				break;
+   			case 64:
+   				typeevent = 65;
+   				break;
+   			case 66:
+   				typeevent = 66;
+   				break; 
+                        default :
+                                typeevent = -1;
+                                break;
+   		}
+   		ev.setTypeEvent(typeevent);
+   		if (typeevent == 61 && carta == null){
+                    System.out.println("errror!!!!!!!!!!!!!1111caralho");
+                }
+                if (carta == null)
+                    System.out.println("errror!!!!!!!!!!!!!222222222puta caralho");
+                ev.setCard(carta);
+   		ev.setValue(value);
+   		return ev;
+        
     }
 } // end TrucoPlay
 

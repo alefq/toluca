@@ -131,7 +131,7 @@ public class TrucoGame extends Game {
      * @throws InvalidPlayExcepcion Excepcion en caso de dectarse que no es posible hacer esa jugada.
      */ 
     
-    public void play (TrucoPlay tp) 
+    synchronized public void play (TrucoPlay tp) 
     throws InvalidPlayExcepcion{ //play trucoGame
         
         if (teams[0] == null || teams[1] == null)

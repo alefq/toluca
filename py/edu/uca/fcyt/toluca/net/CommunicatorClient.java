@@ -217,6 +217,7 @@ public class CommunicatorClient extends Communicator {
                 xmlReadCantarTanto(child);
             }
             if (aux.compareTo("CantarTanto") == 0) {
+                    System.out.println("quieron cantar mi tanto!!");
                     TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
                     TrucoPlayer myPlayer = pieza.getPlayer(userAux);
                     
@@ -224,11 +225,11 @@ public class CommunicatorClient extends Communicator {
                     TrucoEvent ev = new TrucoEvent(myCliente ,handAux,myPlayer,(byte)typeAux,tantoAux);
                     TrucoPlay tp = ev.toTrucoPlay();
                         if (getAssociatedPlayer() != myPlayer) {
-                            System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName());
+                            System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName()+"jugada"+tp.getType());
                             myCliente.play(tp);
                         }
            		myCliente.playResponse(myPlayer,ev.getTypeEvent(),tantoAux);
-        		System.out.println("se cantou, furou?");
+        		System.out.println("se cantou tanto, furou?");
             }
         }
     }
@@ -564,9 +565,10 @@ public class CommunicatorClient extends Communicator {
            		TrucoGameClient myCliente = (TrucoGameClient)((Table)getTables().get(String.valueOf(gameID))).getTGame();
                         TrucoPlayer myPlayer = pieza.getPlayer(userAux);
                         TrucoEvent ev = new TrucoEvent(myCliente ,handAux,myPlayer,(byte)typeAux);
-        		TrucoPlay tp = new TrucoPlay(myPlayer,(byte)typeAux);        		
+        		TrucoPlay tp = ev.toTrucoPlay();
                         if (getAssociatedPlayer() != myPlayer) {
-                            System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName());
+                            System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName()+"jugada"+ev.getTypeEvent());
+                            System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName()+"jugada"+tp.getType());
                             myCliente.play(tp);
                         }
            		myCliente.playResponse(myPlayer,(byte)typeAux);
@@ -834,8 +836,10 @@ public class CommunicatorClient extends Communicator {
     }
     
     public void play(TrucoPlay tp) {
+        
         Document doc = tp.toXml();
         super.sendXmlPackage(doc);
+        new Exception("Esto no deberia de funcionar!!!!!!!!!!!!!!!!! :-(   ").printStackTrace();
     }
     public TrucoPlayer getAssociatedPlayer() {
         return mi_jugador;
