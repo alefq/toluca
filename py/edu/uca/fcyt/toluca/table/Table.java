@@ -206,7 +206,13 @@ public class Table implements PTableListener, ChatPanelContainer,
 
 		new Thread(animator).start();
 	}
+public void showSystemMessage(String message)
+{
+	TrucoPlayer trucoPlayer=new TrucoPlayer();
+	trucoPlayer.setName("System");
+	jtTable.jpChat.showSystemMessage(message, new String[] { "[", "]" });
 
+}
 	/** Agrega el jugador 'player' a la mesa */
 	public void addPlayer(TrucoPlayer player) {
 		players.add(player);

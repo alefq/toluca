@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import javax.swing.table.AbstractTableModel;
 
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+
 
 public class TableModelRanking extends AbstractTableModel{
 
@@ -85,6 +87,19 @@ public class TableModelRanking extends AbstractTableModel{
 		}
 		deleteRow(cont);
 		
+	}
+	public void actualizarPuntaje(TrucoPlayer trucoPlayer)
+	{
+		Iterator it=datos.iterator();
+		while(it.hasNext())
+		{
+			RowRanking rowRanking=(RowRanking) it.next();
+			if(rowRanking.getUser().equals(trucoPlayer.getName()))
+			{
+				rowRanking.setRanking(new Integer(trucoPlayer.getRating()));
+			}
+		}
+		fireTableDataChanged();
 	}
 	public String getColumnName(int col)
 	{

@@ -19,8 +19,20 @@ public class TrucoPlayer {
     private String pass = ""; 
     private String email = ""; 
     protected int rating = -1; 
-    
+    protected int oldRating;
 	
+	/**
+	 * @return Returns the oldRating.
+	 */
+	public int getOldRating() {
+		return oldRating;
+	}
+	/**
+	 * @param oldRating The oldRating to set.
+	 */
+	public void setOldRating(int oldRating) {
+		this.oldRating = oldRating;
+	}
   ///////////////////////////////////////
   // operations
 

@@ -60,11 +60,11 @@ public class EventDispatcherClient extends EventDispatcher {
      */
     public void loginCompleted(RoomEvent event) {
 
-        //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Cliente Login
-        // completed");
+        
 
         //      if (trucoPlayer == null) {
         trucoPlayer = event.getPlayer();
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Cliente Login  completed "+trucoPlayer);
         commClient.setTrucoPlayer(trucoPlayer);
         ((RoomClient) room).loginCompleted(trucoPlayer);
         getCommClient().setLoggedIn(true);
@@ -77,6 +77,7 @@ public class EventDispatcherClient extends EventDispatcher {
             //String keyClave = (String) it.next();
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Se va a
             // cargar "+newPlayer);
+        	//se agrega a todos menos a si mismo
             TrucoPlayer tp = (TrucoPlayer) it.next();
             if (!trucoPlayer.getName().equals(tp.getName())) {
                 room.addPlayer(tp);
@@ -141,7 +142,12 @@ public class EventDispatcherClient extends EventDispatcher {
      */
     public void playerJoined(RoomEvent event) {
 
-        room.addPlayer(event.getPlayer());
+    	//si es el playerJoined despues del loginCompleted entonces se agrega
+    	//el trucoPlayer nomas que fue creado en loginCompleted
+    	if(!trucoPlayer.getName().equals(event.getPlayer().getName()))
+    		room.addPlayer(event.getPlayer());
+    	else
+    		room.addPlayer(trucoPlayer);
 
     }
 
@@ -784,4 +790,24 @@ public class EventDispatcherClient extends EventDispatcher {
             // TODO Auto-generated catch block        
         }        
     }
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#rankingChanged(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void rankingChanged(RoomEvent event) {
+		
+		RoomClient roomClient=(RoomClient) room;
+		TrucoPlayer playerClient=roomClient.getPlayer(event.getPlayer().getName());
+		playerClient.setRating(event.getPlayer().getRating());
+		roomClient.actualizarRanking(playerClient);
+		
+		Table table = room.getTable(event.getTableNumber());
+
+        
+        
+        table.showSystemMessage("Player: "+event.getPlayer().getName()+" - Old Ranking: "+
+        		event.getPlayer().getOldRating()+"New Ranking: "+event.getPlayer().getRating());
+
+		
+	}
 }

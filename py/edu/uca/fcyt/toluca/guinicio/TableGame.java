@@ -120,5 +120,8 @@ public class TableGame extends JTable{
     public void setTableModelGame(TableModelGame tableModelGame) {
         this.tableModelGame = tableModelGame;
     }
-    
+    public void refresh()
+    {
+    	tableModelGame.refresh();
+    }
 }

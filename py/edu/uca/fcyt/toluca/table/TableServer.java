@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.RoomServer;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -158,14 +159,50 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     	TrucoTeam team1 = tg.getTeams()[0];
     	TrucoTeam team2 = tg.getTeams()[1];
 
+    	
+    	
+    	
+    	
     	try {
 			obtenerRoomServer().getDbOperations().updateGameData(team1, team2, tg.getTeamGanador());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
 		tGame = null;
+		
+    	RoomServer roomServer=obtenerRoomServer();
+    	Iterator it=team1.getPlayers().iterator();
+//    	GUARDA EL RANKING ACTUAL EN OLD RANKING
+    	//ESO SE USA PARA QUE EL PLAYER SEPA CUANTO TENIA
+    	//Y LUEGO CON CUANTO SE QUEDA
+    	//LE AVISA AL ROOMSERVER QUE CAMBIO EL RANKING DE TODOS LOS DEL TEAM1
+    	while(it.hasNext())
+    	{
+    		TrucoPlayer tPlayer=(TrucoPlayer) it.next();
+    		tPlayer.setOldRating(tPlayer.getRating());
+    		try {
+				tPlayer.setRating(roomServer.getDbOperations().getTrucoPlayerRanking(tPlayer));
+			} catch (SQLException e1) {
+				logger.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"SQLException : "+e1.getMessage());
+			}
+    		roomServer.rankingChanged(tPlayer);
+    	}
+    	it=team2.getPlayers().iterator();
+//    	LE AVISA AL ROOMSERVER QUE CAMBIO EL RANKING DE TODOS LOS DEL TEAM1
+    	while(it.hasNext())
+    	{
+    		TrucoPlayer tPlayer=(TrucoPlayer) it.next();
+    		tPlayer.setOldRating(tPlayer.getRating());
+    		try {
+				tPlayer.setRating(roomServer.getDbOperations().getTrucoPlayerRanking(tPlayer));
+			} catch (SQLException e1) {
+				logger.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"SQLException : "+e1.getMessage());
+			}
+    		roomServer.rankingChanged(tPlayer);
+    		
+    	}
+		
     }
     
     public void endOfHand(TrucoEvent event) {

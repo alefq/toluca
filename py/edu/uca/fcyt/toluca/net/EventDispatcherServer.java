@@ -345,6 +345,13 @@ public class EventDispatcherServer extends EventDispatcher{
 		// TODO Auto-generated method stub
 		
 	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#rankingChanged(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void rankingChanged(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

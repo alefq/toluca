@@ -90,4 +90,8 @@ public class TableModelGame extends AbstractTableModel{
 		}
 		fireTableDataChanged();
 	}
+	public void refresh()
+	{
+		fireTableDataChanged();
+	}
 }

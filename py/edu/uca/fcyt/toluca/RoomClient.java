@@ -313,7 +313,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
 //        player.setFullName(player.getName());        
         getRoomUING().loginCompleted(player);
     } // end loginCompleted /** lock-begin */
-
+    public void actualizarRanking(TrucoPlayer trucoPlayer)
+    {
+    	getRoomUING().actualzarRanking(trucoPlayer);
+    }
     /*
      * Ingresa al Player en la Tabla Principal como Observador
      */

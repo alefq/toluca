@@ -28,6 +28,7 @@ public class PanelGradiente extends JComponent{
 	 * @param nombre The nombre to set.
 	 */
 	public void setNombre(String nombre) {
+		
 		this.nombre = "Bienvenido "+nombre;
 		repaint();
 	}

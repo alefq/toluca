@@ -68,7 +68,15 @@ public class ChatPanel extends javax.swing.JPanel {
                         + "\n");
         getChatArea().setCaretPosition(getChatArea().getText() != null ? getChatArea().getText().length() : 0);
     }
-
+public void showSystemMessage(String htmlMessage,     String[] bounds) 
+{
+	  if (bounds == null)
+        bounds = new String[] { "**", "**" };
+    getChatArea().append(
+            bounds[0] + "System" + bounds[1] + ": " + htmlMessage
+                    + "\n");
+    getChatArea().setCaretPosition(getChatArea().getText() != null ? getChatArea().getText().length() : 0);
+}
     private void sendChatMessage() {
 
         // System.out.println(getClass().getName()+" getplayer "+getPlayer());

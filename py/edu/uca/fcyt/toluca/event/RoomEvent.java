@@ -205,6 +205,7 @@ public class RoomEvent {
     
 	public static final int TYPE_TABLE_CREATED_SERVER = 13;
 	public static final int TYPE_TABLE_DESTROYED=14;
+	public static final int TYPE_RANKING_CHANGED=15;
     
 	/** Holds value of property player. */
 	private TrucoPlayer player;

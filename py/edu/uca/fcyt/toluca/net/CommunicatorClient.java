@@ -232,4 +232,11 @@ public class CommunicatorClient extends Communicator{
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
 	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#rankingChanged(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void rankingChanged(RoomEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
 }

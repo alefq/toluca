@@ -617,7 +617,12 @@ implements ChatPanelContainer, TableListener {
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }
-
+    public void fireRankingChanged(RoomEvent event)
+    {
+    	Iterator it=roomListeners.listIterator();
+    	while(it.hasNext())
+    		((RoomListener)it.next()).rankingChanged(event);
+    }
     public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player,
             String htmlMessage) {
 
@@ -685,7 +690,13 @@ implements ChatPanelContainer, TableListener {
         // TODO Auto-generated method stub
 
     }
-
+    public void rankingChanged(TrucoPlayer trucoPlayer)
+    {
+    	RoomEvent event=new RoomEvent();
+    	event.setType(RoomEvent.TYPE_RANKING_CHANGED);
+    	event.setPlayer(trucoPlayer);
+    	fireRankingChanged(event);
+    }
     /*
      * (non-Javadoc)
      * 

@@ -44,7 +44,7 @@ public abstract class EventDispatcher {
 			case RoomEvent.TYPE_TABLE_CREATED_SERVER:break;
 			case RoomEvent.TYPE_TABLE_JOIN_REQUESTED:tableJoinRequested(event);break;
 			case RoomEvent.TYPE_TABLE_JOINED:tableJoined(event);break;
-			
+			case RoomEvent.TYPE_RANKING_CHANGED:rankingChanged(event);
 		}
 	}
 	public void dispatchEvent(TableEvent event)
@@ -196,7 +196,7 @@ public abstract class EventDispatcher {
 	
 	public abstract void tableJoinRequested(RoomEvent event);
 	public abstract void tableJoined(RoomEvent event);
-	
+	public abstract void rankingChanged(RoomEvent event);
 	
 	
 	

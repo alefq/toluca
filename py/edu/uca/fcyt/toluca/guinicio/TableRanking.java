@@ -110,5 +110,9 @@ public class TableRanking extends JTable{
     public void modifyplayer(TrucoPlayer player) {
         //logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
     }
-	
+	public void actualizarPuntaje(TrucoPlayer trucoPlayer)
+	{
+		TableModelRanking model=(TableModelRanking) getModel();
+		model.actualizarPuntaje(trucoPlayer);
+	}
 }

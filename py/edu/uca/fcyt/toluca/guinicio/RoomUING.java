@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/02/03 22:39:11 $
- * @version $Revision: 1.21 $ 
+ * Last modified: $Date: 2005/02/04 13:42:25 $
+ * @version $Revision: 1.22 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -515,7 +515,8 @@ public class RoomUING extends JApplet {
     }
 
     public void setOwner(TrucoPlayer trucoPlayer) {
-        panelTitle.setNombre(trucoPlayer.getFullName());
+    	
+        panelTitle.setNombre(trucoPlayer.getName());
     }
 
     public void removeTable(Table table) {
@@ -547,6 +548,10 @@ public class RoomUING extends JApplet {
         getContentPane().add(getRoomPanel());
         setOwner(player);
         validateTree();
+    }
+    public void actualzarRanking(TrucoPlayer trucoPlayer)
+    {
+    	tableRanking.actualizarPuntaje(trucoPlayer);
     }
 
 } //  @jve:decl-index=0:visual-constraint="10,30"

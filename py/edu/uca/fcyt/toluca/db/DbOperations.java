@@ -245,7 +245,18 @@ public class DbOperations {
         return new TrucoPlayer(uname, puntaje);
         //return new TrucoPlayer(uname, rand.nextInt());
     }
-
+    public int getTrucoPlayerRanking(TrucoPlayer trucoPlayer) throws SQLException
+    {
+    	final String sql="select jugadores.puntaje FROM jugadores where JUGADOR=?";
+    	PreparedStatement ps = conn.prepareStatement(sql);
+    	ps.setString(1, trucoPlayer.getName());
+    	ResultSet rs = ps.executeQuery();
+    	int ranking=0;
+       	if (rs.next()) 
+    		ranking = rs.getInt(1);
+    		
+    	return ranking;
+    }
     // end authenticatePlayer
 
 
