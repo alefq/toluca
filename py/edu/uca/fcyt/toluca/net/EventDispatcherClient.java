@@ -363,7 +363,7 @@ public class EventDispatcherClient extends EventDispatcher{
 	 */
 	public void gameStarted(TableEvent event) {
 
-		System.out.println("Llego un gameStarted");
+		System.out.println("Llego un gameStarted de TableEvent ");
 		TableServer tableServer=event.getTableServer();
 		Table table=room.getTable(tableServer.getTableNumber());
 		
@@ -372,16 +372,38 @@ public class EventDispatcherClient extends EventDispatcher{
 		TrucoGameClient trucoGameClient=new TrucoGameClient(trucoTeam[0],trucoTeam[1]);
 		trucoGameClient.addTrucoListener(commClient);
 		
-		trucoGameClient.startGameClient();
-		table.startGame(trucoGameClient);
+		//es muy importante el orden de los faroles altera el valor del alumbrado
+		//esto me hizo perder 2 horas
+		table.startGame(trucoGameClient);//atender esta linea primero que la linea titulada morgue
+		trucoGameClient.startGameClient();//linea morgue
+		
 	}
 
 	public void infoGame(TrucoEvent event) {
-		System.out.println(" info del juego ");
-		TrucoPlayer playerServer=event.getPlayer();
-		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		System.out.println("****************************INFO DE JUEGO******************************");
+		System.out.println(" Info del juego type "+event.getType());
+		
+		if(event.getType()==TrucoEvent.INICIO_DE_JUEGO)
+			System.out.println("SE EMPIEZA UN JUEGO");
+		if(event.getType()==TrucoEvent.INICIO_DE_MANO)
+			System.out.println("SE EMPIEZA LA MANO");
+		
 		Table table=room.getTable(event.getTableNumber());
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		System.out.println(" Table "+table.getTableNumber());
+		System.out.println("Hands "+event.getNumberOfHand());
+		if(event.getPlayer()!=null)
+		{
+			
+			TrucoPlayer trucoPlayer=room.getPlayer(event.getPlayer().getName());
+			event.setPlayer(trucoPlayer);
+			System.out.println(" TrucoPlayer "+trucoPlayer.getName());
+		}
+		else
+		{
+			System.out.println("TrucoPlayer es nulo");
+		}
+		System.out.println("******************************************************");
 		trucoGameClient.play(event);
 		
 	}
@@ -446,9 +468,11 @@ public class EventDispatcherClient extends EventDispatcher{
 		
 		System.out.println(" Player cliente : "+playerClient);
 		System.out.println(" carta cliente: "+cartaClient);
+		System.out.println("TrucoPlayer : "+trucoPlayer);
 		
-		if (!trucoPlayer.getName().equals(playerClient.getName()))
+		if (trucoPlayer!=playerClient)
 		{
+			System.out.println(getClass().getName()+"tirarCarta: playerCliente no es igual a trucoPlayer");
 			//System.out.println("Ejecuto primero la jugada en el cliente!!!: " + tp.getPlayer().getName());
 			TrucoPlay tp = new TrucoPlay(playerClient,TrucoPlay.JUGAR_CARTA,cartaClient);
 			trucoGameClient.play(tp);

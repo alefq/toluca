@@ -191,9 +191,9 @@ public class TrucoHand
 			  cardsToPlayer = statusTable.getPlayerCards((2*i+1)); // " '" """"2
 			  game.dealCards(pl,cardsToPlayer); //" """ 3*/
 			}
-			// TODO COMMENTED-out porque daba una excepción:
-			// Teoría de PS: No hace falta. Llamada al pedo que no va a volver
-			// Teoría de AA: Está mal el tipo del evento nomás.
+			// TODO COMMENTED-out porque daba una excepciï¿½n:
+			// Teorï¿½a de PS: No hace falta. Llamada al pedo que no va a volver
+			// Teorï¿½a de AA: Estï¿½ mal el tipo del evento nomï¿½s.
 			//game.fireCardsDealt();
 		}
 		catch (InvalidPlayExcepcion e)
@@ -503,7 +503,7 @@ public class TrucoHand
 	}*/
 	/** Verifica si es posible realizar una jugada.
 	 * @param tp TrucoPlay que quiere ser verificada.
-	 * @return retorna verdadero en caso de ser validá la jugada, falso en caso contrario.
+	 * @return retorna verdadero en caso de ser validï¿½ la jugada, falso en caso contrario.
 	 */
 	/*esta funcion tengo que cambiar con choco*/
 	public boolean esPosibleJugar(TrucoPlay tp)
@@ -692,8 +692,8 @@ public class TrucoHand
 		return true;
 	}
 	/** Realizar una jugada.
-	 * @param tp Jugada(TrucoPlay a ser realizadá).
-	 * @throws InvalidPlayExcepcion Tita en caso de detectarse una jugada inválida.
+	 * @param tp Jugada(TrucoPlay a ser realizadï¿½).
+	 * @throws InvalidPlayExcepcion Tita en caso de detectarse una jugada invï¿½lida.
 	 */
 	public void play(TrucoPlay tp) throws InvalidPlayExcepcion
 	{
@@ -1342,7 +1342,7 @@ public class TrucoHand
 	}
 	protected int getNumberOfPlayer(TrucoPlayer tp)
 	{
-		// RSHK - cambié (decia getNumberOfPLayer(tp)) porque no había definición correspondiente
+		// RSHK - cambiï¿½ (decia getNumberOfPLayer(tp)) porque no habï¿½a definiciï¿½n correspondiente
 		int numero=-1;
 		if (teams[0].isPlayerTeam(tp))
 		{
@@ -1558,7 +1558,7 @@ public class TrucoHand
 		return points[1];
 	}
 	/** Retorta el valor del Envido que puede cantar el TrucoPlayer
-	 * @param tp TrucoPlayer del quien se devolverá el valor de su Envido.
+	 * @param tp TrucoPlayer del quien se devolverï¿½ el valor de su Envido.
 	 * @return Valor del Envido del TrucoPlayer.
 	 */
 	public int getValueOfEnvido(TrucoPlayer tp)

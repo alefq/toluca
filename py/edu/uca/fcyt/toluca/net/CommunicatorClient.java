@@ -105,6 +105,7 @@ public class CommunicatorClient extends Communicator{
 	public void play(TrucoEvent event) {
 		System.out.println("El trucoplayer de este comm es  "+getTrucoPlayer());
 		System.out.println("El play hizo "+event.getPlayer());
+		System.out.println("eS DE TIPO "+event.getType());
 		if(event.getPlayer().getName().equals(getTrucoPlayer().getName()))
 		{
 			
@@ -115,7 +116,8 @@ public class CommunicatorClient extends Communicator{
 		logger.debug("SE resive un play de "+trucoPlay.getPlayer().getName());
 		logger.debug("TAbla : "+trucoPlay.getTableNumber());
 		logger.debug("type : "+trucoPlay.getType());
-		logger.debug("carta Palo: "+trucoPlay.getCard().getKind() +" val "+trucoPlay.getCard().getValue());
+		if(trucoPlay.getCard()!=null)
+			logger.debug("carta Palo: "+trucoPlay.getCard().getKind() +" val "+trucoPlay.getCard().getValue());
 		logger.debug("value > "+trucoPlay.getValue());
 		super.sendXmlPackage(trucoPlay);
 		}

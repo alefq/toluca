@@ -86,4 +86,10 @@ public class TrucoCard extends Card {
 		e.writeObject(card);
 		e.close();
 	}
+	/**
+	 * @param valueInGame The valueInGame to set.
+	 */
+	public void setValueInGame(byte valueInGame) {
+		ValueInGame = valueInGame;
+	}
 }

@@ -163,6 +163,7 @@ public class CommunicatorServer extends Communicator{
 	public void endOfHand(TrucoEvent event) {
 	
 		logger.info("End of Hand");
+		super.sendXmlPackage(event);
 	}
 	
 	public void cardsDeal(TrucoEvent event) {
@@ -180,17 +181,19 @@ public class CommunicatorServer extends Communicator{
 	
 	public void handStarted(TrucoEvent event) {
 	
+		logger.debug("************************EMPEZO LA MANO");
 		super.sendXmlPackage(event);
 	}
 	
 	public void gameStarted(TrucoEvent event) {
 	
-		logger.info("gameStarted");
-		//super.sendXmlPackage(event)
+		logger.info("*******************************gameStarted");
+		super.sendXmlPackage(event);
 	}
 	
 	public void endOfGame(TrucoEvent event) {
 	
 		logger.info("End of game");
+		super.sendXmlPackage(event);
 	}
 }

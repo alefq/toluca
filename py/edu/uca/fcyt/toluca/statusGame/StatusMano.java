@@ -64,8 +64,14 @@ public class StatusMano
 		int valor=0,i=0,eq1=0,eq2=0,v1,v2;
 		eq1=hallarMayorCarta(0,Ronda);//el jugador con la carta mas alta
 		eq2=hallarMayorCarta(1,Ronda);
+		System.out.println("*************Valores de las cartas de la ronda****************");
+		System.out.println(" equipo uno jugo "+cartasJugadas[Ronda][eq1]);
+		System.out.println(" equipo dos jugo "+cartasJugadas[Ronda][eq2]);
+		
 		v1=cartasJugadas[Ronda][eq1].getValueInGame();//el valor de su carta mas alta
 		v2=cartasJugadas[Ronda][eq2].getValueInGame();
+		System.out.println(" v1 = "+v1+" v2 = "+v2);
+		System.out.println("***************************************************************");
 		if(v1>v2)
 			return eq1;
 		else if (v2>v1)

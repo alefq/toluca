@@ -206,5 +206,6 @@ public abstract class EventDispatcher {
 	public abstract void infoGame(TrucoEvent event);
 	public abstract void tirarCarta(TrucoEvent event);
 	public abstract void play(TrucoPlay event);
-	//public abstract void playInfo(Tryuc)
+	
+	
 }

@@ -278,11 +278,11 @@ public class TrucoGame extends Game
 	 */
 	public  void firePlayResponseEvent(TrucoPlayer pl, TrucoCard card,byte type)
 	{ //eventos de juego con carta
-		System.out.println("se envia el mensaje de PlayEvent");
+		//System.out.println("se envia el mensaje de PlayEvent");
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type,card);
 		for(int i=0; i<listenerlist.size();i++)
 		{
-			System.out.println("firePlayEvent para: " + listenerlist.get(i).getClass().getName());
+			//System.out.println("firePlayEvent para: " + listenerlist.get(i).getClass().getName());
 			//		((TrucoListener)(listenerlist.get(i))).play(event);
 			((TrucoListener)(listenerlist.get(i))).playResponse(event);
 		}
