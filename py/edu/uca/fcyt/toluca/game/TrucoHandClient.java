@@ -17,12 +17,13 @@ import py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.TrucoStatusTableClien
 public class TrucoHandClient extends TrucoHand{
     
     /** Creates a new instance of TrucoHandClient */
-    private py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.TrucoStatusTableCliente statusTable;
+    private py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.TrucoStatusTableCliente statusTableCli;
     private TrucoGameClient game;
     private boolean cartasRecibidasDePlayers[];
     private boolean runTrucoHandClient = false;
     private int cantidadDeCartasDePlayersRecibidas;
     public TrucoHandClient(TrucoGameClient game, int reparteCartas) {
+	super(game, reparteCartas);
         this.game = game;
         cantidadDePlayers = game.getNumberOfPlayers();
         cartasRecibidasDePlayers = new boolean[cantidadDePlayers];
@@ -33,7 +34,7 @@ public class TrucoHandClient extends TrucoHand{
         envidoTurnNumber = primerTurnoNumber; //quien canta el primer envido en caso de cantar
         florTurnNumber = primerTurnoNumber; //quien canta su flor en caso de haber
         cantidadDeCartasDePlayersRecibidas =0;
-        statusTable = new TrucoStatusTableCliente(cantidadDePlayers); //se crea un estado de la mesa
+        statusTableCli = new TrucoStatusTableCliente(cantidadDePlayers); //se crea un estado de la mesa
         detalleDePuntaje = new Vector();
         for (int i=0; i<3; i++)
             winRound[i] = -1;
@@ -48,7 +49,7 @@ public class TrucoHandClient extends TrucoHand{
         if (cartasRecibidasDePlayers[numeroDelPlayer])
             return;
         cartasRecibidasDePlayers[numeroDelPlayer] = true;
-        statusTable.recibirCartas(numeroDelPlayer, cartas);
+        statusTableCli.recibirCartas(numeroDelPlayer, cartas);
         cantidadDeCartasDePlayersRecibidas++;
         if(cantidadDeCartasDePlayersRecibidas == cantidadDePlayers)
             runTrucoHandClient = true;

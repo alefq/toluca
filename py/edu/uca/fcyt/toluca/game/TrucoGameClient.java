@@ -15,7 +15,7 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
 public class TrucoGameClient extends TrucoGame implements TrucoListener{
     
     /** Creates a new instance of TrucoClient */
-    protected TrucoHandClient trucoHand;
+    protected TrucoHandClient trucoHandCli;
    
     
     public TrucoGameClient(TrucoTeam t1, TrucoTeam t2) {
@@ -30,17 +30,17 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
             fireGameStarted();
             for (int i=0; i<numberOfPlayers; i++)
                 playersPreparados[i] = true;
-            startHandConfirmated();
+            startHandConfirmatedClient();//fletes
     }
     /** Enviar mensaje a todos los oyentes sobre el final del juego.
      *
      */
      void recibirCartas (TrucoPlayer tp,TrucoCard cards[]){
-        trucoHand.recibirCartas(tp,cards);
+        trucoHandCli.recibirCartas(tp,cards);
         dealtCards(tp,cards);
     }
     public boolean esPosibleJugar(TrucoPlay tp){
-        return trucoHand.esPosibleJugar(tp);
+        return trucoHandCli.esPosibleJugar(tp);
     }
     public void play(TrucoEvent event){
         switch(event.getTypeEvent()){
@@ -78,7 +78,7 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
     }
     public void play (TrucoPlay tp) throws InvalidPlayExcepcion{
         try{
-            trucoHand.play(tp);
+            trucoHandCli.play(tp);
         }
         catch(InvalidPlayExcepcion e){
             throw e;
@@ -122,8 +122,8 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
         else{
             numberOfHand++;
             fireHandStarted();/*para que se preparen los jugadores*/
-            trucoHand = new TrucoHandClient(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
-            trucoHand.startHand();
+            trucoHandCli = new TrucoHandClient(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
+            trucoHandCli.startHand();
         }
     }
 }
