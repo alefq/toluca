@@ -42,7 +42,7 @@ public class Team {
     /** Adherirse un nuevo jugador al Equipo.
      * @param pl Jugador que se adhiere.
      */    
-    public void addPlayer(Player pl){
+    public void addPlayer(TrucoPlayer pl){
         numberOfPlayers++;
         playersList.add(pl);
     }
@@ -51,8 +51,8 @@ public class Team {
      * @param numberOfPlayer Numero del Player que será Retornado.
      * @return El Player del Equipo.
      */    
-    public Player getPlayerNumber (int numberOfPlayer){
-        return (Player)playersList.get(numberOfPlayer);
+    public TrucoPlayer getPlayerNumber (int numberOfPlayer){
+        return (TrucoPlayer)playersList.get(numberOfPlayer);
     }
     /*retorna la cantidad de jugadores que tiene el equipo*/
     /** Retorna la cantidad de jugadores que tiene el Equipo.
@@ -72,9 +72,9 @@ public class Team {
      * @param pl Player a verificar si es integrante.
      * @return Retorna <B>true</B> en caso de ser integrante, <B>false</B> en caso contrario.
      */    
-    public boolean isPlayerTeam(Player pl){
+    public boolean isPlayerTeam(TrucoPlayer pl){
     	for (int i=0; i<playersList.size(); i++){
-    		if ((Player)(playersList.get(i))==pl)
+    		if ((TrucoPlayer)(playersList.get(i))==pl)
     			return true;
     	}
     	return false;

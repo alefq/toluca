@@ -20,15 +20,28 @@ class PopupTrucoPlays extends BasePopupMenu
      * @param ptListener 	Listener de eventos de mesa de juego
      * @param aPlays		Vector de Bytes de las jugadas habilitadas
      */
-    public PopupTrucoPlays(PTableListener ptListener, Vector aPlays)
+    public PopupTrucoPlays
+    (
+    	PTableListener ptListener, Vector aPlays, int envidoPoints
+    )
     {
-    	Byte play;
+    	byte play;
     	String name;
+    	
     	for (int i = 0; i < aPlays.size(); i++)
     	{
-    		play = (Byte) aPlays.get(i);
-    		name = (String) Table.pNames.get(play);
-    		add(new PopupActions(ptListener, play.byteValue(), name));
+    		play = ((Byte) aPlays.get(i)).byteValue();
+    		name = Util.getPlayName(play);
+    		
+    		if 
+    		(
+    			envidoPoints != -1 
+    			&& play == TrucoPlay.QUIERO 
+    			|| play == TrucoPlay.CANTO_ENVIDO
+    		)
+    		name = name + " " + envidoPoints;
+    					
+    		add(new PopupActions(ptListener, play, name));
     	}
     }
 }

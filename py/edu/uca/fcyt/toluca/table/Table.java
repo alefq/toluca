@@ -10,7 +10,7 @@ import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.toluca.event.*;
 import py.edu.uca.fcyt.game.*;
-import py.edu.uca.fcyt.toluca.ai.TolucaAgent;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
@@ -32,7 +32,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     private JFrame jFrame;			// jFrame principal
     private JTrucoTable jtTable;		// panel principal
     private PlayTable pTable;			// mesa de juego
-    private int playerCount = -1;		// cantidad de jugadores
+    private int playerCount;			// cantidad de jugadores
     private CardManager cManager;		// manejador de cartas
     private PopupTrucoPlays pTrucoPlays; // popup de jugadas
     private Vector players;
@@ -44,9 +44,9 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     private FaceManager fManager;		// FaceManager asociado
 	private Vector signs;				// vector de señas
 	private Animator animator;			// animador de objetos
-	// hashtable con el par (jugada, nombre)
-	protected static final Hashtable pNames = getPNames();
 	private Vector aPlays;	// jugadas habilitadas
+	protected int envidoPoints;
+//	private TrucoTeam[] teams;
     
     // manejador de eventos de mesa
     protected TableEventManager tEventMan;
@@ -58,6 +58,12 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     
     public int getTableNumber() { return tableNumber; }
     public void setTableNumber(int tableNumber) { this.tableNumber = tableNumber; }
+    
+    
+    public Table()
+    {
+    	
+    }
     
     /** Crea un Table asociado con 'player' */
     public Table(TrucoPlayer player, boolean host) 
@@ -76,7 +82,14 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
         tEventMan = new TableEventManager(this);
        
         jFrame = new JFrame();
-        jFrame.setTitle("Toluca: " + actualPlayer.getName());
+        if (actualPlayer == null) {
+            System.out.println("actualPlayer null!!!!! - ");
+            
+        }
+        if (jFrame == null) {
+            System.out.println("JFrame Nulo :((((((((");
+        }
+        jFrame.setTitle("Toluca: " +  actualPlayer.getName());
         jFrame.getContentPane().add(jtTable);
         jFrame.setSize(600, 500);
 
@@ -91,6 +104,8 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
      */
     public void initialize()
     {
+    	System.out.println("Initializing");
+    	
     	// establece el texto del botón
 		jtTable.buttons[0].setText("Iniciar");
 		jtTable.buttons[0].setEnabled(false);
@@ -119,20 +134,6 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
         fManager.hideFaces();
         fManager.showFaces();
     }
-
-    /** Crea un Table asociado con 'player' */
-    public Table(TrucoPlayer player, boolean host, TolucaAgent ta) 
-    {
-        actualPlayer = player;
-        tEventMan = new TableEventManager(this);
-        trListener = new TrListener(this);
-        jFrame = new JFrame();
-        jFrame.setTitle("Toluca: " + actualPlayer.getName());
-        jFrame.getContentPane().add(jtTable);
-        jFrame.setSize(600, 500);
-    }
-
-    
     
     public void show() 
     {
@@ -141,7 +142,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     
     
     /** Agrega el jugador 'player' a la mesa */
-    public void addPlayer(Player player) {
+    public void addPlayer(TrucoPlayer player) {
         players.add(player);
         jtTable.jpWatchers.addPlayer(player.getName());
     }
@@ -180,6 +181,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
         // actualiza el TrucoGame actual y carga su TrucoListener
         tGame = game;
         tGame.addTrucoListener(trListener);
+        
         // quita todas las caritas
    		fManager.hideFaces();
    		fManager.removeFaces();
@@ -216,7 +218,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
      * @param player	Jugador
      * @param chair		silla
      */
-    public void sitPlayer(Player player, int chair) 
+    public void sitPlayer(TrucoPlayer player, int chair) 
     {
         pManager.sitPlayer(player, chair);
         if (player == actualPlayer)
@@ -224,7 +226,10 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
         
         fManager.getFace(chair).setName(player.getName());
         
-       	jtTable.buttons[0].setEnabled(pManager.evenTeams());
+		jtTable.buttons[0].setEnabled
+		(
+			pManager.evenTeams() && (pManager.getActualChair() == 0)
+		);
         
         System.out.println(player.getName() + " sitted in chair " + chair + " in table of " + actualPlayer.getName());
     }
@@ -244,7 +249,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
     }
     
     /** Retorna el Player propietario de esta mesa */
-    public Player getPlayer() 
+    public TrucoPlayer getPlayer() 
     {
         return actualPlayer;
     }
@@ -292,22 +297,24 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 	        				);
         			}
 	        		// si se jugó
-	        		else 
+	        		else
+	        		{ 
 	        			tGame.play(new TrucoPlay
 	        			(
 	        				actualPlayer, 
 	        				(byte) TrucoPlay.JUGAR_CARTA, 
 	        				(TrucoCard) card
 	        			));
+	        		}
         		}
         		else
         		{
         			try
         			{
-        				new PopupTrucoPlays(this, aPlays).show
+        				new PopupTrucoPlays
         				(
-        					pTable, e.getX(), e.getY()
-        				);
+        					this, aPlays, envidoPoints
+        				).show(pTable, e.getX(), e.getY());
         			}
         			catch(NullPointerException ex) {}
         		}
@@ -339,7 +346,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 		// si existe dicha posición...
 		if (pos != -1)
 		{
-			Player player;
+			TrucoPlayer player;
 			int chair, actualChair;
             
             // obtiene la silla en esa posición    
@@ -387,30 +394,10 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 		switch (say)
 		{
 			case TrucoPlay.CANTO_ENVIDO:
-//				while (bad) try
-//				{
-//					strPts = Util.lineInput("Puntos: ", 5);
-//					bad = false;
-//					intPts = Integer.parseInt(strPts);
-					intPts = tGame.getValueOfEnvido(actualPlayer);
-//					tEventMan.fireChatMessageRequested
-//					(
-//						actualPlayer, Integer.toString(intPts)
-//					);
+					intPts = envidoPoints;
 					tGame.play(new TrucoPlay(actualPlayer, (byte) say, intPts));
-//				}
-//				catch (InvalidPlayExcepcion ex) {}
 				break;
-//			case TrucoPlay.CERRARSE:
-//				tGame.play(new TrucoPlay(actualPlayer, say));
-//				break;
-			
 			default:
-//				tEventMan.fireChatMessageRequested
-//				(
-//					actualPlayer,
-//					(String) Table.pNames.get(new Byte((byte) say))
-//				);
 				tGame.play(new TrucoPlay(actualPlayer, say));
 				break;
 		}
@@ -423,7 +410,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 	protected boolean sendSignsIfClick(int x, int y)
 	{
 		int pos;
-		Player player;
+		TrucoPlayer player;
 		
 		// obtiene la posición de jugador al 
 		// cual se debe enviar las señas
@@ -460,7 +447,7 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
      */	
     public void showSign(TableEvent event)
     {
-    	Player src, dest;
+    	TrucoPlayer src, dest;
     	
     	// obtiene el Player emisor y el receptor
     	src = event.getTable().getPlayer();
@@ -492,16 +479,16 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
      */
     protected void clearSigns() { signs.clear(); }
     
-    public void sendChatMessage(Player player, String htmlMessage) 
+    public void sendChatMessage(TrucoPlayer player, String htmlMessage) 
     {
         tEventMan.fireChatMessageRequested(player, htmlMessage);
     }
     
-    public void showChatMessage(Player player, String htmlMessage) 
+    public void showChatMessage(TrucoPlayer player, String htmlMessage) 
     {
     	int pos;
     	
-        jtTable.jpChat.showChatMessage(player, htmlMessage);
+        jtTable.jpChat.showChatMessage(player, htmlMessage, null);
         
         if (pManager.isSitted(player))
         {
@@ -555,27 +542,6 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 		return tGame;
 	}
 	
-	private static Hashtable getPNames()
-	{
-		Hashtable ret;
-		
-		ret = new Hashtable();
-		ret.put(new Byte(TrucoPlay.ENVIDO), "Envido");
-		ret.put(new Byte(TrucoPlay.REAL_ENVIDO), "Real Envido");
-		ret.put(new Byte(TrucoPlay.FALTA_ENVIDO), "Falta Envido");
-		ret.put(new Byte(TrucoPlay.FLOR), "Flor");
-		ret.put(new Byte(TrucoPlay.TRUCO), "Truco");
-		ret.put(new Byte(TrucoPlay.QUIERO), "Quiero");
-		ret.put(new Byte(TrucoPlay.RETRUCO), "Quiero Retruco");
-		ret.put(new Byte(TrucoPlay.VALE_CUATRO), "Quiero Vale 4");
-		ret.put(new Byte(TrucoPlay.NO_QUIERO), "No quiero");
-		ret.put(new Byte(TrucoPlay.CANTO_ENVIDO), "Cantar puntos");
-		ret.put(new Byte(TrucoPlay.PASO_ENVIDO), "Paso envido");
-		ret.put(new Byte(TrucoPlay.CERRARSE), "Cerrarse");
-		
-		return ret;
-    }
-	
 	/**
      * Carga las jugadas habilitadas
      * @param aPlays	Vector de Bytes de jugadas habilitadas
@@ -594,20 +560,21 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 		text = source.getText();
 		if (text.equals("Iniciar"))
 		{
-//    		source.setEnabled(false);
     		tEventMan.fireGameStartRequest();
+    		
     	}
-		if (text.equals("Repartir"))
+		if (text.equals("Ok"))
+		{
+			jtTable.buttons[0].setEnabled(false);
 			tGame.startHand(actualPlayer);
-		if (text.equals("Finalizar"))
-			tEventMan.fireGameFinished();
+		}
 	}
 	
 	/**
      * Muestra las cartas de un player 
      * @param chair		Silla donde está el player
      */
-	public void showPlayed(int chair)
+	protected void showPlayed(int chair)
 	{
 		cManager.showPlayed(pManager.getPos(chair));
 	}
@@ -615,11 +582,22 @@ public class Table implements PTableListener, ChatPanelContainer, ActionListener
 	/**
      * Retorna la mesa de juego
      */
-	public JTrucoTable getJTrucoTable()
+	protected JTrucoTable getJTrucoTable()
 	{
 		return jtTable;
 	}
 	
-	
+	/**
+     * Retorna el manejador de eventos de mesa
+     */
+	protected TableEventManager getTEventMan()
+	{
+		return tEventMan;
+	}
+        
+        public String getOrigin() {
+            return String.valueOf(getTableNumber());
+        }
+        
 }
 

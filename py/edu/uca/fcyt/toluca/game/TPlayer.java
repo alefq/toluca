@@ -18,7 +18,7 @@ public class TPlayer extends JFrame implements TrucoListener{
     JTextField turno = new JTextField();
     JButton miscartas[] = new JButton[3];
     PlayButton botones[] = new PlayButton[3];
-    Icon icon = new ImageIcon("/home/aalliana/toluca/imagenes/dorso.GIF");
+    Icon icon = new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/dorso.gif");
     JPanel elPanel = new JPanel();
     JButton cartasJugadas[];
     TrucoTeam team;
@@ -51,7 +51,7 @@ public class TPlayer extends JFrame implements TrucoListener{
         elPanel.add(textfield);
         
         for(i=0; i<cartasAJugar; i++){
-            cartasJugadas[i] = new JButton(new ImageIcon("/home/aalliana/toluca/imagenes/dorso.GIF"));
+            cartasJugadas[i] = new JButton(new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/dorso.gif"));
             elPanel.add(cartasJugadas[i]);
         }
         losbotones();
@@ -166,7 +166,7 @@ public class TPlayer extends JFrame implements TrucoListener{
     public void handStarted(TrucoEvent event){
         setTitle("Truco - "+ TG.getNumberOfHand()+" - " + asociado.getName() + " // " + team.getPoints() +" - " + team2.getPoints());//el titulo del panel
        for(int i=0; i<cartasAJugar; i++){
-            cartasJugadas[i].setIcon(new ImageIcon("/home/aalliana/toluca/imagenes/dorso.GIF"));
+            cartasJugadas[i].setIcon(new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/dorso.gif"));
           
         }
 
@@ -178,23 +178,23 @@ public class TPlayer extends JFrame implements TrucoListener{
                 textfield.setText(textfield.getText() + "\nempieza juego");
         System.out.println("Game Started");
     }
-    public Player getAssociatedPlayer(){
+    public TrucoPlayer getAssociatedPlayer(){
         return asociado;
     }
     Icon aIcono(TrucoCard carta){
         String lacarta = null;
         switch(carta.getKind()){
             case Card.ORO:
-                lacarta = "/home/aalliana/toluca/imagenes/" + "Oro/"+carta.getValue()+".GIF";
+                lacarta = "c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/" + "oro/"+carta.getValue()+".gif";
                 break;
             case Card.BASTO:
-                lacarta = "/home/aalliana/toluca/imagenes/" + "Basto/"+carta.getValue()+".GIF";
+                lacarta = "c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/" + "basto/"+carta.getValue()+".gif";
                 break;
             case Card.COPA:
-                lacarta = "/home/aalliana/toluca/imagenes/" + "Copa/"+carta.getValue()+".GIF";
+                lacarta = "c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/" + "copa/"+carta.getValue()+".gif";
                 break;
             case Card.ESPADA:
-                lacarta = "/home/aalliana/toluca/imagenes/" + "Espada/"+carta.getValue()+".GIF";
+                lacarta = "c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/" + "espada/"+carta.getValue()+".gif";
                 break;
         }
         icon = new ImageIcon(lacarta);

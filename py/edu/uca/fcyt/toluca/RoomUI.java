@@ -84,7 +84,7 @@ public class RoomUI extends javax.swing.JApplet
 
         jpMain.add(jPanel1);
 
-        jpChatRanking.setLayout(new javax.swing.BoxLayout(jpChatRanking, javax.swing.BoxLayout.X_AXIS));
+        jpChatRanking.setLayout(new javax.swing.BoxLayout(jpChatRanking, javax.swing.BoxLayout.Y_AXIS));
 
         jSPrank.setViewportView(jpRanking);
 
@@ -139,9 +139,9 @@ public class RoomUI extends javax.swing.JApplet
         py.edu.uca.fcyt.util.LoginDialog ld = new py.edu.uca.fcyt.util.LoginDialog(JOptionPane.getRootFrame(), true);
         ld.show();
         roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
-        chatPanel = new ChatPanel(roomClient);
-        jpChat.add(chatPanel);
-        roomClient.setChatPanel(chatPanel);
+  //      chatPanel = new ChatPanel(roomClient, this.roomClient.getPlayer());
+  //      jpChat.add(chatPanel);
+   //     roomClient.setChatPanel(chatPanel);
         roomClient.setMainTable(mainTable);
         roomClient.setRankTable(rankTable);
         
@@ -150,12 +150,12 @@ public class RoomUI extends javax.swing.JApplet
     public void addChatPanel(ChatPanel cp) {
         System.out.println("Esto se ejecuta sin falta!");
         //jpChat.add(new JLabel("Berniii"));
-        jpChat.removeAll();
+        //jpChat.removeAll();
         jpChat.add(cp);
-        jpChat.validate();
+        //jpChat.validate();
         //jpChat.repaint();
-        //System.out.println("Se terminó de agregar el cp: " + cp.getPlayer().getName());
-        
+        System.out.println("Se terminó de agregar el cp: " + cp.getPlayer().getName());
+        jpChatRanking.validate();
         //validate();
         //repaint();
     }
@@ -188,10 +188,10 @@ public class RoomUI extends javax.swing.JApplet
      * </p>
      *
      */
-    public void sendChatMessage(Player player, String htmlMessage) {
+    public void sendChatMessage(TrucoPlayer player, String htmlMessage) {
     }    
     
-    public void showChatMessage(Player player, String htmlMessage) {
+    public void showChatMessage(TrucoPlayer player, String htmlMessage) {
     }    
     
     /** Getter for property chatPanel.

@@ -17,8 +17,8 @@ public class PlayButton implements MouseListener{
     boolean jugo = false;
     TrucoGame tg;
     TrucoCard TC;
-    Player TP;
-    public PlayButton (Player pl, TrucoGame tg){
+    TrucoPlayer TP;
+    public PlayButton (TrucoPlayer pl, TrucoGame tg){
         this.tg = tg;
     this.TP = pl;
     }

@@ -14,61 +14,13 @@ import py.edu.uca.fcyt.game.*;
 * @author Interfaz de Inicio
 * </p>
 */
-public interface SpaceListener {
-
-  ///////////////////////////////////////
-  // operations
-
-/**
-* <p>
-* Does ...
-* </p><p>
-*
-* @param player ...
-* </p><p>
-*
-* </p>
-*/
-    public void playerJoined(Player player);
-/**
-* <p>
-* Does ...
-* </p><p>
-*
-* @param player ...
-* </p><p>
-* @param htmlMessage ...
-* </p><p>
-*
-* </p>
-*/
-    public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage);
-/**
-* <p>
-* Does ...
-* </p><p>
-*
-* </p><p>
-*
-* @param player ...
-* </p>
-*/
-    public void playerLeft(Player player);
-/**
-* <p>
-* Does ...
-* </p><p>
-*
-* @param player ...
-* </p><p>
-* @param htmlMessage ...
-* </p><p>
-*
-* </p>
-*/
-    public void chatMessageRequested(ChatPanelContainer cpc, Player player, String htmlMessage);
-
-} // end SpaceListener
+public interface SpaceListener 
+{
+    public void playerJoined(TrucoPlayer player);
+    public void playerLeft(TrucoPlayer player);
+    public void chatMessageRequested(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage);
+    public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage);
+} 
 
 
 

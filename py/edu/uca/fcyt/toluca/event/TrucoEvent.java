@@ -83,7 +83,7 @@ public class TrucoEvent {
     private byte type;  //TIPO DE JUGADA 0 CANTO
     private TrucoCard[] cards; 
     private TrucoCard card;
-    private int value;
+    private int value=-1;
     /*repartir cartas*/
     public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player){
     	this(game,hand);
@@ -125,7 +125,7 @@ public class TrucoEvent {
     public int getNumberOfHand(){ //obtener el numero de mano del truco game
         return hand;
     }
-    public Player getTrucoPlayer(){ //obtener el player
+    public TrucoPlayer getTrucoPlayer(){ //obtener el player
         return player;
     }
     public byte getTypeEvent(){ //tipo de evento
@@ -137,7 +137,7 @@ public class TrucoEvent {
     public TrucoCard getCard(){
         return card;
     }
-   public Player getPlayer (){
+   public TrucoPlayer getPlayer (){
         return player;
     }
    public int getValue (){

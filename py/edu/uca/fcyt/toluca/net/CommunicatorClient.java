@@ -32,9 +32,10 @@ public class CommunicatorClient extends Communicator {
     ChatPanelContainer Chatpanel;
     
     /** Holds value of property player. */
-    private Player player;
+    private TrucoPlayer player;
     
     public CommunicatorClient(RoomClient pieza) {
+        super();
         this.pieza = pieza;
         int retinit = init();
         System.out.println(getInitErrorMessage(retinit));
@@ -65,8 +66,20 @@ public class CommunicatorClient extends Communicator {
     }
     
     public void receiveXmlPackage(Element xmlPackage) {
+        System.err.println("//////////////////////////////////////////");
         System.out.println("Vino un paquete: " + xmlPackage.getName());
         Document doc=new Document(xmlPackage);
+        try {
+            
+            XMLOutputter serializer = new XMLOutputter("  ", true);
+            
+            serializer.output(doc, System.out);
+            
+        }
+        catch (IOException e) {
+            System.err.println(e);
+        }
+        System.err.println("//////////////////////////////////////////");
         cabecera(doc);
         //chat.agregar(xmlPackage.getChild("Usuario").getText() + ": " + xmlPackage.getChild("Mensaje").getText());
         
@@ -84,12 +97,23 @@ public class CommunicatorClient extends Communicator {
         //peticion de loginc
         Document doc;
         doc = super.xmlCreateLogin(te);
+        /*try {
+         
+            XMLOutputter serializer = new XMLOutputter("  ", true);
+         
+            serializer.output(doc, System.out);
+         
+        }
+        catch (IOException e) {
+            System.err.println(e);
+        }*/
+        
         super.sendXmlPackage(doc);
     }
-    public void chatMessageRequested(ChatPanelContainer chatPanelContainer, Player jug, String htmlMessage){
+    public void chatMessageRequested(ChatPanelContainer chatPanelContainer, TrucoPlayer jug, String htmlMessage){
         Document doc;
         //this.ChatPanel=panel;
-        doc=super.xmlCreateChatMsg(jug,htmlMessage);
+        doc=super.xmlCreateChatMsg(chatPanelContainer, jug,htmlMessage);
         super.sendXmlPackage(doc);
     }
     
@@ -116,13 +140,26 @@ public class CommunicatorClient extends Communicator {
                 //Chatpanel.showChatMessage(user,message);
                 System.out.println("Player: "+user);
                 System.out.println("Mensaje: "+message);
-                pieza.showChatMessage(new Player(user, 0), message);
+                // Aca vemos para quién puta es el mensaje
+                String origen = element.getAttributeValue("origin");
+                System.out.println("El origen es: " + origen);
+                if (origen.equalsIgnoreCase("room")) {
+                    pieza.showChatMessage(new TrucoPlayer(user, 0), message);
+                } else {
+                    Table t = (Table)getTables().get(origen);
+                    if (t != null) {
+                        t.showChatMessage(new TrucoPlayer(user,0), message);
+                    } else {
+                        System.out.println("NO PUDIMOS ENTREGAR EL CHAT!!! !@@!#$#@@Q");
+                    }
+                }
             }
         }
     }
     
     public void tableCreated(RoomEvent re) {
         // Problemas de diseno a resolver en TolucaV2
+        
     }
     
     private void cabecera(Document doc) {//saca la cabeza del paquete y envia el paquete al lector correspondiente
@@ -168,18 +205,20 @@ public class CommunicatorClient extends Communicator {
         }
         
         if(aux.compareTo("TableCreated")==0) {
+            //cuando ya se creo una tabla
             xmlReadTableCreated(child);
         }
     }
     
     public void xmlReadUserJoined(Object o){
         String aux;
-        
+        System.err.println("Estamos dentro de xmlReadUserJoines-------------------------------");
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
             
             if(aux.compareTo("Player")==0) {
+                System.err.println("Estamos dentro de xmlReadUserJoines//////  dentro de un player=======================================");
                 String jugname=element.getAttributeValue("name");
                 int rating=Integer.parseInt(element.getAttributeValue("rating"));
                 if(mi_jugador== null) {
@@ -189,7 +228,7 @@ public class CommunicatorClient extends Communicator {
                     setPlayer(mi_jugador);
                 }
                 else {
-                    pieza.addPlayer(new Player(jugname, rating));
+                    pieza.addPlayer(new TrucoPlayer(jugname, rating));
                 }
                 
             }
@@ -206,22 +245,59 @@ public class CommunicatorClient extends Communicator {
         String aux;
         
         if (o instanceof Element) {
+            System.out.println("Cricco morgue: " + ((Element)o).getName());
             Element element = (Element) o;
             aux=element.getName();
             
             if(aux.equals("Table")) {
                 String tableid=element.getAttributeValue("id");
-                Table t = new Table(getPlayer(), false);
+                Table t = null;
+                t = new Table(getPlayer(), false);
+           /*     try {
+                    t = new Table(getPlayer(), false);
+                } catch (Exception e) {*/
+                //   System.out.println("En el CATCH carajo");
+                // e.printStackTrace();
+               // t = new Table(new TrucoPlayer("Manolillo"), false);
+                // }
+                
                 t.setTableNumber(Integer.parseInt(tableid));
                 t.addTableListener(this);
                 getTables().put(tableid, t);
-                
+                System.out.println("Cricco quiere imprimir algo aquí!");
+                this.pieza.addTable(t);
                 /*try {
                     Table tabela = (Table)getTables().get(tableid);
                     tabela.yapiro();
                 } catch (java.lang.NullPointerException e) {
-                 asdfasdf   
+                 asdfasdf
                 } */
+  /*
+                pEnum = players.elements();
+   
+                // agrega a la nueva tabla los Players cargados
+                while (pEnum.hasMoreElements())
+                    table.addPlayer((Player) pEnum.nextElement());
+   
+                // sienta a los jugadores
+                for (int i = 0; i < 6; i++)	if (gamePlayers[i] != null)
+                    table.sitPlayer(gamePlayers[i], i);
+   
+                // agrega a la nueva tabla al vector de tablas
+                tables.add(table);
+   
+                // obtiene las tablas creadas
+                tEnum = tables.elements();
+   
+                // agrega a cada tabla el Player creado
+                while (tEnum.hasMoreElements())
+                    ((Table) tEnum.nextElement()).addPlayer(player);
+   
+                // agrega a 'player' al vector de Players
+                players.add(player);
+   */
+                t.show();
+                
             }
             List children = element.getContent();
             Iterator iterator = children.iterator();
@@ -251,14 +327,14 @@ public class CommunicatorClient extends Communicator {
             if(aux.compareTo("Player")==0) {
                 String jugname=element.getAttributeValue("name");
                 int rating=Integer.parseInt(element.getAttributeValue("rating"));
-                Player jug1=new Player(jugname,rating);
+                TrucoPlayer jug1=new TrucoPlayer(jugname,rating);
                 Players.add(jug1);
                 System.out.println("Player"+ jugname);
             }
             if(aux.compareTo("Playert")==0) {
                 String jugname=element.getAttributeValue("name");
                 //System.out.println("Playert:  "+jugname);
-                Player jugaux=new Player(jugname,0);
+                TrucoPlayer jugaux=new TrucoPlayer(jugname,0);
                 ((Table)(Mesas.get(current))).addPlayer(jugaux);
                 //mesa.addPlayer(jugaux);
             }
@@ -277,10 +353,10 @@ public class CommunicatorClient extends Communicator {
             }
             if(aux.compareTo("LoginOk")==0) {
                 
-                Player jug;
+                TrucoPlayer jug;
                 Table mesa1;
                 for (Enumeration e = Players.elements() ; e.hasMoreElements() ;) {
-                    jug=(Player)e.nextElement();
+                    jug=(TrucoPlayer)e.nextElement();
                     System.out.println("================= RECIBI Player: "+jug.getName()+" Rating: "+jug.getRating()+"\n");
                     
                     pieza.addPlayer(jug);
@@ -328,7 +404,7 @@ public class CommunicatorClient extends Communicator {
     public void gameStartRequested() {
     }
     
-    public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
+    public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
         
     }
     
@@ -364,7 +440,24 @@ public class CommunicatorClient extends Communicator {
         doc = super.xmlCreateTableRequested(ev);
         super.sendXmlPackage(doc);
     }
-    
+    public Document xmlCreateTableJoinRequested(RoomEvent te) {
+        Element ROOT = new Element("TableJoinRequest");
+        Element PLAYER=new Element("Player");
+        Element TABLE = new Element("Table");
+        mi_jugador=new TrucoPlayer("Dani",10);
+        PLAYER.setAttribute("name",mi_jugador.getName());
+        
+        TABLE.setAttribute("id",String.valueOf(te.getTableNumber()));
+        ROOT.addContent(PLAYER);
+        ROOT.addContent(TABLE);
+        
+        Document doc = new Document(ROOT);
+        return doc;
+    }
+    public void joinTableRequested(RoomEvent ev) {
+        Document doc=xmlCreateTableJoinRequested(ev);
+        super.sendXmlPackage(doc);
+    }
     public void gameFinished(TableEvent event) {
     }
     
@@ -395,32 +488,31 @@ public class CommunicatorClient extends Communicator {
     public void signSendRequest(TableEvent event) {
     }
     
+    public void playerJoined(TrucoPlayer player) {
+        
+    }
+    
     public void signSent(TableEvent event) {
     }
     
-        /*public static void main(String[] args)
+      /*  public static void main(String[] args)
         {
-                TrucoCard []cards=new TrucoCard[3];
-                cards[0]=new TrucoCard(1,1);
-                cards[1]=new TrucoCard(1,4);
-                cards[2]=new TrucoCard(1,7);
-         
-                TrucoEvent dani = new TrucoEvent(new TrucoGame(2),5,new TrucoPlayer("Cricco"),TrucoEvent.CANTO_ENVIDO,28);
-         
-                Document doc=dani.toXml();
+                RoomEvent te=new RoomEvent();
+                                te.setTableNumber(10);
+       
                 CommunicatorClient cc=new CommunicatorClient();
-         
+                                Document doc=cc.xmlCreateTableJoinRequested(te);
                 try {
-         
+       
                 XMLOutputter serializer = new XMLOutputter("  ", true);
-         
+       
                 serializer.output(doc, System.out);
-         
+       
                         }
                 catch (IOException e) {
                 System.err.println(e);
                 }
-                        cc.cabecera(doc);
+                //        cc.cabecera(doc);
         }*/
     
 }

@@ -9,10 +9,15 @@ import java.awt.geom.*;
 import java.io.*;
 import java.security.InvalidParameterException;
 import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.toluca.event.*;
+import py.edu.uca.fcyt.toluca.game.*;
 
 public class Util
 {
 	public static float cardScale = .75f;
+	private static final Hashtable pNames = getPlayNames();
+	private static final Hashtable eNames = getEventNames();
+	private static final byte[] plays = getPlays();
 
 	// dibuja 'iIcon' en 'bImage'
 	static public void copyImage(ImageIcon iIcon, BufferedImage bImage)
@@ -127,4 +132,118 @@ public class Util
 		return ang;
 	}	
 
+	/**
+     * Retorna un Hashtable con los pares 
+     * (jugada: Byte, nombre: String)
+     */
+	private static Hashtable getPlayNames()
+	{
+		Hashtable ret;
+		
+		ret = new Hashtable();
+		ret.put(new Byte(TrucoPlay.ENVIDO), "Envido");
+		ret.put(new Byte(TrucoPlay.REAL_ENVIDO), "Real Envido");
+		ret.put(new Byte(TrucoPlay.FALTA_ENVIDO), "Falta Envido");
+		ret.put(new Byte(TrucoPlay.FLOR), "Flor");
+		ret.put(new Byte(TrucoPlay.TRUCO), "Truco");
+		ret.put(new Byte(TrucoPlay.QUIERO), "Quiero");
+		ret.put(new Byte(TrucoPlay.RETRUCO), "Quiero Retruco");
+		ret.put(new Byte(TrucoPlay.VALE_CUATRO), "Quiero Vale 4");
+		ret.put(new Byte(TrucoPlay.NO_QUIERO), "No quiero");
+		ret.put(new Byte(TrucoPlay.CANTO_ENVIDO), "Cantar");
+		ret.put(new Byte(TrucoPlay.PASO_ENVIDO), "Paso envido");
+		ret.put(new Byte(TrucoPlay.CERRARSE), "Cerrarse");
+		ret.put(new Byte(TrucoPlay.ME_VOY_AL_MAZO), "Me voy al mazo");
+		return ret;
+    }
+
+	/**
+     * Retorna un Hashtable con los pares 
+     * (evento: Byte, nombre: String)
+     */
+	private static Hashtable getEventNames()
+	{
+		Hashtable ret;
+		
+		ret = new Hashtable();
+		ret.put(new Byte(TrucoEvent.ENVIDO), "Envido");
+		ret.put(new Byte(TrucoEvent.REAL_ENVIDO), "Real Envido");
+		ret.put(new Byte(TrucoEvent.FALTA_ENVIDO), "Falta Envido");
+		ret.put(new Byte(TrucoEvent.FLOR), "Flor");
+		ret.put(new Byte(TrucoEvent.TRUCO), "Truco");
+		ret.put(new Byte(TrucoEvent.QUIERO), "Quiero");
+		ret.put(new Byte(TrucoEvent.RETRUCO), "Quiero Retruco");
+		ret.put(new Byte(TrucoEvent.VALE_CUATRO), "Quiero Vale 4");
+		ret.put(new Byte(TrucoEvent.NO_QUIERO), "No quiero");
+		ret.put(new Byte(TrucoEvent.CANTO_ENVIDO), "Cantar puntos");
+		ret.put(new Byte(TrucoEvent.PASO_ENVIDO), "Paso envido");
+		ret.put(new Byte(TrucoEvent.CERRARSE), "Cerrarse");
+		ret.put(new Byte(TrucoEvent.ME_VOY_AL_MAZO), "Me voy al mazo");
+		return ret;
+    }
+
+	/**
+     * Retorna un array con las jugadas en 
+     * el orden en que se deben mostrar
+     */
+	private static byte[] getPlays()
+	{
+		byte[] ret;
+		
+		ret = new byte[]
+		{
+			TrucoPlay.ENVIDO,
+			TrucoPlay.REAL_ENVIDO,
+			TrucoPlay.FALTA_ENVIDO,
+			TrucoPlay.FLOR,
+			TrucoPlay.TRUCO,
+			TrucoPlay.QUIERO,
+			TrucoPlay.RETRUCO,
+			TrucoPlay.VALE_CUATRO,
+			TrucoPlay.NO_QUIERO,
+			TrucoPlay.CANTO_ENVIDO,
+			TrucoPlay.PASO_ENVIDO,
+			TrucoPlay.CERRARSE,
+			TrucoPlay.ME_VOY_AL_MAZO
+		};
+		
+		return ret;
+    }
+
+	/**
+     * Retorna el nombre de una jugada
+     */	
+    public static String getPlayName(byte play)
+    {
+    	return (String) pNames.get(new Byte(play));
+    }
+
+	/**
+     * Retorna el nombre de un evento
+     */	
+    public static String getEventName(byte play)
+    {
+    	return (String) eNames.get(new Byte(play));
+    }
+
+	/**
+     * Retorna una jugada. 
+     * @param index		Indice de la jugada a retornar.
+     */    
+    public static byte getPlay(int index)
+    {
+    	return plays[index];
+    }
+    
+    /**
+     * Retorna la cantidad de jugadas posibles.
+     */
+    public static int getPlayCount()
+    {
+    	return plays.length;
+    }
+    
+    public static void main(String[] args)
+    {
+    }
 }

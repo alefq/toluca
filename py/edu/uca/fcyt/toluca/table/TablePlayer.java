@@ -10,18 +10,37 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.Graphics2D;
+import py.edu.uca.fcyt.toluca.table.TableCardListener;
+import py.edu.uca.fcyt.toluca.table.TableCard;
+import java.security.*;
 
 /**
  * Maneja a las cartas de un jugador
  */
-class TablePlayer implements Animable
+class TablePlayer implements Animable, TableCardListener
 {
+	// contiene el par (TableCard, Posición)
+//	private class TCardPos
+//	{
+//		public TableCard tCard;
+//		public int pos;
+//		public TCardPos(TableCard tCard, int pos)
+//		{
+//			this.tCard = tCard;
+//			this.pos = pos;
+//		}
+//	}
+	
 	private int posX, posY;	// posición x e y de la repartida
 	private double angle;	// ángulo de repartida
-	private Vector tCards;			// vector de TableCards
-	private int playedCount = 0;	// cantidad de cartas jugadas
 	private int playerPos;			// número de silla
-		
+	private final LinkedList toTable;	// cartas a jugar
+	private final LinkedList toHand;	// cartas a restaurar
+								
+	private final Vector played;		// cartas ya jugadas
+	private final Vector unplayed;		// cartas no jugadas
+	private final Vector inHand;		// cartas en mano
+	private final Vector onTable;		// cartas en mano
 
 	// escala de la posición x e y
 	private final static double POS_SCALE_X = .4f;
@@ -60,7 +79,7 @@ class TablePlayer implements Animable
 					playerPos < 5 ? playerPos + 1 :
 					7;
 
-				posX = (int) (POS_SCALE_X * PlayTable.TABLE_WIDTH * -Math.cos((k + 2) * Math.PI / 4));
+				posX = (int) (.8 * POS_SCALE_X * PlayTable.TABLE_WIDTH * -Math.cos((k + 2) * Math.PI / 4));
 				posY = (int) (POS_SCALE_Y * PlayTable.TABLE_HEIGHT * Math.sin((k + 2) * Math.PI / 4));
 				angle = -(k * Math.PI / 4);
 
@@ -69,17 +88,54 @@ class TablePlayer implements Animable
 				throw new RuntimeException("Cantidad de jugadores inválido");
 		}
 
-		// crea el vector de TableCards
-		this.tCards = new Vector();
+		// crea el vector de cartas jugadas y no jugadas
+		played = new Vector();
+		unplayed = new Vector();
+		inHand = new Vector();
+		onTable = new Vector();
 		
-		// carga el vector de TableCards
+		// carga el vector de TableCards no jugados y en mano
 		for (i = 0; i < tCards.length; i++)
-			this.tCards.add(tCards[i]);
+		{
+			unplayed.add(tCards[i]);
+			inHand.add(tCards[i]);
+			tCards[i].addListener(this);
+		}
 
 		// carga la posición del jugador
 		this.playerPos = playerPos;
+		
+		// crea la lista enlazada de las cartas que se jugarán
+		// y el de cartas que se restaurarán
+		toTable = new LinkedList();
+		toHand = new LinkedList();
 	}
+	
+	/**
+     * Marca a todas las cartas como no jugadas
+     */
+    synchronized public void initUnplayed()
+    {
+    	int cCount;
+    	TableCard tCard;
+    	
+    	cCount = played.size() + unplayed.size();
+    	
+    	// verificaciones
+    	verifIntegrity();
+    	
+    	// recarga las cartas no jugadas
+    	for (int i = 0; i < played.size(); i++)
+    	{
+    		tCard = getPlayed(i);
+    		unplayed.add(tCard);
 
+    		if (!toHand.contains(tCard)) toHand.add(tCard);
+    	}
+    	
+    	played.clear();
+	}
+    
 	/**
 	 * Pone la posicion finales de la 'index'-ésima carta boca
 	 * abajo y de manera desordenada (la reparte), con
@@ -90,9 +146,6 @@ class TablePlayer implements Animable
 		TableCard tCard, long duration
 	)
 	{
-		// reinicializa la cantidad de cartas jugadas
-		playedCount = 0;
-		
 		// manda al tope la carta y la reparte
 		//toTop(tCard);
 		tCard.pushState
@@ -114,9 +167,9 @@ class TablePlayer implements Animable
 		TableCard tCard;
 
 		// pone el estado de las cartas en las manos de cada jugador
-		for(int i = playedCount; i < 3; i++)
+		for(int i = 0; i < unplayed.size(); i++)
 		{
-			tCard = getTCard(i);
+			tCard = getUnplayed(i);
 			ang = tCard.getLastState().angle;
 			tCard.pushState
 			(
@@ -137,33 +190,67 @@ class TablePlayer implements Animable
 
 		return this;
 	}
-
+	
 	/**
 	 * Establece los datos de animación
 	 * para jugar una carta.
 	 * @param tCard		TableCard a jugar
 	 * @param duration	duración de la animación
 	 */
-	synchronized public void setPlayCard
+	synchronized public TableCard setPlayCard
 	(
-		TableCard tCard, Card card, long duration
+		Card card, long duration
 	)
 	{
-		// envía la carta al fondo y la guarda
-		tCards.remove(tCard);
-		tCards.add(playedCount, tCard);
+		TableCard tCard;
+		
+		tCard = getUnplayed(card);
+		if (tCard == null) tCard = getUnplayed(0);
+		
+		playCard(tCard);
 		
 		// establece el estado del TableCard como para jugarla
 		tCard.pushState
 		(
-			(int) (posX + 10 * Math.cos(angle) * (playedCount - 1)),
-			(int) (posY + 10 * Math.sin(angle) * (playedCount - 1)),
+			(int) (posX + 10 * Math.cos(angle) * (played.size() - 1)),
+			(int) (posY + 10 * Math.sin(angle) * (played.size() - 1)),
 			angle, Util.cardScale, card, duration
 		);
-
-		// incrementa el contador de cartas jugadas
-		playedCount ++;
+		
+		return tCard;
 	}
+	
+	/**
+     * Retorna la 'index'-ésima carta jugada
+     */
+    synchronized public TableCard getPlayed(int index)
+    {
+    	return (TableCard) played.get(index);
+    }
+
+	/**
+     * Retorna la 'index'-ésima carta no jugada
+     */
+    synchronized public TableCard getUnplayed(int index)
+    {
+    	return (TableCard) unplayed.get(index);
+    }
+
+	/**
+     * Retorna la 'index'-ésima carta en la mano
+     */
+    synchronized public TableCard getInHand(int index)
+    {
+    	return (TableCard) inHand.get(index);
+    }
+
+	/**
+     * Retorna la 'index'-ésima carta en la mesa
+     */
+    synchronized public TableCard getOnTable(int index)
+    {
+    	return (TableCard) onTable.get(index);
+    }
 
 	/**
 	 * Establece los datos de animación
@@ -177,27 +264,49 @@ class TablePlayer implements Animable
 	{
 		TableCard tCard;
 		
-		for (int i = playedCount; i < 3; i++)
+		for (int i = 0; i < unplayed.size(); i++)
 		{
+			tCard = getUnplayed(i);
 			// establece el estado del TableCard como para jugarla
-			getTCard(i).pushState
+			tCard.pushState
 			(
 				(int) (posX + 10 * Math.cos(angle) * (i - 1)),
 				(int) (posY + 10 * Math.sin(angle) * (i - 1)),
 				angle, Util.cardScale, null, duration
 			);
 		}
-
-		// establece la cantidad de cartas jugadas
-		playedCount = 3;
 	}
 	
 	/**
      * Retorna la cantidad de cartas jugadas
      */
-    synchronized public int getPlayedCount()
+    synchronized public int getUnplayedCount()
     {
-    	return playedCount;
+    	return unplayed.size();
+    }
+    
+    /**
+     * Verifica que la suma de cartas jugadas y las no
+     * jugadas sea igual a 3
+     */
+    private void verifIntegrity()
+    {
+    	int puCount, htCount;
+    	
+    	puCount = played.size() + unplayed.size();
+    	htCount = inHand.size() + onTable.size();
+    	
+    	Util.verif
+    	(
+    		puCount == 3,
+    		"La suma de cartas jugadas y no jugadas es " + puCount
+    	);
+
+    	Util.verif
+    	(
+    		htCount == 3,
+    		"La suma de cartas en mano y en la mesa es " + htCount
+    	);
     }
 
 	/**
@@ -216,19 +325,18 @@ class TablePlayer implements Animable
 
 		// verificaciones
 		Util.verif(playerPos == 0, "El jugador debe ser el 0");
+		verifIntegrity();
 		
-		if (cards != null) playedCount = 0;
-
-		switch (playedCount)
+		switch (played.size())
 		{
 			case 0: c = -1; break;
 			case 1: c = -.5f; break;
 			default: c = 0;
 		}
 
-		for (int i = playedCount; i < 3; i++)
+		for (int i = 0; i < unplayed.size(); i++)
 		{
-			tCard = getTCard(i);
+			tCard = getUnplayed(i);
 			m = (c == 0) ? 15 : 0;
 			try
 			{
@@ -262,14 +370,12 @@ class TablePlayer implements Animable
 		TCardState tcState;
 		TableCard tCard;
 
-		m = restore ? 10 : 50;
+		m = restore ? 10 : 60;
 		
-//		System.out.println("Oaaa");
-
 		// establece los estados de cada TableCard
-		for (int i = 0; i < playedCount; i++)
+		for (int i = 0; i < played.size(); i++)
 		{
-			tCard = (TableCard) tCards.get(i);
+			tCard = getPlayed(i);
 			tCard.pushState
 			(
 				(int) (getX() + (m * (i - 1)) * Math.cos(angle)),
@@ -290,9 +396,9 @@ class TablePlayer implements Animable
 		Card card;
 		TCardState lastState = null;
 		
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < unplayed.size(); i++)
 		{
-			tCard = getTCard(i);
+			tCard = getUnplayed(i);
 			
 			try 
 			{ 
@@ -322,12 +428,6 @@ class TablePlayer implements Animable
 		}
 	}
 
-//	/** Retorna el 'index'-ésimo TableCard en la mano */
-//	public TableCard getTableCard(int index)
-//	{
-//		return (TableCard) tCards[index];
-//	}
-
 	// retornan la posición (x, y) de repartición
 	public int getX() { return posX; }
 	public int getY() { return posY; }
@@ -335,20 +435,25 @@ class TablePlayer implements Animable
 	
 	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans) 
 	{
-		for (int i = 0; i < tCards.size(); i++)
-			getTCard(i).paint(biOut, afTrans);
+		for (int i = 0; i < onTable.size(); i++)
+			getOnTable(i).paint(biOut, afTrans);
+		for (int i = 0; i < inHand.size(); i++)
+			getInHand(i).paint(biOut, afTrans);
 	}
 
 	synchronized public void clear(Graphics2D grOut) 
 	{
-		for (int i = 0; i < tCards.size(); i++)
-			getTCard(i).clear(grOut);
+//		for (int i = 0; i < tCards.size(); i++)
+//			getTCard(i).clear(grOut);
 	}
 
 	synchronized public boolean advance() 
 	{
-		for (int i = 0; i < tCards.size(); i++)
-			getTCard(i).advance();
+		for (int i = 0; i < played.size(); i++)
+			getPlayed(i).advance();
+
+		for (int i = 0; i < unplayed.size(); i++)
+			getUnplayed(i).advance();
 			
 		return true;
 	}
@@ -367,24 +472,21 @@ class TablePlayer implements Animable
      */
 	synchronized public void pushGeneralPause(long time)
 	{
-		TableCard card;
+		TableCard tCard;
 		
-    	// agrega a cada carita la diferencia
-    	for (int i = 0; i < tCards.size(); i++)
+    	// agrega a cada carta la pausa
+    	for (int i = 0; i < played.size(); i++)
     	{
-			card = (TableCard) tCards.get(i);
-			card.pushPause(time - card.getRemainingTime());
-    	}
+    		tCard = getPlayed(i);
+			tCard.pushPause(time - tCard.getRemainingTime());
+		}
+
+    	for (int i = 0; i < unplayed.size(); i++)
+    	{
+    		tCard = getUnplayed(i);
+			tCard.pushPause(time - tCard.getRemainingTime());
+		}
 	}  	
-	
-	/**
-     * Retorna una carta de la mano
-     * @param index	índice de la carta
-     */
-	synchronized public TableCard getTCard(int index)
-	{
-		return (TableCard) tCards.get(index);
-	}
 	
     /**
      * Obtiene el tiempo que falta para que todas las
@@ -395,54 +497,31 @@ class TablePlayer implements Animable
     	long actTime, maxTime = 0;
     	
     	// obtiene el tiempo máximo
-    	for (int i = 0; i < tCards.size(); i++)
+    	for (int i = 0; i < played.size(); i++)
     	{
-    		actTime = getTCard(i).getRemainingTime();
+    		actTime = getPlayed(i).getRemainingTime();
+    		if (actTime > maxTime) maxTime = actTime;
+    	}
+    	for (int i = 0; i < unplayed.size(); i++)
+    	{
+    		actTime = getUnplayed(i).getRemainingTime();
     		if (actTime > maxTime) maxTime = actTime;
     	}
     	
     	return maxTime;
     }		
     
-    /** 
-     * Envía una carta al principio del orden de dibujo
-     * @param tCard		carta a enviar
-     */
-    synchronized private void toTop(TableCard tCard)
-    {
-    	tCards.remove(tCard);
-    	tCards.add(tCard);
-    }
-	
-	/**
-     * Envía una {@link TableCard} al último orden de animación
-     * @param tCard		carta a enviar
-     */
-	synchronized public void toBottom(TableCard tCard)
-	{
-    	tCards.remove(tCard);
-    	tCards.add(0, tCard);
-	}
-	
-	/**
-     * Retorna la siguiente carta no jugada
-     */
-    synchronized public TableCard getNextHolding()
-    {
-    	return getTCard(playedCount);
-    }
-
 	/**
      * Retorna el {@link TableCard} que contiene a 
      * <code>card</code>. Si no existe dicho TableCard, 
      * retorna <code>null</code>.
      */
-    synchronized public TableCard getTCard(Card card)
+    synchronized public TableCard getUnplayed(Card card)
     {
     	TableCard tCard;
-    	for (int i = 0; i < 3; i++)
+    	for (int i = 0; i < unplayed.size(); i++)
     	{
-    		tCard = (TableCard) tCards.get(i);
+    		tCard = getUnplayed(i);
     		if (card == tCard.getCard())
     			return tCard;
     	}
@@ -453,9 +532,66 @@ class TablePlayer implements Animable
      * Agrega una pausa a todas las cartas
      * @param duration	duración de la pausa
      */
-     synchronized public void pushPause(long duration)
-     {
-     	for (int i = 0; i < 3; i++)
-     		getTCard(i).pushPause(duration);
-     }
+	 synchronized public void pushPause(long duration)
+	 {
+	 	for (int i = 0; i < played.size(); i++)
+	 		getPlayed(i).pushPause(duration);
+	
+	 	for (int i = 0; i < unplayed.size(); i++)
+	 		getUnplayed(i).pushPause(duration);
+	 }
+
+	synchronized public void transitionCompleted(TableCard tCard) 
+	{
+		// verificaciones
+		verifIntegrity();
+		
+		if (toTable.remove(tCard))
+			if (inHand.remove(tCard)) onTable.add(tCard);
+
+		if (toHand.remove(tCard))
+			if (onTable.remove(tCard)) inHand.add(tCard);
+	}
+	
+    /**
+     * Manda una carta del vector de cartas no jugadas al de 
+     * jugadas.
+     * @param tCard	TableCard a mandar.
+     */
+    synchronized private void playCard(TableCard tCard)
+    {
+    	// verificaciones
+    	verifIntegrity();
+    	
+    	if (unplayed.remove(tCard)) played.add(tCard);
+	
+		if (tCard.getRemainingTime() == 0)
+		{
+	    	if (inHand.remove(tCard)) onTable.add(tCard);
+	    }
+	    else if (!toTable.contains(tCard)) toTable.add(tCard);
+    }
+
+    /**
+     * Manda una carta del vector de cartas jugadas al de 
+     * no jugadas.
+     * @param tCard	TableCard a mandar.
+     */
+    synchronized private void unplayCard(TableCard tCard)
+    {
+    	int cCount;
+    	
+    	cCount = played.size() + unplayed.size();
+    	
+    	// verificaciones
+    	verifIntegrity();
+    	
+    	if (played.remove(tCard)) unplayed.add(tCard);
+
+		if (tCard.getRemainingTime() == 0)
+		{
+	    	if (onTable.remove(tCard)) inHand.add(tCard);
+	    }
+	    else if (!toHand.contains(tCard)) toHand.add(tCard);
+    }
 }

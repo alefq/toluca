@@ -23,5 +23,5 @@ public interface TrucoListener {
     void handStarted(TrucoEvent event);
     void gameStarted(TrucoEvent event);
     void endOfGame(TrucoEvent event);
-    Player getAssociatedPlayer();
+    TrucoPlayer getAssociatedPlayer();
 }

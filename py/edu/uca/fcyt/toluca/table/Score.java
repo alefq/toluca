@@ -2,16 +2,20 @@ package py.edu.uca.fcyt.toluca.table;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentListener;
+import java.util.EventListener;
+import java.awt.event.ComponentEvent;
 
-class Score extends JPanel{
+class Score extends JPanel implements ComponentListener {
 	
 	protected static final int ABAJO = 0;
 	protected static final int ARRIBA = 1;
 	protected static final int IZQUIERDA = 0;
 	protected static final int DERECHA = 1;
-	protected int ptsTeam1;
-	protected int ptsTeam2;
+	protected int ptsTeam1 = 30;
+	protected int ptsTeam2 = 30;
 	protected int puntos;
+	int ballDim = 9;
 	
 	public Score(int totalPts)
 	{
@@ -23,42 +27,44 @@ class Score extends JPanel{
 			puntos == 30 || puntos == 20, 
 			"Parámetro 'totalPts' inválido"
 		);
+		addComponentListener(this);
 		
 	}	
 
 	public void paint(Graphics g)
 	{
-		
+		Graphics2D gr;
 		super.paint(g);
-		((Graphics2D) g).setRenderingHint
+		
+		gr = (Graphics2D) g;
+
+		//se pintan las lìneas divisorias del puntaje
+		drawHorizontalLine(gr, puntos);
+		drawVerticalLine(gr);
+		
+		gr.translate(2, 46);
+//		gr.scale(getHeight() / 390.0, getHeight() / 390.0);
+		
+		gr.setRenderingHint
 		(
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON
 		);
 		
 		//se pintan los puntajes representados por fósforos
-		drawMatch(20,55,g,ptsTeam1);
-		drawMatch(70,55,g,ptsTeam2);
-		
-		//se pintan las lìneas divisorias del puntaje
-		drawHorizontalLine(g, puntos);
-		drawVerticalLine(g);
-		
-		g.setColor(Color.black);
-
+		drawMatch(18,0,gr,ptsTeam1);
+		drawMatch(68,0,gr,ptsTeam2);
 	}
 	//------------------------------------------
 	//este metodo es llamado cuando se actualizan los puntajes		
 	//el que se encarga de eso tiene que mandarnos el puntaje 
 	//actual de cada equipo
-	public void actualizarPuntaje(int ptsTeam1,int ptsTeam2){
+	public void actualizarPuntaje(int ptsTeam1,int ptsTeam2)
+	{
 		this.ptsTeam1 = ptsTeam1;
 		this.ptsTeam2 = ptsTeam2;
-		try
-		{
-			paint(getGraphics());
-		}
-		catch(NullPointerException ex){}
+		
+		repaint();
 	}
 	
 	//------------------------------------------
@@ -111,16 +117,16 @@ class Score extends JPanel{
 		//Dibuja la punta del fosforo
 		g.setColor(Color.RED);
 		if(posicion == ARRIBA){
-			g.fillOval(x-9, y-2, 10, 8);
+			g.fillOval(x-9, y-2, ballDim, ballDim);
 			//Se coloca el borde de la cabeza del fosforo
 			g.setColor(Color.BLACK);
-			g.drawOval(x-9,y-2,10,8);
+			g.drawOval(x-9, y-2, ballDim, ballDim);
 		}
 		else{
-			g.fillOval(x+27-9, y-2, 10, 8);
+			g.fillOval(x+27-9, y-2, ballDim, ballDim);
 			//Se coloca el borde de la cabeza del fosforo
 			g.setColor(Color.BLACK);
-			g.drawOval(x+27-9,y-1,10,8);
+			g.drawOval(x+27-9, y-2, ballDim, ballDim);
 		}
 	}
 
@@ -156,16 +162,16 @@ class Score extends JPanel{
 		//Dibuja la punta del fosforo
 		g.setColor(Color.RED);
 		if(posicion == IZQUIERDA){
-			g.fillOval(x-2, y+19, 8, 10);
+			g.fillOval(x-2, y+19, ballDim, ballDim);
 			//Se coloca el borde de la cabeza del fosforo
 			g.setColor(Color.BLACK);
-			g.drawOval(x-2,y+19,8,10);
+			g.drawOval(x-2, y+19, ballDim, ballDim);
 		}
 		else{
-			g.fillOval(x-2, y-9, 8, 10);
+			g.fillOval(x-2, y-9, ballDim, ballDim);
 			//Se coloca el borde de la cabeza del fosforo
 			g.setColor(Color.BLACK);
-			g.drawOval(x-2,y-9,8,10);
+			g.drawOval(x-2, y-9, ballDim, ballDim);
 		}
 	}
 
@@ -187,11 +193,11 @@ class Score extends JPanel{
 
 		//Dibuja la punta del fosforo
 		g.setColor(Color.RED);
-		g.fillOval(x+14, y-20, 8, 10);
+		g.fillOval(x+14, y-20, ballDim, ballDim);
 
 		//Se coloca el borde de la cabeza del fosforo
 		g.setColor(Color.BLACK);
-		g.drawOval(x+14,y-20,8,10);
+		g.drawOval(x+14, y-20, ballDim, ballDim);
 	}
 	
 	//-----------------------------------------
@@ -205,11 +211,11 @@ class Score extends JPanel{
 		w = (int) (getWidth() - 3) / 2;
 		
 		g.setColor(Color.white);
-		g.drawLine(w,50,w,h);
+		g.drawLine(w,40,w,h);
 		g.setColor(Color.gray);
-		g.drawLine(w + 1,50, w + 1,h);
+		g.drawLine(w + 1,40, w + 1,h);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(w + 2,50, w + 2,h);
+		g.drawLine(w + 2,40, w + 2,h);
 	}
 	
 	private void drawHorizontalLine(Graphics g, int p)
@@ -222,20 +228,44 @@ class Score extends JPanel{
 		g.setColor(Color.black);
 		//dibuja la linea de separacion del titulo
 		g.setColor(Color.white);
-		g.drawLine(0,48,w,48);
+		g.drawLine(0,38,w,38);
 		g.setColor(Color.gray);
-		g.drawLine(0,49, w,49);
+		g.drawLine(0,39, w,39);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(0,50,w,50);
+		g.drawLine(0,40, w, 40);
 		
 		
-		y = 155 + (p - 20) * 5;
+//		y = getHeight() / 2 + (p - 20) * 5 - 20;
+		y = 150 + (p - 20) * 5;
 		g.setColor(Color.white);
 		g.drawLine(0, y, w, y);
 		g.setColor(Color.gray);
 		g.drawLine(0, y + 1, w, y + 1);
 		g.setColor(Color.DARK_GRAY);
 		g.drawLine(0, y + 2, w, y + 2);
+	}
+
+	public void componentResized(ComponentEvent e) 
+	{
+//		double scale;
+//		Rectangle bounds = getBounds();
+//		
+//		setPreferredSize(new Dimension
+//		(
+//			(int) (bounds.getHeight() * .2), 0
+//		));
+	}
+
+	public void componentMoved(ComponentEvent e) {
+		// TODO: Add your code here
+	}
+
+	public void componentShown(ComponentEvent e) {
+		// TODO: Add your code here
+	}
+
+	public void componentHidden(ComponentEvent e) {
+		// TODO: Add your code here
 	}
 
 }

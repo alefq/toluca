@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-import py.edu.uca.fcyt.game.Player;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 import java.util.Vector;
 
@@ -34,7 +34,7 @@ public class RankingTable extends JPanel {
             setVisible(true);
 	}
 
-	void addPlayer(Player player){
+	void addPlayer(TrucoPlayer player){
             rtm.addPlayer(player);
 	}
 

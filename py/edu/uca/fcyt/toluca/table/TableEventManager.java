@@ -34,7 +34,7 @@ class TableEventManager
      * Dispara el TableListener#playerJoined' de todos los
      * TableListeners registrados
      */
-    public void firePlayerJoined(Player player) 
+    public void firePlayerJoined(TrucoPlayer player) 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -47,7 +47,7 @@ class TableEventManager
      * Dispara el 'playerLeft' de todos los
      * TableListeners registrados
      */
-    public void firePlayerLeft(Player player) 
+    public void firePlayerLeft(TrucoPlayer player) 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -60,7 +60,7 @@ class TableEventManager
      * Dispara el chatMessageRequested' de todos los
      * TrucoListeners registrados
      */
-    public void fireChatMessageRequested(Player player, String htmlMessage) 
+    public void fireChatMessageRequested(TrucoPlayer player, String htmlMessage) 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -76,7 +76,7 @@ class TableEventManager
      * Dispara el chatMessageSent de todos los
      * TableListeners registrados
      */
-    public void fireChatMessageSent(Player player, String htmlMessage) 
+    public void fireChatMessageSent(TrucoPlayer player, String htmlMessage) 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) {            
@@ -191,7 +191,7 @@ class TableEventManager
      * Dispara el 'playerKicked' de todos los
      * TableListeners registrados
      */
-    public void firePlayerKickRequest(Player player) 
+    public void firePlayerKickRequest(TrucoPlayer player) 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -211,7 +211,7 @@ class TableEventManager
      * Dispara el 'playerKicked' de todos los
      * TableListeners registrados
      */
-    public void firePlayerKicked(Player player) 
+    public void firePlayerKicked(TrucoPlayer player) 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -269,7 +269,7 @@ class TableEventManager
      * Dispara el evento 'sendSign' de todos los
      * TableListeners registrados
      */
-    public void fireSignSendRequest(Player dest, int sign)
+    public void fireSignSendRequest(TrucoPlayer dest, int sign)
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 

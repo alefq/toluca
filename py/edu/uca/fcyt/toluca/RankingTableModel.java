@@ -8,7 +8,7 @@ import javax.swing.table.*;
 
 import java.util.*;
 
-import py.edu.uca.fcyt.game.Player;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 public class RankingTableModel extends DefaultTableModel{
     
@@ -56,7 +56,7 @@ public class RankingTableModel extends DefaultTableModel{
     public Object getValueAt(int row, int col) { 
         String ret = "";
         if (row < jugadores.size()) {
-            Player player = (Player)jugadores.get(row);
+            TrucoPlayer player = (TrucoPlayer)jugadores.get(row);
             switch (col) {
                 case 0:
                     ret = String.valueOf(player.getRating());
@@ -82,7 +82,7 @@ public class RankingTableModel extends DefaultTableModel{
 	fireTableCellUpdated(row, col);
     }*/
     
-    public void addPlayer(Player player){
+    public void addPlayer(TrucoPlayer player){
         System.out.println("******** SE AGREGA A LA TABLE EL JUGADOR: " + player.getName());
         //jugadores.add(player);
         Vector tmp = new Vector();

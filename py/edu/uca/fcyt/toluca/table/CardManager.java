@@ -12,28 +12,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
 import java.awt.Graphics2D;
+import py.edu.uca.fcyt.toluca.table.TableCardListener;
+import py.edu.uca.fcyt.toluca.table.TableCard;
 
 /**
  * Maneja la animación de las cartas
  */
 class CardManager implements Animable
 {
-//	private class CardAction
-//	{
-//		public static final int HAND_STARTED = 0;
-//		public static final int CARDS_DEAL = 1;
-//		
-//		private int action;
-//		private int[] parameters;
-//		
-//		public CardAction(int action, int[] parameters)
-//		{
-//			 this.action = action;
-//			 this.parameters = parameters;
-//		}
-//		
-//		public int getAction() { return action; }
-//	}
 	
 	private TablePlayer players[];	// jugadores de mesa
 	private Vector toDraw;			// qué player[i] dibujar
@@ -170,8 +156,8 @@ class CardManager implements Animable
 			p = (i + dealer + 1) % playerCount;
 			c = i / playerCount;
 			
-			tCard = players[p].getTCard(c);
-			
+			tCard = players[p].getUnplayed(c);
+
 			tCard.pushPause(i * 250);
 			players[p].setDraw(tCard, 350);
 			tCard.pushPause((2 - c) * 250 * playerCount + 100);
@@ -202,24 +188,8 @@ class CardManager implements Animable
 			"Parámetro 'player' inválido: " +  player
 		);
 		
-		if (player == 0)
-			tCard = players[0].getTCard(card);
-		else
-			tCard = players[player].getNextHolding();
-		
-		players[player].setPlayCard(tCard, card, 250);
-		
-		return tCard;
+		return players[player].setPlayCard(card, 250);
 	}
-	
-//	/**
-//     * Hace que el jugador actual juege una carta
-//     * @param tCard		TableCard a jugar
-//     */
-//	synchronized public void playCard(TableCard tCard)
-//	{
-//		players[0].setPlayCard(tCard, tCard.getCard(), 250);
-//	}
 	
 	/**
      * Hace que un jugador juege todas sus cartas cerradas.
@@ -271,7 +241,7 @@ class CardManager implements Animable
 				break;
 
 			case 6:
-				x *= .68;
+				x *= .83;
 				y *= 1;
 				break;
 		}
@@ -291,6 +261,8 @@ class CardManager implements Animable
 	{
 		double escX, escY;
 
+		initCards();
+
 		// verificaciones
 		Util.verifParam
 		(
@@ -309,7 +281,7 @@ class CardManager implements Animable
 				break;
 
 			default:
-				escX = 2f; escY = 3f;
+				escX = 2.5f; escY = 3.5f;
 				break;
 		}
 
@@ -384,9 +356,9 @@ class CardManager implements Animable
 		long r2;
 		r2 = (long) (Math.pow(TableCard.CARD_WIDTH / 2, 2));
 
-		for (int i = 2; i >= players[0].getPlayedCount(); i--)
+		for (int i = players[0].getUnplayedCount() - 1; i >= 0; i--)
 		{
-			tc = players[0].getTCard(i);
+			tc = players[0].getUnplayed(i);
 			tcState = tc.getCurrState();
 			if
 			(
@@ -441,20 +413,18 @@ class CardManager implements Animable
      */
     synchronized public void pushPause(int pos, long duration)
     {
-    	for (int i = 0; i < 3; i++)
-    		players[pos].getTCard(i).pushPause(duration);
+    	players[pos].pushPause(duration);
     }
 
 	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans) 
 	{
+		tDeck.paint(biOut, afTrans);
+		
 		for (int i = 0; i < players.length; i++)
 			players[((Integer) toDraw.get(i)).intValue()].paint
 			(
 				biOut, afTrans
 			);
-		
-		tDeck.paint(biOut, afTrans);
-		
 	}
 
 	synchronized public void clear(Graphics2D grOut) 
@@ -508,9 +478,29 @@ class CardManager implements Animable
 	synchronized public void pushGeneralPause(long time)
 	{
 		for (int i = 0; i < players.length; i++)
-			players[i].pushGeneralPause(time);
+			pushGeneralPause(i, time);
 		
 		tDeck.pushGeneralPause(time);
 	}   	
+
+    /**
+     * Agrega una pausa a todas las cartas igual a <b>time</b> - 
+     * tiempo restante.
+     * Si existen caritas del vector que tienen un tiempo restante
+     * mayor que el tiempo especificado, éstas son omitidas,
+     * @param time		cantidad de tiempo especificado
+     */
+	synchronized public void pushGeneralPause(int pos, long time)
+	{
+		players[pos].pushGeneralPause(time);
+	}
 	
+	/**
+     * (Re)inicializa a todas las cartas
+     */
+    synchronized private void initCards()
+    {
+		for (int i = 0; i < playerCount; i++)
+			players[i].initUnplayed();
+	}
 }

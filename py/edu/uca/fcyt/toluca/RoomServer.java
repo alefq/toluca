@@ -102,9 +102,10 @@ implements ChatPanelContainer {
      */
     public void createTable(TrucoPlayer player) {
         // your code here
-        Table table = new Table(player, true);
-        vTables.add(table);
-        fireTableCreated(table);
+        TableServer tableServer= new TableServer(player);
+        //Table table = new Table(player, true);
+        vTables.add(tableServer);
+        fireTableCreated(tableServer);
     } // end createTable
     
     /**
@@ -117,11 +118,13 @@ implements ChatPanelContainer {
      * @param table ...
      * </p>
      */
-    protected void fireTableCreated(Table table) {
-        // your code here
+    protected void fireTableCreated(TableServer table) {
+        // 
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_CREATED);
+        //re.setTableNumber(-108);
         re.addTables(table);
+        re.setTableNumber(table.getTableNumber());  // Esto es muy feo, habría que cambiarlo
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -158,7 +161,7 @@ implements ChatPanelContainer {
      * @param htmlMessage ...
      * </p>
      */
-    public void fireChatSent(Player player, String htmlMessage) {
+    public void fireChatSent(TrucoPlayer player, String htmlMessage) {
         // your code here
     } // end fireChatSent
     
@@ -186,7 +189,7 @@ implements ChatPanelContainer {
      * @param player ...
      * </p>
      */
-    public void firePlayerLeft(Player player) {
+    public void firePlayerLeft(TrucoPlayer player) {
         // your code here
     } // end firePlayerLeft
     
@@ -200,7 +203,7 @@ implements ChatPanelContainer {
      * @param player ...
      * </p>
      */
-    public void firePlayerKicked(Player player) {
+    public void firePlayerKicked(TrucoPlayer player) {
         // your code here
     } // end firePlayerKicked
     
@@ -218,7 +221,7 @@ implements ChatPanelContainer {
      */
     public void login(String username, String password, CommunicatorServer cs) throws py.edu.uca.fcyt.toluca.LoginFailedException {
         // your code here
-        Player jogador = null;
+        TrucoPlayer jogador = null;
         try {
             
             pendingConnections.put(username, cs);
@@ -346,11 +349,11 @@ implements ChatPanelContainer {
      *
      * </p>
      */
-    public void sendChatMessage(Player player, String htmlMessage) {
+    public void sendChatMessage(TrucoPlayer player, String htmlMessage) {
         fireChatMessageSent(player, htmlMessage);
     }
     
-    public void showChatMessage(Player player, String htmlMessage) {
+    public void showChatMessage(TrucoPlayer player, String htmlMessage) {
     }
     
     // end setVTables
@@ -362,7 +365,7 @@ implements ChatPanelContainer {
      * </p>
      *
      */
-    protected void firePlayerJoined(final Player jogador) {
+    protected void firePlayerJoined(final TrucoPlayer jogador) {
         //la gran avestruz, deberia ser asi con RoomEvent que extiende de la inexistente SpaceEvent
         /*RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_PLAYER_JOINED);
@@ -386,7 +389,9 @@ implements ChatPanelContainer {
         re.setPlayers(getVPlayers());
         
         Iterator iter = roomListeners.listIterator();
+        int i = 0;
         while(iter.hasNext()) {
+            System.out.println("Player join iterando: " + i++);
             RoomListener ltmp = (RoomListener)iter.next();
             ltmp.playerJoined(jogador);
         }
@@ -402,7 +407,7 @@ implements ChatPanelContainer {
      * </p>
      *
      */
-    protected void fireLoginCompleted(final Player jogador) {
+    protected void fireLoginCompleted(final TrucoPlayer jogador) {
         //la gran avestruz, deberia ser asi con RoomEvent que extiende de la inexistente SpaceEvent
         
         try {
@@ -459,7 +464,7 @@ implements ChatPanelContainer {
     /**
      * Dispara el evento de chatMessageSent
      */
-    protected void fireChatMessageSent(Player jogador, String htmlMessage) {
+    protected void fireChatMessageSent(TrucoPlayer jogador, String htmlMessage) {
         Iterator iter = roomListeners.listIterator();
         int i =0;
         while(iter.hasNext()) {
@@ -469,11 +474,10 @@ implements ChatPanelContainer {
         }
     }
     
-    public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
+    public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
         
     }
-    
-    
+        
 } // end RoomServer
 
 

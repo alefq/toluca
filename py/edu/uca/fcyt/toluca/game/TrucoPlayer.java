@@ -14,8 +14,52 @@ import py.edu.uca.fcyt.game.*;
 /** Clase que representa a un jugador de Truco.
  * @author Julio Rey || Christian Benitez
  */
-public class TrucoPlayer extends Player{
+public class TrucoPlayer {
+
+    protected String name; 
+    private String fullName; 
+    private String pass; 
+    private String email; 
+    protected int rating; 
+
+  ///////////////////////////////////////
+  // operations
+
+    public String getName() { return name; } // end getName        
+    public void setName(String _name) {        
+        name = _name;
+    } // end setName        
+
+    public String getFullName() {        
+        return fullName;
+    } // end getFullName        
+
+    public void setFullName(String _fullName) {        
+        fullName = _fullName;
+    } // end setFullName        
+
+    public String getPass() {        
+        return pass;
+    } // end getPass        
+
+    public void setPass(String _pass) {        
+        pass = _pass;
+    } // end setPass        
+
+    public String getEmail() {        
+        return email;
+    } // end getEmail        
+
+    public void setEmail(String _email) {        
+        email = _email;
+    } // end setEmail        
     
+    public int getRating() { return rating; }
+    
+    public void setRating(int rating) 
+    { 
+    	this.rating = rating;
+    }
     /** Constructor de un TrucoPlayer con su nombre identificador.
      * @param name String que se asignará como nombre identificador del TrucoPlayer.
      */
@@ -26,12 +70,10 @@ public class TrucoPlayer extends Player{
     }
     /** Constructor de un TrucoPlayer.
      */    
-    public TrucoPlayer (){
-        super();
+
+    public TrucoPlayer (String name, int rating) {
+        this(name);
+        setRating(rating);
     }
     
-    public TrucoPlayer(String name, int rating) {
-        super (name, rating);
-    
-    }
 }

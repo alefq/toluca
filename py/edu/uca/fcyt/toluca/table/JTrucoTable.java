@@ -8,7 +8,7 @@ import javax.swing.border.*;
 import java.awt.event.*;
 
 /** Panel principal de juego*/
-class JTrucoTable extends JPanel
+class JTrucoTable extends JPanel implements ComponentListener 
 {
 	// paneles
 	protected JPanel jpPlayers; 	// panel de jugadores
@@ -38,9 +38,8 @@ class JTrucoTable extends JPanel
 //		jpChat.add(new JLabel("Chat"));
 
 		score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
-		score.add(new JLabel(" ---- Puntaje ---- "));
-		score.add(new JLabel("   Rojo     Azul   "));
-
+		score.add(new JLabel(" ------ Puntaje ------ "));
+		score.add(new JLabel("    Rojo        Azul   "));
 
 		setLayout(new BorderLayout());
 
@@ -65,19 +64,43 @@ class JTrucoTable extends JPanel
 		jpLeftPanel.add(new Actions(buttons, table));
 		jpLeftPanel.setPreferredSize(new Dimension(125,200));
 
-		pTable.setBorder(new EtchedBorder());
+//		pTable.setBorder(new EtchedBorder());
 		jpChat.setBorder(new EtchedBorder());
 		jpLeftPanel.setBorder(new EtchedBorder());
 		jpPlayers.setBorder(new EtchedBorder());
 		score.setBorder(new EtchedBorder());
+//		resizeComponents();
 
 		JPanel aux;
-
+		addComponentListener(this);
 	}
 
 	/** retorna el PlayTable asociado a la mesa */
 	public PlayTable getPlayTable()
 	{
 		return pTable;
+	}
+	
+	public void componentResized(ComponentEvent e) 
+	{
+		resizeComponents();
+	}
+	
+	public void componentMoved(ComponentEvent e) {
+		// TODO: Add your code here
+	}
+
+	public void componentShown(ComponentEvent e) 
+	{
+//		resizeComponents();
+	}
+
+	public void componentHidden(ComponentEvent e) {
+		// TODO: Add your code here
+	}
+
+
+	private void resizeComponents()
+	{
 	}
 }

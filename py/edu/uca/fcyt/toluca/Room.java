@@ -72,7 +72,7 @@ implements ChatPanelContainer {
      * @param htmlMessage El mensaje que se intenta enviar
      *
      */
-    private void fireChatMessageSent(Player player, String htmlMessage) {
+    private void fireChatMessageSent(TrucoPlayer player, String htmlMessage) {
         /** lock-end */
         
         Iterator iter = roomListeners.listIterator();
@@ -95,7 +95,7 @@ implements ChatPanelContainer {
      * @param htmlMessage El mensaje de chat
      * </p>
      */
-    public abstract void showChatMessage(Player player, String htmlMessage);
+    public abstract void showChatMessage(TrucoPlayer player, String htmlMessage);
     
     /**
      * <p>
@@ -159,7 +159,7 @@ implements ChatPanelContainer {
      * @param player El jugador que esta siendo agregado
      * </p>
      */
-    public void addPlayer(Player player) {
+    public void addPlayer(TrucoPlayer player) {
         players.add(player); //se carga al vector de jugadores
     }
     
@@ -174,7 +174,7 @@ implements ChatPanelContainer {
      * @param player El jugador que hay que sacar
      * </p>
      */
-    public void removePlayer(Player player) {        /** lock-end */
+    public void removePlayer(TrucoPlayer player) {        /** lock-end */
         players.remove(player);
     } // end removePlayer        /** lock-begin */
     
@@ -187,9 +187,15 @@ implements ChatPanelContainer {
      * @param player El jugador cuyos datos hay que modificar.
      * </p>
      */
-    public void modifyPlayer(Player player) {        /** lock-end */
+    public void modifyPlayer(TrucoPlayer player) {        /** lock-end */
         
-    } // end modifyPlayer        /** lock-begin */
+    }
+    
+    public String getOrigin() {
+        return "room";
+    }
+    
+ // end modifyPlayer        /** lock-begin */
     
 } // end Room
 

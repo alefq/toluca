@@ -14,9 +14,9 @@ import py.edu.uca.fcyt.toluca.event.*;
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.net.*;
 
-public abstract class Communicator extends XmlPackagesSession 
+public abstract class Communicator extends XmlPackagesSession
 implements RoomListener, TableListener {
-
+    
     int current=0;
     
     /*
@@ -32,6 +32,7 @@ implements RoomListener, TableListener {
     }*/
     public Communicator() {
         System.out.println("construyendo Communicator");
+        tables = new Hashtable();
     }
     public String getInitErrorMessage(int errcode) {
         return "Sin errores";
@@ -87,8 +88,9 @@ implements RoomListener, TableListener {
         }
          */
     
-    public  Document xmlCreateChatMsg(Player jug,String message) {
+    public  Document xmlCreateChatMsg(ChatPanelContainer cpc, TrucoPlayer jug,String message) {
         Element ROOT = new Element("ChatMsg");
+        ROOT.setAttribute("origin", cpc.getOrigin());
         Element PLAYER= new Element("Player");
         Element MSG = new Element("Msg");
         
@@ -103,7 +105,7 @@ implements RoomListener, TableListener {
         return doc;
         
     }
-    public Document xmlCreateUserJoined(Player jogador){
+    public Document xmlCreateUserJoined(TrucoPlayer jogador){
         
         Element ROOT=new Element("UserJoined");
         Element PLAYER=new Element("Player");
@@ -114,19 +116,18 @@ implements RoomListener, TableListener {
         return doc;
         
     }
-	
+    
+    
+    public Document xmlCreateTableRequested(RoomEvent te) {
+        Element ROOT = new Element("CreateTable");
+        Element PLAYER=new Element("Player");
         
-        public Document xmlCreateTableRequested(RoomEvent te)
-        {
-                Element ROOT = new Element("CreateTable");
-                Element PLAYER=new Element("Player");
-         
-                PLAYER.setAttribute("id",String.valueOf(te.getUser()));
-                ROOT.addContent(PLAYER);
+        PLAYER.setAttribute("id",String.valueOf(te.getUser()));
+        ROOT.addContent(PLAYER);
         
-                Document doc = new Document(ROOT);
-                return doc;
-        }
+        Document doc = new Document(ROOT);
+        return doc;
+    }
     
     public  Document xmlCreateLoginOk(RoomEvent te) {
         Element ROOT=new Element("LoginOk");
@@ -139,11 +140,11 @@ implements RoomListener, TableListener {
         System.out.println("El tam de jugadores es: " + jugadores.size());
         mesas=(Vector)te.getTabless();
         System.out.println("El tam de mesas es: " + mesas.size());
-        Player jug;
+        TrucoPlayer jug;
         
         Element player;
         for (Enumeration e = jugadores.elements() ; e.hasMoreElements() ;) {
-            jug=(Player)e.nextElement();
+            jug=(TrucoPlayer)e.nextElement();
             System.out.println("Se agrega el player: " + jug.getName() + " al xml que va a viajar");
             
             player=new Element("Player");
@@ -153,21 +154,25 @@ implements RoomListener, TableListener {
             ROOT.addContent(player);
             
         }
-        Table mesa;
+        TableServer mesa;
         Element eleMesa;
         
         for (Enumeration e = mesas.elements() ; e.hasMoreElements() ;) {
             
-            mesa=(Table)e.nextElement();
+            mesa=(TableServer)e.nextElement();
             //System.out.println(mesa.getTableNumber());
             jugadores=(Vector)mesa.getPlayers();
             eleMesa=new Element("Table");
             eleMesa.setAttribute("number",String.valueOf(mesa.getTableNumber()));
             for (Enumeration e2 = jugadores.elements() ; e2.hasMoreElements() ;) {
-                jug=(Player)e2.nextElement();
+                jug=(TrucoPlayer)e2.nextElement();
                 player=new Element("Playert");
                 //System.out.println(jug.getName());
-                player.setAttribute("name",jug.getName());
+                if (jug == null)
+                    player.setAttribute("name","El PUTO");
+                else
+                    player.setAttribute("name",jug.getName());
+                    
                 eleMesa.addContent(player);
                 
             }
@@ -177,21 +182,19 @@ implements RoomListener, TableListener {
         
         return doc;
     }
-	int gameID;
-	int hand;
-	TrucoCard []cartas=new TrucoCard[3];
-	int currentCard=0;
-	public void xmlreadSendCards(Object o)
-	{
-		gameID=0;
-		hand=0;
-		currentCard=0;
-		xmlreadSendCardsAlg(o);
-	
-
-	}
-	public void xmlreadSendCardsAlg(Object o)
-	{
+    int gameID;
+    int hand;
+    TrucoCard []cartas=new TrucoCard[3];
+    int currentCard=0;
+    public void xmlreadSendCards(Object o) {
+        gameID=0;
+        hand=0;
+        currentCard=0;
+        xmlreadSendCardsAlg(o);
+        
+        
+    }
+    public void xmlreadSendCardsAlg(Object o) {
 /*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
@@ -204,20 +207,20 @@ implements RoomListener, TableListener {
                 //System.out.println("MESSAGE:"+element.getText());
                 gameID=Integer.parseInt(element.getAttributeValue("id"));
             }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			if(aux.compareTo("Carta")==0)
-			{
-				String kind=new String();
-				String value=new String();
-				kind=element.getAttributeValue("kind");
-				value=element.getAttributeValue("value");
-				cartas[currentCard]=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
-				currentCard++;
-				
-			}
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                hand=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                        if(aux.compareTo("Carta")==0)
+                        {
+                                String kind=new String();
+                                String value=new String();
+                                kind=element.getAttributeValue("kind");
+                                value=element.getAttributeValue("value");
+                                cartas[currentCard]=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+                                currentCard++;
+ 
+                        }
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
@@ -227,37 +230,36 @@ implements RoomListener, TableListener {
             if(aux.compareTo("SendCards")==0) {
                 //Chatpanel.showChatMessage(user,message);
                 TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),TrucoEvent.ENVIAR_CARTAS,cartas);
-				System.out.println("gameid: " + (te.getTrucoGame()).getId() + "\nHand" + te.getNumberOfHand() +"\nPlayer :" + (te.getPlayer()).getName());
-				TrucoCard []cartasIMP=new TrucoCard[3];
-				System.out.println("*******Cartas*********");
-				cartasIMP=te.getCards();
-				for(int i=0;i<3;i++)
-				{
-					System.out.println("Palo:" + cartasIMP[i].getKind() + "Value: " + cartasIMP[i].getValue());
-
-				}
-			}
+                                System.out.println("gameid: " + (te.getTrucoGame()).getId() + "\nHand" + te.getNumberOfHand() +"\nPlayer :" + (te.getPlayer()).getName());
+                                TrucoCard []cartasIMP=new TrucoCard[3];
+                                System.out.println("*******Cartas*********");
+                                cartasIMP=te.getCards();
+                                for(int i=0;i<3;i++)
+                                {
+                                        System.out.println("Palo:" + cartasIMP[i].getKind() + "Value: " + cartasIMP[i].getValue());
+ 
+                                }
+                        }
         } */
-	}
-	int type;
-	public void xmlReadCanto(Object o)
-	{
+    }
+    int type;
+    public void xmlReadCanto(Object o) {
 /*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
             if(aux.compareTo("Type")==0) {
-             type=Integer.parseInt(element.getAttributeValue("id"));  
+             type=Integer.parseInt(element.getAttributeValue("id"));
             }
-			 if(aux.compareTo("Game")==0) {
+                         if(aux.compareTo("Game")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 gameID=Integer.parseInt(element.getAttributeValue("id"));
             }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			 if(aux.compareTo("Player")==0) {
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                hand=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                         if(aux.compareTo("Player")==0) {
                 //System.out.println("PLAYER:"+element.getText());
                 user=element.getAttributeValue("name");
             }
@@ -268,44 +270,43 @@ implements RoomListener, TableListener {
                 xmlReadCanto(child);
             }
             if(aux.compareTo("Canto")==0) {
-			  TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
-			  System.out.println("Tipo:"+type);
-			   System.out.println("Game:"+gameID);
-			   System.out.println("Hand:"+hand);
-			   System.out.println("Player:"+user);
+                          TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
+                          System.out.println("Tipo:"+type);
+                           System.out.println("Game:"+gameID);
+                           System.out.println("Hand:"+hand);
+                           System.out.println("Player:"+user);
             }
         } */
-	}
-	TrucoCard cartaEnv;
-	public void xmlReadCard(Object o)
-	{
+    }
+    TrucoCard cartaEnv;
+    public void xmlReadCard(Object o) {
 /*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
             if(aux.compareTo("Type")==0) {
-             type=Integer.parseInt(element.getAttributeValue("id"));  
+             type=Integer.parseInt(element.getAttributeValue("id"));
             }
-			 if(aux.compareTo("Game")==0) {
+                         if(aux.compareTo("Game")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 gameID=Integer.parseInt(element.getAttributeValue("id"));
             }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			 if(aux.compareTo("Player")==0) {
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                hand=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                         if(aux.compareTo("Player")==0) {
                 //System.out.println("PLAYER:"+element.getText());
                 user=element.getAttributeValue("name");
             }
-			if(aux.compareTo("Carta")==0)
-			{
-				String kind=new String();
-				String value=new String();
-				kind=element.getAttributeValue("kind");
-				value=element.getAttributeValue("value");
-				cartaEnv=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
-			}
+                        if(aux.compareTo("Carta")==0)
+                        {
+                                String kind=new String();
+                                String value=new String();
+                                kind=element.getAttributeValue("kind");
+                                value=element.getAttributeValue("value");
+                                cartaEnv=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+                        }
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
@@ -313,41 +314,40 @@ implements RoomListener, TableListener {
                 xmlReadCard(child);
             }
             if(aux.compareTo("Cardsend")==0) {
-				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,cartaEnv);
+                                TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,cartaEnv);
                System.out.println("Tipo:"+type);
-			   System.out.println("Game:"+gameID);
-			   System.out.println("Hand:"+hand);
-			   System.out.println("Player:"+user);
-				System.out.println("Palo:"+cartaEnv.getKind()+"Value"+cartaEnv.getValue());
-			 }
+                           System.out.println("Game:"+gameID);
+                           System.out.println("Hand:"+hand);
+                           System.out.println("Player:"+user);
+                                System.out.println("Palo:"+cartaEnv.getKind()+"Value"+cartaEnv.getValue());
+                         }
         } */
-	}
-	int tanto;
-	public void xmlReadCantarTanto(Object o)
-	{
+    }
+    int tanto;
+    public void xmlReadCantarTanto(Object o) {
 /*				String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
             if(aux.compareTo("Type")==0) {
-             type=Integer.parseInt(element.getAttributeValue("id"));  
+             type=Integer.parseInt(element.getAttributeValue("id"));
             }
-			 if(aux.compareTo("Game")==0) {
+                         if(aux.compareTo("Game")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 gameID=Integer.parseInt(element.getAttributeValue("id"));
             }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			 if(aux.compareTo("Player")==0) {
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                hand=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                         if(aux.compareTo("Player")==0) {
                 //System.out.println("PLAYER:"+element.getText());
                 user=element.getAttributeValue("name");
             }
-			if(aux.compareTo("Tanto")==0)
-			{
-				tanto=Integer.parseInt(element.getAttributeValue("tanto"));
-			}
+                        if(aux.compareTo("Tanto")==0)
+                        {
+                                tanto=Integer.parseInt(element.getAttributeValue("tanto"));
+                        }
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
@@ -355,37 +355,36 @@ implements RoomListener, TableListener {
                 xmlReadCantarTanto(child);
             }
             if(aux.compareTo("CantarTanto")==0) {
-				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,tanto);
+                                TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,tanto);
                System.out.println("Tipo:"+type);
-			   System.out.println("Game:"+gameID);
-			   System.out.println("Hand:"+hand);
-			   System.out.println("Player:"+user);
-			  System.out.println("Tanto"+tanto);
-			 }
+                           System.out.println("Game:"+gameID);
+                           System.out.println("Hand:"+hand);
+                           System.out.println("Player:"+user);
+                          System.out.println("Tanto"+tanto);
+                         }
         } */
-	}
-	public void xmlReadTurno(Object o)
-	{
+    }
+    public void xmlReadTurno(Object o) {
 /*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
             if(aux.compareTo("Type")==0) {
-             type=Integer.parseInt(element.getAttributeValue("id"));  
+             type=Integer.parseInt(element.getAttributeValue("id"));
             }
-			 if(aux.compareTo("Game")==0) {
+                         if(aux.compareTo("Game")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 gameID=Integer.parseInt(element.getAttributeValue("id"));
             }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			 if(aux.compareTo("Player")==0) {
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                hand=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                         if(aux.compareTo("Player")==0) {
                 //System.out.println("PLAYER:"+element.getText());
                 user=element.getAttributeValue("name");
             }
-			
+ 
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
@@ -393,38 +392,38 @@ implements RoomListener, TableListener {
                 xmlReadTurno(child);
             }
             if(aux.compareTo("Turno")==0) {
-				System.out.println("Leyento paquete turno");
-				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
+                                System.out.println("Leyento paquete turno");
+                                TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
                System.out.println("Tipo:"+type);
-			   System.out.println("Game:"+gameID);
-			   System.out.println("Hand:"+hand);
-			   System.out.println("Player:"+user);
-				
-			 }
+                           System.out.println("Game:"+gameID);
+                           System.out.println("Hand:"+hand);
+                           System.out.println("Player:"+user);
+ 
+                         }
         }
-	}
-	public void xmlReadTerminalMessage(Object o)
-	{
-		String aux;
+        }
+        public void xmlReadTerminalMessage(Object o)
+        {
+                String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
             if(aux.compareTo("Type")==0) {
-             type=Integer.parseInt(element.getAttributeValue("id"));  
+             type=Integer.parseInt(element.getAttributeValue("id"));
             }
-			 if(aux.compareTo("Game")==0) {
+                         if(aux.compareTo("Game")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 gameID=Integer.parseInt(element.getAttributeValue("id"));
             }
-			if(aux.compareTo("Hand")==0)
-			{
-				hand=Integer.parseInt(element.getAttributeValue("number"));
-			}
-			 if(aux.compareTo("Player")==0) {
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                hand=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                         if(aux.compareTo("Player")==0) {
                 //System.out.println("PLAYER:"+element.getText());
                 user=element.getAttributeValue("name");
             }
-			
+ 
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
@@ -432,29 +431,29 @@ implements RoomListener, TableListener {
                 xmlReadTerminalMessage(child);
             }
             if(aux.compareTo("TerminalMessage")==0) {
-				System.out.println("Leyento paquete terminall Message");
-				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
+                                System.out.println("Leyento paquete terminall Message");
+                                TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
                System.out.println("Tipo:"+type);
-			   System.out.println("Game:"+gameID);
-			   System.out.println("Hand:"+hand);
-			   System.out.println("Player:"+user);
-				
-			 }
+                           System.out.println("Game:"+gameID);
+                           System.out.println("Hand:"+hand);
+                           System.out.println("Player:"+user);
+ 
+                         }
         } */
-	}
-
-
-//private RoomServer pieza; No
-        //by sacoleiro
-    public void chatMessageRequested(SpaceListener spaceListener, Player player, String htmlMessage) {
+    }
+    
+    
+    //private RoomServer pieza; No
+    //by sacoleiro
+    public void chatMessageRequested(SpaceListener spaceListener, TrucoPlayer player, String htmlMessage) {
         
     }
-
+    
     public void gameStartRequest(TableEvent ev) {
         
     }
     
-	
+    
         /*
         public static Document xmlCreateUserJoinedRoom(RoomEvent te)
         {
@@ -543,22 +542,29 @@ implements RoomListener, TableListener {
          
          */
     public  Document xmlCreateLogin(RoomEvent te) {
-        Element ROOT= new Element("Login");
-        Element PLAYER= new Element("Player");
-        Element PASSWORD = new Element("Password");
-        PLAYER.setText(String.valueOf(te.getUser()));
-        PASSWORD.setText(String.valueOf(te.getPassword()));
         
-        //PLAYER.setText(String.valueOf("danic"));
-        //PASSWORD.setText(String.valueOf("cricco"));
-        
-        ROOT.addContent(PLAYER);
-        ROOT.addContent(PASSWORD);
-        
-        
-        Document doc = new Document(ROOT);
-        return doc;
-        
+        Document doc = null;
+        try {
+            Element ROOT= new Element("Login");
+            Element PLAYER= new Element("Player");
+            Element PASSWORD = new Element("Password");
+            PLAYER.setText(String.valueOf(te.getUser()));
+            PASSWORD.setText(String.valueOf(te.getPassword()));
+            
+            //PLAYER.setText(String.valueOf("danic"));
+            //PASSWORD.setText(String.valueOf("cricco"));
+            
+            ROOT.addContent(PLAYER);
+            ROOT.addContent(PASSWORD);
+            
+            doc = new Document(ROOT);
+        } catch (java.lang.NullPointerException npe) {
+            System.err.println("Hay un error al hacer el XMLCREATELOGIN en el Communicator");
+            npe.printStackTrace();
+            throw npe;
+        } finally {
+            return doc;
+        }
     }
         /*
  public  void cabecera(Document doc)
@@ -699,8 +705,8 @@ implements RoomListener, TableListener {
             }
          
         }*/
-
-    public void loginCompleted(RoomEvent re) {}    
+    
+    public void loginCompleted(RoomEvent re) {}
     
     
 /*
@@ -741,7 +747,7 @@ implements RoomListener, TableListener {
     String message;
     
     /** Holds value of property tables. */
-    private Hashtable tables;    
+    private Hashtable tables;
     
 /*
         public static Document xmlCreateTableClosed(RoomEvent te)
@@ -763,24 +769,24 @@ implements RoomListener, TableListener {
         
     }
     public void loginFailed(RoomEvent te){}
-            
+    
     
     /*
     public static void main(String[] args) {
-        
-        
+     
+     
         RoomEvent te=new RoomEvent();
         Vector jugadores=new Vector();
         Vector mesas=new Vector();
         Player jug1=new Player("Daniel",10);
         Player jug2=new Player("José",20);
-        
+     
         Table mesa1=new Table();
         Table mesa2=new Table();
         jugadores.add(jug1);
         jugadores.add(jug2);
         mesa1.setTableNumber(2);
-        
+     
         mesa1.addPlayer(jug1);
         mesa1.addPlayer(jug2);
         mesa2.setTableNumber(10);
@@ -790,26 +796,26 @@ implements RoomListener, TableListener {
         mesas.add(mesa2);
         te.setTabless(mesas);
         te.setPlayerss(jugadores);
-        
+     
         te.setUser("AAdaniAA");
         te.setPassword("AAcriccoAAA");
-        
+     
         Communicator cc=new Communicator();
         Document doc=cc.xmlCreateChatMsg(jug1,"Prueba");
         try {
-            
+     
             XMLOutputter serializer = new XMLOutputter("  ", true);
-            
+     
             serializer.output(doc, System.out);
-            
+     
         }
         catch (IOException e) {
             System.err.println(e);
         }
         //cc.cabecera(doc);
-        
+     
     }
-    */
+     */
     /** <p>
      * Does ...
      * </p><p>
@@ -821,8 +827,8 @@ implements RoomListener, TableListener {
      *
      * </p>
      */
-    public void chatMessageRequested(Player player, String htmlMessage) {
-    }    
+    public void chatMessageRequested(TrucoPlayer player, String htmlMessage) {
+    }
     
     /** <p>
      * Does ...
@@ -835,7 +841,7 @@ implements RoomListener, TableListener {
      *
      * </p>
      */
-    public void chatMessageSent(Player player, String htmlMessage) {
+    public void chatMessageSent(TrucoPlayer player, String htmlMessage) {
     }
     
     /** <p>
@@ -881,9 +887,21 @@ implements RoomListener, TableListener {
      * </p><p>
      *
      * </p>
-     */
+     
     public void playerJoined(Player player) {
     }
+    */
+    /** <p>
+     * Does ...
+     * </p><p>
+     *
+     * </p><p>
+     *
+     * @param player ...
+     * </p>
+     */
+    public void playerKicked(TrucoPlayer player) {
+    }
     
     /** <p>
      * Does ...
@@ -894,39 +912,27 @@ implements RoomListener, TableListener {
      * @param player ...
      * </p>
      */
-    public void playerKicked(Player player) {
+    public void playerLeft(TrucoPlayer player) {
     }
     
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param player ...
-     * </p>
-     */
-    public void playerLeft(Player player) {
+    public void playerSit(TrucoPlayer player, int position) {
     }
     
-    public void playerSit(Player player, int position) {
+    public void sitRequested(TrucoPlayer player, int position) {
     }
     
-    public void sitRequested(Player player, int position) {
-    }
-    
-//    /** <p>
-//     * Does ...
-//     * </p><p>
-//     *
-//     * </p><p>
-//     *
-//     * @param ev ...
-//     * </p>
-//     */
-//    public void tableCreated(RoomEvent ev) {
-//    }
-//    Se fue al server
+    //    /** <p>
+    //     * Does ...
+    //     * </p><p>
+    //     *
+    //     * </p><p>
+    //     *
+    //     * @param ev ...
+    //     * </p>
+    //     */
+    //    public void tableCreated(RoomEvent ev) {
+    //    }
+    //    Se fue al server
     
     public void tableJoinRequested(RoomEvent ev) {
     }
@@ -1003,7 +1009,7 @@ implements RoomListener, TableListener {
     public void joinTableRequested(RoomEvent ev) {
     }
     
- 
+    
     
     /** <p>
      * Does ...
@@ -1014,7 +1020,7 @@ implements RoomListener, TableListener {
      * @param game ...
      * </p>
      */
-   
+    
     
     /** <p>
      * Does ...
@@ -1038,9 +1044,7 @@ implements RoomListener, TableListener {
      *
      * </p>
      */
-    public void playerSit(TrucoPlayer player, int position) {
-    }
-    
+
     /** <p>
      * Does ...
      * </p><p>
@@ -1050,23 +1054,23 @@ implements RoomListener, TableListener {
      * @param ev ...
      * </p>
      */
-  public void sitRequest(TableEvent ev) {
+    public void sitRequest(TableEvent ev) {
     }
     
-  /** Getter for property tables.
-   * @return Value of property tables.
-   *
-   */
-  public Hashtable getTables() {
-      return this.tables;
-  }  
-          
-  /** Setter for property tables.
-   * @param tables New value of property tables.
-   *
-   */
-  public void setTables(Hashtable tables) {
-      this.tables = tables;
-  }
-  
+    /** Getter for property tables.
+     * @return Value of property tables.
+     *
+     */
+    public Hashtable getTables() {
+        return this.tables;
+    }
+    
+    /** Setter for property tables.
+     * @param tables New value of property tables.
+     *
+     */
+    public void setTables(Hashtable tables) {
+        this.tables = tables;
+    }
+    
 }

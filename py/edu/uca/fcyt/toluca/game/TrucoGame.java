@@ -27,6 +27,7 @@ public class TrucoGame extends Game {
     private int reparteCartas = 0; //quien empieza la mano
     private boolean playersPreparados[]; //lista de players que estan preparados
     private int cantidadDePlayersPreparados;
+    private Vector detalleDelPuntaje;
     
     
     
@@ -157,6 +158,16 @@ public class TrucoGame extends Game {
             ((TrucoListener)(listenerlist.get(i))).turn(event);
         }
     }
+    public void fireTurnEvent (TrucoPlayer pl,byte type, int value) { //avisar el Turno con envio del value of envido
+        TrucoEvent event1 = new TrucoEvent(this, numberOfHand, pl, type, value ); //crear el evento1
+        TrucoEvent event2 = new TrucoEvent(this, numberOfHand, pl, type); //crear el evento2
+        for (int i=0; i<listenerlist.size(); i++){
+            if (((TrucoListener)listenerlist.get(i)).getAssociatedPlayer()==pl)
+                ((TrucoListener)(listenerlist.get(i))).turn(event1);
+            else
+                ((TrucoListener)(listenerlist.get(i))).turn(event2);
+        }
+    }
     /** Enviar mensaje de jugada a todos los oyentes del juego.
      * @param pl TrucoPlayer que realizo la jugada.
      * @param type Tipo de Jugada que realizó.
@@ -196,18 +207,25 @@ public class TrucoGame extends Game {
     /** Enviar mensaje a todos los oyentes sobre el final de la mano
      */    
     public void fireEndOfHandEvent(){
-        TrucoEvent event = new TrucoEvent(this,numberOfHand);
-        for(int i=0; i<listenerlist.size();i++){
-            ((TrucoListener)(listenerlist.get(i))).endOfHand(event);
-        }   
-    }
-    public void EndOfHandEvent(){
         points[0] = points[0] + trucoHand.getPointsOfTeam(0);
         points[1] = points[1] + trucoHand.getPointsOfTeam(1);
         teams[0].setPoints(points[0]);
         teams[1].setPoints(points[1]);
+        TrucoEvent event = new TrucoEvent(this,numberOfHand);
+        for(int i=0; i<listenerlist.size();i++){
+            ((TrucoListener)(listenerlist.get(i))).endOfHand(event);
+        }   
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("--------------------------------------Puntajes--------------------------");
+        for (int i=0; i<2; i++)
+            System.out.println(teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
+         detalleDelPuntaje = trucoHand.getPointsDetail();
+        for (int i=0; i<detalleDelPuntaje.size(); i++)
+            System.out.println(((PointsDetail)detalleDelPuntaje.get(i)).aString());
+        
+    }
+    public void EndOfHandEvent(){
         newHand();
-
     }
     /** Enviar mensaje a todos los oyentes sobre el final del juego.
      */    
@@ -281,12 +299,14 @@ public class TrucoGame extends Game {
     private void startHandConfirmated(){
         
         if(points[0] >= 30 || points[1] >= 30){
-            
+            fireEndOfGameEvent();
         }
-        numberOfHand++;
-        fireHandStarted();/*para que se preparen los jugadores*/
-        trucoHand = new TrucoHand(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
-        trucoHand.startHand();
+        else{
+            numberOfHand++;
+            fireHandStarted();/*para que se preparen los jugadores*/
+            trucoHand = new TrucoHand(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
+            trucoHand.startHand();
+        }
     }
     private void newHand(){ //nueva mano
         
@@ -331,16 +351,19 @@ public class TrucoGame extends Game {
     		return (30-points[0]);
         return (30-points[1]);
     }
+    public Vector getDetallesDeLaMano(){
+        return detalleDelPuntaje;
+    }
     /*obtener el mejor envido que puede cantar el player*/
     /** Retorna el Valor del Envido que puede cantar un Player.
      * @param tp TrucoPlayer a ser retornado su valor de Envido.
      * @return el valor del envido del TrucoPlayer.
-     */    
+     *
     public int getValueOfEnvido(TrucoPlayer tp) {
         
             return trucoHand.getValueOfEnvido(tp);
         
         
         
-    }
+    }*/
 }

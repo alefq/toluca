@@ -205,9 +205,12 @@ public class RoomEvent {
  */
     public static final int TYPE_LOGIN_FAILED=12; 
     
+    public static final int TYPE_TABLE_CREATED_SERVER = 13;
     
     public RoomEvent(){
-        
+        //codigo agregado por el CIT MASTER
+       tables = new Vector();
+       this.Players = new Vector();
     }
     
     /**
@@ -290,7 +293,7 @@ public class RoomEvent {
      * @param _Players ...
      * </p>
      */
-    public void addPlayers(Player player) {        /** lock-end */
+    public void addPlayers(TrucoPlayer player) {        /** lock-end */
         
         try {
             if (! Players.contains(player))
@@ -312,7 +315,7 @@ public class RoomEvent {
      * @param _Players ...
      * </p>
      */
-    public void removePlayers(Player _Players) {        /** lock-end */
+    public void removePlayers(TrucoPlayer _Players) {        /** lock-end */
         Players.remove(_Players);
     } // end removePlayers        /** lock-begin */
     
@@ -379,12 +382,26 @@ public class RoomEvent {
      * </p>
      */
     public void addTables(Table _tables) {        /** lock-end */
-        if(tables == null)
-            tables = new Vector();
         if (! tables.contains(_tables))
             tables.add(_tables);
     } // end addTables        /** lock-begin */
+
     
+    public void addTables(TableServer _tables) { 
+        
+        /** lock-end */
+        try {
+        if (! tables.contains(_tables))
+            tables.add(_tables);
+        
+        } catch (Exception e ) {
+            System.out.println("Error en el ROOM EVENT.  PQNTSC.  table es nulo al parecer");
+            e.printStackTrace();
+           
+        }
+        
+    } // end addTables        /** lock-begin */
+
     /**
      * <p>
      * Does ...

@@ -7,10 +7,11 @@ import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.toluca.event.*;
 import py.edu.uca.fcyt.game.*;
 
-
+import org.jdom.output.XMLOutputter;
 import py.edu.uca.fcyt.net.*;
 
 import java.util.*;
+import java.io.*;
 import org.jdom.*;
 
 /**
@@ -76,7 +77,17 @@ extends Communicator {
         Document doc=new Document(xmlPackage);
         
         //		doc.addContent(xmlPackage);
-        
+       try {
+            
+            XMLOutputter serializer = new XMLOutputter("  ", true);
+            
+            serializer.output(doc, System.out);
+            
+        }
+        catch (IOException e) {
+            System.err.println(e);
+        }
+        System.err.println("//////////////////////////////////////////");
         cabecera(doc);
         //loginComplete();
     }
@@ -100,6 +111,7 @@ extends Communicator {
      *  Se guarda la referencia al TrucoPlayer
      */
     public void playerJoined(TrucoPlayer player) {
+        System.out.println("COMMSRV -> Player Joined DE: " + player.getName());
         this.player = player;
         Document doc=super.xmlCreateUserJoined(player);
         super.sendXmlPackage(doc);
@@ -170,7 +182,19 @@ extends Communicator {
                 System.out.println("Mensaje: "+message);
                 System.out.println("Enviando Respuesta");
                 //                chatMessageSent(new Player(user,0),message);
-                pieza.sendChatMessage(new Player(user,0),message);
+                // Aca vemos para quién puta es el mensaje
+                String origen = element.getAttributeValue("origin");
+                System.out.println("El origen es: " + origen);
+                if (origen.equalsIgnoreCase("room")) {
+                    pieza.sendChatMessage(new TrucoPlayer(user, 0), message);
+                } else {
+                    TableServer t = (TableServer)getTables().get(origen);
+                    if (t != null) {
+                        t.sendChatMessage(new TrucoPlayer(user,0), message);
+                    } else {
+                        System.out.println("NO PUDIMOS ENTREGAR EL CHAT!!! !@@!#$#@@Q");
+                    }
+                }
             }
         }
     }
@@ -212,16 +236,20 @@ extends Communicator {
         if(aux.compareTo("CreateTable")==0) {
             xmlReadCreateTable(child);
         }
+		 if(aux.compareTo("TableJoinRequest")==0) {
+			 System.out.println("Dentro de cabecera para ejecutar el metodo\n");
+            xmlReadTableJoinRequest(child);
+        }
         
     }
-    public void chatMessageSent(Player jug,String message) {
+/*    public void chatMessageSent(TrucoPlayer jug,String message) {
         System.out.println("Enviando msg de chat del jug: " + jug.getName());
         Document doc;
         doc=super.xmlCreateChatMsg(jug,message);
         super.sendXmlPackage(doc);
         //        pieza.sendChatMessage(jug, message);
     }
-    
+*/    
     public void setRoom(RoomServer pieza) {
         this.pieza = pieza;
         pieza.addRoomListener(this);
@@ -283,7 +311,7 @@ extends Communicator {
      * </p>
      *
      */
-    public void chatMessageRequested(ChatPanelContainer chatPanelContainer, Player player, String htmlMessage) {
+    public void chatMessageRequested(ChatPanelContainer chatPanelContainer, TrucoPlayer player, String htmlMessage) {
     }
     
     //   public void createTableRequested(RoomEvent ev) { }
@@ -298,10 +326,10 @@ extends Communicator {
     public void gameStartRequested() {
     }
     
-    public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
+    public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
         System.out.println("Enviando msg de chat del jug: " + player.getName());
         Document doc;
-        doc=super.xmlCreateChatMsg(player,htmlMessage);
+        doc=super.xmlCreateChatMsg(cpc, player,htmlMessage);
         super.sendXmlPackage(doc);
     }
     
@@ -351,21 +379,53 @@ extends Communicator {
      * </p>
      */
     public void tableCreated(RoomEvent ev) {
-        Table ts = (Table)((ev.getTabless().toArray())[0]);
+        System.out.println("No hay nada: " + ev.getTabless().toArray().length);
+        TableServer ts = (TableServer)((ev.getTabless().toArray())[0]);
+        ts.addTableServerListener(this);
         // Agregamos al Hash de Tablas
-        
+        System.out.println("getTables nulo: " + (getTables() == null));
         getTables().put(String.valueOf(ev.getTableNumber()), ts);
         System.out.println("Se creo una tabla. soy: " + getClass().getName());
         Document doc;
         doc = xmlCreateTableCreated(ev);
+        System.out.println("Antes de mandar el XML en el CREATE TABLE DEL SERVA");
         super.sendXmlPackage(doc);
     }
     
+    public void xmlReadTableJoinRequest(Object o)
+	{
+		String aux;
+		System.out.println("Leyendo el paquete");
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            
+            if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                String tableid=element.getAttributeValue("id");
+				System.out.println("El table id es"+tableid);
+			}
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadChatMsg(child);
+            }
+            if(aux.compareTo("TableJoinRequest")==0) {
+                //Chatpanel.showChatMessage(user,message);
+				
+			 }
+        }
+	}
     public Document xmlCreateTableCreated(RoomEvent te) {
+        System.out.println("Cricco quiere ver su pakochi");
         Element ROOT= new Element("TableCreated");
         
         Element TABLE = new Element("Table");
         TABLE.setAttribute("id",String.valueOf(te.getTableNumber()));
+        
+        ROOT.addContent(TABLE);
+        
         Document doc = new Document(ROOT);
         return doc;
     }

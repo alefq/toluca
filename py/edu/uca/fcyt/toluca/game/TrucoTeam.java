@@ -30,7 +30,7 @@ public class TrucoTeam extends Team{
      */    
     public int getNumberOfPlayer(TrucoPlayer pl){
         for (int i=0; i<playersList.size(); i++){
-    		if ((Player)(playersList.get(i))==pl)
+    		if ((TrucoPlayer)(playersList.get(i))==pl)
     			return i;
     	}
     	return -1;

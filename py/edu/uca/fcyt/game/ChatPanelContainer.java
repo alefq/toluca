@@ -32,9 +32,9 @@ public interface ChatPanelContainer {
  * 
  * </p>
  */
-    public void sendChatMessage(Player player, String htmlMessage);
-    public void showChatMessage(Player player, String htmlMessage);
-
+    public void sendChatMessage(TrucoPlayer player, String htmlMessage);
+    public void showChatMessage(TrucoPlayer player, String htmlMessage);
+    public String getOrigin();
 } // end ChatPanelContainer
 
 

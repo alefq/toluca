@@ -136,7 +136,7 @@ public class StatusPlayer{
         else{
             if(cuanto<20)
                 for(int i=0;i<3;i++)
-                    if(cartas[i].getValue()==cuanto)
+                    if(valor_envido(cartas[i])==cuanto)
                         return true;
             return false;
         }
@@ -210,37 +210,35 @@ public class StatusPlayer{
     }
     /*metodo insertado por julio*/
     public TrucoCard getCardNoPlaying(){
-        for (int i=0; i<3; i++){
+        for (int i=2; i>=0; i--){
             if(!cartas[i].isFlipped())
                 return cartas[i];
         }
         return null;
     }
     public TrucoCard getCardNoPlayingForEnvido(){
-        int valueOfEnvido=-1;
+        int valueOfEnvido=getValueOfEnvido();
         TrucoCard cartaAEnviar = null;
-        for (int i=0; i<3; i++){
-            if (son_mismo_palo(cartas[i],cartas[(i+1)%3])){
-                int valorAct = valor_envido(cartas[i])+valor_envido(cartas[(i+1)%3])+20;
-                if (valorAct>valueOfEnvido){
-                    valueOfEnvido = valorAct;
-                    if (!cartas[i].isFlipped())
-                        cartaAEnviar = cartas[i];
-                    if (!cartas[(i+1)%3].isFlipped())
-                        cartaAEnviar = cartas[(i+1)%3];
+        if (valueOfEnvido >= 20){
+            for (int i=0; i<3; i++){
+                if (son_mismo_palo(cartas[i],cartas[(i+1)%3])){
+                    int valorAct = valor_envido(cartas[i])+valor_envido(cartas[(i+1)%3])+20;
+                    if (valorAct==valueOfEnvido){
+                        if (!cartas[i].isFlipped() && (i+1)%3>i)
+                            return cartas[i];
+                        if (!cartas[(i+1)%3].isFlipped())
+                            return cartas[(i+1)%3];
+                        return cartas[i];
+                    }
                 }
             }
         }
-        if(valueOfEnvido >= 0)
-            return cartaAEnviar;
-        for (int i=0; i<3; i++){
+        for (int i=2; i>=0; i--){
             int valorAct = valor_envido(cartas[i]);
-            if (valorAct > valueOfEnvido){
-                valueOfEnvido = valorAct;
-                cartaAEnviar = cartas[i];
-            }
-        }
-        return cartaAEnviar;
+            if (valorAct == valueOfEnvido)
+                return cartas[i];
+    }
+        return null;
     }
     /** Marca una carta como jugada
      * @param cual indica que carta se va a jugar

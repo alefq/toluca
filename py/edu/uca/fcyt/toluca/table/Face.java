@@ -214,6 +214,8 @@ class Face implements Animable
 		drawName(biOut, grOut.getTransform());
 		drawFace(biOut, grOut.getTransform());
 		drawDialog(biOut, grOut.getTransform());
+		
+		grOut.dispose();
 	}
 
 
@@ -297,6 +299,8 @@ class Face implements Animable
 		
 		grOut.setColor(Color.BLACK);	
 		grOut.drawString(nameShown, x, y);
+		
+		grOut.dispose();
 	}
 	
 	/**
@@ -471,6 +475,9 @@ class Face implements Animable
 				(int) (-textWidth / 2),
 				lineHeight * i - textHeight / 2 + lineAscent
 			);
+		
+		grBall.dispose();
+		grTri.dispose();
 	}
 
 

@@ -84,7 +84,7 @@ public class DbOperations {
  * @param uname Nombre de usuario del jugador a borrar
  * </p>
  */
-    public void deletePlayer(Player player) {        
+    public void deletePlayer(TrucoPlayer player) {        
         // your code here
     } // end deletePlayer        
 
@@ -98,7 +98,7 @@ public class DbOperations {
  * la base de datos
  * </p>
  */
-    public void updatePlayerData(Player player)  {        
+    public void updatePlayerData(TrucoPlayer player)  {        
         // your code here
     } // end updatePlayerData        
 
@@ -164,9 +164,9 @@ public class DbOperations {
  * @return Player el objeto Player o una excepcion de Login
  * </p>
  */
-    public Player authenticatePlayer(String username, String password) throws LoginFailedException { 
+    public TrucoPlayer authenticatePlayer(String username, String password) throws LoginFailedException { 
         
-        Player p = getPlayer(username);
+        TrucoPlayer p = getPlayer(username);
         //verificar el password
         // if (password = Player.getPassword() )
         return p;
@@ -189,8 +189,8 @@ public class DbOperations {
         this.roomServer = roomServer;
     }
     
-    public Player getPlayer(final java.lang.String uname) {
-        return new Player( uname , 108);
+    public TrucoPlayer getPlayer(final java.lang.String uname) {
+        return new TrucoPlayer( uname , 108);
     }
     
  // end authenticatePlayer        

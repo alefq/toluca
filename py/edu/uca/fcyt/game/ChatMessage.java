@@ -14,7 +14,7 @@ import py.edu.uca.fcyt.game.*;
  * </p>
  */
 public class ChatMessage {
-   public ChatMessage(Player player, String htmlMessage) {
+   public ChatMessage(TrucoPlayer player, String htmlMessage) {
        setPlayer(player);
        setHtmlMessage(htmlMessage);
        
@@ -28,7 +28,7 @@ public class ChatMessage {
  * Represents ...
  * </p>
  */
-    private Player owner; 
+    private TrucoPlayer owner; 
 
 /**
  * <p>
@@ -71,7 +71,7 @@ public class ChatMessage {
      * @return Value of property owner.
      *
      */
-    public py.edu.uca.fcyt.game.Player getPlayer() {
+    public TrucoPlayer getPlayer() {
         return owner;
     }
     
@@ -79,7 +79,7 @@ public class ChatMessage {
      * @param owner New value of property owner.
      *
      */
-    public void setPlayer(py.edu.uca.fcyt.game.Player owner) {
+    public void setPlayer(TrucoPlayer owner) {
         this.owner = owner;
     }
     

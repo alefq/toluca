@@ -2,6 +2,7 @@ package py.edu.uca.fcyt.game;
 
 import java.lang.*;
 import javax.swing.*;
+import java.util.*;
 
 
 public class Card
@@ -10,6 +11,7 @@ public class Card
 	public static final int ESPADA = 2;
 	public static final int COPA = 3;
 	public static final int BASTO = 4;
+	public static final Hashtable kNames = getKindNames();
 
 	protected byte value;			// valor de la carta
 	protected byte kind;			// palod de la carta
@@ -56,7 +58,7 @@ public class Card
 	{
 		String[] kinds = new String[] {"Oro", "Espada", "Copa", "Basto"};
 
-		return new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/" + kinds[kind - 1] + "\\" + value + ".gif");
+		return new ImageIcon("c:\\pablo\\toluca\\py\\edu\\uca\\fcyt\\toluca\\images\\" + kinds[kind - 1] + "\\" + value + ".gif");
 	}
 	
 	/**
@@ -86,5 +88,38 @@ public class Card
     	{
     		return false;
     	}
+    }
+    
+    /**
+     * Retorna un Hashtable con los pares 
+     * (palo: int, nombre: String)
+     */
+    private static Hashtable getKindNames()
+    {
+    	Hashtable ret;
+    	
+    	ret = new Hashtable();
+    	ret.put(new Integer(COPA), "Copa");
+    	ret.put(new Integer(ORO), "Oro");
+    	ret.put(new Integer(BASTO), "Basto");
+    	ret.put(new Integer(ESPADA), "Espada");
+    	return ret;
+    }
+    
+    /**
+     * Retorna el nombre de un palo
+     * @param kind	Palo
+     */
+    public static String getKindName(int kind)
+    {
+    	return (String) kNames.get(new Integer(kind));
+    }
+    
+    /**
+     * Retorna la descripción de la carta
+     */
+    public String getDescription()
+    {
+    	return new String(getValue() + " de " + getKindName(kind));
     }
 }

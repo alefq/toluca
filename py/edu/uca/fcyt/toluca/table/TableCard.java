@@ -11,9 +11,10 @@ import java.awt.image.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
+import py.edu.uca.fcyt.toluca.table.state.StateListener;
 
 // representa a una carta en la mesa
-class TableCard implements Animable
+class TableCard implements Animable, StateListener
 {
 	// tamaño de la carta
 	final public static int CARD_WIDTH = 88;
@@ -28,6 +29,9 @@ class TableCard implements Animable
 	
 	private BufferedImage biCard;		// BufferedImage para la carta
 	private StatesTransitioner states;	// cola de estados de la carta
+	private LinkedList stateListeners;	// listeners de eventos
+	private static final RenderingHints rendHints = getRHints(); 
+
 	
 
 	/**
@@ -36,6 +40,8 @@ class TableCard implements Animable
 	public TableCard()
 	{
 		states = new StatesTransitioner();
+		stateListeners = new LinkedList();
+		states.addListener(this);
 	}
 	
 	/**
@@ -94,7 +100,7 @@ class TableCard implements Animable
 			BufferedImage.TYPE_3BYTE_BGR
 		);
 
-		Util.copyImage(new ImageIcon("..\\imagenes\\dorso.gif"), back);
+		Util.copyImage(new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/dorso.gif"), back);
 
 		return back;
 	}
@@ -274,4 +280,56 @@ class TableCard implements Animable
     {
     	return (TCardState) states.getLastState();
     }
+
+
+	/**
+     * Agrega un nuevo listener de eventos.
+     * @param obj	Listener de eventos a agregar.
+     */
+    public void addListener(TableCardListener obj)
+    {
+    	stateListeners.add(obj);
+    }
+    
+    /**
+     * Dispara el evento 
+     * {@link StateListener#transitionCompleted()}
+     * de cada uno de los listeners registrados.
+     */
+    private void fireTransitionCompleted()
+    {
+    	Iterator slIter;
+    	
+    	slIter = stateListeners.iterator();
+    	while (slIter.hasNext())
+    		((TableCardListener) slIter.next()).transitionCompleted(this);
+    }
+
+	public void transitionCompleted() 
+	{
+		fireTransitionCompleted();
+	}
+	
+	private static final RenderingHints getRHints()
+	{
+		RenderingHints ret = null;
+		
+//		try
+//		{
+//			ret = new RenderingHints
+//			(
+//				RenderingHints.KEY_INTERPOLATION, 
+//				RenderingHints.VALUE_INTERPOLATION_BILINEAR
+//			);
+//	
+//			ret.put
+//			(
+//				RenderingHints.KEY_RENDERING,
+//				RenderingHints.VALUE_COLOR_RENDER_SPEED
+//			);
+//		}
+		
+		
+		return ret;
+	}
 }

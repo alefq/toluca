@@ -19,18 +19,25 @@ import java.awt.event.MouseListener;
 import java.util.EventListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.Image;
 
 /**
  * Maneja el panel donde se juega propiamente.
  * Encargado de animar las cartas y mostrar las caritas.
  */
 class PlayTable extends JPanel 
-implements ComponentListener, MouseListener, Graphics2DPainter
+implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 {
 	private boolean paintIt = false;
 
-	private BufferedImage biBuff;	// Búfer de la mesa a pintar
-	private Graphics2D grBuff;		// Graphics2D del búfer
+	private BufferedImage[] biBuff;		// Búfer de la mesa a pintar
+	private AffineTransform afTrans;	// Transformación a aplicar
+
+	private Image img;
+	private Graphics2D grImg;
+	
+	private int currBuff = 0;
 
 	/** dimensiones de la mesa */
 	final public static int TABLE_WIDTH = 676;
@@ -44,6 +51,9 @@ implements ComponentListener, MouseListener, Graphics2DPainter
 
 	private PTableListener ptListener;		 // list. de eventos
 	private final Animator animator;		// animador de cartas
+	
+	Toolkit toolkit;
+	Object waitFor;
 
 	/**
 	 * Construye un PlayTable con 'ptListener'
@@ -51,20 +61,38 @@ implements ComponentListener, MouseListener, Graphics2DPainter
 	 */
 	public PlayTable(PTableListener ptListener)
 	{
-		super(false);
+		setDoubleBuffered(false);
 
 		addComponentListener(this);
 		addMouseListener(this);
 		this.ptListener = ptListener;
 		animator = new Animator(this);
-		animator.start();
+
+		toolkit = getToolkit();
+                System.out.println("Creando biBuff");
+		biBuff = new BufferedImage[2];
+		afTrans = new AffineTransform();
+                System.err.println("cambiado por la momia");
+		//Este cambio se hace porque da un null ponter exception con el BI
+                animator.start();                
 	}
 
 	/** rutina de pintado */
 	public void paint(Graphics g)
 	{
-		super.paint(g);
-		g.drawImage(biBuff, offsetX, offsetY, null);
+		BufferedImage cBuff;
+//		if (biBuff[currBuff] != null) 
+//		{
+//		{
+			synchronized(animator)
+			{
+				super.paint(g);
+				g.drawImage(biBuff[currBuff], offsetX, offsetY, this);
+				if (animator.drawComplete) switchImages();
+			}
+				
+//			toolkit.sync();
+//		}
 	}
 
 	/** Evento de cambio de tamaño del componente */
@@ -72,7 +100,12 @@ implements ComponentListener, MouseListener, Graphics2DPainter
 	{
 		Rectangle bounds;
 		double scale;
-
+		
+		img = this.createImage(1000, 1000);
+		grImg = (Graphics2D) img.getGraphics();
+		
+		grImg.fillOval(0, 0, 100, 100);
+		
 		// obtiene las coordenadas del área de pintado
 		bounds = getBounds();
 
@@ -91,30 +124,19 @@ implements ComponentListener, MouseListener, Graphics2DPainter
 			offsetY = 0;
 		}
 
-		// crea el objeto BufferedImage en el cual se dibujará
-		// los objetos para posteriormente ser dibujados en
-		// el Graphic del componente
-		biBuff = new BufferedImage
-		(
-			(int) (TABLE_WIDTH * scale),
-			(int) (TABLE_HEIGHT * scale),
-			BufferedImage.TYPE_3BYTE_BGR
-		);
-
-		// obtiene el objeto Graphics2D del BufferedImage
-		grBuff = biBuff.createGraphics();
-
-		// establece el antialiasing de 'grBuff' a verdadero
-		grBuff.setRenderingHint
-		(
-			RenderingHints.KEY_ANTIALIASING,
-			RenderingHints.VALUE_ANTIALIAS_ON
-		);
-		
-		grBuff.scale(scale, scale);
-		grBuff.translate(TABLE_WIDTH/2, TABLE_HEIGHT/2);
-		
-		animator.redraw = true;
+		// crea los BufferedImages
+		for (int i = 0; i < biBuff.length; i++)
+			biBuff[i] = new BufferedImage
+			(
+				(int) (TABLE_WIDTH * scale), 
+				(int) (TABLE_HEIGHT * scale),
+				BufferedImage.TYPE_3BYTE_BGR
+			);
+			
+		// crea la transformación y la carga
+		afTrans = new AffineTransform();
+		afTrans.scale(scale, scale);
+		afTrans.translate(TABLE_WIDTH/2, TABLE_HEIGHT/2);
 	}
 	
 	// a implementar
@@ -137,7 +159,7 @@ implements ComponentListener, MouseListener, Graphics2DPainter
 		
 		try
 		{
-			p = grBuff.getTransform().createInverse().transform
+			p = afTrans.createInverse().transform
 			(
 				new Point
 				(
@@ -159,14 +181,29 @@ implements ComponentListener, MouseListener, Graphics2DPainter
 	{
 		return animator;
 	}
-	
-	public Graphics2D getGraphics2D()
-	{
-		return grBuff;
-	}
 
 	public BufferedImage getBImage()
 	{
-		return biBuff;
+		return biBuff[(currBuff + 1) % biBuff.length];
+	}
+	
+	public AffineTransform getTransform()
+	{
+		return afTrans;
+	}
+
+	public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) 
+	{
+		System.out.println("-------------Image Update--------------");
+//		if ((infoflags & ImageObserver.ALLBITS) != 0)
+//			switchImages();
+		
+		return false;
+	}
+	
+	private void switchImages()
+	{
+		if (animator.drawComplete)
+			currBuff = (currBuff + 1) % biBuff.length;
 	}
 }

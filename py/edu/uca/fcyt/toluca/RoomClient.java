@@ -17,7 +17,7 @@ import py.edu.uca.fcyt.toluca.event.*;
 
 import py.edu.uca.fcyt.game.*;
 
-
+import py.edu.uca.fcyt.toluca.game.*;
 /**
  * <p>
  *
@@ -90,7 +90,7 @@ public class RoomClient extends Room
      * @param htmlMessage El mensaje que se esta enviando
      * </p>
      */
-    private void fireChatMessageRequested(Player player, String htmlMessage) {        /** lock-end */
+    private void fireChatMessageRequested(TrucoPlayer player, String htmlMessage) {        /** lock-end */
         ChatMessage chatmsg = new ChatMessage(player, htmlMessage);
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_CHAT_REQUESTED);
@@ -165,7 +165,7 @@ public class RoomClient extends Room
      *
      */
     
-    public void sendChatMessage(Player player, String htmlMessage) {
+    public void sendChatMessage(TrucoPlayer player, String htmlMessage) {
         fireChatMessageRequested(player, htmlMessage);
     }
     
@@ -181,7 +181,7 @@ public class RoomClient extends Room
  * @param password ...
  * </p>
  */ 
-    public void showChatMessage(Player player, String htmlMessage) {
+    public void showChatMessage(TrucoPlayer player, String htmlMessage) {
         /** lock-end */
         chatPanel.showChatMessage(player, htmlMessage);
     } // end showChatMessage        /** lock-begin */
@@ -198,7 +198,7 @@ public class RoomClient extends Room
  * @param password ...
  * </p>
  */
-    public void addPlayer(Player player) {
+    public void addPlayer(TrucoPlayer player) {
         super.addPlayer(player);
         System.out.println("Gol de Cerro!!");
         if (rankTable == null) System.out.println("Nulooooo!!!");
@@ -217,7 +217,7 @@ public class RoomClient extends Room
  * @param password ...
  * </p>
  */ 
-    public void removePlayer(Player player) {        /** lock-end */
+    public void removePlayer(TrucoPlayer player) {        /** lock-end */
         super.removePlayer(player);
         rankTable.removeplayer( player.getName() );
     } // end removePlayer        /** lock-begin */
@@ -234,7 +234,7 @@ public class RoomClient extends Room
  * @param password ...
  * </p>
  */
-    public void modifyPlayer(Player player) {        /** lock-end */
+    public void modifyPlayer(TrucoPlayer player) {        /** lock-end */
         super.modifyPlayer(player);  
         rankTable.modifyplayer(player.getName(), player.getRating() );
     }
@@ -273,11 +273,11 @@ public class RoomClient extends Room
  * @param player ...
  * </p>
  */
-    public void loginCompleted(Player player) {        /** lock-end */
-        System.out.println("Login completed???");
+    public void loginCompleted(TrucoPlayer player) {        /** lock-end */
+        System.out.println("Se ejecuta Login completed------------------");
         chatPanel = new ChatPanel(this, player);
         rui.addChatPanel(chatPanel);
-        addPlayer(player);
+        //addPlayer(player);
     } // end loginCompleted        /** lock-begin */
 
     public void joinTable(RoomEvent re) {
@@ -314,6 +314,7 @@ public class RoomClient extends Room
             System.out.println("Se settea el rank table a no null");
         this.rankTable = rankTable;
     }
+    
     
  // end loginFailed        /** lock-begin */
 
