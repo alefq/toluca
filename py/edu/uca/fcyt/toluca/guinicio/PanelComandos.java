@@ -4,10 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,6 +41,10 @@ public class PanelComandos extends JPanel {
 
     public static final Color COLOR_DE_FONDO = new Color(235, 238, 183);
 
+    private JLabel version = null;
+
+    private JApplet applet;
+
     public PanelComandos() {
         initComponents();
     }
@@ -55,7 +62,24 @@ public class PanelComandos extends JPanel {
         botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
         botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
         botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
+        botonSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                botonSalirActionPerformed(e);
+            }
+        });
         setPanel();
+    }
+
+    /**
+     * @param e
+     */
+    protected void botonSalirActionPerformed(ActionEvent e) {
+        getApplet().setVisible(false);
+        try {
+            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/close.html"));
+        } catch (MalformedURLException e1) {
+            System.out.println(e1.getMessage());
+        }
     }
 
     private JPanel getPanelBoton(JButton button, String text) {
@@ -70,6 +94,7 @@ public class PanelComandos extends JPanel {
     private JPanel getPanelBotonesJugar() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(version);
         panel.add(getPanelBoton(botonJugar, "Crear mesa"));
         panel.add(getPanelBoton(botonUnirse, "Unirse"));
         return panel;
@@ -112,6 +137,9 @@ public class PanelComandos extends JPanel {
     }
 
     private void initComponents() {
+        version = new JLabel(RoomUING.VERSION);
+        version.setHorizontalTextPosition(JLabel.LEFT);
+        version.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         ImageIcon icon = new ImageIcon(getClass().getResource(
                 RoomUING.IMAGE_DIR + "btnCrearMesa.gif"));
         ImageIcon icon2 = new ImageIcon(getClass().getResource(
@@ -193,5 +221,18 @@ public class PanelComandos extends JPanel {
      */
     public void setTableGame(TableGame tableGame) {
         this.tableGame = tableGame;
+    }
+
+    /**
+     * @param roomUI
+     */
+    public void setApplet(JApplet roomUI) {
+        applet = roomUI;
+    }
+    /**
+     * @return Returns the applet.
+     */
+    public JApplet getApplet() {
+        return applet;
     }
 }

@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/12/28 21:14:25 $
- * @version $Revision: 1.11 $ 
+ * Last modified: $Date: 2004/12/28 21:51:07 $
+ * @version $Revision: 1.12 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -36,6 +36,8 @@ public class RoomUING extends JApplet {
 //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
 //            .getLogger(RoomUING.class);
 
+    public static final String VERSION = "20041228-19444";
+    
     public static final String CLAVE_LOGIN = "claveLogin";
     
     private javax.swing.JPanel jContentPane = null;
@@ -441,4 +443,4 @@ public class RoomUING extends JApplet {
     {
     	tableGame.eliminarFila(table.getTableNumber());
     }
-} //  @jve:decl-index=0:visual-constraint="10,30"
+}  //  @jve:decl-index=0:visual-constraint="10,30"

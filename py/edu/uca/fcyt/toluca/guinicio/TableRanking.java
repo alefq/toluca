@@ -32,9 +32,9 @@ public class TableRanking extends JTable{
 		cellSelectionEnabled=false;
 		setMaximumSize(new Dimension(100,400));
 		TableColumn userCol=getColumn("User");
-		userCol.setMaxWidth(200);
+		//userCol.setMaxWidth(200);
 		TableColumn puntajeCol=getColumn("Puntaje");
-		puntajeCol.setMaxWidth(50);						
+		//puntajeCol.setMaxWidth(50);						
 		setRowHeight(25);
 		HashMap coloresRanking = new HashMap();
 
