@@ -15,7 +15,7 @@ import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.net.*;
 
 public abstract class Communicator extends XmlPackagesSession
-implements RoomListener, TableListener {
+implements RoomListener, TableListener,TrucoListener {
     
     int current=0;
     
@@ -279,50 +279,7 @@ implements RoomListener, TableListener {
         } */
     }
     TrucoCard cartaEnv;
-    public void xmlReadCard(Object o) {
-/*		String aux;
-        if (o instanceof Element) {
-            Element element = (Element) o;
-            aux=element.getName();
-            if(aux.compareTo("Type")==0) {
-             type=Integer.parseInt(element.getAttributeValue("id"));
-            }
-                         if(aux.compareTo("Game")==0) {
-                //System.out.println("MESSAGE:"+element.getText());
-                gameID=Integer.parseInt(element.getAttributeValue("id"));
-            }
-                        if(aux.compareTo("Hand")==0)
-                        {
-                                hand=Integer.parseInt(element.getAttributeValue("number"));
-                        }
-                         if(aux.compareTo("Player")==0) {
-                //System.out.println("PLAYER:"+element.getText());
-                user=element.getAttributeValue("name");
-            }
-                        if(aux.compareTo("Carta")==0)
-                        {
-                                String kind=new String();
-                                String value=new String();
-                                kind=element.getAttributeValue("kind");
-                                value=element.getAttributeValue("value");
-                                cartaEnv=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
-                        }
-            List children = element.getContent();
-            Iterator iterator = children.iterator();
-            while (iterator.hasNext()) {
-                Object child = iterator.next();
-                xmlReadCard(child);
-            }
-            if(aux.compareTo("Cardsend")==0) {
-                                TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,cartaEnv);
-               System.out.println("Tipo:"+type);
-                           System.out.println("Game:"+gameID);
-                           System.out.println("Hand:"+hand);
-                           System.out.println("Player:"+user);
-                                System.out.println("Palo:"+cartaEnv.getKind()+"Value"+cartaEnv.getValue());
-                         }
-        } */
-    }
+   
     int tanto;
     public void xmlReadCantarTanto(Object o) {
 /*				String aux;

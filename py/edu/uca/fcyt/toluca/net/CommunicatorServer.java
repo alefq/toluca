@@ -20,40 +20,52 @@ import org.jdom.*;
  */
 public class CommunicatorServer
 extends Communicator {
-       public void showPlayed(TableEvent te) {
-           
-       }
-       public void signSent(TableEvent te) {
-           
-       }
-       public void playerSit(TableEvent te) {
-           
-       }
-       public void playerSitRequest(TableEvent te) {
-           
-       }
-       public void playerKicked(TableEvent te) {
-           
-       }
-       public void playerKickRequest(TableEvent te) {
-           
-       }
-       public void playerStanded(TableEvent te) {
-           
-       }
-       public void playerStandRequest(TableEvent te) {
-           
-       }
-       public void gameFinished(TableEvent te) {
-           
-       }
-       
-       public void signSendRequest(TableEvent te) {
-           
-       }
-       public void gameStarted(TableEvent te) {
-           
-       }
+    public void showPlayed(TableEvent te) {
+        
+    }
+    public void signSent(TableEvent te) {
+        
+    }
+    public void playerSit(TableEvent te) {
+        Document doc=te.toXml();
+        super.sendXmlPackage(doc);
+        
+    }
+    public void playerSitRequest(TableEvent te) {
+    }
+    public void playerKicked(TableEvent te) {
+        
+    }
+    public void playerKickRequest(TableEvent te) {
+        
+    }
+    public void playerStanded(TableEvent te) {
+        
+    }
+    public void playerStandRequest(TableEvent te) {
+        
+    }
+    public void gameFinished(TableEvent te) {
+        
+    }
+    
+    public void signSendRequest(TableEvent te) {
+        
+    }
+    
+    public void gameStarted(TableEvent te) {
+        
+        // Hay que hacer un getTeams()
+        // Instanciar el TrucoGame
+        // Setear al table server asociado el trucoGame correspondiente (el ID viene en el TableEvent te)
+        // Colocarse como listener del trucoGame
+        // Crear el XML con: te.xmlCreateGameStarted(String, String) que son los teams correspondientes
+        // Enviar el paquete al Cliente
+        
+        //te.xmlCreateGameStarted("Hola", "Hola");
+        
+        
+    }
     /** Creates a new instance of ChatSessionServer */
     /*public CommunicatorServer(RoomSer pieza) {
         super(pieza);
@@ -77,7 +89,7 @@ extends Communicator {
         Document doc=new Document(xmlPackage);
         
         //		doc.addContent(xmlPackage);
-       try {
+        try {
             
             XMLOutputter serializer = new XMLOutputter("  ", true);
             
@@ -89,7 +101,21 @@ extends Communicator {
         }
         System.err.println("//////////////////////////////////////////");
         cabecera(doc);
+/*
+                 TrucoPlayer p=new TrucoPlayer("Dani",10);
+ 
+ 
+        TrucoCard cars [] = new TrucoCard[3];
+                cars[0]=new TrucoCard(2,3);
+                cars[1]=new TrucoCard(2,4);
+                cars[2]=new TrucoCard(3,7);
+ 
+       TrucoEvent prueba=new TrucoEvent(5,10,p,TrucoEvent.JUGAR_CARTA,cars[2]);
+                play(prueba);*/
+        //cardsDeal(prueba);
         //loginComplete();
+        
+        
     }
     
     public void receiveXmlPackageWithParsingError(String rawXmlPackage) {
@@ -118,7 +144,7 @@ extends Communicator {
     }
     public void loginCompleted(RoomEvent re){
         //RoomEvent te;
-        
+    
 /*
         RoomEvent te=new RoomEvent();
         Vector jugadores=new Vector();
@@ -198,6 +224,64 @@ extends Communicator {
             }
         }
     }
+    TrucoCard cardAux;//variables chanchas
+    int typeAux;
+    int tableIdAux;
+    String userAux;
+    int valueAux;
+    public void xmlReadTrucoPlay(Object o) {
+        String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+                typeAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+            if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+            
+            if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
+            }
+            if(aux.compareTo("Carta")==0) {
+                String kind=element.getAttributeValue("kind");
+                String value=element.getAttributeValue("value");
+                cardAux=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+            }
+            if(aux.compareTo("Value")==0) {
+                
+                valueAux=Integer.parseInt(element.getAttributeValue("val"));
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadTrucoPlay(child);
+            }
+            if(aux.compareTo("TrucoPlay")==0) {
+                TrucoPlay tp=new TrucoPlay(tableIdAux,player,(byte)typeAux,cardAux,valueAux);
+                
+                System.out.println("Tabla :"+ tp.getTableNumber());
+                System.out.println("Truco Player : "+tp.getPlayer().getName());
+                System.out.println("TYPE  : "+tp.getType());
+                System.out.println("LA CARTA   PALO = "+tp.getCard().getKind()+" El valor es "+tp.getCard().getValue());
+                System.out.println("El valor es " + tp.getValue());
+                //ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
+                                 /* try {
+                                                  TrucoServer tabela = (TableServer)getTables().get(tableidAux);
+                                                  TrucoGame tgame=tabela.getTrucoGame();
+                                                  tgame.play(tp);
+                                                  } catch (java.lang.NullPointerException e) {
+                                                           System.e.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadTrucoPlay");
+                                                           e.printStackTrace();
+                                                          throw e;
+                }*/
+            }
+        }
+    }
     public  void cabecera(Document doc) {//saca la cabeza del paquete y envia el paquete al lector correspondiente
         
         List children = doc.getContent();
@@ -208,48 +292,150 @@ extends Communicator {
         //System.out.println(aux);
         
         
+        if(aux.compareTo("PlayerSitRequest")==0) {
+            xmlReadPlayerSitRequest(child);
+        }
+        
         if(aux.compareTo("Login")==0) {
             xmlReadLogin(child);
         }
         if(aux.compareTo("ChatMsg")==0) {
             xmlReadChatMsg(child);
         }
-        if(aux.compareTo("SendCards")==0) {
-            super.xmlreadSendCards(child);
-        }
-        if(aux.compareTo("Canto")==0) {
-            super.xmlReadCanto(child);
-        }
-        if(aux.compareTo("Cardsend")==0) {
-            super.xmlReadCard(child);
-        }
-        if(aux.compareTo("CantarTanto")==0) {
-            super.xmlReadCantarTanto(child);
-        }
-        if(aux.compareTo("Turno")==0) {
-            super.xmlReadTurno(child);
-        }
-        if(aux.compareTo("TerminalMessage")==0) {
-            
-            //super.xmlReadTerminalMessage(child);
-        }
         if(aux.compareTo("CreateTable")==0) {
             xmlReadCreateTable(child);
         }
-		 if(aux.compareTo("TableJoinRequest")==0) {
-			 System.out.println("Dentro de cabecera para ejecutar el metodo\n");
+        if(aux.compareTo("TableJoinRequest")==0) {
+            System.out.println("Dentro de cabecera para ejecutar el metodo\n");
             xmlReadTableJoinRequest(child);
+        }
+        if(aux.compareTo("GameStartRequest")==0){
+            xmlReadGameStartRequest(child);
+        }
+        if(aux.compareTo("TrucoPlay")==0){
+            xmlReadTrucoPlay(child);
         }
         
     }
-/*    public void chatMessageSent(TrucoPlayer jug,String message) {
+    public void xmlReadGameStartRequest(Object o) {// PAULO
+        String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Table")==0) {
+                int tableid=Integer.parseInt(element.getAttributeValue("id"));
+                System.out.println("LLego un game Start Request al "+tableid);
+                //ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
+                try {
+                    TableServer tabela = (TableServer)getTables().get(String.valueOf(tableid));
+                    tabela.startGame();
+                } catch (java.lang.NullPointerException e) {
+                    System.out.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadGameStartRequest");
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadGameStartRequest(child);
+            }
+            
+        }
+    }
+    int posAux;//solo sirve para este metodo el de abajo xmlReadPlayerSitRequest
+    int idAux;//solo sirve para el metodo de abajo xmlReadPlayerSitRequest
+    
+    public void xmlReadPlayerSitRequest(Object o) {//en verdad jugador no se usa porque creemos que como el communicator ya tiene su player entonces con
+        //ese player es suficiente
+        String aux;
+        
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            
+            if(aux.compareTo("Pos")==0) {
+                posAux=Integer.parseInt(element.getAttributeValue("pos"));
+                
+            }
+            if(aux.compareTo("Table")==0) {
+                
+                idAux=Integer.parseInt(element.getAttributeValue("id"));
+                
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadPlayerSitRequest(child);
+            }
+            if(aux.compareTo("PlayerSitRequest")==0) {
+                System.err.println("DENTRO DEL COMMUNICATOR SERVFER/////////////////");
+                System.out.println("El table a sentarse es "+idAux);
+                System.out.println("La posicion es "+posAux);
+                //ATENCION ESTE TRY HAY QUE DESCOMENTAR PARA QUE FUNCIONE. ESTA COMOENTADO PORQUE EL TABLESERVER
+                //TODAVIA NO TIENE UN METODO PlayerSit
+                try {
+                    String tid = String.valueOf(idAux);
+                    TableServer tabela = (TableServer)getTables().get(tid);
+                    tabela.sitPlayer(player,posAux);
+                } catch (java.lang.NullPointerException e) {
+                    System.err.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadPlayerSitRequest ");
+                    e.printStackTrace();
+                    throw e;
+                }
+                
+            }
+            
+        }
+    }
+    
+    
+    /*    public void chatMessageSent(TrucoPlayer jug,String message) {
         System.out.println("Enviando msg de chat del jug: " + jug.getName());
         Document doc;
         doc=super.xmlCreateChatMsg(jug,message);
         super.sendXmlPackage(doc);
         //        pieza.sendChatMessage(jug, message);
     }
-*/    
+     */
+    public void play(TrucoPlay te){
+        Document doc=te.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void play(TrucoEvent event){
+        //Cantartanto con value
+        //canto sin value
+        //card semd
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void turn(TrucoEvent event){
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void endOfHand(TrucoEvent event){
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void cardsDeal(TrucoEvent event){
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void handStarted(TrucoEvent event){
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void gameStarted(TrucoEvent event){
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public void endOfGame(TrucoEvent event){
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
+    }
+    public TrucoPlayer getAssociatedPlayer(){return player;}
     public void setRoom(RoomServer pieza) {
         this.pieza = pieza;
         pieza.addRoomListener(this);
@@ -362,7 +548,7 @@ extends Communicator {
                 xmlReadCreateTable(child);
             }
             if(aux.compareTo("CreateTable")==0) {
-                System.out.println("Player: "+user);
+                System.out.println("Dentro del Communicator Server. Player = " + user);
                 //pieza.createTable(new TrucoPlayer(user));
                 pieza.createTable(player);
             }
@@ -379,6 +565,7 @@ extends Communicator {
      * </p>
      */
     public void tableCreated(RoomEvent ev) {
+        
         System.out.println("No hay nada: " + ev.getTabless().toArray().length);
         TableServer ts = (TableServer)((ev.getTabless().toArray())[0]);
         ts.addTableServerListener(this);
@@ -392,10 +579,9 @@ extends Communicator {
         super.sendXmlPackage(doc);
     }
     
-    public void xmlReadTableJoinRequest(Object o)
-	{
-		String aux;
-		System.out.println("Leyendo el paquete");
+    public void xmlReadTableJoinRequest(Object o) {
+        String aux;
+        System.out.println("Leyendo el paquete");
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
@@ -403,8 +589,8 @@ extends Communicator {
             if(aux.compareTo("Table")==0) {
                 //System.out.println("MESSAGE:"+element.getText());
                 String tableid=element.getAttributeValue("id");
-				System.out.println("El table id es"+tableid);
-			}
+                System.out.println("El table id es"+tableid);
+            }
             List children = element.getContent();
             Iterator iterator = children.iterator();
             while (iterator.hasNext()) {
@@ -413,17 +599,22 @@ extends Communicator {
             }
             if(aux.compareTo("TableJoinRequest")==0) {
                 //Chatpanel.showChatMessage(user,message);
-				
-			 }
+                
+            }
         }
-	}
+    }
     public Document xmlCreateTableCreated(RoomEvent te) {
         System.out.println("Cricco quiere ver su pakochi");
         Element ROOT= new Element("TableCreated");
         
+        Element PLAYER=new Element("Player");
+        Vector Jugadores = (Vector)te.getPlayerss();
+        TrucoPlayer jug = (TrucoPlayer)(Jugadores.get(0));
+        PLAYER.setAttribute("name",jug.getName());
         Element TABLE = new Element("Table");
         TABLE.setAttribute("id",String.valueOf(te.getTableNumber()));
         
+        ROOT.addContent(PLAYER);
         ROOT.addContent(TABLE);
         
         Document doc = new Document(ROOT);

@@ -161,7 +161,125 @@ public class CommunicatorClient extends Communicator {
         // Problemas de diseno a resolver en TolucaV2
         
     }
-    
+	int typeAux;
+	int tantoAux;
+     public void xmlReadCantarTanto(Object o) {
+		String aux;
+	
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             typeAux=Integer.parseInt(element.getAttributeValue("id"));
+		
+            }
+             if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+			
+            }
+            if(aux.compareTo("Hand")==0)
+            {
+                 handAux=Integer.parseInt(element.getAttributeValue("number"));
+				
+            }
+            if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
+			
+            }
+            if(aux.compareTo("Tanto")==0)
+            {
+                      tantoAux=Integer.parseInt(element.getAttributeValue("tanto"));
+					  
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+				
+                xmlReadCantarTanto(child);
+            }
+            if(aux.compareTo("CantarTanto")==0) {
+               TrucoEvent te=new TrucoEvent(tableIdAux,handAux,mi_jugador,(byte)typeAux,tantoAux);
+				System.out.println("Table id : "+te.getTableNumber());
+				System.out.println("HAND : "+te.getNumberOfHand());
+				System.out.println("Truco Player : "+te.getTrucoPlayer().getName());
+				System.out.println("TYPE  : "+te.getTypeEvent());
+				System.out.println("El value es : "+te.getValue());
+			/*	try {
+						    String tableid=String.valueOf(tableIdAux);
+						    Table tabela = (Table)getTables().get(tableid);
+							TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
+							trucoGame.play(te);
+					} catch (java.lang.NullPointerException e) {
+							System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadCantarTanto ");
+							e.printStackTrace();
+								throw e;
+							}*/
+               
+                 }
+        } 
+    }
+	int valueAux;
+	public void xmlReadTrucoPlay(Object o) {
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             typeAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+            if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+               tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+             
+             if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
+            }
+             if(aux.compareTo("Carta")==0)
+             {
+                       String kind=element.getAttributeValue("kind");
+                       String value=element.getAttributeValue("value");
+                       cardAux=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+            }
+			 if(aux.compareTo("Value")==0) {
+               
+                valueAux=Integer.parseInt(element.getAttributeValue("val"));
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadTrucoPlay(child);
+            }
+            if(aux.compareTo("TrucoPlay")==0) {
+				//CUANDO SE CREA ESTE TRUCOPLAY HAY QUE PASARLE LA REFENCIA AL PLAYER CORRESPONDIENTE
+				//CREEMOS QUE PODEMOS SACAR DE LA TABLA PERO HAY QUE VER
+                TrucoPlay tp=new TrucoPlay(tableIdAux,new TrucoPlayer(userAux),(byte)typeAux,cardAux,valueAux);
+				
+                    System.out.println("Tabla :"+ tp.getTableNumber());
+					System.out.println("Truco Player : "+tp.getPlayer().getName());
+					System.out.println("TYPE  : "+tp.getType());
+					System.out.println("LA CARTA   PALO = "+tp.getCard().getKind()+" El valor es "+tp.getCard().getValue());
+					System.out.println("El valor es " + tp.getValue());
+					
+					/*	try {
+
+						    String tableid=String.valueOf(tableIdAux);
+						    Table tabela = (Table)getTables().get(tableid);
+							TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
+							trucoGame.play(te);
+					} catch (java.lang.NullPointerException e) {
+							System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadCantarTanto ");
+							e.printStackTrace();
+								throw e;
+					}*/
+			  }
+        } 
+    }
     private void cabecera(Document doc) {//saca la cabeza del paquete y envia el paquete al lector correspondiente
         
         List children = doc.getContent();
@@ -172,6 +290,10 @@ public class CommunicatorClient extends Communicator {
         //System.out.println(aux);
         
         
+        if(aux.compareTo("PlayerSit")==0) {
+            //cuando ya se sento un Player
+            xmlReadPlayerSit(child);
+        }
         if(aux.compareTo("ChatMsg")==0) {
             System.out.println("Llego un mensaje de chat, soy " + player.getName());
             xmlReadChatMsg(child);
@@ -185,18 +307,7 @@ public class CommunicatorClient extends Communicator {
             System.out.println("Llego un mensaje de UserJoined");
             xmlReadUserJoined(child);
         }
-        if(aux.compareTo("SendCards")==0) {
-            super.xmlreadSendCards(child);
-        }
-        if(aux.compareTo("Canto")==0) {
-            super.xmlReadCanto(child);
-        }
-        if(aux.compareTo("Cardsend")==0) {
-            super.xmlReadCard(child);
-        }
-        if(aux.compareTo("CantarTanto")==0) {
-            super.xmlReadCantarTanto(child);
-        }
+            
         if(aux.compareTo("Turno")==0) {
             super.xmlReadTurno(child);
         }
@@ -207,6 +318,253 @@ public class CommunicatorClient extends Communicator {
         if(aux.compareTo("TableCreated")==0) {
             //cuando ya se creo una tabla
             xmlReadTableCreated(child);
+        }
+         if(aux.compareTo("GameStarted")==0) {
+            //cuando empezo el juego	
+            xmlReadGameStarted(child);
+        }
+		if(aux.compareTo("SendCards")==0) {
+            //cuando se envia tres cartas
+            xmlreadSendCards(child);
+        }
+		if(aux.compareTo("CantarTanto")==0) {
+            //cuando se canta el tanto
+            xmlReadCantarTanto(child);
+        }
+		if(aux.compareTo("Canto")==0) {
+            //cuando se canta
+            xmlReadCanto(child);
+        }
+		if(aux.compareTo("Cardsend")==0){
+		 //cuando se envia una carta
+            xmlReadCard(child);
+        }
+		if(aux.compareTo("TrucoPlay")==0){
+			xmlReadTrucoPlay(child);
+		}
+    }
+	TrucoCard cardAux;
+    public void xmlReadCard(Object o) {
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             typeAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+            if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+               tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+             if(aux.compareTo("Hand")==0)
+             {
+                  handAux=Integer.parseInt(element.getAttributeValue("number"));
+             }
+             if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
+            }
+             if(aux.compareTo("Carta")==0)
+             {
+                       String kind=element.getAttributeValue("kind");
+                       String value=element.getAttributeValue("value");
+                       cardAux=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadCard(child);
+            }
+            if(aux.compareTo("Cardsend")==0) {
+                TrucoEvent te=new TrucoEvent(tableIdAux,handAux,mi_jugador,(byte)type,cardAux);
+				
+                    System.out.println("Tabla :"+ te.getTableNumber());
+					System.out.println("HAND : "+te.getNumberOfHand());
+					System.out.println("Truco Player : "+te.getTrucoPlayer().getName());
+					System.out.println("TYPE  : "+te.getTypeEvent());
+					System.out.println("LA CARTA   PALO = "+te.getCard().getKind()+" El valor es "+te.getCard().getValue());
+					
+			  }
+        } 
+    }
+public void xmlReadCanto(Object o) {
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             typeAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+            if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+            if(aux.compareTo("Hand")==0)
+            {
+                handAux=Integer.parseInt(element.getAttributeValue("number"));
+             }
+             if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadCanto(child);
+            }
+            if(aux.compareTo("Canto")==0) {
+                          TrucoEvent te=new TrucoEvent(tableIdAux,handAux,mi_jugador,(byte)typeAux);
+                          System.out.println("Tabla :"+ te.getTableNumber());
+							 System.out.println("HAND : "+te.getNumberOfHand());
+							System.out.println("Truco Player : "+te.getTrucoPlayer().getName());
+							System.out.println("TYPE  : "+te.getTypeEvent());
+				/*	try {
+						    String tableid=String.valueOf(tableIdAux);
+						    Table tabela = (Table)getTables().get(tableid);
+							TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
+							trucoGame.play(te);
+					} catch (java.lang.NullPointerException e) {
+							System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadCantarTanto ");
+							e.printStackTrace();
+								throw e;
+					}*/
+			}
+        } 
+    }
+
+    int tableIdAux;
+    int handAux;
+    TrucoCard []cartas=new TrucoCard[3];
+    int currentCard=0;
+	String userAux;
+    public void xmlreadSendCards(Object o) {
+        tableIdAux=0;
+        handAux=0;
+        currentCard=0;
+        xmlreadSendCardsAlg(o);
+        
+        
+    }
+	
+    public void xmlreadSendCardsAlg(Object o) {
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("TrucoPlayer")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                userAux=element.getAttributeValue("name");
+            }
+            if(aux.compareTo("Table")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                tableIdAux=Integer.parseInt(element.getAttributeValue("id"));
+            }
+                        if(aux.compareTo("Hand")==0)
+                        {
+                                handAux=Integer.parseInt(element.getAttributeValue("number"));
+                        }
+                        if(aux.compareTo("Carta")==0)
+                        {
+                                String kind=new String();
+                                String value=new String();
+                                kind=element.getAttributeValue("kind");
+                                value=element.getAttributeValue("value");
+                                cartas[currentCard]=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+                                currentCard++;
+ 
+                        }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlreadSendCardsAlg(child);
+            }
+            if(aux.compareTo("SendCards")==0) {
+                //Chatpanel.showChatMessage(user,message);
+                TrucoEvent te=new TrucoEvent(tableIdAux,handAux,mi_jugador,TrucoEvent.ENVIAR_CARTAS,cartas);
+                                System.out.println("tableID: " + (te.getTableNumber()) + "\nHand" + te.getNumberOfHand() +"\nPlayer :" + (te.getPlayer()).getName());
+                                TrucoCard []cartasIMP=new TrucoCard[3];
+                                System.out.println("*******Cartas*********");
+                                cartasIMP=te.getCards();
+                                for(int i=0;i<3;i++)
+                                {
+                                        System.out.println("Palo:" + cartasIMP[i].getKind() + "Value: " + cartasIMP[i].getValue());
+ 
+                                }
+                        
+						//ESTO HAY QUE DESCOMENTAR PARA QUE ANDE COMENTADO 
+						/*	try {
+						            String tableid=String.valueOf(tableIdAux);
+								    Table tabela = (Table)getTables().get(tableid);
+									TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
+									trucoGame.play(te);
+
+								} catch (java.lang.NullPointerException e) {
+									System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlreadSendCardsAlg ");
+									e.printStackTrace();
+								throw e;
+							}*/
+
+
+						}
+        } 
+    }
+	public void play(TrucoEvent event){}
+    public void turn (TrucoEvent event){}
+    public void endOfHand(TrucoEvent event){}
+    public void cardsDeal(TrucoEvent event){}
+    public void handStarted(TrucoEvent event){}
+    public void gameStarted(TrucoEvent event){}
+    public void endOfGame(TrucoEvent event){}
+	public void play(TrucoPlay tp)
+	{
+		Document doc=tp.toXml();
+		super.sendXmlPackage(doc);
+	}
+    public TrucoPlayer getAssociatedPlayer(){return mi_jugador;}
+
+    int posAux;//solo sirve para este metodo el de abajo xmlReadPlayerSitRequest
+    int idAux;//solo sirve para el metodo de abajo xmlReadPlayerSitRequest
+    public void xmlReadPlayerSit(Object o) {//en verdad jugador no se usa porque creemos que como el communicator ya tiene su player entonces con
+        //ese player es suficiente
+        String aux;
+        
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            
+            if(aux.compareTo("Pos")==0) {
+                posAux=Integer.parseInt(element.getAttributeValue("pos"));
+                
+            }
+            if(aux.compareTo("Table")==0) {
+                
+                idAux=Integer.parseInt(element.getAttributeValue("id"));
+                
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadPlayerSit(child);
+            }
+            if(aux.compareTo("PlayerSit")==0) {
+                System.out.println("Dentro del Communicator Client xmlReadPlayerSit");
+                System.out.println("El table a sentarse es"+idAux);
+                System.out.println("La posicion es"+posAux);
+                try {
+                    String tableid=String.valueOf(idAux);
+                    Table tabela = (Table)getTables().get(tableid);
+                    tabela.sitPlayer(mi_jugador,posAux);
+                } catch (java.lang.NullPointerException e) {
+                    System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadPlayerSit ");
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+            
         }
     }
     
@@ -240,7 +598,8 @@ public class CommunicatorClient extends Communicator {
             }
         }
     }
-    
+    String playerAux;
+    String tableidAux;
     public void xmlReadTableCreated(Object o){
         String aux;
         
@@ -248,55 +607,12 @@ public class CommunicatorClient extends Communicator {
             System.out.println("Cricco morgue: " + ((Element)o).getName());
             Element element = (Element) o;
             aux=element.getName();
-            
+            if(aux.equals("Player")) {
+                playerAux=element.getAttributeValue("name");
+            }
             if(aux.equals("Table")) {
-                String tableid=element.getAttributeValue("id");
-                Table t = null;
-                t = new Table(getPlayer(), false);
-           /*     try {
-                    t = new Table(getPlayer(), false);
-                } catch (Exception e) {*/
-                //   System.out.println("En el CATCH carajo");
-                // e.printStackTrace();
-               // t = new Table(new TrucoPlayer("Manolillo"), false);
-                // }
                 
-                t.setTableNumber(Integer.parseInt(tableid));
-                t.addTableListener(this);
-                getTables().put(tableid, t);
-                System.out.println("Cricco quiere imprimir algo aquí!");
-                this.pieza.addTable(t);
-                /*try {
-                    Table tabela = (Table)getTables().get(tableid);
-                    tabela.yapiro();
-                } catch (java.lang.NullPointerException e) {
-                 asdfasdf
-                } */
-  /*
-                pEnum = players.elements();
-   
-                // agrega a la nueva tabla los Players cargados
-                while (pEnum.hasMoreElements())
-                    table.addPlayer((Player) pEnum.nextElement());
-   
-                // sienta a los jugadores
-                for (int i = 0; i < 6; i++)	if (gamePlayers[i] != null)
-                    table.sitPlayer(gamePlayers[i], i);
-   
-                // agrega a la nueva tabla al vector de tablas
-                tables.add(table);
-   
-                // obtiene las tablas creadas
-                tEnum = tables.elements();
-   
-                // agrega a cada tabla el Player creado
-                while (tEnum.hasMoreElements())
-                    ((Table) tEnum.nextElement()).addPlayer(player);
-   
-                // agrega a 'player' al vector de Players
-                players.add(player);
-   */
-                t.show();
+                tableidAux=element.getAttributeValue("id");
                 
             }
             List children = element.getContent();
@@ -305,8 +621,39 @@ public class CommunicatorClient extends Communicator {
                 Object child = iterator.next();
                 xmlReadTableCreated(child);
             }
+            if(aux.equals("TableCreated")) {
+                
+                Table t = null;
+                //t = new Table(getPlayer(), false);
+                TrucoPlayer tp = new TrucoPlayer(playerAux);
+                t = new Table(tp, false);
+           /*     try {
+                    t = new Table(getPlayer(), false);
+                } catch (Exception e) {*/
+                //   System.out.println("En el CATCH carajo");
+                // e.printStackTrace();
+                // t = new Table(new TrucoPlayer("Manolillo"), false);
+                // }
+                
+                t.setTableNumber(Integer.parseInt(tableidAux));
+                t.addTableListener(this);
+                getTables().put(tableidAux, t);
+                System.out.println("En el cliente, voy a crear un table.!");
+                this.pieza.addTable(t);
+                
+                t.addPlayer(tp);
+                t.show();
+                /*try {
+                    Table tabela = (Table)getTables().get(tableid);
+                    tabela.yapiro();
+                } catch (java.lang.NullPointerException e) {
+                 asdfasdf
+                } */
+            }
         }
     }
+    
+    
     public void xmlReadLoginOk(Object o) {
         Players.removeAllElements();
         Mesas.removeAllElements();
@@ -403,7 +750,61 @@ public class CommunicatorClient extends Communicator {
      */
     public void gameStartRequested() {
     }
-    
+    public void gameStartRequested(TableEvent te) {
+        Document doc=te.toXml();
+        super.sendXmlPackage(doc);
+ 
+    }
+    String equipoAux1; //
+        String equipoAux2; //
+        public void xmlReadGameStarted(Object o)
+        {// PAULO
+            String aux;
+ 
+            if (o instanceof Element) {
+                Element element = (Element) o;
+                aux=element.getName();
+               
+                if(aux.compareTo("Equipo1")==0) {
+     equipoAux1 = element.getAttributeValue("equipo1");
+                }
+ 
+                if(aux.compareTo("Equipo2")==0) {
+     equipoAux2 = element.getAttributeValue("equipo2");
+                }
+                if(aux.compareTo("Table")==0)
+    {
+     idAux=Integer.parseInt(element.getAttributeValue("id"));
+     System.out.println("El id de la tabla es:"+element.getAttributeValue("id"));
+    }
+                List children = element.getContent();
+                Iterator iterator = children.iterator();
+                while (iterator.hasNext()) {
+                    Object child = iterator.next();
+                    xmlReadGameStarted(child);
+                }
+                if(aux.compareTo("GameStarted")==0) {
+                    System.out.println("Equipo1 :"+equipoAux1); 
+                    System.out.println("Equipo2: "+equipoAux2);
+     System.out.println("Table : "+idAux);
+//ESTO ESTA COMENTADO PORQUE hay metodos no implementados todavia en el TableServer
+     /* try {
+                    Table tabela = (Table)getTables().get(idAux);
+                    
+     Team team1=new Team(equipoAux1);
+     Team team2=new Team(equipoAux1);
+     TrucoGame truco=new TrucoGame(team1,team2);
+     tabela.startGame(truco);
+     } catch (java.lang.NullPointerException e) {
+     System.e.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT EN EL METODO xmlReadGameStarted");
+     e.printStackTrace();
+     throw e;
+                }*/
+               
+    }
+            }
+       
+        }
     public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
         
     }
@@ -474,6 +875,8 @@ public class CommunicatorClient extends Communicator {
     }
     
     public void playerSitRequest(TableEvent event) {
+        Document doc=event.toXml();
+        super.sendXmlPackage(doc);
     }
     
     public void playerStandRequest(TableEvent event) {
