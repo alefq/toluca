@@ -2,19 +2,19 @@ package py.edu.uca.fcyt.toluca.statusGame.statusGameCliente;
 
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
+//import py.edu.uca.fcyt.toluca.statusGame;
 
 
 public class TrucoStatusTableCliente{
 	private int cJugadores; //Guarda la cantidad de jugadores
         private py.edu.uca.fcyt.toluca.statusGame.StatusPlayer[] estado;
         private py.edu.uca.fcyt.toluca.statusGame.StatusEnvido envidos;
-        private TrucoDeck elMazo;
         private py.edu.uca.fcyt.toluca.statusGame.StatusFlor flores;
         private py.edu.uca.fcyt.toluca.statusGame.StatusMano mano;
 
         /** Recibe las cartas del jugador
          */             
-        private void recibir(int player,TrucoCard cartas[]) //reparte  3 cartas a todos los jugadores
+        public void recibirCartas(int player,TrucoCard cartas[]) //reparte  3 cartas a todos los jugadores
         {
             for(int i=0;i<3;i++)
                     estado[player].agregarCarta(cartas[i]);

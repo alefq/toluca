@@ -1,23 +1,23 @@
-package py.edu.uca.fcyt.toluca.statusGame.statusGameCliente;
+package py.edu.uca.fcyt.toluca.statusGame;
 
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 
 
-public class TrucoStatusTableCliente{
+public class TrucoStatusTable{
 	private int cJugadores; //Guarda la cantidad de jugadores
         private py.edu.uca.fcyt.toluca.statusGame.StatusPlayer[] estado;
         private py.edu.uca.fcyt.toluca.statusGame.StatusEnvido envidos;
         private TrucoDeck elMazo;
         private py.edu.uca.fcyt.toluca.statusGame.StatusFlor flores;
         private py.edu.uca.fcyt.toluca.statusGame.StatusMano mano;
-
-        /** Recibe las cartas del jugador
-         */             
-        private void recibir(int player,TrucoCard cartas[]) //reparte  3 cartas a todos los jugadores
+        private void repartir() //reparte  3 cartas a todos los jugadores
         {
             for(int i=0;i<3;i++)
-                    estado[player].agregarCarta(cartas[i]);
+                for(int j=0;j<cJugadores;j++){
+                    estado[j].agregarCarta(elMazo.getTopCard());
+                }
+                
         }
         /** Imprime en la consola las cartas del jugador <B>(Quitar en la version final)</B>
          * @param cual El nro del jugador
@@ -26,15 +26,19 @@ public class TrucoStatusTableCliente{
         {
             estado[cual].statusPrint();
         }
-        public TrucoStatusTableCliente(int cantidadDeJugadores)
+        public TrucoStatusTable(int cantidadDeJugadores)
         {
             cJugadores=cantidadDeJugadores;
             estado=new py.edu.uca.fcyt.toluca.statusGame.StatusPlayer[cJugadores];
             flores=new py.edu.uca.fcyt.toluca.statusGame.StatusFlor(cJugadores);
+            elMazo=new TrucoDeck();
+            flores=new py.edu.uca.fcyt.toluca.statusGame.StatusFlor(cJugadores);
             envidos=new py.edu.uca.fcyt.toluca.statusGame.StatusEnvido(cJugadores);
-            mano=new py.edu.uca.fcyt.toluca.statusGame.StatusMano(cJugadores);            
+            mano=new py.edu.uca.fcyt.toluca.statusGame.StatusMano(cJugadores);
+            
             for (int i=0;i<cJugadores;i++)
                     estado[i]=new py.edu.uca.fcyt.toluca.statusGame.StatusPlayer();
+            repartir();
          }
         
         /** Recupera las cartas del jugador
