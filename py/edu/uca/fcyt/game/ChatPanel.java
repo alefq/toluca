@@ -26,6 +26,12 @@ public class ChatPanel extends javax.swing.JPanel {
     
     /** Creates new form ChatPanel */
     public ChatPanel(ChatPanelContainer cpc, Player player) {
+        if (player == null) {
+            new Exception("Se fue a la puta: player null").printStackTrace();
+            System.out.println("El player es null :((");
+        } else {
+            System.out.println("Player BZ!: " + player.getName());
+        }
         setPlayer(player);
         setCpc(cpc);
         initComponents();

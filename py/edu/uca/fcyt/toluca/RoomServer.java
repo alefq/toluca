@@ -7,6 +7,8 @@ import py.edu.uca.fcyt.toluca.db.*;
 import py.edu.uca.fcyt.toluca.net.*;
 import py.edu.uca.fcyt.game.*;
 
+import org.jdom.*;
+
 
 
 /** Java class "RoomServer.java" generated from Poseidon for UML.
@@ -376,9 +378,9 @@ implements ChatPanelContainer {
         if (jogador == null)
             System.out.println("jogador es null carajo");
         
-        Vector v = new Vector();
-        v.add(jogador);
-        re.setPlayers(v);
+        //Vector v = new Vector();
+        getVPlayers().add(jogador);
+        re.setPlayers(getVPlayers());
         
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
@@ -456,8 +458,10 @@ implements ChatPanelContainer {
      */
     protected void fireChatMessageSent(Player jogador, String htmlMessage) {
         Iterator iter = roomListeners.listIterator();
+        int i =0;
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
+            System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());            
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }

@@ -127,6 +127,10 @@ public class RoomClient extends Room
         }
     } // end fireTableJoinRequested        /** lock-begin */
     
+    public void createTableRequest() {
+        fireTableCreateRequested();
+    }
+    
     /**
      * <p>
      * Informa a todos los <i>listeners</i> registrados que se esta intentando
