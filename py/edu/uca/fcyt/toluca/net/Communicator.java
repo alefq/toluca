@@ -400,6 +400,14 @@ implements RoomListener,TrucoListener,TableListener
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	public String toString() {
+		try {
+			return getTrucoPlayer().getName()+ " hash code:  " +hashCode();			
+		}catch (NullPointerException e) {
+			return " Truco Player NULO" ;
+		}
+
+	}	
 
 }

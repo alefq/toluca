@@ -549,7 +549,6 @@ implements ChatPanelContainer, TableListener {
                     .getName());
 
             try {
-
                 ltmp.loginCompleted(re);
             } catch (NullPointerException e) {
                 logger.debug("No hay listener adherido");

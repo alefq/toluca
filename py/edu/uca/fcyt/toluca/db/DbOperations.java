@@ -210,9 +210,12 @@ public class DbOperations {
     }
 
     public TrucoPlayer getPlayer(final java.lang.String uname) {
-        Random rand = new Random();
 
-        return new TrucoPlayer(uname, rand.nextInt());
+    	
+    	//Random rand = new Random();
+    	// TODO: poner el ránking real.
+        return new TrucoPlayer(uname, 1200);
+        //return new TrucoPlayer(uname, rand.nextInt());
     }
 
     // end authenticatePlayer
