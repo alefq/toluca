@@ -212,6 +212,7 @@ class TrListener implements TrucoListener
 		Card[] cards;
 		int sign;
 
+                new Exception("dealing cards...").printStackTrace(System.out);
 		System.out.println("Cards deal for player " + getAssociatedPlayer().getName());
 		
 		cards = event.getCards();
@@ -235,6 +236,7 @@ class TrListener implements TrucoListener
 		int dealPos, turnPos;
 		CardManager cManager;
 		
+                //new Exception("player: " + getAssociatedPlayer().getName()).printStackTrace(System.out);
 		System.out.println("New hand started for player " + getAssociatedPlayer().getName());
 		
 		endOfHand = false;		

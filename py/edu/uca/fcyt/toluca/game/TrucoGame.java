@@ -84,8 +84,10 @@ public class TrucoGame extends Game {
      */    
     public void dealtCards(TrucoPlayer tp, TrucoCard[] card){//reparte las cartas a los jugadores
         TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,(byte)0,card);
-        for (int i=0; i<listenerlist.size(); i++)
+        for (int i=0; i<listenerlist.size(); i++){
+            System.out.println("ejecutando cardsDEal de:" + getClass().getName());
             ((TrucoListener)listenerlist.get(i)).cardsDeal(event);
+        }
     }
         /** Retorna el Equipo que es Numero i.
      * @param i numero de Team (o 0 o 1)

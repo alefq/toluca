@@ -34,7 +34,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     /** Holds value of property tableNumber. */
     private int tableNumber;
     private TrucoGame tGame;
-        
+    
     private static int nextTableNumber = 0;
     
     /** Creates a new instance of TableServer */
@@ -66,20 +66,20 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     }
     
     public void startGame() {
-
-		//TrucoGame tGame;
-		TrucoTeam tTeams[];
-       
-		System.out.println("Requesting game start...");
-		tTeams = createTeams();
-
-		// se crea el TrucoGame con los teams creados
-		tGame = new TrucoGame(tTeams[0], tTeams[1]);
-		tGame.addTrucoListener(this);
-         
+        
+        //TrucoGame tGame;
+        TrucoTeam tTeams[];
+        
+        System.out.println("Requesting game start...");
+        tTeams = createTeams();
+        
+        // se crea el TrucoGame con los teams creados
+        tGame = new TrucoGame(tTeams[0], tTeams[1]);
+        tGame.addTrucoListener(this);
+        
         fireGameStarted(
-            new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
-            );
+        new TableEvent(TableEvent.EVENT_gameStarted, this, null, -1)
+        );
         
     }
     
@@ -165,13 +165,13 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     }
     protected void fireGameStarted(TableEvent te) {
         Iterator iter = tableListeners.listIterator();
-
+        
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
             System.out.println("VOY A DISPARAR UN GAME STARTED EN EL SERVA.");
             ltmp.gameStarted(te);
         }
-    }    
+    }
     
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
         Iterator iter = tableListeners.listIterator();
@@ -244,6 +244,6 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     }
     
     public TrucoGame getTrucoGame() {
-    	return tGame;
+        return tGame;
     }
 }
