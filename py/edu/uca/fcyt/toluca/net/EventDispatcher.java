@@ -70,33 +70,42 @@ public abstract class EventDispatcher {
 		System.out.println(" se resive un trucoEvent de tipo "+event.getType());
 		switch(event.getType())
 		{
-			case TrucoEvent.CANTO_ENVIDO:break;
-			case TrucoEvent.CANTO_FLOR:break;
+			case TrucoEvent.CANTO_ENVIDO:cantarTanto(event);break;
+			
+			case TrucoEvent.CANTO_FLOR:canto(event);break;
 			case TrucoEvent.CARTAS_REPARTIDAS:break;
-			case TrucoEvent.CERRARSE:break;
-			case TrucoEvent.CON_FLOR_ME_ACHICO:break;
-			case TrucoEvent.CONTRA_FLOR:break;
-			case TrucoEvent.CONTRA_FLOR_AL_RESTO:break;
+			case TrucoEvent.CERRARSE:canto(event);break;
+			case TrucoEvent.CON_FLOR_ME_ACHICO:canto(event);break;
+			case TrucoEvent.CONTRA_FLOR:canto(event);break;
+			case TrucoEvent.CONTRA_FLOR_AL_RESTO:canto(event);break;
 			case TrucoEvent.ENVIAR_CARTAS:receiveCards(event);break;
-			case TrucoEvent.ENVIDO:break;
-			case TrucoEvent.FALTA_ENVIDO:break;
+			case TrucoEvent.ENVIDO:canto(event);break;
+			case TrucoEvent.FALTA_ENVIDO:canto(event);break;
 			case TrucoEvent.FIN_DE_JUEGO:infoGame(event);break;
 			case TrucoEvent.FIN_DE_MANO:infoGame(event);break;
+			
 			case TrucoEvent.FIN_DE_RONDA:break;
-			case TrucoEvent.FLOR:break;
+			
+			case TrucoEvent.FLOR:canto(event);break;
 			case TrucoEvent.INICIO_DE_JUEGO:infoGame(event);break;
 			case TrucoEvent.INICIO_DE_MANO:infoGame(event);break;
 			case TrucoEvent.JUGAR_CARTA:tirarCarta(event);break;
-			case TrucoEvent.ME_VOY_AL_MAZO:break;
-			case TrucoEvent.NO_QUIERO:break;
-			case TrucoEvent.PASO_ENVIDO:break;
-			case TrucoEvent.PASO_FLOR:break;
+			case TrucoEvent.ME_VOY_AL_MAZO:canto(event);break;
+			case TrucoEvent.NO_QUIERO:canto(event);break;
+			case TrucoEvent.PASO_ENVIDO:canto(event);break;
+			case TrucoEvent.PASO_FLOR:canto(event);break;
+			
 			case TrucoEvent.PLAYER_CONFIRMADO:break;
-			case TrucoEvent.QUIERO:break;
-			case TrucoEvent.REAL_ENVIDO:break;
-			case TrucoEvent.RETRUCO:break;
+			
+			case TrucoEvent.QUIERO:canto(event);break;
+			case TrucoEvent.REAL_ENVIDO:canto(event);break;
+			case TrucoEvent.RETRUCO:canto(event);break;
+		
 			case TrucoEvent.SIN_MENSAJES:break;
-			case TrucoEvent.TRUCO:break;
+			
+			case TrucoEvent.TRUCO:canto(event);break;
+		
+			//los turnos no se envian segun lo que dice jrey
 			case TrucoEvent.TURNO_CANTAR_ENVIDO:break;
 			case TrucoEvent.TURNO_CANTAR_FLOR:break;
 			case TrucoEvent.TURNO_JUGAR_CARTA:break;
@@ -108,7 +117,8 @@ public abstract class EventDispatcher {
 			case TrucoEvent.TURNO_RESPONDER_RETRUCO:break;
 			case TrucoEvent.TURNO_RESPONDER_TRUCO:break;
 			case TrucoEvent.TURNO_RESPONDER_VALECUATRO:break;
-			case TrucoEvent.VALE_CUATRO:break;
+			
+			case TrucoEvent.VALE_CUATRO:canto(event);break;
 			
 			
 		}
@@ -208,4 +218,6 @@ public abstract class EventDispatcher {
 	public abstract void play(TrucoPlay event);
 	public abstract void playerConfirmado(TrucoPlay event);
 	
+	public abstract void canto(TrucoEvent event);
+	public abstract void cantarTanto(TrucoEvent event);
 }

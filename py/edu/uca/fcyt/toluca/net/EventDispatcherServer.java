@@ -267,7 +267,8 @@ public class EventDispatcherServer extends EventDispatcher{
 		logger.debug("SE recibe un play de "+event.getPlayer().getName());
 		logger.debug("TAbla : "+event.getTableNumber());
 		logger.debug("type : "+event.getType());
-		logger.debug("carta Palo: "+event.getCard().getKind() +" val "+event.getCard().getValue());
+		if(event.getCard()!=null)
+			logger.debug("carta Palo: "+event.getCard().getKind() +" val "+event.getCard().getValue());
 		logger.debug("value > "+event.getValue());
 		
 		TableServer tableServer=room.getTableServer(event.getTableNumber());
@@ -294,5 +295,19 @@ public class EventDispatcherServer extends EventDispatcher{
 		TrucoPlayer playerCliente=event.getPlayer();
 		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
 		trucoGame.startHand(playerServidor);
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#canto(py.edu.uca.fcyt.toluca.event.TrucoEvent)
+	 */
+	public void canto(TrucoEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#cantarTanto(py.edu.uca.fcyt.toluca.event.TrucoEvent)
+	 */
+	public void cantarTanto(TrucoEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -15,7 +15,7 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
-import py.edu.uca.fcyt.toluca.net.EventDispatcherServer;
+
 /**
  *
  * @author  PABLO JAVIER

@@ -216,12 +216,15 @@ public class Table implements
 	public boolean removePlayer(TrucoPlayer player)
 	{
 		boolean ret;
-		
+		System.out.println(getClass().getName()+" removePlayer: ");
 		ret = players.remove(player);
+		System.out.println(getClass().getName()+" removePlayer: ret = "+ret);
 		jtTable.jpWatchers.removePlayer(player.getName());
 		
 		if (ret && tGame != null && pManager.isSitted(player))
 		{
+			System.out.println(getClass().getName()+" removePlayer: tgame no es nulo y player sentado");
+			System.out.println(getClass().getName()+" removePlayer: deberia de mostrar el chat message");
 			jtTable.jpChat.showChatMessage
 			(
 			new TrucoPlayer("[ System ]"),

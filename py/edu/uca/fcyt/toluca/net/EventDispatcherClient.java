@@ -314,7 +314,12 @@ public class EventDispatcherClient extends EventDispatcher{
 		Table table=room.getTable(tableServer.getTableNumber());
 		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
 		
-		table.standPlayer(chair);
+		
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTrucoGame();
+		
+		if(trucoGameClient==null)//si no hay juego nomas se levanta, si ya hay juego va a resivir solamente el playerkick
+			table.standPlayer(chair);
+		
 		((RoomClient)room).setStandPlayer(chair,table);
 		
 	}
@@ -387,6 +392,7 @@ public class EventDispatcherClient extends EventDispatcher{
 //			System.out.println("SE EMPIEZA UN JUEGO");
 //		if(event.getType()==TrucoEvent.INICIO_DE_MANO)
 //			System.out.println("SE EMPIEZA LA MANO");
+		
 		
 		Table table=room.getTable(event.getTableNumber());
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
@@ -487,6 +493,69 @@ public class EventDispatcherClient extends EventDispatcher{
 	public void playerConfirmado(TrucoPlay event) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#canto(py.edu.uca.fcyt.toluca.event.TrucoEvent)
+	 */
+	public void canto(TrucoEvent event) {
+
+		Table table=room.getTable(event.getTableNumber());
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		
+		TrucoPlayer playerServer=event.getPlayer();
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		
+		
+//		System.out.println(" **********************llego un Canto************************");
+//		System.out.println("TrucoPlayer (el del host): "+trucoPlayer);
+//		System.out.println(" Player cliente (el del evento): "+playerClient);
+//		System.out.println(" type : "+event.getType());
+//		System.out.println("hand "+event.getHand());
+//		System.out.println("*************************************************************");
+		
+		
+		if (trucoPlayer!=playerClient)
+		{
+		//	System.out.println(" se le hace un play porque los players son diferentes");
+			TrucoEvent ev = new TrucoEvent(trucoGameClient,event.getHand(),playerClient,event.getType());
+			TrucoPlay tp = ev.toTrucoPlay();
+			trucoGameClient.play(tp);
+		}
+		
+		trucoGameClient.playResponse(playerClient,event.getType());
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#cantarTanto(py.edu.uca.fcyt.toluca.event.TrucoEvent)
+	 */
+	public void cantarTanto(TrucoEvent event) {
+
+		Table table=room.getTable(event.getTableNumber());
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		
+		TrucoPlayer playerServer=event.getPlayer();
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		
+		
+//		System.out.println(" **********************llego un Cantar Tanto************************");
+//		System.out.println("TrucoPlayer (el del host): "+trucoPlayer);
+//		System.out.println(" Player cliente (el del evento): "+playerClient);
+//		System.out.println(" type : "+event.getType());
+//		System.out.println("hand "+event.getHand());
+//		System.out.println(" value "+event.getValue());
+//		System.out.println("*************************************************************");
+		
+		
+		if (trucoPlayer!=playerClient)
+		{
+			//System.out.println(" se le hace un play porque los players son diferentes");
+			TrucoEvent ev = new TrucoEvent(trucoGameClient ,event.getHand(),playerClient,event.getType(),event.getValue());
+			TrucoPlay tp = ev.toTrucoPlay();
+			trucoGameClient.play(tp);
+		}
+		
+		trucoGameClient.playResponse(playerClient,event.getType(),event.getValue());
 	}
 
 }
