@@ -30,7 +30,7 @@ implements RoomListener, TableListener,TrucoListener
 	int current=0;
 	
 	/*
-	 * <p>Player del communicator</p>
+	 * <p>Player del communicator</p> EX SRICCO MORGUE
 	 */
 	TrucoPlayer player;
 	
