@@ -243,7 +243,7 @@ public class CommunicatorServer extends Communicator{
 	
 	public String toString() {
 		try {
-			return getTrucoPlayer().getName() ;			
+			return getTrucoPlayer().getName() + ": "+  getSocket().toString();			
 		}catch (NullPointerException e) {
 			return " Truco Player NULO" ;
 		}
