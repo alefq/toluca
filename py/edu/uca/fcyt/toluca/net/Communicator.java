@@ -403,9 +403,9 @@ implements RoomListener,TrucoListener,TableListener
 
 	public String toString() {
 		try {
-			return getTrucoPlayer().getName()+ " hash code:  " +hashCode() + " socket " + getSocket();			
+			return getTrucoPlayer().getName()+ " hash code:  " + hashCode() + " socket " + getSocket();			
 		}catch (NullPointerException e) {
-			return " Truco Player NULO" ;
+			return getClass().getName() + " Truco Player NULO" ;
 		}
 
 	}	

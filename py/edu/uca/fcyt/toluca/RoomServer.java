@@ -905,7 +905,11 @@ implements ChatPanelContainer, TableListener {
 		int i = 0;
 		System.out.println("Toluca:");
 		while (it.hasNext()) {
-			System.out.println("element #" + (i++) + " -> " + (it.next()));
+			Object o = it.next();
+			if (o instanceof TableServer)
+				System.out.println("element #" + (i++) + " -> " + ((TableServer) o).toString2());
+			else
+				System.out.println("element #" + (i++) + " -> " + (o));				
 		}
 		System.out.println("terminado");
 		

@@ -236,9 +236,10 @@ public class TrucoGameClient extends TrucoGame
 		TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,TrucoEvent.FIN_DE_MANO);
 		detalleDelPuntaje = trucoHand.getPointsDetail();
-		for(int i=0; i<listenerlist.size();i++)
+		
+		for(int i=0; i< getListaListeners().size();i++)
 		{
-			((TrucoListener)(listenerlist.get(i))).endOfHand(event);
+			((TrucoListener)(getListaListeners().get(i))).endOfHand(event);
 		}
 		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "------------------------------------------------------------------------");
 		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "--------------------------------------Puntajes--------------------------");

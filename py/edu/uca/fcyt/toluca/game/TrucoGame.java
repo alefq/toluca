@@ -92,7 +92,9 @@ public class TrucoGame extends Game
 	public void addTrucoListener(TrucoListener tl)
 	{
 		listenerlist.add(tl);
-		System.out.println("Se agrega un truco listener al trucogame");
+		System.out.println("Se agrega un truco listener al trucogame ");
+	//	new Throwable().printStackTrace();
+		
 	}
 	/** configurar los equipos que jugar�n el TrucoGame.
 	 * @param team_1 Equipo 1 que jugar� el TrucoGame.
@@ -533,17 +535,23 @@ public class TrucoGame extends Game
 	 * @param tptmp
 	 */
 	public void removeTrucoListener(TrucoPlayer tptmp) {
-		System.out.println("Se elimina un truco listener del trucogame, vamos a eliminar a:" + tptmp.getName());
-		for(int i=0; i<listenerlist.size();i++)
-		{
-			TrucoListener comm = ((TrucoListener)(listenerlist.get(i)));
-			if (comm.getAssociatedPlayer().getName() == tptmp.getName()) {
-				listenerlist.remove(i);
-				System.out.println("Eliminamos el listener del player " + comm.getAssociatedPlayer().getName());
+		try {
+			System.out.println("Se elimina un truco listener del trucogame, vamos a eliminar a:" + tptmp.getName());
+			for(int i=0; i<listenerlist.size();i++)
+			{
+				TrucoListener comm = ((TrucoListener)(listenerlist.get(i)));
+				if (comm.getAssociatedPlayer().getName() == tptmp.getName()) {
+					listenerlist.remove(i);
+					System.out.println("Eliminamos el listener del player " + comm.getAssociatedPlayer().getName());
+				}
+	
 			}
-
+		} catch (NullPointerException npe) {
+			System.out.println("No se pudo eliminar el listener " + tptmp.getName() );
 		}
 		
-		
+	}
+	public LinkedList getListaListeners() {
+		return listenerlist;
 	}
 }

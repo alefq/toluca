@@ -210,7 +210,8 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     }
     
     protected void fireGameStarted(TableEvent te) {
-        Iterator iter = tableListeners.listIterator();
+
+    	Iterator iter = tableListeners.listIterator();
         
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
@@ -329,9 +330,9 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		}
 		getPlayers().remove(tptmp);
 		
-		//TODO: Agregado por aa, quito el jugador de entre los listeners del trucogame
-		TrucoGame tg = getTrucoGame();
-		tg.removeTrucoListener(tptmp);
+//TODO: Agregado por aa, quito el jugador de entre los listeners del trucogame
+//		TrucoGame tg = getTrucoGame();
+//		tg.removeTrucoListener(tptmp);
 		
 		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);
 		firePlayerKicked(te);
@@ -395,4 +396,21 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		
 	}
 	
+	public String toString2() {
+		String ret = new String();
+		
+		TrucoGame tg = getTrucoGame();
+		try {
+			Iterator it = tg.getListaListeners().iterator();
+			
+			while (it.hasNext()) {
+				Object o = it.next();
+				ret += (o.equals(this)) ? "\n\tTableServer" : "\n\t" + o.toString();
+			}
+			return ret;
+		} catch (NullPointerException npe) {
+			return super.toString()+ " Sin Juego asociado";
+		}
+		
+	}
 }

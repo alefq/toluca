@@ -128,17 +128,17 @@ public class CommunicatorServer extends Communicator{
 		
 	}
 	public void gameStarted(TableEvent event) {
+		
 		TrucoGame trucoGame=event.getTableServer().getTrucoGame();
 		TableServer tableServer=event.getTableServer();
 		trucoGame.setTableNumber(tableServer.getTableNumber());
-		trucoGame.addTrucoListener(this);
-		
-		if(tableServer.getPlayers().contains(getTrucoPlayer()))//envia solamente si esta en la tabla
+		/*
+		 * Envia solamente si el jugador esta en la mesa 
+		 */
+		if(tableServer.getPlayers().contains(getTrucoPlayer())) {  
+			trucoGame.addTrucoListener(this);
 			super.sendXmlPackage(event);
-		
-		
-		
-		
+		}
 	}
 	public void signSent(TableEvent event) {
 		super.sendXmlPackage(event);
