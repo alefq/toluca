@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -7,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -21,6 +23,8 @@ import py.edu.uca.fcyt.toluca.game.TrucoTeam;
  * @author  PABLO JAVIER
  */
 public class TableServer  implements TrucoListener, ChatPanelContainer {
+	
+	private RoomServer roomServer;
 	static Logger logger = Logger.getLogger(TableServer.class.getName());
     /** Holds value of property host. */
     private TrucoPlayer host;
@@ -149,6 +153,18 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     	//con el PlayerManager viejo van a seguir sentados en el mismo lugar
     	//esto caga porque no se pueden cambiar de lugar nada mas
     	//TODO Ver la opcion para que los player se puedan parar
+    	
+    	TrucoGame tg = event.getGame();
+    	TrucoTeam team1 = tg.getTeams()[0];
+    	TrucoTeam team2 = tg.getTeams()[1];
+
+    	try {
+			getRoomServer().getDbOperations().updateGameData(team1, team2, tg.getTeamGanador());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
 		tGame = null;
     }
     
@@ -412,5 +428,12 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 			return super.toString()+ " Sin Juego asociado";
 		}
 		
+	}
+	
+	public RoomServer getRoomServer() {
+		return roomServer;
+	}
+	public void setRoomServer(RoomServer roomServer) {
+		this.roomServer = roomServer;
 	}
 }

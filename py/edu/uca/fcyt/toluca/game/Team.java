@@ -5,6 +5,7 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /** Clase que representa a un Equipo de cualquier juego.
@@ -22,7 +23,7 @@ public class Team {
     protected String name;
     /** Lista de los jugadores que tiene el Equipo.
      */    
-    protected LinkedList playersList = new LinkedList();
+    protected ArrayList playersList = new ArrayList();
     /** Contructor del Equipo.
      */    
     public Team() { //constructor
@@ -93,5 +94,9 @@ public class Team {
      */    
     public void setPoints(int pts){
         points = pts;
+    }
+    
+    public ArrayList getPlayers() {
+    	return playersList;
     }
 }

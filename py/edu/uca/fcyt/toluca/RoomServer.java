@@ -124,7 +124,7 @@ implements ChatPanelContainer, TableListener {
         logger.debug("Dentor del create table del room server: "
                 + player.getName());
         TableServer tableServer = new TableServer(player);
-
+        tableServer.setRoomServer(this);
         //tableServer.addPlayer(player);Comentado porque en el constructor del
         // TableServer
         //ya se esta haciendo un addPlayer, osea esto esta alpedo

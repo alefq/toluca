@@ -551,4 +551,16 @@ public class TrucoGame extends Game
 	public LinkedList getListaListeners() {
 		return listenerlist;
 	}
+	
+	public TrucoTeam[] getTeams() {
+		return teams;
+	}
+	/**
+	 * 
+	 */
+	public int getTeamGanador() {
+		//TODO: Ver que el partido termine cuando alguno de los dos llega a 30
+		return points[0] > points[1] ? 0 : 1;
+		
+	}
 }

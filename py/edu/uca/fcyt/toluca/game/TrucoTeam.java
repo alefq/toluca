@@ -50,8 +50,9 @@ public class TrucoTeam extends Team{
     /** Adherir nuevo TrucoPlayer al Equipo.
      * @param tPl TrucoPlayer a ser adherido a la lista de TrucoPlayers del equipo.
      */    
+    
     public void addPlayer (TrucoPlayer tPl){
-        super.addPlayer(tPl);        
+        super.addPlayer(tPl);   
     }
     public TrucoPlayer getPlayer (String aname){
 		for (int i=0; i<playersList.size(); i++){

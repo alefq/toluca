@@ -4,17 +4,23 @@ package py.edu.uca.fcyt.toluca.db;
  *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.List;
 import java.util.Properties;
 
 import py.edu.uca.fcyt.game.Game;
 import py.edu.uca.fcyt.toluca.LoginFailedException;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 
 /**
  * <p>
@@ -273,6 +279,98 @@ public class DbOperations {
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
 		conn = DriverManager.getConnection(	dburl,	username,	password);
 		
+	}
+
+	/**
+	 * @param team1
+	 * @param team2
+	 * @param teamGanador
+	 * @throws SQLException
+	 */
+	public void updateGameData(TrucoTeam team1, TrucoTeam team2, int teamGanador) throws SQLException {
+		int numeroPartida = nuevaPartida(teamGanador);
+		System.out.println("Partida: "+numeroPartida);
+		nuevaPartidaDetalle(team1, team2, numeroPartida);
+		calcularNuevoRating(numeroPartida);
+	}
+
+	/**
+	 * @param numeroPartida
+	 * @throws SQLException
+	 */
+	private void calcularNuevoRating(int numeroPartida) throws SQLException {
+
+		String procedure = "{call calcularating ?  }";		
+		CallableStatement cs = conn.prepareCall(procedure);
+		cs.setInt(1, numeroPartida);
+		cs.execute();
+		cs.close();
+		
+		
+	}
+
+	/**
+	 * @param team1
+	 * @param team2
+	 * @param teamGanador
+	 * @throws SQLException
+	 */
+	private void nuevaPartidaDetalle(TrucoTeam team1, TrucoTeam team2, int partida) throws SQLException {
+		List lp1 = team1.getPlayers();
+		List lp2 = team2.getPlayers();
+		
+		final String sqlInsert =
+		" INSERT INTO PARTIDAS_DETALLE" +
+		" (JUGADOR,PARTIDA,EQUIPO,MARCANTE)" +
+		" VALUES (?, ?, ?, ?)";
+		
+		PreparedStatement insertStmt = conn.prepareStatement(sqlInsert);
+
+		for (int i = 0; i < lp1.size() ; i++) {
+			TrucoPlayer tp1 = (TrucoPlayer)lp1.get(i);
+			TrucoPlayer tp2 = (TrucoPlayer)lp2.get(i);
+			
+			insertStmt.setString(1, tp1.getName());
+			insertStmt.setInt(2, partida);
+			insertStmt.setInt(3, 1);
+			insertStmt.setString(4, tp1.getName());
+			
+			insertStmt.executeUpdate();
+
+			/*Hacemos lo mismo para el jugador i del equipo 2*/
+			insertStmt.setString(1, tp2.getName());
+			insertStmt.setInt(2, partida);
+			insertStmt.setInt(3, 2);
+			insertStmt.setString(4, tp2.getName());
+			
+			insertStmt.executeUpdate();
+			
+		}
+		insertStmt.close();
+	}
+
+	/**
+	 * @param teamGanador
+	 * @return
+	 * @throws SQLException
+	 */
+	private int nuevaPartida(int teamGanador) throws SQLException {
+	
+		String procedure = "{call GET_PARTIDA_ID returning_values ? }";		
+		CallableStatement cs = conn.prepareCall(procedure);
+		cs.registerOutParameter(1, Types.INTEGER);
+		cs.execute();
+		int partidaNro = cs.getInt(1);
+		cs.close();
+			
+		String insertSql = "INSERT INTO PARTIDAS (PARTIDA, GANADOR) VALUES (?, ?);";
+		PreparedStatement ps = conn.prepareStatement(insertSql);
+		ps.setInt(1, partidaNro);
+		ps.setInt(2, teamGanador);
+		ps.executeUpdate();
+		
+		return partidaNro;
+
 	}
 
 
