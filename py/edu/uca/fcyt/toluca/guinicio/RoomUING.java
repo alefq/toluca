@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/04/02 21:05:13 $
- * @version $Revision: 1.31 $ 
+ * Last modified: $Date: 2005/04/05 12:24:03 $
+ * @version $Revision: 1.32 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -12,18 +12,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
+import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.text.html.HTMLEditorKit;
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
@@ -39,7 +44,7 @@ public class RoomUING extends JApplet {
     //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
     //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20050401-1902";
+    public static final String VERSION = "20050404-2115";
 
     public static final String CLAVE_LOGIN = "claveLogin";
 
@@ -86,11 +91,21 @@ public class RoomUING extends JApplet {
 
     private JPanel jContenPane;
 
-    private JTextArea jTextArea = null;
+    private JEditorPane jEPanuncios = null;
 
-	private JPanel jPanel = null;
-	private ConexionTestPanel conexionTestPanel = null;
-	private JPanel jPanel1 = null;
+    private JPanel jPanel = null;
+
+    private ConexionTestPanel conexionTestPanel = null;
+
+    private JPanel jPanel1 = null;
+
+    private static final String URL_ANUNCIOS;
+
+    static {
+        //TODO Deberia cargarse de un .properties
+        URL_ANUNCIOS = "http://www.truco.com.py/html/anuncios.html";
+    }
+
     /**
      * This method initializes panelPrincipal
      * 
@@ -339,61 +354,70 @@ public class RoomUING extends JApplet {
     }
 
     /**
-     * This method initializes jTextArea
+     * This method initializes jEPanuncios
      * 
      * @return javax.swing.JTextArea
      */
-    public JTextArea getJTextArea() {
-        if (jTextArea == null) {
-            jTextArea = new JTextArea();
-            jTextArea.setText("Aqui va a ir los avisos y demas yerbas");
+    public JEditorPane getJEPanuncios() {
+        if (jEPanuncios == null) {
+            try {
+                jEPanuncios = new JEditorPane(URL_ANUNCIOS);
+                //jEPanuncios.setEditorKit(new HTMLEditorKit());
+            } catch (IOException e) {
+                TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
+                        "error cargando anuncios");
+            }            
+
         }
-        return jTextArea;
+        return jEPanuncios;
     }
 
-	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */    
-	private JPanel getJPanel() {
-		if (jPanel == null) {
-			jPanel = new JPanel();
-			jPanel.setLayout(new BorderLayout());
-			jPanel.add(getScrollRanking(), java.awt.BorderLayout.CENTER);
-			jPanel.add(getJPanel1(), java.awt.BorderLayout.SOUTH);
-		}
-		return jPanel;
-	}
-	/**
-	 * This method initializes conexionTestPanel	
-	 * 	
-	 * @return py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel	
-	 */    
-	private ConexionTestPanel getConexionTestPanel() {
-		if (conexionTestPanel == null) {
-			conexionTestPanel = new ConexionTestPanel();
-		}
-		return conexionTestPanel;
-	}
-	/**
-	 * This method initializes jPanel1	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */    
-	private JPanel getJPanel1() {
-		if (jPanel1 == null) {
-			jPanel1 = new JPanel();
-			jPanel1.setLayout(new BorderLayout());
-			jPanel1.add(getConexionTestPanel(), java.awt.BorderLayout.CENTER);
-			jPanel1.add(Box.createRigidArea(new Dimension(margen, 0)),
+    /**
+     * This method initializes jPanel
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJPanel() {
+        if (jPanel == null) {
+            jPanel = new JPanel();
+            jPanel.setLayout(new BorderLayout());
+            jPanel.add(getScrollRanking(), java.awt.BorderLayout.CENTER);
+            jPanel.add(getJPanel1(), java.awt.BorderLayout.SOUTH);
+        }
+        return jPanel;
+    }
+
+    /**
+     * This method initializes conexionTestPanel
+     * 
+     * @return py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel
+     */
+    private ConexionTestPanel getConexionTestPanel() {
+        if (conexionTestPanel == null) {
+            conexionTestPanel = new ConexionTestPanel();
+        }
+        return conexionTestPanel;
+    }
+
+    /**
+     * This method initializes jPanel1
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJPanel1() {
+        if (jPanel1 == null) {
+            jPanel1 = new JPanel();
+            jPanel1.setLayout(new BorderLayout());
+            jPanel1.add(getConexionTestPanel(), java.awt.BorderLayout.CENTER);
+            jPanel1.add(Box.createRigidArea(new Dimension(margen, 0)),
                     BorderLayout.WEST);
-			jPanel1.setOpaque(true);
-			jPanel1.setBackground(RoomUING.COLOR_DE_FONDO);
-		}
-		return jPanel1;
-	}
-       public static void main(String[] args) {
+            jPanel1.setOpaque(true);
+            jPanel1.setBackground(RoomUING.COLOR_DE_FONDO);
+        }
+        return jPanel1;
+    }
+
+    public static void main(String[] args) {
     }
 
     /**
@@ -420,9 +444,9 @@ public class RoomUING extends JApplet {
         this.setContentPane(getCcontenPane());
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                
-                    getChatPanel().getJtInput().requestFocus();
-                
+
+                getChatPanel().getJtInput().requestFocus();
+
             }
         });
     }
@@ -435,7 +459,7 @@ public class RoomUING extends JApplet {
             jContenPane = new JPanel();
             jContenPane.setLayout(new BorderLayout());
             jContenPane.add(getLoginPanel(), BorderLayout.NORTH);
-            jContenPane.add(getJTextArea(), java.awt.BorderLayout.CENTER);
+            jContenPane.add(getJEPanuncios(), java.awt.BorderLayout.CENTER);
         }
         return jContenPane;
     }
@@ -560,7 +584,7 @@ public class RoomUING extends JApplet {
     }
 
     public void setOwner(TrucoPlayer trucoPlayer) {
-    	
+
         panelTitle.setNombre(trucoPlayer.getName());
     }
 
@@ -594,12 +618,12 @@ public class RoomUING extends JApplet {
         setOwner(player);
         validateTree();
     }
-    public void actualzarRanking(TrucoPlayer trucoPlayer)
-    {
-    	tableRanking.actualizarPuntaje(trucoPlayer);
+
+    public void actualzarRanking(TrucoPlayer trucoPlayer) {
+        tableRanking.actualizarPuntaje(trucoPlayer);
     }
-    public void actualizarTestConexion(long ms)
-    {
+
+    public void actualizarTestConexion(long ms) {
         getConexionTestPanel().actualizar(ms);
     }
 

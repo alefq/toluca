@@ -84,7 +84,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
             rui.getLoginPanel().getJLestado().setText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
             rui.getLoginPanel().getJLestado().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
             rui.getLoginPanel().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
-            rui.getJTextArea().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
+            rui.getJEPanuncios().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
             e.printStackTrace(System.out);
         }
         //init();

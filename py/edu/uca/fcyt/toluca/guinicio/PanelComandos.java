@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 
 /**
  * @author dani
@@ -49,29 +50,13 @@ public class PanelComandos extends JPanel {
         initComponents();
     }
 
+    /**
+     * @deprecated Se usa como bean ahora
+     * */
     public PanelComandos(ImageIcon iconJugar, ImageIcon control,
             ImageIcon salir, ImageIcon puntaje) {
 
-        botonJugar = new JButton(iconJugar);
-
-        botonUnirse = new JButton(iconJugar);
-        botonSalir = new JButton(salir);
-        botonAyuda = new JButton(control);
-        this.puntaje = new JLabel(puntaje);
-        botonJugar.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonAyuda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                botonAyudaActionPerformed(e);
-            }
-        });
-        botonSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                botonSalirActionPerformed(e);
-            }
-        });
+       
         setPanel();
     }
 
@@ -80,9 +65,10 @@ public class PanelComandos extends JPanel {
      */
     protected void botonAyudaActionPerformed(ActionEvent e) {
         try {        	
-            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "_blank");
+            TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "A mostrar la ayuda...");
+            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "_blank");            
         } catch (MalformedURLException e1) {
-            System.out.println(e1.getMessage());
+           TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, e1.getMessage());           
         }        
     }
 
@@ -191,6 +177,21 @@ public class PanelComandos extends JPanel {
                 botonSalirActionPerformed(e);
             }
         });
+        
+                
+        botonAyuda.setToolTipText("Ayuda sobre las reglas y el uso en general");
+        botonJugar.setToolTipText("Crea una nueva mesa para iniciar un juego");
+        botonUnirse.setToolTipText("Seleccione una mesa de la lista de la derecha");
+        botonSalir.setToolTipText("Sale del servidor y cierra la ventana");
+        botonJugar.setBackground(PanelComandos.COLOR_DE_FONDO);
+        botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
+        botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
+        botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
+        botonAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                botonAyudaActionPerformed(e);
+            }
+        });               
         setPanel();
     }
 
