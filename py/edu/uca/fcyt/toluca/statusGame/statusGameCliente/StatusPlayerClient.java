@@ -1,4 +1,4 @@
-package py.edu.uca.fcyt.toluca.statusGame;
+package py.edu.uca.fcyt.toluca.statusGame.statusGameCliente;
 
 import py.edu.uca.fcyt.toluca.game.*;
 
@@ -6,7 +6,7 @@ import py.edu.uca.fcyt.toluca.game.*;
 /** Guarda y controla el estado de un jugador en la mano
  */
 //package py.edu.uca.fcyt.toluca;
-public class StatusPlayer{
+public class StatusPlayerClient{
     private TrucoCard[] cartas;
     private boolean primeraCarta;//Guarda verdadero si el jugador jugo la primera carta
     private int cCartas; //Indica la cantidad de cartas que tiene el jugador
@@ -25,7 +25,7 @@ public class StatusPlayer{
 
     /** Constructor por omision, crea una nueva instancia de StatusPlayer
      */    
-    public StatusPlayer(){
+    public StatusPlayerClient(){
         seCerro=primeraCarta=envido=flor=cantoEnvido=cantoFlor=false;
         cartas=new TrucoCard[3];
         cCartas=0;
@@ -59,7 +59,7 @@ public class StatusPlayer{
      * @param Cual Es la carta que se recibe
      */    
     public void agregarCarta(TrucoCard Cual){
-        //new Exception("repartija de cartas").printStackTrace(System.out);
+        new Exception("repartija de cartas").printStackTrace(System.out);
         cartas[cCartas]=Cual;
         cCartas++;
     }

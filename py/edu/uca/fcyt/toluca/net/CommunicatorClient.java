@@ -612,16 +612,28 @@ public class CommunicatorClient extends Communicator {
     }
     
     public void turn(TrucoEvent event) {
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
+	
     }
     public void endOfHand(TrucoEvent event) {
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void cardsDeal(TrucoEvent event) {
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void handStarted(TrucoEvent event) {
+	//Aca llega cuando el TrucoGame avisa que empezo la mano
+	//pero la primera vez viene de un evento que se inicio en el mismo CommunicatorClient
+	//posiblemente ya no hace falta volver a disparar este evento, puesto que eso se hace 
+	//del lado del serva ahora
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void gameStarted(TrucoEvent event) {
+	//Aca llega cuando Table avisa que se inicio correctamente el juego 10.08.2003
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void endOfGame(TrucoEvent event) {
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     
     public void play(TrucoPlay tp) {
@@ -920,6 +932,8 @@ public class CommunicatorClient extends Communicator {
      *
      */
     public void gameStartRequested() {
+	
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     
     public void gameStartRequest(TableEvent te) {
@@ -1054,18 +1068,27 @@ public class CommunicatorClient extends Communicator {
         super.sendXmlPackage(doc);
     }
     public void gameFinished(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
     public void gameStarted(TableEvent event) {
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     
     public void playerKickRequest(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
     public void playerKicked(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
     public void playerSit(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
     public void playerSitRequest(TableEvent event) {
@@ -1080,16 +1103,24 @@ public class CommunicatorClient extends Communicator {
     }
     
     public void showPlayed(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
     public void signSendRequest(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
     public void playerJoined(TrucoPlayer player) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
         
     }
     
     public void signSent(TableEvent event) {
+		new Exception("Nada implementado aun :-(   ").printStackTrace();
+
     }
     
         /*  public static void main(String[] args)

@@ -26,7 +26,8 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
             numberOfPlayers = teams[0].getNumberOfPlayers()*2;
             playersPreparados = new boolean[numberOfPlayers];
             newGame();
-            fireGameStarted();
+            //fireGameStarted(); //Ahora ya no hace falta avisar? 
+	    //porque Table inicia el juego y se crea en el serva el TrucoGame (no estoy seguro. Ale)
             for (int i=0; i<numberOfPlayers; i++)
                 playersPreparados[i] = true;
             startHandConfirmatedClient();//fletes
@@ -61,16 +62,22 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
     }
 
     public void turn (TrucoEvent event){
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void endOfHand(TrucoEvent event){
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void cardsDeal(TrucoEvent event){
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void handStarted(TrucoEvent event){
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void gameStarted(TrucoEvent event){
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public void endOfGame(TrucoEvent event){
+	new Exception("Nada implementado aun :-(   ").printStackTrace();
     }
     public TrucoPlayer getAssociatedPlayer(){
         return null;

@@ -7,10 +7,10 @@ import py.edu.uca.fcyt.toluca.statusGame.*;
 
 public class TrucoStatusTableCliente{
 	private int cJugadores; //Guarda la cantidad de jugadores
-        private py.edu.uca.fcyt.toluca.statusGame.StatusPlayer[] estado;
-        private py.edu.uca.fcyt.toluca.statusGame.StatusEnvido envidos;
-        private py.edu.uca.fcyt.toluca.statusGame.StatusFlor flores;
-        private py.edu.uca.fcyt.toluca.statusGame.StatusMano mano;
+        private StatusPlayerClient[] estado;
+        private StatusEnvidoClient envidos;
+        private StatusFlorClient flores;
+        private StatusManoClient mano;
 
         /** Recibe las cartas del jugador
          */             
@@ -29,12 +29,12 @@ public class TrucoStatusTableCliente{
         public TrucoStatusTableCliente(int cantidadDeJugadores)
         {
             cJugadores=cantidadDeJugadores;
-            estado=new StatusPlayer[cJugadores];
-            flores=new StatusFlor(cJugadores);
-            envidos=new StatusEnvido(cJugadores);
-            mano=new StatusMano(cJugadores);            
+            estado=new StatusPlayerClient[cJugadores];
+            flores=new StatusFlorClient(cJugadores);
+            envidos=new StatusEnvidoClient(cJugadores);
+            mano=new StatusManoClient(cJugadores);            
             for (int i=0;i<cJugadores;i++)
-                    estado[i]=new StatusPlayer();
+                    estado[i]=new StatusPlayerClient();
          }
         
         /** Recupera las cartas del jugador
