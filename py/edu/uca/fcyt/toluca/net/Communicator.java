@@ -4,6 +4,8 @@ package py.edu.uca.fcyt.toluca.net;
 
 
 
+import java.io.IOException;
+
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.net.XmlPackagesSession;
@@ -68,11 +70,17 @@ implements RoomListener,TrucoListener,TableListener
 	
 	public String getInitErrorMessage(int errcode) {
 		
-		return "Sin errores";
+		return "Error CODE : "  + errcode;
 	}
 
 	
 	
+	/* (non-Javadoc)
+     * @see py.edu.uca.fcyt.net.XmlPackagesSession#init()
+     */
+    public int init() throws IOException {
+    	return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
+    }
 
 	
 	/* (non-Javadoc)

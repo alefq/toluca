@@ -769,6 +769,7 @@ public class Table implements PTableListener, ChatPanelContainer,
              * tEventMan.firePlayerKickRequest(tPlayer); }
              */
         } else if (text.equals("Ayuda")) {
+            
             ttAnimator.showIndications();
             new Thread() {
                 public void run() {

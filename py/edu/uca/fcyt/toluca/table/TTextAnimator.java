@@ -258,7 +258,8 @@ class TTextAnimator implements Animable, StateListener
 			"(la roja) puede iniciar un juego.",
 			"El que tiene borde amarillo posee el turno.",
 			"Cuando sea tu turno, haz click derecho en " + 
-			"la mesa para las acciones." 
+			"la mesa para las acciones ó utiliza los" + 
+			"botones del panel \"Jugadas\"."
 		};
 		showStrings(texts, col, -130, 0, 10000);
 	}
