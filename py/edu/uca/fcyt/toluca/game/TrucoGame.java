@@ -23,9 +23,15 @@ public class TrucoGame extends Game {
     private int numberOfHand; //numero de mano actual
     private int numberOfPlayers; //cantidad de jugadores
     private int numberOfTeams=0; //numero de equipos
-    private int reparteCartas = 0; //quien empieza la mano
+    private int reparteCartas = 0;
     
+    /** Holds value of property id. */
+    private int id;
     
+ //quien empieza la mano
+    
+    public TrucoGame(int id) {
+    }
     
     /** Constructor con dos equipos, asi crea un TrucoGame
      */    
@@ -273,4 +279,21 @@ public class TrucoGame extends Game {
     		return (30-points[1]);
     	return 0;
     }
+    
+    /** Getter for property id.
+     * @return Value of property id.
+     *
+     */
+    public int getId() {
+        return this.id;
+    }
+    
+    /** Setter for property id.
+     * @param id New value of property id.
+     *
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 }

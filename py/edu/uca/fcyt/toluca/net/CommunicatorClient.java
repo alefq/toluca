@@ -137,6 +137,31 @@ public class CommunicatorClient extends Communicator {
             System.out.println("Llego un mensaje de UserJoined");
             xmlReadUserJoined(child);
         }
+		if(aux.compareTo("SendCards")==0)
+		{
+			super.xmlreadSendCards(child);
+		}
+		if(aux.compareTo("Canto")==0)
+		{	
+			super.xmlReadCanto(child);
+		}
+		if(aux.compareTo("Cardsend")==0)
+		{
+			super.xmlReadCard(child);
+		}
+		if(aux.compareTo("CantarTanto")==0)
+		{
+			super.xmlReadCantarTanto(child);
+		}
+		if(aux.compareTo("Turno")==0)
+		{
+			super.xmlReadTurno(child);
+		}
+		if(aux.compareTo("TerminalMessage")==0)
+		{
+			
+			super.xmlReadTerminalMessage(child);
+		}
     }
     
     public void xmlReadUserJoined(Object o){
@@ -237,7 +262,7 @@ public class CommunicatorClient extends Communicator {
         }
         
     }
-    
+   
     
     /** <p>
      * Does ...
@@ -263,26 +288,34 @@ public class CommunicatorClient extends Communicator {
      */
     public void gameStartRequested() {
     }
-        /*public static void main(String[] args)
-        {
-                CommunicatorClient cc=new CommunicatorClient();
-                Document doc=cc.xmlCreateUserJoined(new Player("Dani",10));
-         
-                try {
-         
-                XMLOutputter serializer = new XMLOutputter("  ", true);
-         
-                serializer.output(doc, System.out);
-         
-                        }
-                catch (IOException e) {
-                System.err.println(e);
-                }
-                        cc.cabecera(doc);
-        }*/
+        
     public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
         
     }
+	/*public static void main(String[] args)
+	{
+		TrucoCard []cards=new TrucoCard[3];
+		cards[0]=new TrucoCard(1,1);
+		cards[1]=new TrucoCard(1,4);
+		cards[2]=new TrucoCard(1,7);
+
+		TrucoEvent dani = new TrucoEvent(new TrucoGame(2),5,new TrucoPlayer("Cricco"),TrucoEvent.CANTO_ENVIDO,28);
+
+		Document doc=dani.toXml();
+		CommunicatorClient cc=new CommunicatorClient();
+		
+		try {
+
+      		XMLOutputter serializer = new XMLOutputter("  ", true);
+	
+      		serializer.output(doc, System.out);
+
+			}
+    		catch (IOException e) {
+      		System.err.println(e);
+    		}
+			cc.cabecera(doc);
+	}*/
     
 }
 

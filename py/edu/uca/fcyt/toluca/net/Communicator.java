@@ -5,7 +5,7 @@ import java.util.*;
 import java.math.BigInteger;
 import java.io.IOException;
 import org.jdom.output.XMLOutputter;
-
+import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.toluca.table.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.game.*;
@@ -188,7 +188,271 @@ implements RoomListener, TableListener {
         
         return doc;
     }
+	int gameID;
+	int hand;
+	TrucoCard []cartas=new TrucoCard[3];
+	int currentCard=0;
+	public void xmlreadSendCards(Object o)
+	{
+		gameID=0;
+		hand=0;
+		currentCard=0;
+		xmlreadSendCardsAlg(o);
+	
 
+	}
+	public void xmlreadSendCardsAlg(Object o)
+	{
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("TrucoPlayer")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("name");
+            }
+            if(aux.compareTo("Game")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                gameID=Integer.parseInt(element.getAttributeValue("id"));
+            }
+			if(aux.compareTo("Hand")==0)
+			{
+				hand=Integer.parseInt(element.getAttributeValue("number"));
+			}
+			if(aux.compareTo("Carta")==0)
+			{
+				String kind=new String();
+				String value=new String();
+				kind=element.getAttributeValue("kind");
+				value=element.getAttributeValue("value");
+				cartas[currentCard]=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+				currentCard++;
+				
+			}
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlreadSendCardsAlg(child);
+            }
+            if(aux.compareTo("SendCards")==0) {
+                //Chatpanel.showChatMessage(user,message);
+                TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),TrucoEvent.ENVIAR_CARTAS,cartas);
+				System.out.println("gameid: " + (te.getTrucoGame()).getId() + "\nHand" + te.getNumberOfHand() +"\nPlayer :" + (te.getPlayer()).getName());
+				TrucoCard []cartasIMP=new TrucoCard[3];
+				System.out.println("*******Cartas*********");
+				cartasIMP=te.getCards();
+				for(int i=0;i<3;i++)
+				{
+					System.out.println("Palo:" + cartasIMP[i].getKind() + "Value: " + cartasIMP[i].getValue());
+
+				}
+			}
+        }
+	}
+	int type;
+	public void xmlReadCanto(Object o)
+	{
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             type=Integer.parseInt(element.getAttributeValue("id"));  
+            }
+			 if(aux.compareTo("Game")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                gameID=Integer.parseInt(element.getAttributeValue("id"));
+            }
+			if(aux.compareTo("Hand")==0)
+			{
+				hand=Integer.parseInt(element.getAttributeValue("number"));
+			}
+			 if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("name");
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadCanto(child);
+            }
+            if(aux.compareTo("Canto")==0) {
+			  TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
+			  System.out.println("Tipo:"+type);
+			   System.out.println("Game:"+gameID);
+			   System.out.println("Hand:"+hand);
+			   System.out.println("Player:"+user);
+            }
+        }
+	}
+	TrucoCard cartaEnv;
+	public void xmlReadCard(Object o)
+	{
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             type=Integer.parseInt(element.getAttributeValue("id"));  
+            }
+			 if(aux.compareTo("Game")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                gameID=Integer.parseInt(element.getAttributeValue("id"));
+            }
+			if(aux.compareTo("Hand")==0)
+			{
+				hand=Integer.parseInt(element.getAttributeValue("number"));
+			}
+			 if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("name");
+            }
+			if(aux.compareTo("Carta")==0)
+			{
+				String kind=new String();
+				String value=new String();
+				kind=element.getAttributeValue("kind");
+				value=element.getAttributeValue("value");
+				cartaEnv=new TrucoCard(Integer.parseInt(kind),Integer.parseInt(value));
+			}
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadCard(child);
+            }
+            if(aux.compareTo("Cardsend")==0) {
+				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,cartaEnv);
+               System.out.println("Tipo:"+type);
+			   System.out.println("Game:"+gameID);
+			   System.out.println("Hand:"+hand);
+			   System.out.println("Player:"+user);
+				System.out.println("Palo:"+cartaEnv.getKind()+"Value"+cartaEnv.getValue());
+			 }
+        }
+	}
+	int tanto;
+	public void xmlReadCantarTanto(Object o)
+	{
+				String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             type=Integer.parseInt(element.getAttributeValue("id"));  
+            }
+			 if(aux.compareTo("Game")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                gameID=Integer.parseInt(element.getAttributeValue("id"));
+            }
+			if(aux.compareTo("Hand")==0)
+			{
+				hand=Integer.parseInt(element.getAttributeValue("number"));
+			}
+			 if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("name");
+            }
+			if(aux.compareTo("Tanto")==0)
+			{
+				tanto=Integer.parseInt(element.getAttributeValue("tanto"));
+			}
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadCantarTanto(child);
+            }
+            if(aux.compareTo("CantarTanto")==0) {
+				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type,tanto);
+               System.out.println("Tipo:"+type);
+			   System.out.println("Game:"+gameID);
+			   System.out.println("Hand:"+hand);
+			   System.out.println("Player:"+user);
+			  System.out.println("Tanto"+tanto);
+			 }
+        }
+	}
+	public void xmlReadTurno(Object o)
+	{
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             type=Integer.parseInt(element.getAttributeValue("id"));  
+            }
+			 if(aux.compareTo("Game")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                gameID=Integer.parseInt(element.getAttributeValue("id"));
+            }
+			if(aux.compareTo("Hand")==0)
+			{
+				hand=Integer.parseInt(element.getAttributeValue("number"));
+			}
+			 if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("name");
+            }
+			
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadTurno(child);
+            }
+            if(aux.compareTo("Turno")==0) {
+				System.out.println("Leyento paquete turno");
+				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
+               System.out.println("Tipo:"+type);
+			   System.out.println("Game:"+gameID);
+			   System.out.println("Hand:"+hand);
+			   System.out.println("Player:"+user);
+				
+			 }
+        }
+	}
+	public void xmlReadTerminalMessage(Object o)
+	{
+		String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Type")==0) {
+             type=Integer.parseInt(element.getAttributeValue("id"));  
+            }
+			 if(aux.compareTo("Game")==0) {
+                //System.out.println("MESSAGE:"+element.getText());
+                gameID=Integer.parseInt(element.getAttributeValue("id"));
+            }
+			if(aux.compareTo("Hand")==0)
+			{
+				hand=Integer.parseInt(element.getAttributeValue("number"));
+			}
+			 if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("name");
+            }
+			
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadTerminalMessage(child);
+            }
+            if(aux.compareTo("TerminalMessage")==0) {
+				System.out.println("Leyento paquete terminall Message");
+				TrucoEvent te=new TrucoEvent(new TrucoGame(gameID),hand,new TrucoPlayer(user),(byte)type);
+               System.out.println("Tipo:"+type);
+			   System.out.println("Game:"+gameID);
+			   System.out.println("Hand:"+hand);
+			   System.out.println("Player:"+user);
+				
+			 }
+        }
+	}
     public void chatMessageRequested(SpaceListener spaceListener, Player player, String htmlMessage) {
         
     }

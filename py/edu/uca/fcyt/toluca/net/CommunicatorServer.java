@@ -151,6 +151,31 @@ extends Communicator {
         if(aux.compareTo("ChatMsg")==0) {
             xmlReadChatMsg(child);
         }
+		if(aux.compareTo("SendCards")==0)
+		{
+			super.xmlreadSendCards(child);
+		}
+		if(aux.compareTo("Canto")==0)
+		{	
+			super.xmlReadCanto(child);
+		}
+		if(aux.compareTo("Cardsend")==0)
+		{
+			super.xmlReadCard(child);
+		}
+		if(aux.compareTo("CantarTanto")==0)
+		{
+			super.xmlReadCantarTanto(child);
+		}
+		if(aux.compareTo("Turno")==0)
+		{
+			super.xmlReadTurno(child);
+		}
+		if(aux.compareTo("TerminalMessage")==0)
+		{
+			
+			super.xmlReadTerminalMessage(child);
+		}
         
     }
     public void chatMessageSent(Player jug,String message) {

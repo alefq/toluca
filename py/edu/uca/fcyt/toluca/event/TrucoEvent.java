@@ -8,7 +8,11 @@ package py.edu.uca.fcyt.toluca.event;
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.game.*;
-
+import java.util.*;
+import org.jdom.*;
+import java.net.*;
+import java.io.*;
+import org.jdom.output.XMLOutputter;
 import java.util.*;
 
 public class TrucoEvent {
@@ -133,6 +137,278 @@ public class TrucoEvent {
    public Player getPlayer (){
         return player;
     }
+   public Document xmlCreateSendCards()
+   {
+		Element ROOT =new Element ("SendCards");
+		
+		Element PLAYER= new Element ("TrucoPlayer");
+		PLAYER.setAttribute("name",player.getName());
+		ROOT.addContent(PLAYER);
+
+		Element GAME = new Element("Game");
+		GAME.setAttribute("id",String.valueOf(game.getId()));
+		ROOT.addContent(GAME);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+		
+		Element CARDS =new Element ("Cards");
+		for (int i=0;i<3;i++)
+		{
+			  
+			  TrucoCard carta=(TrucoCard)cards[i];
+			  Element CARTA=new Element("Carta");
+			  CARTA.setAttribute("kind",String.valueOf(carta.getKind()));
+			  CARTA.setAttribute("value",String.valueOf(carta.getValue()));
+              CARDS.addContent(CARTA);
+        }
+		ROOT.addContent(CARDS);
+		Document doc = new Document(ROOT);
+		return doc;
+
+   }
+   public Document xmlCreateCanto()
+   {//Sirve para enviar los cantos de los player truco-evndio-flor-etc
+		Element ROOT = new Element ("Canto");
+		
+		Element TIPO =new Element ("Type");
+		TIPO.setAttribute("id",String.valueOf(type));
+		ROOT.addContent(TIPO);
+
+		Element GAME =new Element ("Game");
+		GAME.setAttribute("id",String.valueOf(game.getId()));
+		ROOT.addContent(GAME);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+
+		Element PLAYER =new Element("Player");
+		PLAYER.setAttribute("name",player.getName());
+		ROOT.addContent(PLAYER);
+
+		Document doc= new Document(ROOT);
+		return doc;
+   }
+   public Document xmlCreateCard()
+	{//envia la carta jugada por el jugador PLAYER
+		Element ROOT = new Element ("Cardsend");
+		
+		Element TIPO =new Element ("Type");
+		TIPO.setAttribute("id",String.valueOf(type));
+		ROOT.addContent(TIPO);
+
+		Element GAME =new Element ("Game");
+		GAME.setAttribute("id",String.valueOf(game.getId()));
+		ROOT.addContent(GAME);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+
+		Element PLAYER =new Element("Player");
+		PLAYER.setAttribute("name",player.getName());
+		ROOT.addContent(PLAYER);
+		
+		Element CARTA=new Element("Carta");
+		CARTA.setAttribute("kind",String.valueOf(card.getKind()));
+		CARTA.setAttribute("value",String.valueOf(card.getValue()));
+		ROOT.addContent(CARTA);
+
+		Document doc=new Document(ROOT);
+		return doc;
+   }
+   public Document xmlCreateCantarTanto()
+   {//envia el tanto cantado por el jugador sea envido,real envido,......
+		Element ROOT = new Element ("CantarTanto");
+		
+		Element TIPO =new Element ("Type");
+		TIPO.setAttribute("id",String.valueOf(type));
+		ROOT.addContent(TIPO);
+
+		Element GAME =new Element ("Game");
+		GAME.setAttribute("id",String.valueOf(game.getId()));
+		ROOT.addContent(GAME);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+
+		Element PLAYER =new Element("Player");
+		PLAYER.setAttribute("name",player.getName());
+		ROOT.addContent(PLAYER);
+
+		Element TANTO = new Element("Tanto");
+		TANTO.setAttribute("tanto",String.valueOf(value));
+		ROOT.addContent(TANTO);
+
+		Document doc=new Document(ROOT);
+		return doc;
+   }
+   
+   public Document xmlCreateTurno()
+	{//Del lado del cliente dispara el evento turno
+	   Element ROOT = new Element ("Turno");
+		
+		Element TIPO =new Element ("Type");
+		TIPO.setAttribute("id",String.valueOf(type));
+		ROOT.addContent(TIPO);
+
+		Element GAME =new Element ("Game");
+		GAME.setAttribute("id",String.valueOf(game.getId()));
+		ROOT.addContent(GAME);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+
+		Element PLAYER =new Element("Player");
+		PLAYER.setAttribute("name",player.getName());
+		ROOT.addContent(PLAYER);
+		Document doc=new Document(ROOT);
+		return doc;
+   }
+   public Document xmlCreateTerminalMessage()
+  {
+		Element ROOT = new Element ("TerminalMessage");
+		
+		Element TIPO =new Element ("Type");
+		TIPO.setAttribute("id",String.valueOf(type));
+		ROOT.addContent(TIPO);
+
+		Element GAME =new Element ("Game");
+		GAME.setAttribute("id",String.valueOf(game.getId()));
+		ROOT.addContent(GAME);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+
+		Element PLAYER =new Element("Player");
+		PLAYER.setAttribute("name",player.getName());
+		ROOT.addContent(PLAYER);
+
+
+		Document doc=new Document(ROOT);
+		return doc;
+   }
+   public Document toXml()
+	{
+	   Document doc = null;
+	   switch(type)
+		{
+			case ENVIAR_CARTAS:
+				doc = xmlCreateSendCards();
+				break;
+			case ENVIDO:
+				doc = xmlCreateCanto();
+				break;
+			case REAL_ENVIDO:
+				doc = xmlCreateCanto();
+				break;
+			case FALTA_ENVIDO:
+				doc = xmlCreateCanto();
+				break;
+			case FLOR:
+				doc = xmlCreateCanto();
+				break;
+			case CONTRA_FLOR:
+				doc = xmlCreateCanto();
+				break;
+			case CONTRA_FLOR_AL_RESTO:
+				doc = xmlCreateCanto();
+				break;
+			case CON_FLOR_ME_ACHICO:
+				doc = xmlCreateCanto();
+				break;
+			case TRUCO:
+				doc = xmlCreateCanto();
+				break;
+			case RETRUCO:
+				doc = xmlCreateCanto();
+				break;
+			case VALE_CUATRO:
+				doc = xmlCreateCanto();
+				break;
+			case QUIERO:
+				doc = xmlCreateCanto();
+				break;
+			case NO_QUIERO:
+				doc = xmlCreateCanto();
+				break;
+			case ME_VOY_AL_MAZO:
+				doc = xmlCreateCanto();
+				break;
+			case CERRARSE:
+				doc = xmlCreateCanto();
+				break;
+			case PASO_ENVIDO:
+				doc = xmlCreateCanto();
+				break;
+			case PASO_FLOR:
+				doc = xmlCreateCanto();
+				break;
+			case JUGAR_CARTA:
+				doc = xmlCreateCard();
+				break;
+			case CANTO_ENVIDO:
+				doc = xmlCreateCantarTanto();
+				break;
+
+			case CANTO_FLOR:
+				doc = xmlCreateCantarTanto();
+				break;
+			case TURNO_JUGAR_CARTA:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_CANTAR_ENVIDO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_CANTAR_FLOR:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_TRUCO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_RETRUCO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_VALECUATRO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_CONTRAFLOR:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_CONTRAFLORALRESTO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_ENVIDO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_REALENVIDO:
+				doc = xmlCreateTurno();
+				break;
+			case TURNO_RESPONDER_FALTAENVIDO:
+				doc = xmlCreateTurno();
+				break;
+			case FIN_DE_MANO:
+				doc = xmlCreateTerminalMessage();
+				break;
+			case FIN_DE_JUEGO:
+				doc = xmlCreateTerminalMessage();
+				break;
+			case INICIO_DE_JUEGO:
+				doc = xmlCreateTerminalMessage();
+				break;
+			case INICIO_DE_MANO:
+				doc = xmlCreateTerminalMessage();
+				break;
+			default:
+				System.out.println("tipo de event no encontrado:" + type);
+	   }
+	   return doc;
+   }
    
 } // end TrucoEvent
 
