@@ -34,11 +34,9 @@ public class EventDispatcherServer extends EventDispatcher{
 	}
 	public void loginRequested(RoomEvent event) {
 		logger.debug("Se recibio un login Requested");
-		try {
+		
 			((RoomServer)room).login(event.getUser(),event.getPassword(),communicatorServer);
-		} catch (LoginFailedException e) {
-			logger.info("Fallo el logeo");
-		}
+		
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#loginCompleted(py.edu.uca.fcyt.toluca.event.RoomEvent)

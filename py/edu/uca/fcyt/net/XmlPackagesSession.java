@@ -55,7 +55,9 @@ public abstract class XmlPackagesSession implements Runnable
 	
 	public void run()
 	{
-		String rawPacket = "";
+		StringBuffer sBuff=new StringBuffer();
+		
+		//String rawPacket = "";
 		// Loop until live = false
 		
 		//logger.debug("el descriptor de socket en el thread es:" + socket);
@@ -82,23 +84,30 @@ public abstract class XmlPackagesSession implements Runnable
 					
 				if (c != XML_PACKAGE_DELIMITER)
 				{
-					rawPacket += (char)c;
+					//rawPacket += (char)c;
+					sBuff.append((char)c);
 					
 				} else
 				{
 				
 					
-						String trimPacket=rawPacket.trim();
-				
-						StringBufferInputStream inputStream=new StringBufferInputStream(trimPacket);
-						XMLDecoder d = new XMLDecoder(inputStream);
+						//String trimPacket=rawPacket.trim();
+						//System.out.println("Se recibe el paquete \n"+trimPacket);
+						System.out.println("se recibe un \n"+sBuff.toString());
+						
+						ByteArrayInputStream bais = new ByteArrayInputStream(sBuff.toString().getBytes());
+						
+//						StringReader sreader = new StringReader(sBuff.toString());
+//						StringBufferInputStream inputStream=new StringBufferInputStream(sBuff.toString());
+						
+						XMLDecoder d = new XMLDecoder(bais);
 						Object result = d.readObject();
-				
+						
 						//inputStream.close();
 						//logger.debug("Se resive un objeto");
 						receiveObject(result);		
-				
-					rawPacket = "";
+						sBuff=new StringBuffer();
+					//rawPacket = "";
 				}
 
 			
@@ -129,7 +138,7 @@ public abstract class XmlPackagesSession implements Runnable
 	
 	public void sendXmlPackage(String xmlRaw)
 	{
-		//System.out.println("I am going to send to the socket: \n" + xmlRaw);
+	//	System.out.println("I am going to send to the socket: \n" + xmlRaw);
 		out.print(xmlRaw);
 		if (use_package_delimiter)
 			out.write(XML_PACKAGE_DELIMITER);
@@ -158,7 +167,7 @@ public abstract class XmlPackagesSession implements Runnable
 	{
 		this.socket = socket;
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(new BufferedOutputStream(socket.getOutputStream()));
+		out = new PrintWriter(socket.getOutputStream());
 		
 	}
 	

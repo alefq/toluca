@@ -54,8 +54,9 @@ public class CommunicatorServer extends Communicator{
 	
 	public void connectionFailed()
 	{
-		logger.info("Fallo la coneccion de "+getTrucoPlayer());
+		logger.info("Fallo la coneccion de "+getTrucoPlayer()+ " communicator  "+this);
 		roomServer.removePlayer(getTrucoPlayer());
+		roomServer.removeCommunicator(this);//para que se elimine ya no es util
 		try {
 			close();
 		} catch (IOException e) {

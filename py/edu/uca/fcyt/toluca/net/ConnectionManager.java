@@ -69,7 +69,14 @@ public class ConnectionManager implements XmlPackagesServerListener {
      public void setVecSesiones(ArrayList vecSesiones) {
         this.vecSesiones = vecSesiones;
     }
-    
+     public boolean removeCommunicator(CommunicatorServer comm)
+     {
+     	
+     	logger.info("Se elimina un communicator "+comm);
+     	return vecSesiones.remove(comm);
+     	
+     	
+     }
 
 }
 

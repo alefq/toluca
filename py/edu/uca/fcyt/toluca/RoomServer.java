@@ -261,9 +261,18 @@ implements ChatPanelContainer
 			}
 			}
 		}
+		
+		try
+		{
 		players.remove(player.getName());//quitar del almacenaje de players
 		//vPlayers.remove(player);
 		firePlayerLeft(player);
+		}
+		catch(NullPointerException e)
+		{
+			logger.debug("Se elimino un player que era nulo");
+		}
+		
 	} 
 	public void firePlayerLeft(TrucoPlayer player)
 	{
@@ -308,13 +317,14 @@ implements ChatPanelContainer
 	 * @param password ...
 	 * </p>
 	 */
-	public void login(String username, String password, CommunicatorServer cs) throws py.edu.uca.fcyt.toluca.LoginFailedException
+	public void login(String username, String password, CommunicatorServer cs) //throws py.edu.uca.fcyt.toluca.LoginFailedException
 	{
 		// your code here
 		TrucoPlayer jogador = null;
 		try
 		{
-			
+			if(players.get(username)!=null)
+				throw new LoginFailedException("Ya existe un usuario conectado con ese username");
 			pendingConnections.put(username, cs);
 			
 			//jogador = new Player("CIT", 108);
@@ -330,9 +340,11 @@ implements ChatPanelContainer
 		}
 		catch (LoginFailedException le)
 		{
+			logger.info("Fallo el intento de logearse de "+username);
 			RoomEvent event=new RoomEvent();
 			event.setType(RoomEvent.TYPE_LOGIN_FAILED);
 			event.setUser(username);
+			event.setErrorMsg(le.getMessage());
 			cs.loginFailed(event);
 			
 		}
@@ -580,6 +592,10 @@ implements ChatPanelContainer
 			
 			ltmp.chatMessageSent(event);
 		}
+	}
+	public void removeCommunicator(CommunicatorServer comm)
+	{
+		connManager.removeCommunicator(comm);
 	}
 } // end RoomServer
 

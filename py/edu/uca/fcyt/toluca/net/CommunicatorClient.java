@@ -64,6 +64,10 @@ public class CommunicatorClient extends Communicator{
 		}
 		return ret;
 	}
+	public void connectionFailed()
+	{
+		System.out.println("Falllllllllllllllllloooooooooooo la coneccion");
+	}
 	
 	//REQUEST DEL ROOM
 	public void loginRequested(RoomEvent event) {
