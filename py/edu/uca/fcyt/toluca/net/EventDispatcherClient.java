@@ -6,7 +6,10 @@
  */
 package py.edu.uca.fcyt.toluca.net;
 
-import java.util.HashMap;
+import java.beans.XMLDecoder;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -50,8 +53,6 @@ public class EventDispatcherClient extends EventDispatcher {
 
     }
 
-    
-    
     /*
      * (non-Javadoc)
      * 
@@ -62,22 +63,21 @@ public class EventDispatcherClient extends EventDispatcher {
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Cliente Login
         // completed");
 
-    	
-//      if (trucoPlayer == null) {
-    	trucoPlayer = event.getPlayer();
-		commClient.setTrucoPlayer(trucoPlayer);
-		((RoomClient) room).loginCompleted(trucoPlayer);
-		getCommClient().setLoggedIn(true);
-//  }
-    	
-//        HashMap jugadores = event.getPlayers();
-        
+        //      if (trucoPlayer == null) {
+        trucoPlayer = event.getPlayer();
+        commClient.setTrucoPlayer(trucoPlayer);
+        ((RoomClient) room).loginCompleted(trucoPlayer);
+        getCommClient().setLoggedIn(true);
+        //  }
+
+        //        HashMap jugadores = event.getPlayers();
+
         Iterator it = event.getPlayers().values().iterator();
         while (it.hasNext()) {
             //String keyClave = (String) it.next();
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Se va a
             // cargar "+newPlayer);
-        	TrucoPlayer tp = (TrucoPlayer) it.next();
+            TrucoPlayer tp = (TrucoPlayer) it.next();
             if (!trucoPlayer.getName().equals(tp.getName())) {
                 room.addPlayer(tp);
             }
@@ -241,7 +241,7 @@ public class EventDispatcherClient extends EventDispatcher {
             TableServer tableServer = event.getTableServer();
             if (tableServer != null) {
                 TrucoPlayer playerOwner = tableServer.getHost();//este player
-                                                                // es igual
+                // es igual
 
                 // al playerCreador,
                 // solo que el
@@ -268,7 +268,7 @@ public class EventDispatcherClient extends EventDispatcher {
         Table table = null;
         boolean mostrar = false;
         if (playerCreador.getName().equals(trucoPlayer.getName())) {
-        	//CREO EL
+            //CREO EL
             // PLAYER
             // QUE ACABA
             // DE
@@ -429,10 +429,10 @@ public class EventDispatcherClient extends EventDispatcher {
      */
     public void playerKicked(TableEvent event) {
 
-        TableServer tableServer = event.getTableServer();
+        //TableServer tableServer = event.getTableServer();
         TrucoPlayer playerServer = event.getPlayer()[0];
 
-        Table table = room.getTable(tableServer.getTableNumber());
+        Table table = room.getTable(event.getTableBeanRepresentation().getId());
         TrucoPlayer playerClient = room.getPlayer(playerServer.getName());
 
         table.kickPlayer(playerClient);
@@ -648,7 +648,8 @@ public class EventDispatcherClient extends EventDispatcher {
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "TrucoPlayer :
         // "+trucoPlayer);
 
-        //TODO: ver por que no anda mas el tema del igual entre objetos como era antes
+        //TODO: ver por que no anda mas el tema del igual entre objetos como
+        // era antes
         if (!trucoPlayer.getName().equals(playerClient.getName())) {
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
             // getClass().getName()+"tirarCarta: playerCliente no es igual a
@@ -700,8 +701,9 @@ public class EventDispatcherClient extends EventDispatcher {
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
         // "*************************************************************");
 
-        //TODO: ver por que no anda mas el tema del igual entre objetos como era antes
-        if (!trucoPlayer.getName().equals( playerClient.getName())) {
+        //TODO: ver por que no anda mas el tema del igual entre objetos como
+        // era antes
+        if (!trucoPlayer.getName().equals(playerClient.getName())) {
             //	logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " se le hace
             // un play porque los players son diferentes");
             TrucoEvent ev = new TrucoEvent(trucoGameClient, event.getHand(),
@@ -742,8 +744,9 @@ public class EventDispatcherClient extends EventDispatcher {
         //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
         // "*************************************************************");
 
-        //TODO: ver por que no anda mas el tema del igual entre objetos como era antes
-        if (!trucoPlayer.getName().equals( playerClient.getName())) {
+        //TODO: ver por que no anda mas el tema del igual entre objetos como
+        // era antes
+        if (!trucoPlayer.getName().equals(playerClient.getName())) {
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " se le hace
             // un play porque los players son diferentes");
             TrucoEvent ev = new TrucoEvent(trucoGameClient, event.getHand(),
@@ -770,4 +773,15 @@ public class EventDispatcherClient extends EventDispatcher {
 
     }
 
+    public static void main(String[] args) {
+        XMLDecoder d;
+        try {
+            d = new XMLDecoder(new BufferedInputStream(
+                    new FileInputStream("/tmp/tableevent.xml")));
+            Object result = d.readObject();
+            d.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block        
+        }        
+    }
 }

@@ -350,7 +350,14 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 //		TrucoGame tg = getTrucoGame();
 //		tg.removeTrucoListener(tptmp);
 		
-		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);
+//		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);
+		//TODO PP total. Cambiamos porque del lado del cliente al recibir el XML se cambiaba
+		// el user que debia salir de la mesa. El caso del host saliendo de la mesa 
+		// que dejaba su usuario en la mesa de todos los demas
+		TableEvent te = new TableEvent();
+		te.setPlayer(new TrucoPlayer[]{tptmp,null});
+		te.setEvent(TableEvent.EVENT_playerKicked);
+		te.setTableBeanRepresentation(new TableBeanRepresentation(getTableNumber(), null));
 		firePlayerKicked(te);
 		comprobarTable();
 	}
