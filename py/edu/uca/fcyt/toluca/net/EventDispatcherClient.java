@@ -445,6 +445,10 @@ public class EventDispatcherClient extends EventDispatcher {
         {
            //Salió el HOST y hay que autoeliminarse de esa mesa
             table.selfKick();
+            ((RoomClient)getRoom()).getRoomUING().getChatPanel().showSystemMessage("La mesa " + 
+            		table.getTableNumber()	
+            		+ " se ha cerrado porque el creador la ha abandonado", new String[] { "[", "]" });
+			
         }
     }
 
@@ -809,8 +813,8 @@ public class EventDispatcherClient extends EventDispatcher {
 
         
         
-        table.showSystemMessage("Player: "+event.getPlayer().getName()+" - Old Ranking: "+
-        		event.getPlayer().getOldRating()+"New Ranking: "+event.getPlayer().getRating());
+        table.showSystemMessage("Jugador: "+event.getPlayer().getName()+" - Ranking viejo: "+
+        		event.getPlayer().getOldRating()+"- Ranking nuevo: "+event.getPlayer().getRating());
 
 		
 	}
