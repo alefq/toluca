@@ -76,8 +76,8 @@ public class CommunicatorClient extends Communicator
 		try
 		{
 			//setSocket(new Socket("interno.roshka.com.py", 6767));
-			//setSocket(new Socket("ray-ray.roshka.com.py", 6767));
 			setSocket(new Socket("ray-ray.roshka.com.py", 6767));
+			//setSocket(new Socket("localhost", 6767));
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 		} catch (UnknownHostException e)
 		{
@@ -1337,9 +1337,14 @@ public class CommunicatorClient extends Communicator
 				Table tabela=(Table)(Mesas.get(current));
 				
 				tabela.addPlayer(jug);
-				
-				tabela.sitPlayer(jug,chair);
-				
+				if(chair >=0)
+				{
+					tabela.sitPlayer(jug,chair);
+				}
+				else
+				{
+					System.out.println("El player no esta sentado aun");
+				}
 				//mesa.addPlayer(jugaux);
 			}
 			if (aux.compareTo("Table") == 0)

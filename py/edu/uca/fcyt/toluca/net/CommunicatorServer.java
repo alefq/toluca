@@ -683,9 +683,17 @@ public class CommunicatorServer extends Communicator
 					//La linea de arrriba fue cambiada por cricco ahora se usa la de abajo
 					TableServer tabela=(TableServer)(pieza.getHashTable().get(new Integer(tid)));
 					System.out.println("********#######Dentro de sit 1\n"+tabela);
-					tabela.sitPlayer(pieza.getPlayer(otroPlayerName), posAux);
-					System.out.println("********#######Dentro de sit 2\n"+tabela);
+					if(tabela.getPlayerManager().getChair(pieza.getPlayer(otroPlayerName))>=0)
+					{
+						System.out.println("El player ya esta sentado jodetec citttt");
+					} 
+					else
+					{
 					
+					tabela.sitPlayer(pieza.getPlayer(otroPlayerName), posAux);
+					
+					System.out.println("********#######Dentro de sit 2\n"+tabela);
+					}
 				} catch (java.lang.NullPointerException e)
 				{
 					System.out.println(
