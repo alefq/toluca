@@ -6,13 +6,13 @@
 
 package py.edu.uca.fcyt.game;
 
-import java.awt.Font;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
-
+import rath.jmsn.ui.ChatArea;
 /**
  *
  * @author  PABLO JAVIER
@@ -47,20 +47,20 @@ public class ChatPanel extends javax.swing.JPanel {
     }
     
     public void showChatMessage(TrucoPlayer player, String htmlMessage) {
-        jTAchat.append
+        getChatArea().append
         (
         player.getName() + ": " + htmlMessage + "\n"
         );
-        jTAchat.setCaretPosition(jTAchat.getText().length());
+//        getChatArea().setCaretPosition(getChatArea().getText().length());
     }
     
     public void showChatMessage(TrucoPlayer player, String htmlMessage, String[] bounds) {
         if (bounds == null) bounds = new String[] { "**", "**"};
-        jTAchat.append(
+        getChatArea().append(
         bounds[0] + player.getName() + bounds[1] + ": "
         + htmlMessage + "\n"
         );
-        jTAchat.setCaretPosition(jTAchat.getText().length());
+        getChatArea().setCaretPosition(getChatArea().getText().length());
     }
     
     private void sendChatMessage() {
@@ -82,8 +82,6 @@ public class ChatPanel extends javax.swing.JPanel {
         Send = new javax.swing.JButton();
         jpChat = new javax.swing.JPanel();
         jspChat = new javax.swing.JScrollPane();
-        jTAchat = new javax.swing.JTextArea();
-
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         setPreferredSize(new java.awt.Dimension(200, 100));
@@ -116,13 +114,7 @@ public class ChatPanel extends javax.swing.JPanel {
         jpChat.setLayout(new javax.swing.BoxLayout(jpChat, javax.swing.BoxLayout.X_AXIS));
 
         jspChat.setPreferredSize(new java.awt.Dimension(350, 320));
-        jTAchat.setEditable(false);
-        jTAchat.setFont(new java.awt.Font("SansSerif", Font.PLAIN, 10));
-        jTAchat.setLineWrap(true);
-        jTAchat.setToolTipText("null");
-        jTAchat.setWrapStyleWord(true);
-        jspChat.setViewportView(jTAchat);
-
+        jspChat.setViewportView(getChatArea());
         jpChat.add(jspChat);
 
         add(jpChat);
@@ -179,9 +171,22 @@ public class ChatPanel extends javax.swing.JPanel {
     private javax.swing.JTextField jtInput;
     private javax.swing.JPanel jpInput;
     private javax.swing.JPanel jpChat;
-    private javax.swing.JTextArea jTAchat;
     private javax.swing.JScrollPane jspChat;
-    // End of variables declaration//GEN-END:variables
+	private ChatArea chatArea = null;
+	/**
+	 * This method initializes chatArea	
+	 * 	
+	 * @return javax.swing.ChatArea	
+	 */    
+	private ChatArea getChatArea() {
+		if (chatArea == null) {
+			chatArea = new ChatArea() {
+                public void acceptFiles(List files) {}
+                public void inviteFriend(String loginName) {}};
+		}
+		return chatArea;
+	}
+     // End of variables declaration//GEN-END:variables
     
     public static void main(String[] args) {
         TrucoPlayer pepito = new TrucoPlayer("Don Pepito", 8);
