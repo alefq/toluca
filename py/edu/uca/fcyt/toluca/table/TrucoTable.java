@@ -232,7 +232,11 @@ class TrucoTable extends JPanel implements ComponentListener {
      */
     private JPanel getJpCantos() {
         if (jpCantos == null) {
+            Dimension dim = new Dimension(300,50);
             jpCantos = new JPanel();
+            jpCantos.setMinimumSize(dim);
+            jpCantos.setPreferredSize(dim);
+            jpCantos.setMaximumSize(new Dimension(1024,50));
             jpCantos.add(jlSaying = new JLabel("Canto: "));
             jpCantos.setBorder(new EtchedBorder());
         }
