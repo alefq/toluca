@@ -166,8 +166,8 @@ implements ChatPanelContainer, TableListener {
 
         re.setTableNumber(table.getTableNumber());
         Iterator iter = roomListeners.listIterator();
-        while (iter.hasNext()) {
-            RoomListener ltmp = (RoomListener) iter.next();
+        while (iter.hasNext()) {                       
+            RoomListener ltmp = (RoomListener) iter.next();            
             ltmp.tableCreated(re);
         }
     } // end fireTableCreated

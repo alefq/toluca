@@ -14,6 +14,8 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 
+import py.edu.uca.fcyt.toluca.TolucaConstants;
+
 
 
 
@@ -95,17 +97,26 @@ public abstract class XmlPackagesSession implements Runnable
 						//System.out.println("Se recibe el paquete \n"+trimPacket);
 						//System.out.println("se recibe un \n"+sBuff.toString());
 						
-						ByteArrayInputStream bais = new ByteArrayInputStream(sBuff.toString().getBytes());
-						
-//						StringReader sreader = new StringReader(sBuff.toString());
-//						StringBufferInputStream inputStream=new StringBufferInputStream(sBuff.toString());
-						
-						XMLDecoder d = new XMLDecoder(bais);
-						Object result = d.readObject();
-						
-						//inputStream.close();
-						//logger.debug("Se resive un objeto");
-						receiveObject(result);		
+						try {
+                            ByteArrayInputStream bais = new ByteArrayInputStream(
+                                    sBuff.toString().getBytes());
+
+                            //						StringReader sreader = new StringReader(sBuff.toString());
+                            //						StringBufferInputStream inputStream=new StringBufferInputStream(sBuff.toString());
+                            //System.out.println(sBuff.toString());
+                            XMLDecoder d = new XMLDecoder(bais);
+                            Object result = d.readObject();
+                            //inputStream.close();
+                            //logger.debug("Se resive un objeto");
+                            /*System.out.println("\t\tEl objeto es: " + result);
+                            System.out.println("\t\ttipo: "
+                                    + result.getClass().getName());
+                            TolucaConstants.dumpBeanToXML(result);*/
+                            receiveObject(result); 
+                        } catch (Exception e) {
+                            System.err.println("Se fue a al carajo ........");
+                            e.printStackTrace(System.err);
+                        }		
 						sBuff=new StringBuffer();
 					//rawPacket = "";
 				}

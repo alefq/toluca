@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -37,14 +38,22 @@ public class TableRanking extends JTable{
 		setRowHeight(25);
 		HashMap coloresRanking = new HashMap();
 
-        coloresRanking.put(RowRanking.RANKING_AZUL, RoomUING.loadImage("rAzul.gif"));
-        coloresRanking.put(RowRanking.RANKING_GRIS, RoomUING.loadImage("rGris.gif"));
-        coloresRanking.put(RowRanking.RANKING_LILA, RoomUING.loadImage("rLila.gif"));
+        /*coloresRanking.put(RowRanking.RANKING_AZUL, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rAzul.gif"));
+        coloresRanking.put(RowRanking.RANKING_GRIS, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rGris.gif"));
+        coloresRanking.put(RowRanking.RANKING_LILA, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rLila.gif"));
         coloresRanking.put(RowRanking.RANKING_NARANJA,
-                RoomUING.loadImage("rNaranja.gif"));
-        coloresRanking.put(RowRanking.RANKING_ROJO, RoomUING.loadImage("rRojo.gif"));
+                new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rNaranja.gif"));
+        coloresRanking.put(RowRanking.RANKING_ROJO, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rRojo.gif"));
         coloresRanking.put(RowRanking.RANKING_VERDE,
-                RoomUING.loadImage("rVerde.gif"));
+                new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rVerde.gif"));*/
+		coloresRanking.put(RowRanking.RANKING_AZUL, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rAzul.gif")));
+        coloresRanking.put(RowRanking.RANKING_GRIS, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rGris.gif")));
+        coloresRanking.put(RowRanking.RANKING_LILA, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rLila.gif")));
+        coloresRanking.put(RowRanking.RANKING_NARANJA,
+                new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rNaranja.gif")));
+        coloresRanking.put(RowRanking.RANKING_ROJO, new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rRojo.gif")));
+        coloresRanking.put(RowRanking.RANKING_VERDE,
+                new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "rVerde.gif")));
 
 	    userCol.setCellRenderer(
 		new TableRankingRender(

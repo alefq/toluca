@@ -28,7 +28,7 @@ public abstract class EventDispatcher {
 	public void dispatchEvent(RoomEvent event)
 	{
 		
-	log.log(Level.WARNING,"DispatchEvent: Se resive un evento RoomEvent");
+	log.log(Level.WARNING,"DispatchEvent: Se recive un evento RoomEvent");
 		switch(event.getType())
 		{
 			case RoomEvent.TYPE_CHAT_REQUESTED:chatRequested(event);break;

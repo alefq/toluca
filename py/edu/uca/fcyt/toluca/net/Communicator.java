@@ -16,6 +16,7 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableServer;
 
 
 /**
@@ -96,6 +97,7 @@ implements RoomListener,TrucoListener,TableListener
 		
 		if(bean instanceof RoomEvent)
 		{
+//		    Object obj = getBolemObject();
 			eventDispatcher.dispatchEvent((RoomEvent)bean);
 		}
 		if(bean instanceof TableEvent)
@@ -114,7 +116,21 @@ implements RoomListener,TrucoListener,TableListener
 	}
 	
 	
-	/* (non-Javadoc)
+	/**
+     * @return
+     */
+    private Object getBolemObject() {
+        RoomEvent ret = new RoomEvent();
+        TableServer ts = new TableServer();
+        TrucoPlayer tp = new TrucoPlayer();
+        tp.setName("aa");
+        tp.setRating(606);
+        ts.setHost(tp);
+        ret.setTableServer(ts);
+        return ret;
+        
+    }
+    /* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#tableCreated(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void tableCreated(RoomEvent ev) {

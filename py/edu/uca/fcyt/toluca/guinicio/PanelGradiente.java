@@ -15,7 +15,7 @@ public class PanelGradiente extends JComponent{
 	private Color startColor;
 	private int inc;
 	
-	private ImageIcon logo = RoomUING.loadImage("LogoSinFondo.gif");;
+	private ImageIcon logo;// = RoomUING.loadImage("LogoSinFondo.gif");;
 	private String nombre;
 	private double largo;
 	/**
@@ -49,8 +49,7 @@ public class PanelGradiente extends JComponent{
         setStartColor(new Color(50, 255, 50));
         setLargo(50);
         setNombre("Dani Cricco");
-        setInc(50);
-        setMinimumSize(new Dimension(logo.getIconWidth(), logo.getIconHeight()));
+        setInc(50);        
     }
     public Dimension getMinimumSize()
 	{
@@ -142,6 +141,7 @@ public class PanelGradiente extends JComponent{
      */
     public void setLogo(ImageIcon logo) {
         this.logo = logo;
+        setMinimumSize(new Dimension(logo.getIconWidth(), logo.getIconHeight()));
     }
     /**
      * @return Returns the startColor.

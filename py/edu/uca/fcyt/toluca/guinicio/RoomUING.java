@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/10/16 13:22:54 $
- * @version $Revision: 1.8 $ 
+ * Last modified: $Date: 2004/10/22 19:58:54 $
+ * @version $Revision: 1.9 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -38,6 +38,8 @@ public class RoomUING extends JApplet {
 //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
 //            .getLogger(RoomUING.class);
 
+    public static final String CLAVE_LOGIN = "claveLogin";
+    
     private javax.swing.JPanel jContentPane = null;
 
     private JPanel panelPrincipal = null; //  @jve:decl-index=0:visual-constraint="25,16"
@@ -103,7 +105,7 @@ public class RoomUING extends JApplet {
      */
     private PanelGradiente getPanelTitle() {
         if (panelTitle == null) {
-            ImageIcon logo = RoomUING.loadImage("LogoSinFondo.gif");
+            ImageIcon logo = new ImageIcon(getClass().getResource(RoomUING.IMAGE_DIR + "LogoSinFondo.gif"));//RoomUING.loadImage("LogoSinFondo.gif");
             panelTitle = new PanelGradiente();
             panelTitle.setLogo(logo);
             panelTitle.setStartColor(new Color(50, 255, 50));
@@ -358,6 +360,8 @@ public class RoomUING extends JApplet {
     }
 
     protected static ImageIcon loadImage(String image) {
+        /*ImageIcon ret = new ImageIcon(image.getClass().getResource(image));
+        return ret;*/
         String path = IMAGE_DIR + image;
         int MAX_IMAGE_SIZE = 10000; //Change this to the size of
         //your biggest image, in bytes.

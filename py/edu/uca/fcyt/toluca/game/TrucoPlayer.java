@@ -14,11 +14,11 @@ package py.edu.uca.fcyt.toluca.game;
  */
 public class TrucoPlayer {
 
-    protected String name; 
-    private String fullName; 
-    private String pass; 
-    private String email; 
-    protected int rating; 
+    protected String name = ""; 
+    private String fullName = ""; 
+    private String pass = ""; 
+    private String email = ""; 
+    protected int rating = -1; 
     
 	
   ///////////////////////////////////////
@@ -65,6 +65,7 @@ public class TrucoPlayer {
     /*public TrucoPlayer(){
     }*/
     public TrucoPlayer (String name) {
+        this();
         this.name = name;
     }
     /** Constructor de un TrucoPlayer.
@@ -75,7 +76,8 @@ public class TrucoPlayer {
         setRating(rating);
     }
     public TrucoPlayer()
-    {}
+    {
+        }
     public String toString()
     {
     	return new String(getName()+ " "+getRating());

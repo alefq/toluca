@@ -357,8 +357,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *  
      */
     public void setRankTable(TableRanking ranking) {
-        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
-                "Se settea el rank table -> " + ranking);
+        /*logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
+                "Se settea el rank table -> " + ranking);*/
         this.rankTable = ranking;
     }
 

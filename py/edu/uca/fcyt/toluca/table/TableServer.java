@@ -3,26 +3,25 @@ package py.edu.uca.fcyt.toluca.table;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
-
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
-import py.edu.uca.fcyt.toluca.game.TrucoGame;
 
 /**
  *
  * @author  PABLO JAVIER
  */
 public class TableServer  implements TrucoListener, ChatPanelContainer {
-	static Logger logger = Logger.getLogger(TableServer.class);
+	static Logger logger = Logger.getLogger(TableServer.class.getName());
     /** Holds value of property host. */
     private TrucoPlayer host;
     
@@ -38,20 +37,19 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     private static int nextTableNumber = 0;
     private HashMap asientos;
     /** Creates a new instance of TableServer */
-    public TableServer(TrucoPlayer host) {
-        this.host= host;
+    public TableServer() {        
         tableListeners = new Vector();
         players = new Vector();
-        pManager = new PlayerManager(6);
-        addPlayer(host);
-        setHost(host);
+        pManager = new PlayerManager(6);        
         setTableNumber(nextTableNumber++);
         //System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
         //System.out.println("El HOST de la tabela es: " + getHost().getName());
         asientos=new HashMap();
     }
-    public TableServer()
+    public TableServer(TrucoPlayer host)
     {
+        this();
+        setHost(host);
     }
     
 	/**
@@ -72,7 +70,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     public void sitPlayer(TrucoPlayer player, int chair) {
         try
 		{
-    	logger.debug("Sit player "+player+" chair "+chair);
+    	logger.log(Level.WARNING, "Sit player "+player+" chair "+chair);
     	pManager.sitPlayer(player, chair);
     	asientos.put(player.getName(),new Integer(chair));
         firePlayerSat(player, chair);
@@ -80,11 +78,11 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         if (player == getHost())
             pManager.setActualPlayer(getHost());
         
-        logger.debug(player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
+        logger.log(Level.WARNING, player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
 		}
         catch(TableException e)
 		{
-        	logger.debug("TableException "+e.getMessage());
+        	logger.log(Level.WARNING, "TableException "+e.getMessage());
 		}
     }
     
@@ -224,7 +222,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
         Iterator iter = tableListeners.listIterator();
         int i =0;
-        logger.debug("tableListeners.size() = "+tableListeners.size());
+        logger.log(Level.WARNING, "tableListeners.size() = "+tableListeners.size());
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
             //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
@@ -250,6 +248,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
      */
     public void setHost(TrucoPlayer host) {
         this.host = host;
+        addPlayer(host);        
     }
     
     public void addPlayer(TrucoPlayer player) 
