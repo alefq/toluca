@@ -74,19 +74,19 @@ public class TrucoEvent {
  * Represents ...
  * </p>
  */
-    private TrucoGame game;  //EL JUEGO
-    private int hand;  //NUMERO DE MANO
-    private TrucoPlayer player;  //PLAYER QUE DISPARA EL EVENTO
-    private byte type;  //TIPO DE JUGADA 0 CANTO
-    private TrucoCard[] cards; 
-    private TrucoCard card;
+	private TrucoGame game;  //EL JUEGO
+	private int hand;  //NUMERO DE MANO
+	private TrucoPlayer player;  //PLAYER QUE DISPARA EL EVENTO
+	private byte type;  //TIPO DE JUGADA 0 CANTO
+	private TrucoCard[] cards; 
+	private TrucoCard card;
 	int tableNumber;//para que el Communicator sepa a quien ejecutarle los metodos
-    private int value=-1;
-    /*repartir cartas*/
-    public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player){
-    	this(game,hand);
-    	this.player = player;
-    }
+	private int value=-1;
+	/*repartir cartas*/
+	public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player){
+		this(game,hand);
+		this.player = player;
+	}
 	public TrucoEvent(int tableId,int hand,TrucoPlayer player,byte type, TrucoCard[] cards)
 	{
 		this.tableNumber = tableId;
@@ -103,76 +103,76 @@ public class TrucoEvent {
 		this.type = type;
 		this.value = value;
 	}
-    public TrucoEvent (TrucoGame game, int hand){
-        this.game = game;
-        this.hand = hand;
+	public TrucoEvent (TrucoGame game, int hand){
+		this.game = game;
+		this.hand = hand;
         
-    }
-    public TrucoEvent(TrucoGame game,int hand, TrucoPlayer player, byte type, TrucoCard[] cards){ //contructor de instancias
-        this(game,hand,player,type);    
-        this.cards = cards;
-    }
-    /*cantos envido truco, flor etc*/
-    public TrucoEvent(TrucoGame game,int hand, TrucoPlayer player, byte type){
-        this(game,hand,type);
-        this.player = player;
+	}
+	public TrucoEvent(TrucoGame game,int hand, TrucoPlayer player, byte type, TrucoCard[] cards){ //contructor de instancias
+		this(game,hand,player,type);    
+		this.cards = cards;
+	}
+	/*cantos envido truco, flor etc*/
+	public TrucoEvent(TrucoGame game,int hand, TrucoPlayer player, byte type){
+		this(game,hand,type);
+		this.player = player;
         
-    }
+	}
 	public TrucoEvent(int tableId,int hand,TrucoPlayer player,byte type){
 		this.tableNumber=tableId;
 		this.hand=hand;
 		this.player=player;
 		this.type=type;
 	}
-    public TrucoEvent(TrucoGame game,int hand, byte type){
-        this.game = game;
-        this.hand= hand;
-        this.type = type;
-    }
-    /*jugadas */
-    public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player, byte type, TrucoCard card){
-        this(game, hand, player, type);
-        this.card = card;
-    }
+	public TrucoEvent(TrucoGame game,int hand, byte type){
+		this.game = game;
+		this.hand= hand;
+		this.type = type;
+	}
+	/*jugadas */
+	public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player, byte type, TrucoCard card){
+		this(game, hand, player, type);
+		this.card = card;
+	}
 	public TrucoEvent(int tableid,int hand,TrucoPlayer player,byte type,TrucoCard card)
 	{
 		this(tableid,hand,player,type);
 		this.card=card;
 	}
-    public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player, byte type, int value){
-        this(game, hand, player,type);
-        this.value = value;
-    }
+	public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player, byte type, int value){
+		this(game, hand, player,type);
+		this.value = value;
+	}
     
-    public TrucoGame getTrucoGame(){ //obtener el TrucoGame que disparo el evento
-        return game;
-    }
-    public int getNumberOfHand(){ //obtener el numero de mano del truco game
-        return hand;
-    }
-    public TrucoPlayer getTrucoPlayer(){ //obtener el player
-        return player;
-    }
-    public byte getTypeEvent(){ //tipo de evento
-        return type;
-    }
-    public TrucoCard[] getCards(){
-        return cards;
-    }
-    public TrucoCard getCard(){
-        return card;
-    }
+	public TrucoGame getTrucoGame(){ //obtener el TrucoGame que disparo el evento
+		return game;
+	}
+	public int getNumberOfHand(){ //obtener el numero de mano del truco game
+		return hand;
+	}
+	public TrucoPlayer getTrucoPlayer(){ //obtener el player
+		return player;
+	}
+	public byte getTypeEvent(){ //tipo de evento
+		return type;
+	}
+	public TrucoCard[] getCards(){
+		return cards;
+	}
+	public TrucoCard getCard(){
+		return card;
+	}
    public TrucoPlayer getPlayer (){
-        return player;
-    }
+		return player;
+	}
    public int getValue (){
-       return value;
+	   return value;
    }
    public void setTableNumber(int tableNumber)
 	{
 		this.tableNumber=tableNumber;
 	}
-    public int getTableNumber(){return tableNumber;}
+	public int getTableNumber(){return tableNumber;}
 public Document xmlCreateSendCards()
    {
 		Element ROOT =new Element ("SendCards");
@@ -197,14 +197,14 @@ public Document xmlCreateSendCards()
 			  Element CARTA=new Element("Carta");
 			  CARTA.setAttribute("kind",String.valueOf(carta.getKind()));
 			  CARTA.setAttribute("value",String.valueOf(carta.getValue()));
-              CARDS.addContent(CARTA);
-        }
+			  CARDS.addContent(CARTA);
+		}
 		ROOT.addContent(CARDS);
 		Document doc = new Document(ROOT);
 		return doc;
 
    }
-    public Document xmlCreateCantarTanto()
+	public Document xmlCreateCantarTanto()
    {//envia el tanto cantado por el jugador sea envido,real envido,......
 		Element ROOT = new Element ("CantarTanto");
 		
@@ -316,7 +316,7 @@ public Document xmlCreateSendCards()
 		return doc;
    }*/
 	   int tableIdAux;
-    int handAux;
+	int handAux;
 	String userAux;
 	int typeAux;
 	int tantoAux;
