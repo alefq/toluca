@@ -190,15 +190,16 @@ class TableEventManager
     public void firePlayerKickRequest(TrucoPlayer player) 
     {
         Iterator iter = tableListeners.iterator();
+        TableEvent event=new TableEvent();
+        event.setTableBeanRepresentation(table.getTableBeanRepresentation());
+        event.setPlayer(new TrucoPlayer [] {player,null});
+        event.setEvent(TableEvent.EVENT_playerKickRequest);
+        
         while(iter.hasNext()) 
         {
             ((TableListener)iter.next()).playerKickRequest
             (
-            	new TableEvent
-            	(
-            		TableEvent.EVENT_playerKickRequest,
-            		table, player, null,-1
-            	)
+            		event
             );
         }
     }
@@ -230,15 +231,17 @@ class TableEventManager
     public void firePlayerLeft() 
     {
         Iterator iter = tableListeners.iterator();
+        
+        TableEvent event=new TableEvent();
+        event.setTableBeanRepresentation(table.getTableBeanRepresentation());
+        event.setPlayer(new TrucoPlayer [] {table.getPlayer(),null});
+        event.setEvent(TableEvent.EVENT_playerLeft);
+       
         while(iter.hasNext()) 
         {
             ((TableListener)iter.next()).playerLeft
             (
-            	new TableEvent
-            	(
-            		TableEvent.EVENT_playerLeft,
-            		table, null, null,-1
-            	)
+            	event
             );
         }
     }

@@ -85,9 +85,21 @@ public class CommunicatorClient extends Communicator{
 	public void playerStandRequest(TableEvent event) {
 		super.sendXmlPackage(event);
 	}
-	/* (non-Javadoc)
-	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.toluca.event.RoomEvent)
-	 */
+	public void playerKickRequest(TableEvent event) {
+		super.sendXmlPackage(event);
+		
+	}
+	public void playerLeft(TableEvent event) {
+		super.sendXmlPackage(event);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	public void chatMessageSent(RoomEvent event) {
 		// TODO Auto-generated method stub
 		

@@ -255,13 +255,7 @@ implements ChatPanelContainer
 			Vector jugadores=tabela.getPlayers();
 			if(jugadores.contains(player))
 			{
-				int chair=tabela.getChair(player);
-				if(chair>=0)
-				{
-					TableEvent te=new TableEvent(TableEvent.EVENT_playerStanded,tabela,player,null,chair);
-					tabela.standPlayer(te);
-					
-				}
+				//se le hecha de la tabla
 				tabela.kickPlayer(player);
 				
 			}

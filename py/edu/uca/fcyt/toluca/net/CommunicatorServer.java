@@ -124,4 +124,8 @@ public class CommunicatorServer extends Communicator{
 		super.sendXmlPackage(event);
 		
 	}
+	public void playerKicked(TableEvent event) {
+		super.sendXmlPackage(event);
+		
+	}
 }

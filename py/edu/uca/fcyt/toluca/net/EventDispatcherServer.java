@@ -182,7 +182,45 @@ public class EventDispatcherServer extends EventDispatcher{
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerStand(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerStand(TableEvent event) {
+
+		
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerKickRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerKickRequest(TableEvent event) {
+		
+		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
+		TrucoPlayer playerCliente=event.getPlayer()[0];
+		
+		TableServer tableServer=room.getTableServer(tableClient.getId());
+		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
+		
+		tableServer.kickPlayer(playerServidor);
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerKicked(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerKicked(TableEvent event) {
 		// TODO Auto-generated method stub
 		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerLeft(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerLeft(TableEvent event) {
+
+		logger.info("Se resive un playerLeft");
+		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
+		TrucoPlayer playerCliente=event.getPlayer()[0];
+		
+		TableServer tableServer=room.getTableServer(tableClient.getId());
+		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
+		
+		logger.debug("Player : "+playerServidor.getName());
+		logger.debug("Table :  "+tableServer.getTableNumber());
+		tableServer.kickPlayer(playerServidor);
 	}
 }

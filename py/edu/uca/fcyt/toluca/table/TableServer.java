@@ -314,6 +314,16 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	{
 		// TODO Auto-generated method stub
 		System.out.println("Se fue: " + tptmp.getName());
+		int chair=getChair(tptmp);
+		if(chair>=0)
+		{//si estaba sentado primero que se pare
+			TableEvent e=new TableEvent();
+			e.setEvent(TableEvent.EVENT_playerStandRequest);
+			e.setTableServer(this);
+			e.setPlayer(new TrucoPlayer[]{tptmp,null});
+			e.setValue(chair);
+			standPlayer(e);
+		}
 		getPlayers().remove(tptmp);
 		
 		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, null,0);

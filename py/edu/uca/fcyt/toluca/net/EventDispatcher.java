@@ -49,9 +49,9 @@ public abstract class EventDispatcher {
 			case TableEvent.EVENT_gameFinished:break;
 			case TableEvent.EVENT_gameStarted:break;
 			case TableEvent.EVENT_gameStartRequest:break;
-			case TableEvent.EVENT_playerKicked:break;
-			case TableEvent.EVENT_playerKickRequest:break;
-			case TableEvent.EVENT_playerLeft:break;
+			case TableEvent.EVENT_playerKicked:playerKicked(event);break;
+			case TableEvent.EVENT_playerKickRequest:playerKickRequest(event);break;
+			case TableEvent.EVENT_playerLeft:playerLeft(event);break;
 			case TableEvent.EVENT_playerSit:playerSit(event);break;
 			case TableEvent.EVENT_playerSitRequest: playerSitRequest(event);break;
 			case TableEvent.EVENT_playerStanded:playerStand(event);break;
@@ -108,4 +108,7 @@ public abstract class EventDispatcher {
 	public abstract void playerSit(TableEvent event);
 	public abstract void playerStandRequest(TableEvent event);
 	public abstract void playerStand(TableEvent event);
+	public abstract void playerKickRequest(TableEvent event);
+	public abstract void playerKicked(TableEvent event);
+	public abstract void playerLeft(TableEvent event);
 }

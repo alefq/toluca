@@ -312,4 +312,35 @@ public class EventDispatcherClient extends EventDispatcher{
 		((RoomClient)room).setStandPlayer(chair,table);
 		
 	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerKickRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerKickRequest(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerKicked(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerKicked(TableEvent event) {
+		
+		
+		TableServer tableServer=event.getTableServer();
+		TrucoPlayer playerServer=event.getPlayer()[0];
+		
+		Table table=room.getTable(tableServer.getTableNumber());
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		
+		table.kickPlayer(playerClient);
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerLeft(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerLeft(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }
