@@ -16,21 +16,21 @@ import py.edu.uca.fcyt.toluca.table.Util;
  * @author Grupo Interfaz de Juego
  */
 public class TableEvent {
-	public static int EVENT_gameStartRequest = 0;
-	public static int EVENT_gameStarted = 1;
-	public static int EVENT_gameFinished = 2;
-	public static int EVENT_tableLocked = 3;
-	public static int EVENT_tableUnlocked = 4;
-	public static int EVENT_playerStandRequest = 5;
-	public static int EVENT_playerStanded = 6;
-	public static int EVENT_playerKickRequest = 7;
-	public static int EVENT_playerKicked = 8;
-	public static int EVENT_playerSitRequest = 9;
-	public static int EVENT_playerSit = 10;
-	public static int EVENT_signSendRequest = 11;
-	public static int EVENT_signSent = 12;
-	public static int EVENT_showPlayed = 13;
-	public static int EVENT_playerLeft=14;
+	public static final int EVENT_gameStartRequest = 0;
+	public static final int EVENT_gameStarted = 1;
+	public static final int EVENT_gameFinished = 2;
+	public static final int EVENT_tableLocked = 3;
+	public static final int EVENT_tableUnlocked = 4;
+	public static final int EVENT_playerStandRequest = 5;
+	public static final int EVENT_playerStanded = 6;
+	public static final int EVENT_playerKickRequest = 7;
+	public static final int EVENT_playerKicked = 8;
+	public static final int EVENT_playerSitRequest = 9;
+	public static final int EVENT_playerSit = 10;
+	public static final int EVENT_signSendRequest = 11;
+	public static final int EVENT_signSent = 12;
+	public static final int EVENT_showPlayed = 13;
+	public static final int EVENT_playerLeft=14;
 	private static int PLAYER_MASK = 0x4000;
 	private static int VALUE_MASK = 0x8000;
     
@@ -43,7 +43,7 @@ public class TableEvent {
     
 	/**
 	 * Crea una nueva instancia de TableEvent para el
-	 * envío de una seña.
+	 * envï¿½o de una seï¿½a.
 	 * @param table		mesa asociada
 	 * @param player	jugador asociado
 	 * @param value		valor asociado
@@ -55,7 +55,7 @@ public class TableEvent {
 	) 
 	{
 		// verificaciones ("comentarizado" para el ejemplo)
-		Util.verifParam(table != null, "Parámetro 'table' nulo");
+		Util.verifParam(table != null, "Parï¿½metro 'table' nulo");
         
 		this.event = event;
 		this.table = table;
@@ -72,7 +72,7 @@ public class TableEvent {
 		int value
 	) {
 		// verificaciones ("comentarizado" para el ejemplo)
-		Util.verifParam(table != null, "Parámetro 'table' nulo");
+		Util.verifParam(table != null, "Parï¿½metro 'table' nulo");
         
 		this.event = event;
 		this.tableServer = table;
@@ -99,9 +99,9 @@ public class TableEvent {
 	public Table getTable() { return table; }
     
 	/**
-	 * Retorna una identificación que contiene información sobre
-	 * los parámetros activos de este TableEvent y el evento
-	 * que se generó.
+	 * Retorna una identificaciï¿½n que contiene informaciï¿½n sobre
+	 * los parï¿½metros activos de este TableEvent y el evento
+	 * que se generï¿½.
 	 */
 	public int getID() {
 		int p, v;
@@ -114,7 +114,7 @@ public class TableEvent {
     
 	/**
 	 * Retorna verdadero el ID pasado indica que el campo
-	 * <code>player</code> está especificado.
+	 * <code>player</code> estï¿½ especificado.
 	 * @param id		ID de un TableEvent
 	 */
 	public static boolean isValueSpecified(int id) {
@@ -123,7 +123,7 @@ public class TableEvent {
     
 	/**
 	 * Retorna verdadero si el campo ID pasado indica que el
-	 * campo <code>value</code> está especificado.
+	 * campo <code>value</code> estï¿½ especificado.
 	 * @param id		ID de un TableEvent
 	 */
 	public static boolean isPlayerSpecified(int id) {
@@ -147,18 +147,18 @@ public class TableEvent {
 	
         
 		/**
-		 * Ejemplo de uso. La máscara juega el rol de tipo de
+		 * Ejemplo de uso. La mï¿½scara juega el rol de tipo de
 		 * evento y las 'isXSpecified' el rol de determinadores
-		 * de existencia o inexistencia de un cierto parámetro
-		 * para un cierto tipo (máscara).
-		 * El parámetro Table siempre está especificado.
+		 * de existencia o inexistencia de un cierto parï¿½metro
+		 * para un cierto tipo (mï¿½scara).
+		 * El parï¿½metro Table siempre estï¿½ especificado.
 		 */
   /*  public static void main(String[] args) {
 		TableEvent[] tEvents;
 		int id;
    
 		// crea 4 TableEvents con todas las
-		// combinaciones de parámetros activos
+		// combinaciones de parï¿½metros activos
 		tEvents = new TableEvent[] {
 			new TableEvent(TableEvent.EVENT_gameStarted, null, null, -1),
 			new TableEvent(TableEvent.EVENT_gameFinished, null, null, 1),
@@ -167,13 +167,13 @@ public class TableEvent {
 		};
    
 		// imprime la existencia o no de los
-		// parámetros de cada TableEvent
+		// parï¿½metros de cada TableEvent
 		for (int i = 0; i < 4; i++) {
-			// obtiene la másca del 'i'-ésimo TableEvent
+			// obtiene la mï¿½sca del 'i'-ï¿½simo TableEvent
 			id = tEvents[i].getID();
    
 			// imprime la existencia o inexistencia
-			// de c/u de los parámetros
+			// de c/u de los parï¿½metros
 			System.out.println("TableEvent numero " + i + ":");
 			System.out.println("- Evento: " + TableEvent.getEventFromID(id));
 			System.out.println("- Especifica 'player': " + TableEvent.isPlayerSpecified(id));

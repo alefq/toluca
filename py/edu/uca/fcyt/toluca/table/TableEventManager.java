@@ -252,15 +252,14 @@ class TableEventManager
 		table.setCursor(Cursor.WAIT_CURSOR);
     	
         Iterator iter = tableListeners.iterator();
+        TableEvent event=new TableEvent();
+        event.setEvent(TableEvent.EVENT_playerSitRequest);
+        event.setValue(chair);
+        event.setTableBeanRepresentation( table.getTableBeanRepresentation());
+        event.setPlayer(new TrucoPlayer[]{table.getPlayer()});
+        
         while(iter.hasNext()) {
-            ((TableListener)iter.next()).playerSitRequest
-            (
-            	new TableEvent
-            	(
-            		TableEvent.EVENT_playerSitRequest,
-            		table, table.getPlayer(), null,chair
-            	)
-            );
+            ((TableListener)iter.next()).playerSitRequest( event );
         }
     }
 

@@ -44,7 +44,24 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TableEvent event)
 	{
-		
+		switch(event.getEvent())
+		{
+			case TableEvent.EVENT_gameFinished:break;
+			case TableEvent.EVENT_gameStarted:break;
+			case TableEvent.EVENT_gameStartRequest:break;
+			case TableEvent.EVENT_playerKicked:break;
+			case TableEvent.EVENT_playerKickRequest:break;
+			case TableEvent.EVENT_playerLeft:break;
+			case TableEvent.EVENT_playerSit:playerSit(event);break;
+			case TableEvent.EVENT_playerSitRequest: playerSitRequest(event);break;
+			case TableEvent.EVENT_playerStanded:break;
+			case TableEvent.EVENT_showPlayed:break;
+			case TableEvent.EVENT_signSendRequest:break;
+			case TableEvent.EVENT_signSent:break;
+			case TableEvent.EVENT_tableLocked:break;
+			case TableEvent.EVENT_tableUnlocked:break;
+			
+		}
 	}
 	public void dispatchEvent(TrucoEvent event)
 	{
@@ -71,6 +88,8 @@ public abstract class EventDispatcher {
 	
 	//ACA VIENENLOS METODOS QUE SE TIENEN QUE IMPLEMENTAR EN LOS HIJOS PARA DESPACHAR LOS EVENTOS
 	
+	
+	//METODOS CORRESPONDIENTES AL ROOM_EVENT
 	public abstract void loginRequested(RoomEvent event);
 	public abstract void loginCompleted(RoomEvent event);
 	public abstract void playerJoined(RoomEvent event);
@@ -82,4 +101,8 @@ public abstract class EventDispatcher {
 	public abstract void tableCreated(RoomEvent event);
 	public abstract void tableJoinRequested(RoomEvent event);
 	public abstract void tableJoined(RoomEvent event);
+	
+	
+	public abstract void playerSitRequest(TableEvent event);
+	public abstract void playerSit(TableEvent event);
 }

@@ -9,6 +9,8 @@ package py.edu.uca.fcyt.toluca.table;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -17,12 +19,13 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.net.EventDispatcherServer;
 /**
  *
  * @author  PABLO JAVIER
  */
 public class TableServer  implements TrucoListener, ChatPanelContainer {
-    
+	static Logger logger = Logger.getLogger(TableServer.class);
     /** Holds value of property host. */
     private TrucoPlayer host;
     
@@ -59,13 +62,14 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     } // end addRoomListener        /** lock-begin */
     
     public void sitPlayer(TrucoPlayer player, int chair) {
-        pManager.sitPlayer(player, chair);
+        logger.debug("Sit player "+player+" chair "+chair);
+    	pManager.sitPlayer(player, chair);
         firePlayerSat(player, chair);
         
         if (player == getHost())
             pManager.setActualPlayer(getHost());
         
-        System.out.println(player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
+        logger.debug(player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
     }
     
     public void startGame() {
@@ -201,6 +205,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
         Iterator iter = tableListeners.listIterator();
         int i =0;
+        logger.debug("tableListeners.size() = "+tableListeners.size());
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
             System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());

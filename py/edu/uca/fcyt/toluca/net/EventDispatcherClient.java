@@ -12,6 +12,7 @@ import java.util.Iterator;
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -208,5 +209,32 @@ public class EventDispatcherClient extends EventDispatcher{
 					System.out.println("andaaaaaaaaaaaaaaaa bien la ref");
 			else
 					System.out.println("waaaaaaaaaaaaring no anda la ref");
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerSitRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerSitRequest(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerSit(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerSit(TableEvent event) {
+		
+		System.out.println("Se resive un player sit a la mesa "+event.getTableServer().getTableNumber());
+		System.out.println("player "+event.getPlayer()[1]);
+		System.out.println("chair "+event.getValue());
+		
+		TableServer tableServer=event.getTableServer();
+		TrucoPlayer playerServer=event.getPlayer()[1];
+		int chair=event.getValue();
+		
+		Table table=room.getTable(tableServer.getTableNumber());
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		table.sitPlayer(playerClient,chair);
+		
 	}
 }

@@ -7,6 +7,7 @@ import org.jdom.Element;
 
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 
@@ -83,13 +84,22 @@ public class CommunicatorServer extends Communicator{
 	}
 	public void tableCreated(RoomEvent event) {
 	
+		event.getTableServer().addTableServerListener(this);
 		super.sendXmlPackage(event);
 	}
 	
-	public void tableJoined(RoomEvent ev) {
-		super.sendXmlPackage(ev);
+	public void tableJoined(RoomEvent event) {
+		event.getTableServer().addTableServerListener(this);
+		
+		super.sendXmlPackage(event);
 		
 	}
 	
-
+	
+	
+	//EVENTOS DE LA TABLA
+	public void playerSit(TableEvent event) {
+		logger.debug("Player sit");
+		super.sendXmlPackage(event);
+	}
 }

@@ -14,6 +14,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 import py.edu.uca.fcyt.net.XmlPackagesSession;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
 
 
 
@@ -61,37 +62,45 @@ public class CommunicatorClient extends Communicator{
 		}
 		return ret;
 	}
-	public void loginRequested(RoomEvent ev) {
-		
-		System.out.println("Se va a enviar un roomEvent loginRequested");
-		super.sendXmlPackage(ev);
-		
+	
+	//REQUEST DEL ROOM
+	public void loginRequested(RoomEvent event) {
+		super.sendXmlPackage(event);
+	}
+	public void createTableRequested(RoomEvent event) {
+		super.sendXmlPackage(event);
+	}
+	public void tableJoinRequested(RoomEvent event) {
+
+		super.sendXmlPackage(event);
+	}
+	
+	
+	
+	//REQUEST DE LA TABLA
+	public void playerSitRequest(TableEvent event) {
+		super.sendXmlPackage(event);
 		
 	}
 	
-	public static void main(String[] args) {
-		DOMConfigurator.configure(System.getProperty("user.dir")
-                + System.getProperty("file.separator") + "log.xml");
-		CommunicatorClient comm=new CommunicatorClient();
-		
-		comm.sendXmlPackage(new JButton("Hello, world"));
-		
-		
-		try {
-			comm.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		while(true)
-				;
+	
+	
+	
+	/*public static void main(String[] args) {
+	DOMConfigurator.configure(System.getProperty("user.dir")
+            + System.getProperty("file.separator") + "log.xml");
+	CommunicatorClient comm=new CommunicatorClient();
+	
+	comm.sendXmlPackage(new JButton("Hello, world"));
+	
+	
+	try {
+		comm.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
-	public void createTableRequested(RoomEvent ev) {
-		super.sendXmlPackage(ev);
-	}
-	public void tableJoinRequested(RoomEvent ev) {
-
-		super.sendXmlPackage(ev);
-	}
-
+	while(true)
+			;
+}*/
 }

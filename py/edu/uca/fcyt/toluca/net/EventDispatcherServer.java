@@ -7,7 +7,9 @@ import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.LoginFailedException;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.TableBeanRepresentation;
 import py.edu.uca.fcyt.toluca.table.TableServer;
 import sun.rmi.runtime.GetThreadPoolAction;
 
@@ -121,6 +123,35 @@ public class EventDispatcherServer extends EventDispatcher{
 	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#tableJoined(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void tableJoined(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerSitRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerSitRequest(TableEvent event) {
+
+		logger.debug("Se resive un playerSitRequest");
+		logger.debug(event.getPlayer()[0]);
+		logger.debug("TableNumber"+event.getTableBeanRepresentation().getId());
+		logger.debug("Silla "+ event.getValue());
+		
+		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
+		TrucoPlayer playerCliente=event.getPlayer()[0];
+		int chair=event.getValue();
+		
+		TableServer tableServer=room.getTableServer(tableClient.getId());
+		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
+		
+		tableServer.sitPlayer(playerServidor,chair);
+			
+		
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#playerSit(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void playerSit(TableEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
