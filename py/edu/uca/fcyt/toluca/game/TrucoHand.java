@@ -179,7 +179,7 @@ public class TrucoHand {
               cardsToPlayer = statusTable.getPlayerCards((2*i+1)); // " '" """"2
               game.dealCards(pl,cardsToPlayer); //" """ 3*/
             }
-            // COMMENTED-out porque daba una excepción:
+            // TODO COMMENTED-out porque daba una excepción:
             // Teoría de PS: No hace falta. Llamada al pedo que no va a volver
             // Teoría de AA: Está mal el tipo del evento nomás.
             //game.fireCardsDealt();
@@ -195,6 +195,7 @@ public class TrucoHand {
             return;
         }
         playTurn = teams[playTurnNumber%2].getTrucoPlayerNumber(playTurnNumber/2);
+        
         game.fireTurnEvent(playTurn,TrucoEvent.TURNO_JUGAR_CARTA);
     }
     protected void nextPlayTurn() throws InvalidPlayExcepcion{

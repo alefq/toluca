@@ -46,7 +46,8 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
     public void play(TrucoEvent event){
         switch(event.getTypeEvent()){
             case TrucoEvent.ENVIAR_CARTAS:
-               recibirCartas(event.getPlayer(),event.getCards()); 
+               recibirCartas(event.getPlayer(),event.getCards());
+               //TODO aca parece que se tiene que llamar a recibir cartas 
                cardsDeal(event);
                break;
             case TrucoEvent.PLAYER_CONFIRMADO:
@@ -64,6 +65,9 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
 
     public void turn (TrucoEvent event){
 		//new Exception("Nada implementado aun :-(   ").printStackTrace();
+		//TODO ACA TOCO PARA ASIGNAR EL TURNO, VERIFICAR ESTO.
+		//trucoHandCli.startHand();
+		
 		fireTurnEvent(event.getPlayer(), TrucoEvent.JUGAR_CARTA);
     }
     public void endOfHand(TrucoEvent event){
@@ -133,7 +137,7 @@ public class TrucoGameClient extends TrucoGame implements TrucoListener{
             fireHandStarted();/*para que se preparen los jugadores*/
             trucoHandCli = new TrucoHandClient(this, numberOfHand-1); /*se crea un truco hand y guardo la referencia*/
             //TODO comentamos el starthand porque tiene que venir por que tiene que venir en un evento
-            //trucoHandCli.startHand();
+            trucoHandCli.startHand();
         }
     }
 }

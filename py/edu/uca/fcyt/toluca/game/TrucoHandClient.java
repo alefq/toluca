@@ -88,7 +88,8 @@ public class TrucoHandClient extends TrucoHand{
                 return;
             }
             playTurn = teams[playTurnNumber%2].getTrucoPlayerNumber(playTurnNumber/2);
-            game.fireTurnEvent(playTurn,TrucoEvent.TURNO_JUGAR_CARTA);
+            //TODO AA comente el fire turn event, supongo que tienen que venir en un paqutes 
+            //game.fireTurnEvent(playTurn,TrucoEvent.TURNO_JUGAR_CARTA);
         } catch (NullPointerException npe ) {
             System.out.println("\n####Error en playturn");
             if (statusTable == null)
@@ -306,6 +307,20 @@ public class TrucoHandClient extends TrucoHand{
         }
         return true;
     }
-    
+
+	/*el player juega una carta*/
+	protected void jugarCarta(TrucoPlay tp) throws InvalidPlayExcepcion{ //alguien juega una carta
+        
+		if (estadoActual != PRIMERA_RONDA && estadoActual != SEGUNDA_RONDA && estadoActual != TERCERA_RONDA)
+			throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > No se puede jugar carta"));
+		if(playTurn != tp.getPlayer())
+				throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > No es el turno de ese player"));
+		if (!statusTable.jugarCarta(playTurnNumber, tp.getCard())) //*****************************funcion que necesito de choco
+				throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > el player no puede jugar esa carta"));
+		game.firePlayEvent(playTurn,tp.getCard(),TrucoEvent.JUGAR_CARTA);
+        
+        
+		nextPlayTurn();
+	}    
     
 }
