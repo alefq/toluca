@@ -8,6 +8,7 @@ import py.edu.uca.fcyt.toluca.LoginFailedException;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.TableBeanRepresentation;
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -222,5 +223,38 @@ public class EventDispatcherServer extends EventDispatcher{
 		logger.debug("Player : "+playerServidor.getName());
 		logger.debug("Table :  "+tableServer.getTableNumber());
 		tableServer.kickPlayer(playerServidor);
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#gameStartRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void gameStartRequest(TableEvent event) {
+
+		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
+		TableServer tableServer=room.getTableServer(tableClient.getId());
+		
+		logger.info("Llego una solicitud para iniciar el juego en la mesa "+tableServer.getTableNumber());
+		
+		tableServer.startGame();
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#gameStarted(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void gameStarted(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#receiveCards(py.edu.uca.fcyt.toluca.event.TrucoEvent)
+	 */
+	public void receiveCards(TrucoEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#infoGame(py.edu.uca.fcyt.toluca.event.TrucoEvent)
+	 */
+	public void infoGame(TrucoEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }

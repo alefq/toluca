@@ -47,8 +47,8 @@ public abstract class EventDispatcher {
 		switch(event.getEvent())
 		{
 			case TableEvent.EVENT_gameFinished:break;
-			case TableEvent.EVENT_gameStarted:break;
-			case TableEvent.EVENT_gameStartRequest:break;
+			case TableEvent.EVENT_gameStarted:gameStarted(event);break;
+			case TableEvent.EVENT_gameStartRequest:gameStartRequest(event);break;
 			case TableEvent.EVENT_playerKicked:playerKicked(event);break;
 			case TableEvent.EVENT_playerKickRequest:playerKickRequest(event);break;
 			case TableEvent.EVENT_playerLeft:playerLeft(event);break;
@@ -66,11 +66,82 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TrucoEvent event)
 	{
-		
+		switch(event.getType())
+		{
+			case TrucoEvent.CANTO_ENVIDO:break;
+			case TrucoEvent.CANTO_FLOR:break;
+			case TrucoEvent.CARTAS_REPARTIDAS:break;
+			case TrucoEvent.CERRARSE:break;
+			case TrucoEvent.CON_FLOR_ME_ACHICO:break;
+			case TrucoEvent.CONTRA_FLOR:break;
+			case TrucoEvent.CONTRA_FLOR_AL_RESTO:break;
+			case TrucoEvent.ENVIAR_CARTAS:receiveCards(event);break;
+			case TrucoEvent.ENVIDO:break;
+			case TrucoEvent.FALTA_ENVIDO:break;
+			case TrucoEvent.FIN_DE_JUEGO:infoGame(event);break;
+			case TrucoEvent.FIN_DE_MANO:infoGame(event);break;
+			case TrucoEvent.FIN_DE_RONDA:break;
+			case TrucoEvent.FLOR:break;
+			case TrucoEvent.INICIO_DE_JUEGO:infoGame(event);break;
+			case TrucoEvent.INICIO_DE_MANO:infoGame(event);break;
+			case TrucoEvent.JUGAR_CARTA:break;
+			case TrucoEvent.ME_VOY_AL_MAZO:break;
+			case TrucoEvent.NO_QUIERO:break;
+			case TrucoEvent.PASO_ENVIDO:break;
+			case TrucoEvent.PASO_FLOR:break;
+			case TrucoEvent.PLAYER_CONFIRMADO:break;
+			case TrucoEvent.QUIERO:break;
+			case TrucoEvent.REAL_ENVIDO:break;
+			case TrucoEvent.RETRUCO:break;
+			case TrucoEvent.SIN_MENSAJES:break;
+			case TrucoEvent.TRUCO:break;
+			case TrucoEvent.TURNO_CANTAR_ENVIDO:break;
+			case TrucoEvent.TURNO_CANTAR_FLOR:break;
+			case TrucoEvent.TURNO_JUGAR_CARTA:break;
+			case TrucoEvent.TURNO_RESPONDER_CONTRAFLOR:break;
+			case TrucoEvent.TURNO_RESPONDER_CONTRAFLORALRESTO:break;
+			case TrucoEvent.TURNO_RESPONDER_ENVIDO:break;
+			case TrucoEvent.TURNO_RESPONDER_FALTAENVIDO:break;
+			case TrucoEvent.TURNO_RESPONDER_REALENVIDO:break;
+			case TrucoEvent.TURNO_RESPONDER_RETRUCO:break;
+			case TrucoEvent.TURNO_RESPONDER_TRUCO:break;
+			case TrucoEvent.TURNO_RESPONDER_VALECUATRO:break;
+			case TrucoEvent.VALE_CUATRO:break;
+			
+			
+		}
 	}
 	public void dispatchEvent(TrucoPlay event)
 	{
-		
+		switch(event.getType())
+		{
+			case TrucoPlay.CANTO_ENVIDO:break;
+			case TrucoPlay.CANTO_FLOR:break;
+			case TrucoPlay.CARTAS_REPARTIDAS:break;
+			case TrucoPlay.CERRARSE:break;
+			case TrucoPlay.CON_FLOR_ME_ACHICO:break;
+			case TrucoPlay.CONTRA_FLOR:break;
+			case TrucoPlay.CONTRA_FLOR_ALRESTO:break;
+			case TrucoPlay.ENVIDO:break;
+			case TrucoPlay.FALTA_ENVIDO:break;
+			case TrucoPlay.FIN_DE_JUEGO:break;
+			case TrucoPlay.FIN_DE_MANO:break;
+			case TrucoPlay.FLOR:break;
+			case TrucoPlay.INICIO_DE_JUEGO:break;
+			case TrucoPlay.INICIO_DE_MANO:break;
+			case TrucoPlay.JUGAR_CARTA:break;
+			case TrucoPlay.ME_VOY_AL_MAZO:break;
+			case TrucoPlay.NO_QUIERO:break;
+			case TrucoPlay.PASO_ENVIDO:break;
+			case TrucoPlay.PASO_FLOR:break;
+			case TrucoPlay.PLAYER_CONFIRMADO:break;
+			case TrucoPlay.QUIERO:break;
+			case TrucoPlay.REAL_ENVIDO:break;
+			case TrucoPlay.RETRUCO:break;
+			case TrucoPlay.SIN_MENSAJES:break;
+			case TrucoPlay.TRUCO:break;
+			case TrucoPlay.VALE_CUATRO:break;
+		}
 	}
 	
 	/**
@@ -94,21 +165,40 @@ public abstract class EventDispatcher {
 	public abstract void loginRequested(RoomEvent event);
 	public abstract void loginCompleted(RoomEvent event);
 	public abstract void playerJoined(RoomEvent event);
-	public abstract void playerLeft(RoomEvent event);
 	public abstract void loginFailed(RoomEvent event);
+	
+	public abstract void playerLeft(RoomEvent event);
+	
 	public abstract void chatRequested(RoomEvent event);
 	public abstract void chatSend(RoomEvent event);
+	
 	public abstract void createTableRequest(RoomEvent event);
 	public abstract void tableCreated(RoomEvent event);
+	
 	public abstract void tableJoinRequested(RoomEvent event);
 	public abstract void tableJoined(RoomEvent event);
 	
 	
+	
+	
+	//METODOS CORRESPONDIENTES A LA TABLA
 	public abstract void playerSitRequest(TableEvent event);
 	public abstract void playerSit(TableEvent event);
+	
 	public abstract void playerStandRequest(TableEvent event);
 	public abstract void playerStand(TableEvent event);
+	
 	public abstract void playerKickRequest(TableEvent event);
 	public abstract void playerKicked(TableEvent event);
+	
 	public abstract void playerLeft(TableEvent event);
+	
+	public abstract void gameStartRequest(TableEvent event);
+	public abstract void gameStarted(TableEvent event);
+	
+	
+	//METODOS DEL TRUCO GAME
+	public abstract void receiveCards(TrucoEvent event);
+	
+	public abstract void infoGame(TrucoEvent event);
 }

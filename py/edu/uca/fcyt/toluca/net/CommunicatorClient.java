@@ -93,7 +93,10 @@ public class CommunicatorClient extends Communicator{
 		super.sendXmlPackage(event);
 		
 	}
-	
+	public void gameStartRequest(TableEvent event) {
+		super.sendXmlPackage(event);
+		
+	}
 	
 	
 	

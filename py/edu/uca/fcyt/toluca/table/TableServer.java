@@ -107,7 +107,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 
         //empieza realmente el juego y se disparan los eventos correspondientes
         tGame.startGame();
-        
+        tGame.setTableNumber(getTableNumber());//esto es necesario para que se sepa de donde sacar el game en el cliente
     }
     
     public TrucoTeam[] createTeams() {

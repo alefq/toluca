@@ -9,6 +9,9 @@ import org.jdom.Element;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -127,5 +130,61 @@ public class CommunicatorServer extends Communicator{
 	public void playerKicked(TableEvent event) {
 		super.sendXmlPackage(event);
 		
+	}
+	public void gameStarted(TableEvent event) {
+		TrucoGame trucoGame=event.getTableServer().getTrucoGame();
+		trucoGame.addTrucoListener(this);
+		super.sendXmlPackage(event);
+		
+	}
+	
+	//METODOS DEL TRUCOGAME
+	
+	public void play(TrucoEvent event) {
+		logger.info("Play"+getTrucoPlayer().getName());
+		
+	}
+	
+	public void playResponse(TrucoEvent event) {
+		
+	logger.info("Play Response "+getTrucoPlayer().getName());	
+	}
+	
+	public void turn(TrucoEvent event) {
+		logger.info("Turn "+getTrucoPlayer().getName());
+		
+	}
+	
+	public void endOfHand(TrucoEvent event) {
+	
+		logger.info("End of Hand");
+	}
+	
+	public void cardsDeal(TrucoEvent event) {
+	
+		logger.info("Se envia Cards Deal");
+		TrucoCard[] cards=event.getCards();
+		logger.info("Las cartas de "+event.getPlayer().getName()+ " son");
+		for(int i=0;i<cards.length;i++)
+		{
+			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
+		}
+		super.sendXmlPackage(event);
+		
+	}
+	
+	public void handStarted(TrucoEvent event) {
+	
+		super.sendXmlPackage(event);
+	}
+	
+	public void gameStarted(TrucoEvent event) {
+	
+		logger.info("gameStarted");
+	}
+	
+	public void endOfGame(TrucoEvent event) {
+	
+		logger.info("End of game");
 	}
 }

@@ -21,7 +21,19 @@ public class TrucoGame extends Game
 	
 	/** Creates a new instance of trucoGame */
 	LinkedList listenerlist; //lista de todos los listener
-	
+	private int tableNumber;
+	/**
+	 * @return Returns the tableNumber.
+	 */
+	public int getTableNumber() {
+		return tableNumber;
+	}
+	/**
+	 * @param tableNumber The tableNumber to set.
+	 */
+	public void setTableNumber(int tableNumber) {
+		this.tableNumber = tableNumber;
+	}
 	protected int[] points = new int [2]; //puntajes de los teams
 	protected TrucoTeam[] teams = new TrucoTeam[2]; //equipos que juegan
 	protected TrucoHand trucoHand; //mano actual
@@ -93,6 +105,7 @@ public class TrucoGame extends Game
 	public void dealtCards(TrucoPlayer tp, TrucoCard[] card)
 	{//reparte las cartas a los jugadores
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,(byte)0,card);
+		event.setTableNumber(getTableNumber());
 		for (int i=0; i<listenerlist.size(); i++)
 		{
 			System.out.println(i+"ejecutando cardsDEal de:" + getClass().getName());

@@ -14,7 +14,11 @@ import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -343,4 +347,61 @@ public class EventDispatcherClient extends EventDispatcher{
 		// TODO Auto-generated method stub
 		
 	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#gameStartRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void gameStartRequest(TableEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#gameStarted(py.edu.uca.fcyt.toluca.event.TableEvent)
+	 */
+	public void gameStarted(TableEvent event) {
+
+		System.out.println("Llego un gameStarted");
+		TableServer tableServer=event.getTableServer();
+		Table table=room.getTable(tableServer.getTableNumber());
+		
+		
+		TrucoTeam[] trucoTeam=table.createTeams();
+		TrucoGameClient trucoGameClient=new TrucoGameClient(trucoTeam[0],trucoTeam[1]);
+		trucoGameClient.addTrucoListener(commClient);
+		
+		trucoGameClient.startGameClient();
+		table.startGame(trucoGameClient);
+	}
+
+	public void infoGame(TrucoEvent event) {
+		System.out.println(" info del juego ");
+		TrucoPlayer playerServer=event.getPlayer();
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		Table table=room.getTable(event.getTableNumber());
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		trucoGameClient.play(event);
+		
+	}
+	public void receiveCards(TrucoEvent event) {
+
+		
+		int tableId=event.getTableNumber();
+		System.out.println("Se reciben las cartas para el juego de la tabla "+tableId);
+		System.out.println(" cards "+event.getCards().length);
+		System.out.println(" hand "+event.getNumberOfHand());
+		System.out.println(" cartas del player "+event.getPlayer().getName());
+		TrucoPlayer playerServer=event.getPlayer();
+		TrucoPlayer playerClient=room.getPlayer(playerServer.getName());
+		Table table=room.getTable(tableId);
+		TrucoCard[] cards=event.getCards();
+		System.out.println("Se resiven las cartas");
+		for(int i=0;i<cards.length;i++)
+		{
+			System.out.println(cards[i].getKind() + " "+cards[i].getValue());
+		}
+		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
+		trucoGameClient.recibirCartas(playerClient,event.getCards());
+	}
+
 }

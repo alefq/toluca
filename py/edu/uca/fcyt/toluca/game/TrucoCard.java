@@ -14,6 +14,9 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+
 import py.edu.uca.fcyt.game.Card;
 
 public class TrucoCard extends Card {
@@ -71,9 +74,16 @@ public class TrucoCard extends Card {
             if (tc == null){
                 System.out.println("truco card error tc == null");
             }
-            if (kind == tc.getKind() && value == tc.getValue())
+            if (getKind() == tc.getKind() && getValue() == tc.getValue())
 			return true;
 	    else 
 	    	return false;
+	}
+	public static void main(String[] args) {
+		TrucoCard card=new TrucoCard(Card.BASTO,7);
+		Card a=new Card(Card.COPA,2);
+		XMLEncoder e=new XMLEncoder(new BufferedOutputStream(System.out));
+		e.writeObject(card);
+		e.close();
 	}
 }

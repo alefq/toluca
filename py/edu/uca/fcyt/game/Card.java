@@ -12,8 +12,8 @@ public class Card
 	public static final int BASTO = 4;
 	public static final Hashtable kNames = getKindNames();
 
-	protected byte value;			// valor de la carta
-	protected byte kind;			// palod de la carta
+	private byte value;			// valor de la carta
+	private byte kind;			// palod de la carta
 	protected boolean flipped;	// carta cerrada (flipped) o abierta
 
 	// construye una carta
@@ -26,15 +26,15 @@ public class Card
 	{
 	}
 
-	// devuelven el valor y el palo de la carta, y si está abierta o no
-	public int getValue() { return value; }
-	public int getKind() { return kind; }
+	// devuelven el valor y el palo de la carta, y si estï¿½ abierta o no
+	public byte getValue() { return value; }
+	public byte getKind() { return kind; }
 	public boolean isFlipped() { return flipped; }
 
 	// establece el valor de la carta
 	public Card setValue(int value)
 	{
-		if (value < 1 || value > 12) throw new RuntimeException("Valor inválido");
+		if (value < 1 || value > 12) throw new RuntimeException("Valor invï¿½lido");
 		this.value = (byte) value;
 		return this;
 	}
@@ -42,12 +42,12 @@ public class Card
 	// establece el palo de la carta
 	public Card setKind(int kind)
 	{
-		if (kind < 1 || kind > 4) throw new RuntimeException("Palo inválido");
+		if (kind < 1 || kind > 4) throw new RuntimeException("Palo invï¿½lido");
 		this.kind = (byte) kind;
 		return this;
 	}
 
-	// establece si la carta está abierta o no
+	// establece si la carta estï¿½ abierta o no
 	public Card setFlipped(boolean flipped)
 	{
 		this.flipped = flipped;
@@ -68,8 +68,8 @@ public class Card
 	}
 	
 	/**
-	 * Retorna el código hash.
-	 * c1.hashCode() == c2.hashCode(), si y sólo si 
+	 * Retorna el cï¿½digo hash.
+	 * c1.hashCode() == c2.hashCode(), si y sï¿½lo si 
 	 * c1.getValue() == c2.Value() y c1.getKind() == c2.getKind()
 	 */
 	public int hashCode()
@@ -78,7 +78,7 @@ public class Card
 	}
     
 	/**
-	 * Retorna verdadero si una carta es igual a ésta. Si 
+	 * Retorna verdadero si una carta es igual a ï¿½sta. Si 
 	 * <code> o </code> no es un Card, retorna falso.
 	 * @param o		la carta en cuestion
 	 */
@@ -122,7 +122,7 @@ public class Card
 	}
     
 	/**
-	 * Retorna la descripción de la carta
+	 * Retorna la descripciï¿½n de la carta
 	 */
 	public String getDescription()
 	{

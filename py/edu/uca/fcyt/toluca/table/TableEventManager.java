@@ -83,17 +83,14 @@ class TableEventManager
 		table.setCursor(Cursor.WAIT_CURSOR);
 
         Iterator iter = tableListeners.iterator();
+        TableEvent event=new TableEvent();
+		event.setEvent(TableEvent.EVENT_gameStartRequest);
+		event.setTableBeanRepresentation(table.getTableBeanRepresentation());
+		
         while(iter.hasNext()) 
         {
             System.out.println("iterando...");
-            ((TableListener)iter.next()).gameStartRequest
-            (
-            	new TableEvent
-            	(
-            		TableEvent.EVENT_gameStartRequest,
-            		table, null, null,-1
-            	)
-            );
+            ((TableListener)iter.next()).gameStartRequest  (     event    );
         }
     }
 
