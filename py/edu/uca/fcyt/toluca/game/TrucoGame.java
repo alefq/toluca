@@ -354,7 +354,7 @@ public class TrucoGame extends Game
 	{
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.FIN_DE_JUEGO);
 		event.setTableNumber(getTableNumber());
-		event.setTableNumber(getTableNumber());
+//		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).endOfGame(event);

@@ -13,7 +13,7 @@ public class TableModelRanking extends AbstractTableModel{
 
 	private ArrayList datos;
 	private final String [] columnNames={"User","Puntaje"};
-	
+    
 	public TableModelRanking()
 	{
 		datos=new ArrayList();
@@ -85,7 +85,8 @@ public class TableModelRanking extends AbstractTableModel{
 			}
 			
 		}
-		deleteRow(cont);
+		if(!seguir)
+		    deleteRow(cont);
 		
 	}
 	public void actualizarPuntaje(TrucoPlayer trucoPlayer)
@@ -105,5 +106,5 @@ public class TableModelRanking extends AbstractTableModel{
 	{
 		return columnNames[col];
 	}
-	
+
 }

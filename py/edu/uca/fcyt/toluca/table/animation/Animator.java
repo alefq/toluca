@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.table.PlayTable;
 import py.edu.uca.fcyt.toluca.table.Util;
 
 /**
@@ -16,7 +17,7 @@ import py.edu.uca.fcyt.toluca.table.Util;
 
 public class Animator implements Runnable, ObjectsPainter
 {
-	private Graphics2DPainter gPainter;
+	private PlayTable gPainter;
 	protected Vector anims; // c. en la mesa
 	private Vector faces; // caritas
 	public boolean drawComplete;
@@ -30,9 +31,9 @@ public class Animator implements Runnable, ObjectsPainter
 	/**
      * Construye un nuevo Animator con 'gPainter' asociado
      */
-	public Animator(Graphics2DPainter gPainter)
+	public Animator(PlayTable painter)
 	{
-		this.gPainter = gPainter;
+		this.gPainter = painter;
 		anims = new Vector(0, 3);
 		faces = new Vector(0, 2);
 		animCount ++;

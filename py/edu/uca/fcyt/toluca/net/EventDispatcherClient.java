@@ -290,10 +290,12 @@ public class EventDispatcherClient extends EventDispatcher {
         table.setTableNumber(tableNumber);
 
         table.addTableListener(commClient);
+        //PP total - Ale
+        table.setRoom((RoomClient)room);
         room.addTable(table);
-        table.addPlayer(playerCreador);
-
         table.initResources();
+        table.addPlayer(playerCreador);
+        
 
         if (mostrar) {
             table.getJFrame().setVisible(true);
@@ -409,7 +411,7 @@ public class EventDispatcherClient extends EventDispatcher {
                 .getTrucoGame();
 
         if (trucoGameClient == null)//si no hay juego nomas se levanta, si ya
-            // hay juego va a resivir solamente el
+            // hay juego va a recibir solamente el
             // playerkick
             table.standPlayer(chair);
 
@@ -783,7 +785,8 @@ public class EventDispatcherClient extends EventDispatcher {
         logeador.log(Level.WARNING, "se destruyo la tabla "
                 + event.getTableServer().getTableNumber());
         Table table = room.getTable(event.getTableServer().getTableNumber());
-        ((RoomClient) room).tableDestroyed(table);
+        if(table != null)
+            ((RoomClient) room).tableDestroyed(table);
 
     }
 
@@ -810,9 +813,7 @@ public class EventDispatcherClient extends EventDispatcher {
 		roomClient.actualizarRanking(playerClient);
 		
 		Table table = room.getTable(event.getTableNumber());
-
-        
-        
+        table.actualizarRanking(playerClient);        
         table.showSystemMessage("Jugador: "+event.getPlayer().getName()+" - Ranking viejo: "+
         		event.getPlayer().getOldRating()+"- Ranking nuevo: "+event.getPlayer().getRating());
 

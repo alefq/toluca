@@ -46,7 +46,7 @@ class TrListener implements TrucoListener
 	{
 		//System.out.println("Game started for player " + getAssociatedPlayer().getName());
 //		new Throwable("").printStackTrace(System.out);
-		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
+		table.getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
 		table.getJTrucoTable().getJButton("Ayuda").setEnabled(false);
 	}
 	
@@ -273,7 +273,7 @@ class TrListener implements TrucoListener
 		{			
 			sStrings[sStrings.length - 1] = "Presiona Ok para continuar";
 			table.setStatus(Table.WAIT);
-			table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
+			table.getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
 		}
 			
 		table.getTTextAnimator().showStrings
@@ -329,7 +329,7 @@ class TrListener implements TrucoListener
 		//System.out.println("New hand started for player " + getAssociatedPlayer().getName());
 		
 		endOfHand = false;
-		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
+		table.getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
 		cManager = getCManager();
 		
 		table.clearSigns();

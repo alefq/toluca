@@ -7,17 +7,17 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-class JPlayers extends JScrollPane {
+public class JPlayers extends JScrollPane {
 
 	//private JScrollPane scroll;
-	private DefaultListModel listModel;
-	private JList list;
+	private DefaultListModel listModel;	
 
 	private float matiz = 170;
 	private float saturacion = 160;
 	private float luminosidad = 110;
 	private int sel = -1;
 
+	private JList jList = null;
 	public JPlayers(){
 		super();
 		initComponents();
@@ -27,10 +27,10 @@ class JPlayers extends JScrollPane {
 
 		listModel = new DefaultListModel();
 
-		list = new JList(listModel);
+//		list = new JList(listModel);
      	setViewportBorder(
      		BorderFactory.createLineBorder(Color.black));
-        getViewport().add(list);
+     	this.setViewportView(getJList());        
     }
 
 
@@ -45,7 +45,7 @@ class JPlayers extends JScrollPane {
 	
 	public String getSelection()
 	{
-		return (String) list.getSelectedValue();
+		return (String) getJList().getSelectedValue();
 	}
 
 
@@ -62,4 +62,16 @@ class JPlayers extends JScrollPane {
 	}*/
 
 
-}
+	/**
+	 * This method initializes jList	
+	 * 	
+	 * @return javax.swing.JList	
+	 */    
+	private JList getJList() {
+		if (jList == null) {
+			jList = new JList();
+			jList.setModel(listModel);
+		}
+		return jList;
+	}
+ }

@@ -1,3 +1,10 @@
+/* PlayTablee.java
+ * Created on Feb 9, 2005
+ *
+ * Last modified: $Date: 2005/02/10 07:55:55 $
+ * @version $Revision: 1.9 $ 
+ * @author afeltes
+ */
 package py.edu.uca.fcyt.toluca.table;
 
 import java.awt.Cursor;
@@ -7,234 +14,230 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
-import py.edu.uca.fcyt.toluca.table.animation.Graphics2DPainter;
 import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
-//import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
 
 /**
- * Maneja el panel donde se juega propiamente.
- * Encargado de animar las cartas y mostrar las caritas.
+ * 
+ * @author afeltes
+ *  
  */
-class PlayTable extends JPanel 
-implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
-{
-	private boolean paintIt = false;
+public class PlayTable extends JPanel {
 
-	private BufferedImage[] biBuff;		// Búfer de la mesa a pintar
-	private AffineTransform afTrans;	// Transformación a aplicar
+    private boolean paintIt = false;
 
-	private Image img;
-	private Graphics2D grImg;
-	private Vector oPainter;
-	
-	private int currBuff = 0;
+    private BufferedImage[] biBuff = null; // Búfer de la mesa a pintar
 
-	/** dimensiones de la mesa */
-	final public static int TABLE_WIDTH = 676;
-	final public static int TABLE_HEIGHT = 489;
+    private AffineTransform afTrans = null; // Transformación a aplicar
 
-	int centerX = TABLE_WIDTH / 2;
-	int centerY = TABLE_HEIGHT / 2;
-	
-	// desplazamiento de la salida
-	public int offsetX, offsetY;
+    private Image img = null;
 
-	private PTableListener ptListener;		 // list. de eventos
-	private final Animator animator;		// animador de cartas
-	
-	Toolkit toolkit;
-	Object waitFor;
+    private Graphics2D grImg = null;
 
-	/**
-	 * Construye un PlayTable con 'ptListener'
-	 * como listener de eventos
-	 */
-	public PlayTable(PTableListener ptListener)
-	{
-		setDoubleBuffered(false);
-		addComponentListener(this);
-		addMouseListener(this);
-		this.ptListener = ptListener;
-		toolkit = getToolkit();
-		biBuff = new BufferedImage[2];
-		afTrans = new AffineTransform();
-		animator = new Animator(this);
-		oPainter = new Vector();
-		addListener(animator);
-	}
+    private Vector oPainter = null;
 
-	/** rutina de pintado */
-	public void paint(Graphics g)
-	{
-		synchronized(animator)
-		{
-			super.paint(g);
-			if (animator.drawComplete) switchImages();
-			g.drawImage(biBuff[currBuff], offsetX, offsetY, this);
-		}
-	}
+    private int currBuff = 0;
 
-	/** Evento de cambio de tamaño del componente */
-	public void componentResized(ComponentEvent e)
-	{
-		Rectangle bounds;
-		double scale;
-		
-//		img = this.createImage(1000, 1000);
-//		grImg = (Graphics2D) img.getGraphics();
-//		
-//		grImg.fillOval(0, 0, 100, 100);
-		
-		// obtiene las coordenadas del área de pintado
-		bounds = getBounds();
+    /** dimensiones de la mesa */
+    final public static int TABLE_WIDTH = 676;
 
-		// establece la escala y el desplazamiento de la mesa
-		// con respecto al Graphic donde se la dibujará
-		if (bounds.getWidth() / bounds.getHeight() < (double) TABLE_WIDTH / TABLE_HEIGHT)
-		{
-			scale = bounds.getWidth() / TABLE_WIDTH;
-			offsetX = 0;
-			offsetY = (int) (bounds.getHeight() - (TABLE_HEIGHT * scale)) / 2;
-		}
-		else
-		{
-			scale = bounds.getHeight() / TABLE_HEIGHT;
-			offsetX = (int) (bounds.getWidth() - (TABLE_WIDTH * scale)) / 2;
-			offsetY = 0;
-		}
+    final public static int TABLE_HEIGHT = 489;
 
-		// crea los BufferedImages
-		for (int i = 0; i < biBuff.length; i++)
-			biBuff[i] = new BufferedImage
-			(
-				(int) (TABLE_WIDTH * scale), 
-				(int) (TABLE_HEIGHT * scale),
-				BufferedImage.TYPE_3BYTE_BGR
-			);
-			
-		// crea la transformación y la carga
-		afTrans = new AffineTransform();
-		afTrans.scale(scale, scale);
-		afTrans.translate(TABLE_WIDTH/2, TABLE_HEIGHT/2);
-		
-		fireSetOut();
-	}
-	
-	// a implementar
-	public void componentMoved(ComponentEvent e) {}
-	public void componentShown(ComponentEvent e) {}
-	public void componentHidden(ComponentEvent e) {}
-	public void mouseClicked(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
+    private int centerX = TABLE_WIDTH / 2;
 
-	/**
-	 * Captura el evento click del mouse y llama a
-	 * mouseClicked de 'ptListener' con las coordenadas
-	 * transformadas y el MouseEvent 'e'
-	 */
-	public void mousePressed(MouseEvent e)
-	{
-		Point2D p;
-		
-		try
-		{
-			p = afTrans.createInverse().transform
-			(
-				new Point
-				(
-					e.getX() - offsetX, 
-					e.getY()  - offsetY
-				), 
-				null
-			);
-		}
-		catch (Exception ex) {	throw new RuntimeException(ex);	}
+    private int centerY = TABLE_HEIGHT / 2;
 
-		ptListener.mouseClicked((int) p.getX(), (int) p.getY(), e);
-	}
-	
-	/**
-     * Retorna el animador de objetos
+    // desplazamiento de la salida
+    public int offsetX, offsetY;
+
+    private PTableListener ptListener = null; // list. de eventos
+
+    private Animator animator = null; // animador de cartas
+
+    private Toolkit toolkit = null;
+
+    private Object waitFor = null;
+
+    public static void main(String[] args) {
+    }
+
+    /**
+     * This is the default constructor
      */
-	public Animator getAnimator()
-	{
-		return animator;
-	}
+    public PlayTable() {
+        super();
+        initialize();
+    }
 
-	public BufferedImage getBImage()
-	{
-		return biBuff[getBuffIndex()];
-	}
-	
-	public AffineTransform getTransform()
-	{
-		return afTrans;
-	}
+    /**
+     * @param table
+     */
+    public PlayTable(Table table) {
 
-	public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) 
-	{
-		System.out.println("-------------Image Update--------------");
-//		if ((infoflags & ImageObserver.ALLBITS) != 0)
-//			switchImages();
-		
-		return false;
-	}
-	
-	private void switchImages()
-	{
-		if (animator.drawComplete)
-			currBuff = (currBuff + 1) % biBuff.length;
-	}
-	public void addListener(ObjectsPainter obj)
-	{
-		oPainter.add(obj);
-	}
-	
-	/**
-	 * Dispara el evento {@see ObjectsPainter.setOut
-	 * (BufferedImage biOut, AffineTransform afTrans)}
-	 * de todos los {@see ObjectsPainter}s registrados.
-	 */
-	private void fireSetOut()
-	{
-		for (int i = 0; i < oPainter.size(); i++)
-			((ObjectsPainter) oPainter.get(i)).setOut(biBuff, afTrans);
-	}
-	/* (non-Javadoc)
-	 * @see py.edu.uca.fcyt.toluca.table.animation.Graphics2DPainter#getBuffIndex()
-	 */
-	public int getBuffIndex()
-	{
-		return (currBuff + 1) % biBuff.length;
-	}
-	
-	public int getOutWidth()
-	{
-		return TABLE_WIDTH; 
-	}
+        // TODO Auto-generated constructor stub
+    }
 
-	public int getOutHeight()
-	{
-		return TABLE_HEIGHT; 
-	}
-	
-	public void setCursor(int type)
-	{
-		setCursor(new Cursor(type));	
-	}
+    /**
+     * This method initializes this
+     * 
+     * @return void
+     */
+    private void initialize() {
+        this.setSize(300, 200);
+    }
+
+    public int getBuffIndex() {
+        return (currBuff + 1) % biBuff.length;
+    }
+
+    public PTableListener getPtListener() {
+        return ptListener;
+    }
+
+    public void setPtListener(PTableListener ptListener) {
+        this.ptListener = ptListener;
+    }
+
+    /**
+     *  
+     */
+    public void inicializar() {
+        setDoubleBuffered(false);
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                pTablecomponentResized(e);
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            /*
+             * (non-Javadoc)
+             * 
+             * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+             */
+            public void mousePressed(MouseEvent e) {
+                pTableMousePressed(e);
+            }
+        });
+        //		this.ptListener = ptListener;
+        toolkit = getToolkit();
+        biBuff = new BufferedImage[2];
+        afTrans = new AffineTransform();
+        animator = new Animator(this);
+        oPainter = new Vector();
+        addListener(animator);
+    }
+
+    /**
+     * Captura el evento click del mouse y llama a mouseClicked de 'ptListener'
+     * con las coordenadas transformadas y el MouseEvent 'e'
+     */
+    protected void pTableMousePressed(MouseEvent e) {
+        Point2D p;
+
+        try {
+            p = afTrans.createInverse().transform(
+                    new Point(e.getX() - offsetX, e.getY() - offsetY), null);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        getPtListener().mouseClicked((int) p.getX(), (int) p.getY(), e);
+    }
+
+    /**
+     * Evento de cambio de tamaño del componente
+     * 
+     * @param e
+     */
+    protected void pTablecomponentResized(ComponentEvent e) {
+        Rectangle bounds;
+        double scale;
+
+        //    		img = this.createImage(1000, 1000);
+        //    		grImg = (Graphics2D) img.getGraphics();
+        //    		
+        //    		grImg.fillOval(0, 0, 100, 100);
+
+        // obtiene las coordenadas del área de pintado
+        bounds = getBounds();
+
+        // establece la escala y el desplazamiento de la mesa
+        // con respecto al Graphic donde se la dibujará
+        if (bounds.getWidth() / bounds.getHeight() < (double) TABLE_WIDTH
+                / TABLE_HEIGHT) {
+            scale = bounds.getWidth() / TABLE_WIDTH;
+            offsetX = 0;
+            offsetY = (int) (bounds.getHeight() - (TABLE_HEIGHT * scale)) / 2;
+        } else {
+            scale = bounds.getHeight() / TABLE_HEIGHT;
+            offsetX = (int) (bounds.getWidth() - (TABLE_WIDTH * scale)) / 2;
+            offsetY = 0;
+        }
+
+        // crea los BufferedImages
+        for (int i = 0; i < biBuff.length; i++)
+            biBuff[i] = new BufferedImage((int) (TABLE_WIDTH * scale),
+                    (int) (TABLE_HEIGHT * scale), BufferedImage.TYPE_3BYTE_BGR);
+
+        // crea la transformación y la carga
+        afTrans = new AffineTransform();
+        afTrans.scale(scale, scale);
+        afTrans.translate(TABLE_WIDTH / 2, TABLE_HEIGHT / 2);
+
+        fireSetOut();
+    }
+
+    /**
+     * @return
+     */
+    public Animator getAnimator() {
+        return animator;
+    }
+
+    /**
+     * @param type
+     */
+    public void setCursor(int type) {
+        setCursor(new Cursor(type));
+    }
+
+    public void addListener(ObjectsPainter obj) {
+        oPainter.add(obj);
+    }
+
+    /** rutina de pintado */
+    public void paint(Graphics g) {
+        synchronized (animator) {
+            super.paint(g);
+            if (animator.drawComplete)
+                switchImages();
+            g.drawImage(biBuff[currBuff], offsetX, offsetY, this);
+        }
+    }
+
+    private void switchImages() {
+        if (animator.drawComplete)
+            currBuff = (currBuff + 1) % biBuff.length;
+    }
+
+    /**
+     * Dispara el evento {@see ObjectsPainter.setOut(BufferedImage biOut,
+     * AffineTransform afTrans)} de todos los {@see ObjectsPainter}s
+     * registrados.
+     */
+    private void fireSetOut() {
+        for (int i = 0; i < oPainter.size(); i++)
+            ((ObjectsPainter) oPainter.get(i)).setOut(biBuff, afTrans);
+    }
 }

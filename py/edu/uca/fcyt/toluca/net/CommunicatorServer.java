@@ -246,7 +246,8 @@ public class CommunicatorServer extends Communicator{
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#rankingChanged(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void rankingChanged(RoomEvent ev) {
-		logger.debug("Para "+getTrucoPlayer().getName() + " se actualiza el rating de: "+ev.getPlayer().getName());
+//		logger.debug("Para "+getTrucoPlayer().getName() + " se actualiza el rating de: "+ev.getPlayer().getName());
+	    logger.debug(">>  se actualiza el rating de: "+ev.getPlayer().getName());
 		super.sendXmlPackage(ev);
 		
 	}

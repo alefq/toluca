@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -12,6 +13,8 @@ class PlayerManager {
 
 	protected TrucoPlayer actualPlayer;
 
+	private HashMap asientos = new HashMap();
+	
 	protected Vector sittedPlayers;/*
 							  * Vector de referencia de jugadores cuyo subindice
 							  * corresponde al numero de su silla
@@ -41,6 +44,7 @@ class PlayerManager {
 			throw new TableException("Silla ocupada");
 
 		sittedPlayers.set(chair, p);
+//		asientos.put(new Integer(chair), p);
 	}
 
 	/**
@@ -53,13 +57,17 @@ class PlayerManager {
 		TrucoPlayer player;
 
 		player = getPlayer(chair);
+//		player = (TrucoPlayer) asientos.get(new Integer(chair));
 		if (player == null)
 			throw new TableException("Silla vacía");
 
 		if (actualPlayer == player)
 			actualPlayer = null;
 
+		//Este da un AIOBE por la morgueada que se hace al iniciar el juego :( - Ale 200502010
+		// de colocar los jugadores al comienzo del vector ?!?!?!?!
 		sittedPlayers.set(chair, null);
+//		asientos.remove(new Integer(chair));
 		return player;
 	}
 
@@ -97,6 +105,9 @@ class PlayerManager {
 		}
 
 		if (teams[0].size() == teams[1].size()) {
+		    //Como andaba esto antes????? 2004.02.10 - Ale
+		    //Con esto se modifica totalmente la sentada de jugadores :(
+		    // y da un AIOFE al querer parar al jugador :((
 			sittedPlayers.clear();
 			for (int i = 0; i < teams[0].size(); i++) {
 				sittedPlayers.add(teams[0].get(i));
@@ -182,7 +193,14 @@ class PlayerManager {
 	}
 
 	public int getPlayerCount() {
-		return sittedPlayers.size();
+	    /*int ret = 0;
+	    Iterator iter = getSittedPlayers().iterator();
+	    while (iter.hasNext()) {
+            if(iter.next() != null)
+                ret++;
+        }
+		return ret;*/
+	    return getSittedPlayers().size();
 	}
 
 	/**
