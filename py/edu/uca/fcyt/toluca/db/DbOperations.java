@@ -7,6 +7,7 @@ package py.edu.uca.fcyt.toluca.db;
  */
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Random;
 
 import py.edu.uca.fcyt.game.Game;
 import py.edu.uca.fcyt.toluca.LoginFailedException;
@@ -158,7 +159,7 @@ public class DbOperations {
  * <p>
  * 
  * @param username Nombre de usuario
- * </p>  Hace la autenticación del usuario.
+ * </p>  Hace la autenticaciï¿½n del usuario.
  * <p>
  * @param password Password o contrasena
  * @return Player el objeto Player o una excepcion de Login
@@ -190,7 +191,9 @@ public class DbOperations {
     }
     
     public TrucoPlayer getPlayer(final java.lang.String uname) {
-        return new TrucoPlayer( uname , 108);
+    	Random rand = new Random();
+    	
+        return new TrucoPlayer( uname , rand.nextInt());
     }
     
  // end authenticatePlayer        
