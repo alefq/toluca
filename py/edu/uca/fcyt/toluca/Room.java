@@ -9,7 +9,7 @@ import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
-
+ 
 /**
  *
  * @author  Interfaz de Inicio

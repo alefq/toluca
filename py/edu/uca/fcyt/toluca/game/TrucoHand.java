@@ -1045,14 +1045,12 @@ public class TrucoHand {
         if (!statusTable.jugarCarta(playTurnNumber, tp.getCard())) //*****************************funcion que necesito de choco
                 throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > el player no puede jugar esa carta"));
                 
-        if (this instanceof TrucoHandClient) {
+        //if (this instanceof TrucoHandClient) {
         	//if ()
 			game.firePlayEvent(playTurn,tp.getCard(),TrucoEvent.JUGAR_CARTA);
-        } else {
+        /*} else {
 			game.firePlayResponseEvent(playTurn,tp.getCard(),TrucoEvent.JUGAR_CARTA);
-        }
-        
-        
+        }*/
         nextPlayTurn();
     }
     protected int sePuedeCantarEnvido (TrucoPlay tp) {

@@ -3,7 +3,7 @@ package py.edu.uca.fcyt.toluca.event;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
-
+ 
 
 /**
 * <p>

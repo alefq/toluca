@@ -85,6 +85,8 @@ public class TrucoEvent {
 	int tableNumber;//para que el Communicator sepa a quien ejecutarle los metodos
 	private int value=-1;
 	/*repartir cartas*/
+        public TrucoEvent (){
+        }
 	public TrucoEvent (TrucoGame game, int hand, TrucoPlayer player){
 		this(game,hand);
 		this.player = player;
@@ -161,12 +163,27 @@ public class TrucoEvent {
 	public TrucoCard[] getCards(){
 		return cards;
 	}
+        public void setCard(TrucoCard tc){
+            this.card = card;
+        }
+        
 	public TrucoCard getCard(){
 		return card;
 	}
+        public void setPlayer(TrucoPlayer tp){
+            player = tp;
+            
+        }
+        public void setTypeEvent(byte type){
+            this.type = type;
+        }
+    
    public TrucoPlayer getPlayer (){
 		return player;
 	}
+   public void  setValue(int value){
+       this.value = value;
+   }
    public int getValue (){
 	   return value;
    }
@@ -343,6 +360,34 @@ public Document xmlCreateSendCards()
 		Document doc= new Document(ROOT);
 		return doc;
    }
+  public Document xmlCreateInfoGame(){
+      //Sirve para enviar mensaje empezo juego etc,
+      		Element ROOT = new Element ("InfoGame");
+		
+		Element TIPO =new Element ("Type");
+		TIPO.setAttribute("id",String.valueOf(type));
+		ROOT.addContent(TIPO);
+
+		Element TABLE =new Element ("Table");
+		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
+		ROOT.addContent(TABLE);
+
+		Element HAND = new Element("Hand");
+		HAND.setAttribute("number",String.valueOf(hand));
+		ROOT.addContent(HAND);
+
+		// Hago este if porque excepcionaba en el serva.
+		// Hay que ver si esto es realmente lo que hay
+		// que hacer. El npe da cuando se intenta crear
+		// un paquete para el gameStarted.
+		if (player != null) {
+			Element PLAYER =new Element("Player");
+			PLAYER.setAttribute("name",player.getName());
+			ROOT.addContent(PLAYER);
+		}
+		Document doc= new Document(ROOT);
+		return doc;
+  }
   
    
    
@@ -532,16 +577,16 @@ public Document xmlCreateSendCards()
 				break;
 		
 			case FIN_DE_MANO:
-				doc = xmlCreateCanto();
+				doc = xmlCreateInfoGame();
 				break;
 			case FIN_DE_JUEGO:
-				doc = xmlCreateCanto();
+				doc = xmlCreateInfoGame();
 				break;
 			case INICIO_DE_JUEGO:
-				doc = xmlCreateCanto();
+				doc = xmlCreateInfoGame();
 				break;
 			case INICIO_DE_MANO:
-				doc = xmlCreateCanto();
+				doc = xmlCreateInfoGame();
 				break;
 			default:
 				System.out.println("tipo de event no encontrado:" + type);

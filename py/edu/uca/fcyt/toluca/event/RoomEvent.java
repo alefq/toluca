@@ -12,7 +12,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
 
-
+ 
 /**
  * <p>
  * El RoomEvent es una clase que se utiliza para informar a los listeners

@@ -7,7 +7,7 @@
 package py.edu.uca.fcyt.toluca.game;
 
 
-
+ 
 
 /** Clase que representa a un jugador de Truco.
  * @author Julio Rey || Christian Benitez

@@ -63,9 +63,15 @@ public class TrucoGameClient extends TrucoGame
                 startHandConfirmatedClient();
                 break;
             case TrucoEvent.JUGAR_CARTA:
-            	
-            	break;
-        
+          	break;
+            default:
+              /*  TrucoPlay tp = event.toTrucoPlay();
+                System.out.println("Se recibio un TrucoEvent para ser TrucoPlay"+ tp.getType());
+                if (tp.getType()>=0){
+                    play(tp);
+                    playResponse(tp);
+                }*/
+                break;
         }
     }
 
@@ -102,6 +108,10 @@ public class TrucoGameClient extends TrucoGame
         catch(InvalidPlayExcepcion e){
             throw e;
         }
+    }
+    public void StartHand(TrucoPlayer tPlayer){
+        System.out.println("trucoGame-StartHand se quiere Preparar!!!"+tPlayer.getName());
+       
     }
      public void startHandClient(TrucoPlayer tPlayer){
         int i; //
@@ -157,9 +167,26 @@ public class TrucoGameClient extends TrucoGame
 	/**
 	 * 
 	 */
-	public void playResponse(TrucoPlay tp) {
-		
-		firePlayResponseEvent(tp.getPlayer(), tp.getCard(), TrucoEvent.JUGAR_CARTA);
-	}
+/*	public void playResponse(TrucoPlay tp) {
+            TrucoEvent te = tp.toTrucoEvent();
+            System.out.println("se hizo truco event="+te.getTypeEvent());
+            if (tp.getCard())
+            if (te.getCard() == null)
+                System.out.println("carta null en playResponse");
+            if (te.getCard() != getCard((byte)te.getCard().getKind(),(byte)te.getCard().getValue()))
+                System.out.println("carta no tg en mazo");;
+                    
+            firePlayResponseEvent(te.getPlayer(), te.getCard(), te.getTypeEvent());
+	}*/
+        public void playResponse(TrucoPlayer tp, TrucoCard tc){
+            firePlayResponseEvent(tp, tc, TrucoEvent.JUGAR_CARTA);
+        }
+        public void playResponse(TrucoPlayer tp, byte type){
+            firePlayResponseEvent(tp, type);
+        }
+        public void playResponse(TrucoPlayer tp, byte type, int value){
+            firePlayResponseEvent(tp, type, value);
+        }
+        
      
 }

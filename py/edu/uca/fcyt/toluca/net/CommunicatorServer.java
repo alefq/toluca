@@ -153,6 +153,7 @@ public class CommunicatorServer extends Communicator {
 	public void receiveXmlPackageWithParsingError(String rawXmlPackage) {
 		System.out.println("Error en el parsing del XML");
 	}
+        
 
 	ConnectionManager trucoServer;
 
@@ -488,18 +489,22 @@ public class CommunicatorServer extends Communicator {
 	 
 	 
 	public void play(TrucoPlay te) {
-		System.out.println("What the fuck @#!@$!!!! " + this.getClass().getName());		
+		/*System.out.println("What the fuck @#!@$!!!! " + this.getClass().getName());		
 		Document doc = te.toXml();
-		super.sendXmlPackage(doc);
+		super.sendXmlPackage(doc);*/
 	}
 	
-	public void play(TrucoEvent event) {
+	public void play(TrucoEvent event) {/*preguntar bien por eso, estoy mareado. julio*/
 		//Cantartanto con value
 		//canto sin value
 		//card semd
 		//Document doc = event.toXml();		
 		//super.sendXmlPackage(doc);
-		System.out.println("Void play method in " + this.getClass().getName());		
+		//System.out.println("Void play method in " + this.getClass().getName());		
+                System.out.println("voy a enviar el pacote TrucoEvent en el m'etodo PLayRespone");
+		//Document doc = tp.toXml();		
+		Document doc = event.toXml();		
+		super.sendXmlPackage(doc);
 	}
 	
 	public void playResponse(TrucoEvent event) {
@@ -510,16 +515,13 @@ public class CommunicatorServer extends Communicator {
                     
                     return;
                 }*/
-		System.out.println("voy a enviar el pacote TrucoEvent en el m'etodo PLayRespone");
-		//Document doc = tp.toXml();		
-		Document doc = event.toXml();		
-		super.sendXmlPackage(doc);
+		
 	}
 	
 	
 	public void turn(TrucoEvent event) {
-		Document doc = event.toXml();
-		super.sendXmlPackage(doc);
+		/*Document doc = event.toXml();
+		super.sendXmlPackage(doc);*/
 	}
 	public void endOfHand(TrucoEvent event) {
 		Document doc = event.toXml();
