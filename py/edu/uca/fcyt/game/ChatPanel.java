@@ -38,12 +38,15 @@ public class ChatPanel extends javax.swing.JPanel {
     }
     
     public void showChatMessage(Player player, String htmlMessage) {
-        dlm.addElement(new String(player.getName() + ": " + htmlMessage));
+        //dlm.addElement(new String(player.getName() + ": " + htmlMessage));
+	jTAchat.append("** "+player.getName()+" **: " + 
+	    htmlMessage + "\n");
+	jTAchat.setCaretPosition(jTAchat.getText().length());
     }
     
     private void sendChatMessage() {
         cpc.sendChatMessage(getPlayer(), jtInput.getText());
-        
+	jtInput.setText(null);
     }
     
     /** This method is called from within the constructor to
@@ -58,7 +61,7 @@ public class ChatPanel extends javax.swing.JPanel {
         Send = new javax.swing.JButton();
         jpChat = new javax.swing.JPanel();
         jspChat = new javax.swing.JScrollPane();
-        ChatWindow = new javax.swing.JList();
+        jTAchat = new javax.swing.JTextArea();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -66,6 +69,14 @@ public class ChatPanel extends javax.swing.JPanel {
         jpInput.setLayout(new javax.swing.BoxLayout(jpInput, javax.swing.BoxLayout.X_AXIS));
 
         jtInput.setPreferredSize(new java.awt.Dimension(300, 20));
+        jtInput.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
+                jtInputKeyPressed(evt);
+            }
+        });
+
         jpInput.add(jtInput);
 
         Send.setText("Send");
@@ -84,16 +95,25 @@ public class ChatPanel extends javax.swing.JPanel {
         jpChat.setLayout(new javax.swing.BoxLayout(jpChat, javax.swing.BoxLayout.X_AXIS));
 
         jspChat.setPreferredSize(new java.awt.Dimension(350, 320));
-        dlm = new DefaultListModel();
-        ChatWindow.setModel(dlm);
-        ChatWindow.setPreferredSize(new java.awt.Dimension(350, 300));
-        jspChat.setViewportView(ChatWindow);
+        jTAchat.setEditable(false);
+        jTAchat.setFont(new java.awt.Font("Dialog", 0, 10));
+        jTAchat.setLineWrap(true);
+        jTAchat.setToolTipText("null");
+        jTAchat.setWrapStyleWord(true);
+        jspChat.setViewportView(jTAchat);
 
         jpChat.add(jspChat);
 
         add(jpChat);
 
     }//GEN-END:initComponents
+
+    private void jtInputKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtInputKeyPressed
+    {//GEN-HEADEREND:event_jtInputKeyPressed
+	// Add your handling code here:
+	if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+	    sendChatMessage();
+    }//GEN-LAST:event_jtInputKeyPressed
 
     private void SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendActionPerformed
         // Add your handling code here:
@@ -134,10 +154,10 @@ public class ChatPanel extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Send;
-    private javax.swing.JList ChatWindow;
     private javax.swing.JTextField jtInput;
     private javax.swing.JPanel jpInput;
     private javax.swing.JPanel jpChat;
+    private javax.swing.JTextArea jTAchat;
     private javax.swing.JScrollPane jspChat;
     // End of variables declaration//GEN-END:variables
 
