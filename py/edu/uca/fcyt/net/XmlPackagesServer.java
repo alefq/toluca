@@ -62,7 +62,9 @@ public class XmlPackagesServer extends ServerSocket implements Runnable {
                 
                 int retinit = xps.init();
                 if (retinit == XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK) {
-                    new Thread(xps, "xmlPackageSession").start();
+                    Thread xt = new Thread(xps, "xmlPackageSession");
+                    xt.setPriority(Thread.MAX_PRIORITY);
+                    xt.start();
                     //System.out.println("antes del sesion started");
                     fireSessionStarted(xps);
                 } else {

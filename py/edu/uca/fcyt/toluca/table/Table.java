@@ -216,7 +216,9 @@ public class Table implements PTableListener, ChatPanelContainer,
         jFrame.addWindowListener(this);
         trucoTable.getChatPanel().setCpc(this);        
 
-        new Thread(animator, "animator").start();
+        Thread at = new Thread(animator, "animator");
+        at.setPriority(Thread.MIN_PRIORITY);
+        at.start();
     }
 
     public void showSystemMessage(String message) {

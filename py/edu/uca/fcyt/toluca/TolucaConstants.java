@@ -1,35 +1,40 @@
 /* TolucaConstants.java
  * Created on Sep 22, 2004
  *
- * Last modified: $Date: 2005/03/21 23:44:56 $
- * @version $Revision: 1.5 $ 
+ * Last modified: $Date: 2005/04/02 21:05:12 $
+ * @version $Revision: 1.6 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
+import java.util.Date;
 import java.util.logging.Level;
 
 /**
  * 
  * @author afeltes
- *
+ *  
  */
 public class TolucaConstants {
 
     public static final Level CLIENT_DEBUG_LOG_LEVEL = Level.INFO;
+
     public static final Level CLIENT_INFO_LOG_LEVEL = Level.WARNING;
+
     public static final Level CLIENT_ERROR_LOG_LEVEL = Level.SEVERE;
 
     /**
      * @param result
      */
     public static void dumpBeanToXML(Object result) {
-        System.out.println("/****************************************************");
-        XMLEncoder e=	new XMLEncoder(		new BufferedOutputStream(System.out));
-		e.writeObject(result);
-		System.out.println("****************************************************/");		       
+        System.out
+                .println("/****************************************************");
+        XMLEncoder e = new XMLEncoder(new BufferedOutputStream(System.out));
+        e.writeObject(result);
+        System.out
+                .println("****************************************************/");
     }
 
     /**
@@ -38,23 +43,25 @@ public class TolucaConstants {
      * @param string2
      * @return
      */
-    public static String replaceString(String value, String string, String string2) {
+    public static String replaceString(String value, String string,
+            String string2) {
         StringBuffer ret = new StringBuffer();
         String tmp = value;
         int i = -1;
         int nOfReplaces = 0;
         int charNotReplaced = 0;
-        
-        if((i = tmp.indexOf(string)) != -1)
-        {
+
+        if ((i = tmp.indexOf(string)) != -1) {
             while (tmp.trim().length() > 0 && i >= 0) {
                 for (int j = 0; j < i; j++) {
-                    ret.append(value.toCharArray()[charNotReplaced + nOfReplaces*string.length()]);
-                    charNotReplaced++;                    
+                    ret.append(value.toCharArray()[charNotReplaced
+                            + nOfReplaces * string.length()]);
+                    charNotReplaced++;
                 }
                 nOfReplaces++;
                 ret.append(string2);
-                tmp = value.substring(charNotReplaced + nOfReplaces*string.length());
+                tmp = value.substring(charNotReplaced + nOfReplaces
+                        * string.length());
                 i = tmp.indexOf(string);
             }
             ret.append(tmp);
@@ -62,9 +69,9 @@ public class TolucaConstants {
             ret.append(string);
         return ret.toString();
     }
-    
+
     public static void main(String[] args) {
-        String ori = "aloooo \\n \\n pepe";       
+        String ori = "aloooo \\n \\n pepe";
         String replaced = TolucaConstants.replaceString(ori, "p", "POP");
         System.out.println(replaced);
     }
@@ -75,4 +82,34 @@ public class TolucaConstants {
     public static boolean isWindowFamily() {
         return System.getProperty("os.name").toLowerCase().indexOf("windows") != -1;
     }
+
+    /**
+     * @param client_debug_log_level2
+     * @param string
+     */
+    public static void log(Level client_debug_log_level2, String string) {
+        if (!client_debug_log_level2.equals(Level.OFF))
+            System.out.println(new Date().toString() + " ["
+                    + getCallingClassName() + "] "
+                    + client_debug_log_level2.toString() + " "+ getCallingMethodName() + " - " + string);
+    }
+
+    public static synchronized String getCallingClassName() {
+        java.lang.Throwable throwable = new java.lang.Throwable();
+        java.lang.StackTraceElement[] stes = throwable.getStackTrace();
+        //		for(int i=0; i<stes.length; i++)
+        //			System.out.println("stes[" +i+ "],getClassName()" +
+        // stes[i].getClassName());
+        return stes[2].getClassName();
+    }
+
+    public static synchronized String getCallingMethodName() {
+        java.lang.Throwable throwable = new java.lang.Throwable();
+        java.lang.StackTraceElement[] stes = throwable.getStackTrace();
+        //		for(int i=0; i<stes.length; i++)
+        //			System.out.println("stes[" +i+ "],getClassName()" +
+        // stes[i].getClassName());
+        return stes[2].getMethodName();
+    }
+
 }

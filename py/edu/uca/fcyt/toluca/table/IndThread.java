@@ -34,7 +34,7 @@ class IndThread extends Thread
 	{
 	
 		Util.wait(this, 1000);
-	
+		setPriority(Thread.MIN_PRIORITY);
 	        // muestra las indicaciones
 	    for (int i = 0; i < indications.length && alive; i++)
 	    {

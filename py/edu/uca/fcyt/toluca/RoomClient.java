@@ -74,8 +74,12 @@ public class RoomClient extends Room implements ChatPanelContainer,
             setRoomUING(rui);
             addRoomListener(cc);
             //SwingUtilities.invokeLater(cc);
-            new Thread(cc, "comm-client").start();
-            new Thread(ct,"conn-tester").start();
+            Thread cct = new Thread(cc, "comm-client");
+            Thread ctt = new Thread(ct,"conn-tester");
+            cct.setPriority(Thread.MAX_PRIORITY);
+            ctt.setPriority(Thread.MIN_PRIORITY);
+            cct.start();
+            ctt.start();
         } catch (IOException e) {
             rui.getLoginPanel().getJLestado().setText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
             rui.getLoginPanel().getJLestado().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
