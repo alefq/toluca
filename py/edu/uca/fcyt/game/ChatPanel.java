@@ -29,35 +29,35 @@ public class ChatPanel extends javax.swing.JPanel {
     public ChatPanel(ChatPanelContainer cpc, TrucoPlayer player) {
         if (player == null) {
             new Exception("Se fue a la puta: player null").printStackTrace();
-            System.out.println("El player es null :((");
+            //            System.out.println("El player es null :((");
         } else {
-            System.out.println("Player BZ!: " + player.getName());
+            //            System.out.println("TrucoPlayer BZ!: " + player.getName());
         }
         setPlayer(player);
         setCpc(cpc);
         initComponents();
     }
-
-    public void showChatMessage(TrucoPlayer player, String htmlMessage) 
-    {
-        showChatMessage(player, htmlMessage, null);
+    
+    public void showChatMessage(TrucoPlayer player, String htmlMessage) {
+        jTAchat.append
+        (
+        player.getName() + ": " + htmlMessage + "\n"
+        );
+        jTAchat.setCaretPosition(jTAchat.getText().length());
     }
     
-    public void showChatMessage(TrucoPlayer player, String htmlMessage, String[] bounds) 
-    {
-	    if (bounds == null) bounds = new String[] { "**", "**"};
-	
-		jTAchat.append
-		(
-			bounds[0] + player.getName() + bounds[1] + ": " 
-			+ htmlMessage + "\n"
-		);
-		jTAchat.setCaretPosition(jTAchat.getText().length());
+    public void showChatMessage(TrucoPlayer player, String htmlMessage, String[] bounds) {
+        if (bounds == null) bounds = new String[] { "**", "**"};
+        jTAchat.append(
+        bounds[0] + player.getName() + bounds[1] + ": "
+        + htmlMessage + "\n"
+        );
+        jTAchat.setCaretPosition(jTAchat.getText().length());
     }
     
     private void sendChatMessage() {
         cpc.sendChatMessage(getPlayer(), jtInput.getText());
-	jtInput.setText(null);
+        jtInput.setText(null);
     }
     
     /** This method is called from within the constructor to
@@ -118,26 +118,26 @@ public class ChatPanel extends javax.swing.JPanel {
         add(jpChat);
 
     }//GEN-END:initComponents
-
+    
     private void jtInputKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtInputKeyPressed
     {//GEN-HEADEREND:event_jtInputKeyPressed
-	// Add your handling code here:
-	if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
-	    sendChatMessage();
+        // Add your handling code here:
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER)
+            sendChatMessage();
     }//GEN-LAST:event_jtInputKeyPressed
-
+    
     private void SendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendActionPerformed
         // Add your handling code here:
         sendChatMessage();
     }//GEN-LAST:event_SendActionPerformed
-
+    
     /** Getter for property cpc.
      * @return Value of property cpc.
      *
      */
     public ChatPanelContainer getCpc() {
         return cpc;
-    }    
+    }
     
     /** Setter for property cpc.
      * @param cpc New value of property cpc.
@@ -145,7 +145,7 @@ public class ChatPanel extends javax.swing.JPanel {
      */
     public void setCpc(ChatPanelContainer cpc) {
         this.cpc = cpc;
-    }    
+    }
     
     /** Getter for property player.
      * @return Value of property player.
@@ -171,7 +171,7 @@ public class ChatPanel extends javax.swing.JPanel {
     private javax.swing.JTextArea jTAchat;
     private javax.swing.JScrollPane jspChat;
     // End of variables declaration//GEN-END:variables
-
+    
     public static void main(String[] args) {
         TrucoPlayer pepito = new TrucoPlayer("Don Pepito", 8);
         TrucoPlayer jose = new TrucoPlayer("Don José", 8);
@@ -181,7 +181,7 @@ public class ChatPanel extends javax.swing.JPanel {
         jf.pack();
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.show();
-//        cp.showChatMessage(jose, "Hola don Pepito");
-//        cp.showChatMessage(pepito, "Hola don José");
+        //        cp.showChatMessage(jose, "Hola don Pepito");
+        //        cp.showChatMessage(pepito, "Hola don José");
     }
 }

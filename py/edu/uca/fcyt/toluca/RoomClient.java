@@ -184,7 +184,7 @@ public class RoomClient extends Room
         chatPanel = new ChatPanel(this, player);
         rui.addChatPanel(chatPanel);
         roomPlayer = player;
-        addPlayer(player);
+        //addPlayer(player);
     } // end loginCompleted        /** lock-begin */
 
     public void joinTable(RoomEvent re) {

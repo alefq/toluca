@@ -100,7 +100,7 @@ class TableCard implements Animable, StateListener
 			BufferedImage.TYPE_3BYTE_BGR
 		);
 
-		Util.copyImage(new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/dorso.gif"), back);
+		Util.copyImage(new ImageIcon(Util.getImagesDir() + "dorso.gif"), back);
 
 		return back;
 	}

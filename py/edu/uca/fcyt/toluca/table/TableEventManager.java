@@ -101,7 +101,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_gameStartRequest,
-            		table, null, 0
+            		table, null, -1
             	)
             );
         }
@@ -121,7 +121,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_gameStarted,
-            		table, null, 0
+            		table, null, -1
             	)
             );
         }
@@ -141,7 +141,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_gameFinished,
-            		table, null, 0
+            		table, null, -1
             	)
             );
         }
@@ -181,7 +181,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerStanded,
-            		table, null, 0
+            		table, null, -1
             	)
             );
         }
@@ -201,7 +201,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerKickRequest,
-            		table, player, 0
+            		table, player, -1
             	)
             );
         }
@@ -221,7 +221,27 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerKicked,
-            		table, player, 0
+            		table, player, -1
+            	)
+            );
+        }
+    }
+
+    /**
+     * Dispara el 'playerLeft' de todos los
+     * TableListeners registrados
+     */
+    public void firePlayerLeft() 
+    {
+        Iterator iter = tableListeners.iterator();
+        while(iter.hasNext()) 
+        {
+            ((TableListener)iter.next()).playerLeft
+            (
+            	new TableEvent
+            	(
+            		TableEvent.EVENT_playerKicked,
+            		table, null, -1
             	)
             );
         }
@@ -250,7 +270,7 @@ class TableEventManager
      * Dispara el 'playerSit' de todos los
      * TableListeners registrados
      */
-    public void firePlayerSit(int chair) 
+    public void firePlayerSit() 
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) {
@@ -259,7 +279,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_playerSit,
-            		table, null, chair
+            		table, null, -1
             	)
             );
         }
@@ -289,7 +309,7 @@ class TableEventManager
      * Dispara el evento 'sendSign' de todos los
      * TableListeners registrados
      */
-    public void fireSignSent(int sign)
+    public void fireSignSent()
     {
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
@@ -299,7 +319,7 @@ class TableEventManager
             	new TableEvent
             	(
             		TableEvent.EVENT_signSent,
-            		table, null, sign
+            		table, null, -1
             	)
             );
         }

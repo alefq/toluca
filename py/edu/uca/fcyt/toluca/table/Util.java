@@ -83,18 +83,29 @@ public class Util
 		tAct = System.currentTimeMillis();
 		while (tAct + msecs > System.currentTimeMillis());
 	}
-	
+
+	static public void sleep(py.edu.uca.fcyt.toluca.table.animation.Animator anim, long msecs)
+	{
+		long tAct;
+		
+		tAct = System.currentTimeMillis();
+		while (tAct + msecs > System.currentTimeMillis());
+	}
+        
 	/**
      * Duerme el Thread 't' por 'millis' milisegundos.
      * Si la dormida es interrumpida, lanza un 
      * RuntimeException basado en el InterruptedException
      * arrojado
      */
-	public static void sleep(Thread t, long millis)
+	public static void wait(Object t, long millis)
 	{
 		try
 		{
-			t.sleep(millis);
+			synchronized(t)
+			{
+				t.wait(millis);
+			}
 		}
 		catch(InterruptedException e)
 		{
@@ -242,8 +253,32 @@ public class Util
     {
     	return plays.length;
     }
+
+    private static boolean message(String msg, boolean ret)
+    {
+    	System.out.println(msg);
+    	return ret;
+    }
+    
+    
     
     public static void main(String[] args)
     {
+		new Object()
+		{
+			protected void finalize()
+			{
+				System.out.println("Hola");
+			}
+		};
+		System.gc();
+    }
+    
+    /**
+     * Retorna el subdirectorio de imágenes
+     */
+    public static String getImagesDir()
+    {
+    	return "E:/Mis documentos/Programas/Java/Toluca/Table/py/edu/uca/fcyt/toluca/images/";
     }
 }

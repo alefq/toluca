@@ -16,25 +16,11 @@ import java.awt.Graphics2D;
  */
 class Face implements Animable
 {
-//	public class State
-//	{
-//		public static final int BACK = 0;		
-//		public static final int INVISIBLE = 1;	
-//		public static final int VISIBLE = 2;	
-//	}
-	
-	public class Dir
-	{
-		public static final int LEFT = 0;
-		public static final int CENTER = 1;
-		public static final int RIGHT= 2;
-	}	
-
 	public final static int WIDTH = (int) (PlayTable.TABLE_WIDTH * .2);
 	public final static int HEIGHT = (int) (PlayTable.TABLE_HEIGHT * .2);
 
 	private StatesTransitioner[] states;
-	private final BufferedImage faces[] = loadFaces();
+	private BufferedImage faces[];
 	private static final int[][][] triPoints = triangPoints();
 	private Font[] fonts;
 	private Color borderColor;
@@ -61,6 +47,7 @@ class Face implements Animable
 			new StatesTransitioner(),
 			new StatesTransitioner()
 		};
+
 		this.playerName = name == null ? "": name;
 		this.borderColor = borderColor;
 		
@@ -89,7 +76,7 @@ class Face implements Animable
     	else return null;
     }
 	
-	public void setBorderColor(Color color)
+	synchronized public void setBorderColor(Color color)
 	{
 		borderColor = color;
 	}
@@ -220,7 +207,7 @@ class Face implements Animable
 
 
 	/* Dibuja el asiento blanquito*/
-	private void drawChair(Graphics2D grOut)
+	synchronized private void drawChair(Graphics2D grOut)
 	{
 		int x, y;
 		
@@ -276,7 +263,7 @@ class Face implements Animable
 	/**
      * Dibuja el nombre de la carita
      */
-	private void drawName(BufferedImage biOut, AffineTransform afTrans)
+	synchronized private void drawName(BufferedImage biOut, AffineTransform afTrans)
 	{
 		int x, y;
 		int off;
@@ -367,7 +354,7 @@ class Face implements Animable
 	 *recibe como argumentos un bufferImage, la accion que debe cantar
 	 *y el numero de jugador, o sea su posicion en la mesa*/
 	 
-	private void drawDialog(BufferedImage biOut, AffineTransform afTrans)
+	synchronized private void drawDialog(BufferedImage biOut, AffineTransform afTrans)
 	{
 		int width, height;
 		int textWidth = 0, textHeight = 0;
@@ -486,7 +473,7 @@ class Face implements Animable
 	 * Establece el nombre de la carita
 	 * @param name	nombre de la carita
 	 */
-	public void setName(String name)
+	synchronized public void setName(String name)
 	{
 		playerName = name;
 	}
@@ -648,38 +635,40 @@ class Face implements Animable
 	/**
      * Retorna una copia del estado actual
      */
-	private FaceState getCurrState()
+	synchronized private FaceState getCurrState()
 	{
 		return (FaceState) states[0].getCurrState();
 	}
 	
 	/**
-     * Carta todas las caritas en un vector y lo retorna
+     * Carga el vector de caritas
      */
-	private BufferedImage[] loadFaces()
+	synchronized public void setFacesDir(String dir)
 	{
-		BufferedImage[] ret;
 		ImageIcon fIcon;
 		
-		ret = new BufferedImage[10];
-		
-		for (int i = 0; i < ret.length; i++)
+		if (dir == null)
+			faces = null;
+		else
 		{
-			fIcon = new ImageIcon
-			(
-				"c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/" + i + ".jpg"
-			);
-
-			ret[i] = new BufferedImage
-			(
-				fIcon.getIconWidth(), fIcon.getIconHeight(),
-				BufferedImage.TYPE_3BYTE_BGR
-			);
-
-			Util.copyImage(fIcon, ret[i]);
+			faces = new BufferedImage[10];
+			
+			for (int i = 0; i < faces.length; i++)
+			{
+				fIcon = new ImageIcon
+				(
+					dir + i + ".jpg"
+				);
+	
+				faces[i] = new BufferedImage
+				(
+					fIcon.getIconWidth(), fIcon.getIconHeight(),
+					BufferedImage.TYPE_3BYTE_BGR
+				);
+	
+				Util.copyImage(fIcon, faces[i]);
+			}
 		}
-		
-		return ret;
 	}
 	
 
@@ -688,13 +677,15 @@ class Face implements Animable
      * @param biOut		lugar donde se dibujará la carita
      * @param afTrans	AffineTransform a utizar
      */
-	private void drawFace
+	synchronized private void drawFace
 	(
 		BufferedImage biOut, AffineTransform afTrans
 	) 
 	{
 		int sign;
 		SignState sState;
+		
+		if (faces == null) return;
 		
 		sState = (SignState) states[1].getCurrState();
 		

@@ -62,37 +62,24 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 	public PlayTable(PTableListener ptListener)
 	{
 		setDoubleBuffered(false);
-
 		addComponentListener(this);
 		addMouseListener(this);
 		this.ptListener = ptListener;
-		animator = new Animator(this);
-
 		toolkit = getToolkit();
-                System.out.println("Creando biBuff");
 		biBuff = new BufferedImage[2];
 		afTrans = new AffineTransform();
-                System.err.println("cambiado por la momia");
-		//Este cambio se hace porque da un null ponter exception con el BI
-                animator.start();                
+		animator = new Animator(this);
 	}
 
 	/** rutina de pintado */
 	public void paint(Graphics g)
 	{
-		BufferedImage cBuff;
-//		if (biBuff[currBuff] != null) 
-//		{
-//		{
-			synchronized(animator)
-			{
-				super.paint(g);
-				g.drawImage(biBuff[currBuff], offsetX, offsetY, this);
-				if (animator.drawComplete) switchImages();
-			}
-				
-//			toolkit.sync();
-//		}
+		synchronized(animator)
+		{
+			super.paint(g);
+			if (animator.drawComplete) switchImages();
+			g.drawImage(biBuff[currBuff], offsetX, offsetY, this);
+		}
 	}
 
 	/** Evento de cambio de tamaño del componente */

@@ -25,32 +25,6 @@ class CardManager implements Animable
 	private Vector toDraw;			// qué player[i] dibujar
 	private int playerCount = -1;	// cantidad de jugadores
 	private TableDeck tDeck; 		// maso
-//	Stack actions;
-	
-
-//	public CardManager
-//	(
-//		PlayTable pTable, int playerCount, Card[][] cards,
-//		Card played[][], int dealer, int[] points,
-//		int maxPoints
-//	)
-//	{
-//		this(pTable, playerCount);
-//
-//		// crea los TablePlayers, uno por cada jugador
-//		createTablePlayers();
-//
-//
-//		for (int i = 0; i < playerCount; i++)
-//		{
-//			players[i].setTake();
-//			for (int j = 0; j < played[i].length; j ++)
-//				players[i].setPlayCard(played[i][j]);
-//
-//			players[i].setTimes(0, 1000, true);
-//			players[i].setTimes(0, -1, false);
-//		}
-//	}
 
 	/** construye un CardManager */
 	public CardManager(int playerCount)
@@ -69,7 +43,6 @@ class CardManager implements Animable
 	// crea los jugadores de mesa
 	synchronized private void createTablePlayers()
 	{
-		System.out.println("TablePlayers creados");
 		TableCard tCards[];
 		
 		// verificaciones

@@ -23,6 +23,7 @@ public interface TableListener extends SpaceListener
 	public void playerStanded(TableEvent event);
 	public void playerKickRequest(TableEvent event);
 	public void playerKicked(TableEvent event);
+	public void playerLeft(TableEvent event);
     public void playerSitRequest(TableEvent event);
     public void playerSit(TableEvent event);
     public void signSendRequest(TableEvent event);

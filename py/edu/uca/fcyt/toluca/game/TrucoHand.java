@@ -20,88 +20,88 @@ public class TrucoHand {
     
     private TrucoGame game;
     /*estados del juego*/
-    static final byte PRIMERA_RONDA = 0;
-    static final byte SEGUNDA_RONDA = 1;
-    static final byte TERCERA_RONDA = 2;
-    static final byte FLOR = 3;
-    static final byte CONTRAFLOR = 4;
-    static final byte CONTRAFLOR_AL_RESTO = 5;
-    static final byte ENVIDO = 6;
-    static final byte REAL_ENVIDO = 7;
-    static final byte FALTA_ENVIDO = 8;
+    protected static final byte PRIMERA_RONDA = 0;
+    protected static final byte SEGUNDA_RONDA = 1;
+    protected static final byte TERCERA_RONDA = 2;
+    protected final byte FLOR = 3;
+    protected static final byte CONTRAFLOR = 4;
+    protected static final byte CONTRAFLOR_AL_RESTO = 5;
+    protected static final byte ENVIDO = 6;
+    protected static final byte REAL_ENVIDO = 7;
+    protected static final byte FALTA_ENVIDO = 8;
     
-    static final byte ESPERANDO_RESPUESTA_DEL_TRUCO = 9;
-    static final byte ESPERANDO_RESPUESTA_DEL_RETRUCO = 10;
-    static final byte ESPERANDO_RESPUESTA_DEL_VALECUATRO = 11;
-    
-    
-    static final byte RONDA_DE_FLOR = 13;
-    static final byte RONDA_DE_ENVIDO = 14;
+    protected static final byte ESPERANDO_RESPUESTA_DEL_TRUCO = 9;
+    protected static final byte ESPERANDO_RESPUESTA_DEL_RETRUCO = 10;
+    protected static final byte ESPERANDO_RESPUESTA_DEL_VALECUATRO = 11;
     
     
+    protected static final byte RONDA_DE_FLOR = 13;
+    protected static final byte RONDA_DE_ENVIDO = 14;
     
-    private boolean seTerminoLaMano = false;
-    private LinkedList puntajes = new LinkedList(); //lista delos puntajes de esta mano;
-    private int numerodecarta = 0; //cuantas cartas se jugaron
-    private TrucoPlayer pie1; //pie del team 1;
-    private TrucoPlayer pie2; //pie del team 2;
-    private int[] winRound=new int[3]; //ganadores de la ronda
-    private boolean equipo1_canto_flor = false; /*los equipos ya cantaron flor?*/
-    private boolean equipo2_canto_flor = false; 
     
-    private boolean florFlor = false; //si se canto flor flor
-    private boolean contraFlor = false; //si se canto contra flor
-    private boolean contraFlorAlResto = false; //si se canto contra flor al resto
     
-    private boolean flor = false; /*ya se canto flor*/
-    private boolean envido = false; //se canto envido?
-    private boolean realEnvido = false; //se canto real envido?
-    private boolean faltaEnvido = false; //se canto falta envido?
+    protected  boolean seTerminoLaMano = false;
+    protected  LinkedList puntajes = new LinkedList(); //lista delos puntajes de esta mano;
+    protected  int numerodecarta = 0; //cuantas cartas se jugaron
+    protected  TrucoPlayer pie1; //pie del team 1;
+    protected  TrucoPlayer pie2; //pie del team 2;
+    protected  int[] winRound=new int[3]; //ganadores de la ronda
+    protected boolean equipo1_canto_flor = false; /*los equipos ya cantaron flor?*/
+    protected  boolean equipo2_canto_flor = false; 
     
-    private boolean sePuedeCantarEnvido = true; //se puede cantar Envido?
-    private boolean sePuedeCantarFlor = true; //se puede cantar Flor?
+    protected boolean florFlor = false; //si se canto flor flor
+    protected boolean contraFlor = false; //si se canto contra flor
+    protected boolean contraFlorAlResto = false; //si se canto contra flor al resto
     
-    private boolean elEnvidoEstaPrimero = false;
+    protected boolean flor = false; /*ya se canto flor*/
+    protected boolean envido = false; //se canto envido?
+    protected boolean realEnvido = false; //se canto real envido?
+    protected boolean faltaEnvido = false; //se canto falta envido?
+    
+    protected boolean sePuedeCantarEnvido = true; //se puede cantar Envido?
+    protected boolean sePuedeCantarFlor = true; //se puede cantar Flor?
+    
+    protected boolean elEnvidoEstaPrimero = false;
       
         
-    private int numberOfEnvidos = 0; //cantidad de envido que se dijeron
-    private int numberOfRealEnvidos = 0; //cantidad de real envido que se dijeron
-    private int pointsOfEnvido = 0;
-    private boolean truco = false;//se canto truco
-    private boolean retruco = false;//" " retrtuco
-    private boolean valecuatro = false;//" " vale Cuatro
-    private int pointsOfHand = 1;
+    protected int numberOfEnvidos = 0; //cantidad de envido que se dijeron
+    protected int numberOfRealEnvidos = 0; //cantidad de real envido que se dijeron
+    protected int pointsOfEnvido = 0;
+    protected boolean truco = false;//se canto truco
+    protected boolean retruco = false;//" " retrtuco
+    protected boolean valecuatro = false;//" " vale Cuatro
+    protected int pointsOfHand = 1;
     
-    private int cantidadDePlayers=0;
+    protected int cantidadDePlayers=0;
     
-    private TrucoStatusTable statusTable;
+    protected TrucoStatusTable statusTable;
     
-    private TrucoTeam[] teams = new TrucoTeam[2];
-    private int[] points  = new int[2];
+    protected TrucoTeam[] teams = new TrucoTeam[2];
+    protected int[] points  = new int[2];
     
-    private TrucoPlayer playTurn=null; //turno para jugar
+    protected TrucoPlayer playTurn=null; //turno para jugar
     
-    private int primerTurnoNumber; //numero de jugador que juega primero
-    private boolean huboRondaDeEnvido = false;
+    protected int primerTurnoNumber; //numero de jugador que juega primero
+    protected boolean huboRondaDeEnvido = false;
     
-    private int playTurnNumber; //numero de jugador que le toca tirar carta
-    private int envidoTurnNumber; //numero de jugador que le toca cantar su envido
-    private int florTurnNumber; /*numero de jugador que le toca cantar su flor*/
-    private Team laPalabra = null; //quien puede cantar retruco, etc
+    protected int playTurnNumber; //numero de jugador que le toca tirar carta
+    protected int envidoTurnNumber; //numero de jugador que le toca cantar su envido
+    protected int florTurnNumber; /*numero de jugador que le toca cantar su flor*/
+    protected Team laPalabra = null; //quien puede cantar retruco, etc
   
-    private int pieTeam1Number; //numero de player que es pie del equipo1
-    private int pieTeam2Number; //numero de player que es pie del equipo2
+    protected int pieTeam1Number; //numero de player que es pie del equipo1
+    protected int pieTeam2Number; //numero de player que es pie del equipo2
   
-    private int cartasJugadas = 0; //cantidad de cartas jugadas
-    private int numeroDeRonda = 1; //numero de ronda
+    protected int cartasJugadas = 0; //cantidad de cartas jugadas
+    protected int numeroDeRonda = 1; //numero de ronda
     
-    private TrucoPlayer quieroYCanto;//quiero y canto tanto;
+    protected TrucoPlayer quieroYCanto;//quiero y canto tanto;
     
     
-    private byte estadoActual = PRIMERA_RONDA; //estado Actual, para controlar el juego
-    private Vector detalleDePuntaje;
-    private int puntosParaEnvido;
-    private int pointsOfHandDetail = PointsDetail.NO_SE_CANTO_TRUCO;
+    protected byte estadoActual = PRIMERA_RONDA; //estado Actual, para controlar el juego
+    protected Vector detalleDePuntaje;
+    protected int puntosParaEnvido;
+    protected int pointsOfHandDetail = PointsDetail.NO_SE_CANTO_TRUCO;
     
    
     public TrucoHand() {
@@ -136,7 +136,7 @@ public class TrucoHand {
     public void startHand(){
         playTurn(); //asignar turno
     }
-    private void getPies(){ /*quienes seran los pies de esta mano*/
+    protected void getPies(){ /*quienes seran los pies de esta mano*/
         pieTeam1Number = (primerTurnoNumber+cantidadDePlayers-1)%(cantidadDePlayers); //numero de player que sera pie del 
         pie1=teams[0].getTrucoPlayerNumber(pieTeam1Number/2); //obtener player
         pieTeam2Number =  (primerTurnoNumber+cantidadDePlayers-2)%(cantidadDePlayers); //numero de player que sera pie del team2
@@ -161,7 +161,7 @@ public class TrucoHand {
         return -1;
     }
     /*repartir cartas a todos los players del game*/
-    private void dealtCards() throws InvalidPlayExcepcion{ 
+    protected void dealtCards() throws InvalidPlayExcepcion{ 
         int i;
         TrucoCard[] cardsToPlayer;
         TrucoPlayer pl;
@@ -186,7 +186,7 @@ public class TrucoHand {
         }
     }
     /*asignar al player el turno*/
-    private void playTurn() throws InvalidPlayExcepcion{
+    protected void playTurn() throws InvalidPlayExcepcion{
         if(statusTable.estaCerrado(playTurnNumber)){
             nextPlayTurn();
             return;
@@ -194,7 +194,7 @@ public class TrucoHand {
         playTurn = teams[playTurnNumber%2].getTrucoPlayerNumber(playTurnNumber/2);
         game.fireTurnEvent(playTurn,TrucoEvent.TURNO_JUGAR_CARTA);
     }
-    private void nextPlayTurn() throws InvalidPlayExcepcion{
+    protected void nextPlayTurn() throws InvalidPlayExcepcion{
         cartasJugadas++;
         if (cartasJugadas%cantidadDePlayers == 0){
             winRound[numeroDeRonda-1] = statusTable.resultadoRonda(numeroDeRonda); /*fin de ronda*/
@@ -216,7 +216,7 @@ public class TrucoHand {
         }
         playTurn();/*asignar turno*/
     }
-    private boolean finDeRonda() throws InvalidPlayExcepcion{
+    protected boolean finDeRonda() throws InvalidPlayExcepcion{
         sePuedeCantarFlor = false;
         sePuedeCantarEnvido = false;
         
@@ -262,7 +262,7 @@ public class TrucoHand {
     }
     /** avisaa al trucoHand sobre el final de la mano
      */    
-    private void finDeMano_controlarFlor(){
+    protected void finDeMano_controlarFlor(){
         /*verificar player por player sus cartas para verificar flor*/
         for (int i=0; i<cantidadDePlayers;i++){ 
             TrucoPlayer responsable = teams[i%2].getTrucoPlayerNumber(i/2);
@@ -294,7 +294,7 @@ public class TrucoHand {
         }
         System.out.println("controlo la flor con exito");
     }
-    private void finDeMano_controlarEnvido(){
+    protected void finDeMano_controlarEnvido(){
         int resultadoEnvido = statusTable.resultadoEnvido(primerTurnoNumber);
         TrucoPlayer responsable = teams[resultadoEnvido%2].getTrucoPlayerNumber(resultadoEnvido/2);
         if (!statusTable.mostroEnvido(resultadoEnvido)){
@@ -310,7 +310,7 @@ public class TrucoHand {
             points[1] = points[1] + pointsOfEnvido;
         }
     }
-    private void finDeMano(int win) throws InvalidPlayExcepcion{
+    protected void finDeMano(int win) throws InvalidPlayExcepcion{
 
         if (seTerminoLaMano)
             return;
@@ -333,14 +333,14 @@ public class TrucoHand {
         displayFinDeMano();
         game.EndOfHandEvent();
     }
-    private void displayFinDeMano(){
+    protected void displayFinDeMano(){
         if (huboRondaDeEnvido)
             displayFinDeEnvido();
         System.out.println("error en el tema de fin de flor puede ser");
         displayFinDeFlor();
         
     }
-    private void displayFinDeEnvido(){
+    protected void displayFinDeEnvido(){
         int resultadoEnvido = statusTable.resultadoEnvido(primerTurnoNumber);
         TrucoPlayer playerAMostrarCartas = teams[resultadoEnvido%2].getTrucoPlayerNumber(resultadoEnvido/2);
         if (statusTable.jugoSusCartasDeEnvido(resultadoEnvido))
@@ -359,7 +359,7 @@ public class TrucoHand {
         }
         System.out.println("display Fin de envido con exito");
     }
-    private void displayFinDeFlor(){
+    protected void displayFinDeFlor(){
         for (int i=0; i<cantidadDePlayers; i++){
             if(statusTable.mostroFlor(i)){
                 while (!statusTable.jugoTresCartas(i)){
@@ -376,7 +376,7 @@ public class TrucoHand {
             }
         }
     }
-    private void envidoTurn() throws InvalidPlayExcepcion{
+    protected void envidoTurn() throws InvalidPlayExcepcion{
         if(statusTable.estaCerrado(envidoTurnNumber)){
             nextEnvidoTurn();
             return;
@@ -396,7 +396,7 @@ public class TrucoHand {
         }
        
     }
-    private void nextEnvidoTurn() throws InvalidPlayExcepcion{
+    protected void nextEnvidoTurn() throws InvalidPlayExcepcion{
     
         do{
             envidoTurnNumber=(++envidoTurnNumber)%cantidadDePlayers; //siguiente turno
@@ -686,14 +686,14 @@ public class TrucoHand {
         }
         
     }
-    private void meVoyAlMazo() throws InvalidPlayExcepcion{
+    protected void meVoyAlMazo() throws InvalidPlayExcepcion{
         if(estadoActual == PRIMERA_RONDA && sePuedeCantarEnvido && cartasJugadas < cantidadDePlayers-1){ //puntos de penalizacion por retirarse en primera ronda, habiendo posibilidad que el equipo contrario cante envido
             pointsOfHandDetail = PointsDetail.RETIRARSE_SIN_DEJAR_QUE_OTROS_CANTEN;
             pointsOfHand = 2; /*puntos de penalizacion por Retirarse*/
         }
         finDeMano((playTurnNumber+1)%2);
     }
-    private void meVoyAlMazo(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void meVoyAlMazo(TrucoPlay tp) throws InvalidPlayExcepcion{
         if(tp.getPlayer() != playTurn)
             throw (new InvalidPlayExcepcion("No es el turno de ese player"));
       
@@ -713,7 +713,7 @@ public class TrucoHand {
         meVoyAlMazo();
 
     }
-    private void cerrarse (TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void cerrarse (TrucoPlay tp) throws InvalidPlayExcepcion{
         
        int cerradosDelTeam1=0; 
        int cerradosDelTeam2=0; 
@@ -748,7 +748,7 @@ public class TrucoHand {
         game.firePlayEvent(tp.getPlayer(),tp.getType());
         nextPlayTurn();
     }
-    private void rondaEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void rondaEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
 
     	if(tp.getPlayer() != playTurn)
     		throw (new InvalidPlayExcepcion("TrucoHand - rondaEnvido(TrucoPlay): no es tu turno"+estadoActual));
@@ -766,7 +766,7 @@ public class TrucoHand {
     	}
     	nextEnvidoTurn();
     }/*No esta Habilitado
-    private void rondaFlor(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void rondaFlor(TrucoPlay tp) throws InvalidPlayExcepcion{
     	if(tp.getPlayer() != playTurn)
                throw (new InvalidPlayExcepcion("No es el turno de ese jugador"));
         if(estadoActual != RONDA_DE_FLOR)
@@ -774,7 +774,7 @@ public class TrucoHand {
         
          
     }*/
-    private void quiero(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void quiero(TrucoPlay tp) throws InvalidPlayExcepcion{
 
     	if(tp.getPlayer() != playTurn)
             throw (new InvalidPlayExcepcion(tp.getPlayer().getName()+"no es el turno del player"));
@@ -815,7 +815,7 @@ public class TrucoHand {
 	 		throw e;
 		}
 	}
-        private void quieroTruco(TrucoPlay tp) throws InvalidPlayExcepcion{
+        protected void quieroTruco(TrucoPlay tp) throws InvalidPlayExcepcion{
             if(tp.getPlayer() != playTurn)
                 throw(new InvalidPlayExcepcion("no es el turno de ese jugador"));
             if(playTurn != pie1 && playTurn != pie2)
@@ -838,13 +838,13 @@ public class TrucoHand {
             volverAEstadoDeJuego();
             playTurn();
         }
-	/*NoHabilitadoprivate void quieroContraflor(TrucoPlay tp){
+	/*NoHabilitadoprotected void quieroContraflor(TrucoPlay tp){
 		if(estadoActual != CONTRAFLOR)
 		
 			game.firePlayEvent(tp.getPlayer(),tp.getType());
 			estadoActual = RONDA_DE_FLOR;
 	}*/
-	private void quieroEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
+	protected void quieroEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
 		
 		sePuedeCantarEnvido = false; /*ya no se puede volver cantar envido*/
 		sePuedeCantarFlor = false; /*ya no se puede cantar flor*/
@@ -880,7 +880,7 @@ public class TrucoHand {
                 quieroYCanto = tp.getPlayer();
 		envidoTurn();
 	}
-	private void noQuiero(TrucoPlay tp) throws InvalidPlayExcepcion{
+	protected void noQuiero(TrucoPlay tp) throws InvalidPlayExcepcion{
 		if(tp.getPlayer() != playTurn)
 			throw (new InvalidPlayExcepcion("no es el turno de ese player"));
                 if(tp.getPlayer() != pie1 && tp.getPlayer() != pie2)
@@ -913,7 +913,7 @@ public class TrucoHand {
                     throw e;
 		}
     }
-    private void noQuieroEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void noQuieroEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{
     	
         if(estadoActual != ENVIDO && estadoActual != REAL_ENVIDO && estadoActual != FALTA_ENVIDO )
             throw (new InvalidPlayExcepcion("No se esta respondiendo a nada"));
@@ -985,7 +985,7 @@ public class TrucoHand {
             playTurn();
         }
     }
-    private void noQuieroTruco(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void noQuieroTruco(TrucoPlay tp) throws InvalidPlayExcepcion{
         if(tp.getPlayer() != playTurn)
             throw(new InvalidPlayExcepcion("No es el turno de ese player"));
         if(tp.getPlayer() != pie1 && tp.getPlayer() != pie2)
@@ -1015,7 +1015,7 @@ public class TrucoHand {
         
     }
     /*el player juega una carta*/
-    private void jugarCarta(TrucoPlay tp) throws InvalidPlayExcepcion{ //alguien juega una carta
+    protected void jugarCarta(TrucoPlay tp) throws InvalidPlayExcepcion{ //alguien juega una carta
         
         if (estadoActual != PRIMERA_RONDA && estadoActual != SEGUNDA_RONDA && estadoActual != TERCERA_RONDA)
             throw(new InvalidPlayExcepcion("TrucoHand - jugarCarta(TrucoPlay ) > No se puede jugar carta"));
@@ -1028,7 +1028,7 @@ public class TrucoHand {
         
         nextPlayTurn();
     }
-    private int sePuedeCantarEnvido (TrucoPlay tp) {
+    protected int sePuedeCantarEnvido (TrucoPlay tp) {
         
         if (!sePuedeCantarEnvido) /*ya no se puede cantar*/
             return 1;
@@ -1051,7 +1051,7 @@ public class TrucoHand {
     }
     /*El Player canta envido, real envido o falta envido>>>>>>>*/
         
-    private void cantarEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{ //cantar envido
+    protected void cantarEnvido(TrucoPlay tp) throws InvalidPlayExcepcion{ //cantar envido
         
         if(sePuedeCantarEnvido(tp)>0)
            throw(new InvalidPlayExcepcion("error al cantar el envido"+sePuedeCantarEnvido(tp)));
@@ -1154,7 +1154,7 @@ public class TrucoHand {
             
     }
     /*cambiar turno y esperar respuesta*/
-    private void esperarRespuesta(){ //asignar turnos al pie
+    protected void esperarRespuesta(){ //asignar turnos al pie
         
         if(teams[0].isPlayerTeam(playTurn)){
             playTurn = pie2;
@@ -1163,7 +1163,7 @@ public class TrucoHand {
             playTurn = pie1;
         }
     }
-    private int getNumberOfPlayer(TrucoPlayer tp){
+    protected int getNumberOfPlayer(TrucoPlayer tp){
         // RSHK - cambié (decia getNumberOfPLayer(tp)) porque no había definición correspondiente
       int numero=-1;
       if (teams[0].isPlayerTeam(tp)){
@@ -1178,7 +1178,7 @@ public class TrucoHand {
       return -1;
         
     }
-    private void cantarFlor(TrucoPlay tp) throws InvalidPlayExcepcion{
+    protected void cantarFlor(TrucoPlay tp) throws InvalidPlayExcepcion{
 
         if(tp.getPlayer() != playTurn) /*no es el turno del jugador*/
             throw(new InvalidPlayExcepcion("No es el turno del jugador"));
@@ -1232,7 +1232,7 @@ public class TrucoHand {
      * @param tp
      * @throws InvalidPlayExcepcion
      */    
-     private void cantarTruco(TrucoPlay tp) throws InvalidPlayExcepcion{
+     protected void cantarTruco(TrucoPlay tp) throws InvalidPlayExcepcion{
         if(playTurn != tp.getPlayer() || (estadoActual==PRIMERA_RONDA && playTurn != pie1 && playTurn != pie2))
             throw(new InvalidPlayExcepcion("el jugador no puede cantar truco"));
         if(valecuatro)
@@ -1285,7 +1285,7 @@ public class TrucoHand {
         game.fireTurnEvent(playTurn,typeTurn);
         
     }
-    private void finDeEnvido() throws InvalidPlayExcepcion{
+    protected void finDeEnvido() throws InvalidPlayExcepcion{
          if(elEnvidoEstaPrimero){
             elEnvidoEstaPrimero();
             return;
@@ -1293,7 +1293,7 @@ public class TrucoHand {
         volverAEstadoDeJuego();
         playTurn();
     }
-    private Team cambiarEquipo(TrucoPlayer pl){
+    protected Team cambiarEquipo(TrucoPlayer pl){
         if(teams[0].isPlayerTeam(pl))
             return teams[1];
         return teams[0];
@@ -1331,7 +1331,7 @@ public class TrucoHand {
         volverAEstadoDeJuego();
         playTurn();
     }*/
-    private void elEnvidoEstaPrimero(){
+    protected void elEnvidoEstaPrimero(){
         if(!elEnvidoEstaPrimero)
             return;
         elEnvidoEstaPrimero = false;
@@ -1345,7 +1345,7 @@ public class TrucoHand {
         esperarRespuesta();
         game.fireTurnEvent(playTurn,TrucoEvent.TURNO_RESPONDER_TRUCO);
     }
-    private void volverAEstadoDeJuego(){
+    protected void volverAEstadoDeJuego(){
         switch(numeroDeRonda){
             case 1:
                 estadoActual = PRIMERA_RONDA;

@@ -18,16 +18,16 @@ public class TrucoGame extends Game {
     /** Creates a new instance of trucoGame */
     LinkedList listenerlist; //lista de todos los listener
     
-    private int[] points = new int [2]; //puntajes de los teams
-    private TrucoTeam[] teams = new TrucoTeam[2]; //equipos que juegan
-    private TrucoHand trucoHand; //mano actual
-    private int numberOfHand; //numero de mano actual
-    private int numberOfPlayers; //cantidad de jugadores
-    private int numberOfTeams=0; //numero de equipos
-    private int reparteCartas = 0; //quien empieza la mano
-    private boolean playersPreparados[]; //lista de players que estan preparados
-    private int cantidadDePlayersPreparados;
-    private Vector detalleDelPuntaje;
+    protected int[] points = new int [2]; //puntajes de los teams
+    protected TrucoTeam[] teams = new TrucoTeam[2]; //equipos que juegan
+    protected TrucoHand trucoHand; //mano actual
+    protected int numberOfHand; //numero de mano actual
+    protected int numberOfPlayers; //cantidad de jugadores
+    protected int numberOfTeams=0; //numero de equipos
+    protected int reparteCartas = 0; //quien empieza la mano
+    protected boolean playersPreparados[]; //lista de players que estan preparados
+    protected int cantidadDePlayersPreparados;
+    protected Vector detalleDelPuntaje;
     
     
     
@@ -80,19 +80,15 @@ public class TrucoGame extends Game {
      * @param card carta a ser enviadas.
      */    
     public void dealtCards(TrucoPlayer tp, TrucoCard[] card){//reparte las cartas a los jugadores
-        for (int i=0; i<listenerlist.size(); i++){
-            if (((TrucoListener)listenerlist.get(i)).getAssociatedPlayer()==tp){
-                TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,(byte)0,card);
-                ((TrucoListener)listenerlist.get(i)).cardsDeal(event);
-                return;
-            }
-        }
-        throw (new InvalidPlayExcepcion("TrucoGame.dealCards(Player,Card[]) no se encontro el player" + tp.getName()));
+        TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,(byte)0,card);
+        for (int i=0; i<listenerlist.size(); i++)
+            ((TrucoListener)listenerlist.get(i)).cardsDeal(event);
     }
-    /** Retorna el Equipo que es Numero i.
+        /** Retorna el Equipo que es Numero i.
      * @param i numero de Team (o 0 o 1)
      * @return Retorna un Equipo(TrucoTeam).
      */    
+        
     public TrucoTeam getTeam(int i){ //retorna el team numero i
         if (i == 0 || i == 1)
             return teams[i];
@@ -128,13 +124,16 @@ public class TrucoGame extends Game {
     /** Metodo para realizar una jugada TrucoPlay.
      * @param tp Jugada a ser realizada (TrucoPlay).
      * @throws InvalidPlayExcepcion Excepcion en caso de dectarse que no es posible hacer esa jugada.
-     */    
+     */ 
+    
     public void play (TrucoPlay tp) throws InvalidPlayExcepcion{ //play trucoGame
         
         if (teams[0] == null || teams[1] == null)
                 throw (new InvalidPlayExcepcion("Teams not found in Trucogame"));
-        try{
+        try {
             trucoHand.play(tp);
+            //firePlayToOtherClients(tp);
+            
         }
         catch (InvalidPlayExcepcion e){
             throw e;
@@ -211,7 +210,7 @@ public class TrucoGame extends Game {
         points[1] = points[1] + trucoHand.getPointsOfTeam(1);
         teams[0].setPoints(points[0]);
         teams[1].setPoints(points[1]);
-        TrucoEvent event = new TrucoEvent(this,numberOfHand);
+        TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.FIN_DE_MANO);
         for(int i=0; i<listenerlist.size();i++){
             ((TrucoListener)(listenerlist.get(i))).endOfHand(event);
         }   
@@ -230,7 +229,7 @@ public class TrucoGame extends Game {
     /** Enviar mensaje a todos los oyentes sobre el final del juego.
      */    
     public void fireEndOfGameEvent(){
-        TrucoEvent event = new TrucoEvent(this,numberOfHand);
+        TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.FIN_DE_JUEGO);
             for(int i=0; i<listenerlist.size();i++){
                 ((TrucoListener)(listenerlist.get(i))).endOfGame(event);
             }   
@@ -240,7 +239,7 @@ public class TrucoGame extends Game {
      * @deprecated No esta disponible.
      */    
     public void fireCardsDealt(){
-        TrucoEvent event = new TrucoEvent(this,TrucoEvent.CARTAS_REPARTIDAS);
+        TrucoEvent event = new TrucoEvent(this,TrucoEvent.ENVIAR_CARTAS);
             for(int i=0; i<listenerlist.size();i++){
                 ((TrucoListener)(listenerlist.get(i))).play(event);
             }   
@@ -249,7 +248,7 @@ public class TrucoGame extends Game {
      */    
     public void fireHandStarted(){
     	TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
-        TrucoEvent event = new TrucoEvent(this,numberOfHand,tp);
+        TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,TrucoEvent.INICIO_DE_MANO);
         for(int i=0; i<listenerlist.size();i++){
             ((TrucoListener)(listenerlist.get(i))).handStarted(event);
         }
@@ -257,7 +256,7 @@ public class TrucoGame extends Game {
     /** Enviar mensaje a todos los oyentes sobre el el comienzo del juego.
      */    
     public void fireGameStarted(){
-        TrucoEvent event = new TrucoEvent(this,numberOfHand);
+        TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.INICIO_DE_JUEGO);
         for(int i=0; i<listenerlist.size();i++){
             ((TrucoListener)(listenerlist.get(i))).gameStarted(event);
         }
@@ -296,7 +295,7 @@ public class TrucoGame extends Game {
             startHandConfirmated();
         }
     }
-    private void startHandConfirmated(){
+    protected void startHandConfirmated(){
         
         if(points[0] >= 30 || points[1] >= 30){
             fireEndOfGameEvent();
@@ -308,7 +307,7 @@ public class TrucoGame extends Game {
             trucoHand.startHand();
         }
     }
-    private void newHand(){ //nueva mano
+    protected void newHand(){ //nueva mano
         
             if (teams[0].getNumberOfPlayers() != teams[1].getNumberOfPlayers())
                 throw (new InvalidPlayExcepcion("TrucoGame.newHand - la cantidad de players de los Teams son distintos"));

@@ -88,7 +88,7 @@ class TrListener implements TrucoListener
 				break;
 				
 			case TrucoEvent.PLAYER_CONFIRMADO:
-				System.out.println("Player confirmed");
+				System.out.println("TrucoPlayer confirmed");
 				break;
 				
 			case TrucoEvent.CANTO_ENVIDO:
@@ -118,7 +118,7 @@ class TrListener implements TrucoListener
 					System.out.println("---------------------- ");
 					System.out.println("Play number: " + type);
 					System.out.println("Play name: " + name);
-					System.out.println("Player: " + event.getPlayer());
+					System.out.println("TrucoPlayer: " + event.getPlayer());
 					System.out.println("---------------------- ");
 //					throw new IllegalStateException();
 				}
@@ -144,41 +144,46 @@ class TrListener implements TrucoListener
 
 		// establece el estado de la mesa
 		if (event.getPlayer() == getAssociatedPlayer())
-			table.setStatus(table.PLAY);
+		{
+			table.setStatus(Table.PLAY);
+
+			table.envidoPoints = event.getValue();
+			
+			// caga el vector de jugadas habilitadas
+			for (int i = 0; i < Util.getPlayCount(); i++)
+			{
+				play = Util.getPlay(i);
+				
+				if (play == TrucoPlay.CANTO_ENVIDO)
+				{
+					tPlay = new TrucoPlay
+					(
+						(TrucoPlayer) aPlayer, 
+						play, 
+						table.envidoPoints
+					);
+				}
+				else
+					tPlay = new TrucoPlay(aPlayer, play);
+					
+					
+				if (tGame.esPosibleJugar(tPlay)) 
+					aPlays.add(new Byte(play));
+			}
+			
+			table.setAllowedPlays(aPlays);
+		}
+		else if (table.getPManager().isSitted(table.getPlayer()))
+			table.setStatus(Table.WAIT);
 		else
-			table.setStatus(table.WAIT);
+			table.setStatus(Table.WATCH);
 
 		// resalta la carita con turno
 		getFManager().setHighlight
 		(
-			table.getPManager().getPos(event.getPlayer()) - 1
+			table.getPManager().getPos(event.getPlayer())
 		);
 
-		table.envidoPoints = event.getValue();
-		
-		// caga el vector de jugadas habilitadas
-		for (int i = 0; i < Util.getPlayCount(); i++)
-		{
-			play = Util.getPlay(i);
-			
-			if (play == TrucoPlay.CANTO_ENVIDO)
-			{
-				tPlay = new TrucoPlay
-				(
-					(TrucoPlayer) aPlayer, 
-					play, 
-					table.envidoPoints
-				);
-			}
-			else
-				tPlay = new TrucoPlay(aPlayer, play);
-				
-				
-			if (tGame.esPosibleJugar(tPlay)) 
-				aPlays.add(new Byte(play));
-		}
-		
-		table.setAllowedPlays(aPlays);
 	}
 
 	public void endOfHand(TrucoEvent event)
@@ -253,8 +258,8 @@ class TrListener implements TrucoListener
 	public void endOfGame(TrucoEvent event)
 	{
 		System.out.println("End of game for player " + table.getPlayer());
-		table.getTEventMan().fireGameFinished();
 		table.initialize();
+		table.getTEventMan().fireGameFinished();
 	}
 
 	public TrucoPlayer getAssociatedPlayer()
@@ -278,18 +283,19 @@ class TrListener implements TrucoListener
 			// obtiene la carita
 			face = getFManager().getFace
 			(
-				getPManager().getPos(player) - 1
+				getPManager().getPos(player)
 			);
 			
-			face.pushText(text, highlighted, 1000);
+			face.pushText(text, highlighted, 750);
 			face.pushText(null, false, 100);
 		}
 
-		// muestra el mensaje también en el chat
-		table.getJTrucoTable().jpChat.showChatMessage
-		(
-			player, text, new String[]{"[ ", " ]"}
-		);
+		// muestra el mensaje también en el chat si está jugando
+		if (!(table.getStatus() == Table.WATCH))
+			table.getJTrucoTable().jpChat.showChatMessage
+			(
+				player, text
+			);
 	}	
 
 	/** Retorna el animador */	

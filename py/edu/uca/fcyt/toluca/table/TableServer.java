@@ -50,12 +50,17 @@ implements TrucoListener, ChatPanelContainer {
     
     public void sitPlayer(TrucoPlayer player, int chair) {
         pManager.sitPlayer(player, chair);
+        firePlayerSat(player, chair);
+        
         if (player == getHost())
             pManager.setActualPlayer(getHost());
                         
         System.out.println(player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
     }
     
+    public void startGame() {
+        
+    }
     
     public void cardsDeal(TrucoEvent event) {
     }
@@ -113,7 +118,19 @@ implements TrucoListener, ChatPanelContainer {
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }
+
     
+    protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
+        Iterator iter = tableListeners.listIterator();
+        int i =0;
+        while(iter.hasNext()) {
+            TableListener ltmp = (TableListener)iter.next();
+            System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+            TableEvent te= new TableEvent(TableEvent.EVENT_playerSit,this, jogador, chair);
+            ltmp.playerSit(te);
+        }
+    }
+        
     public void showChatMessage(TrucoPlayer player, String htmlMessage) {
     }
     

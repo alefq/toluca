@@ -3,7 +3,6 @@ package py.edu.uca.fcyt.toluca.table;
 import py.edu.uca.fcyt.toluca.table.animation.*;
 import py.edu.uca.fcyt.toluca.table.state.*;
 import java.awt.*;
-import py.edu.uca.fcyt.game.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import java.util.*;
 import py.edu.uca.fcyt.toluca.table.animation.Animable;
@@ -61,19 +60,14 @@ class FaceManager implements Animable
 	 */
 	synchronized public void addUnnamedFaces(int n)
 	{
-		FaceState[] fStates;
-		FaceState fState;
 		Face face;
-		
-		// obtiene las posiciones para las caritas
-        fStates = getLocations(n);
         
         // agrega las caritas a 'pTable'
         for (int i = 0; i < n; i++)
         {
         	face = new Face
         	(
-        		"(libre)", 
+        		"", 
         		getChairColor(i),
         		Math.PI * (2.0 / n * i + 1)
         	);
@@ -85,16 +79,22 @@ class FaceManager implements Animable
 	 * Agrega las caritas con los nombres de los jugadores
 	 * contenidos en pManager en el orden correspondiente
 	 */
-	synchronized public void addFaces(PlayerManager pManager)
+	synchronized public void addFaces
+	(
+		PlayerManager pManager, boolean putChairZero
+	)
 	{
         TrucoPlayer player;
         int chair;
         Face face;
+        int ini;
+        
+        ini = putChairZero ? 0 : 1;
 
 		// agrega las caritas
-        for (int i = 1; i < pManager.getPlayerCount(); i++) 
+        for (int i = ini; i < pManager.getPlayerCount(); i++) 
         {
-        	// obtiene la i-ésima silla y el Player sentado en ella
+        	// obtiene la i-ésima silla y el TrucoPlayer sentado en ella
         	chair = pManager.getChair(i);
             player = pManager.getPlayer(chair);
             
@@ -106,6 +106,8 @@ class FaceManager implements Animable
             	getChairColor(chair),
             	Math.PI * (2.0 / pManager.getPlayerCount() * i + 1)
             );
+            
+            face.setFacesDir(Util.getImagesDir() + "/faces/standard/");
 
         	// agrega la carita 
             faces.add(face);
@@ -136,17 +138,26 @@ class FaceManager implements Animable
     		"Parámetro 'index' inválido: " + index
     	);
     	
-    	for (int i = 0, j = 0; i < faces.size(); i++)
+    	for (int i = 0, j = 0; i < faces.size() + 1; i++)
     	{
-    		((Face) faces.get(i)).highlighted = false;
-//    		System.out.println("Face " + i + " highlighted");
+    		try
+    		{
+    			getFace(i).highlighted = false;
+    		}
+    		catch(ArrayIndexOutOfBoundsException ex)
+    		{
+    		}
+//    		System.out.println("Face " + i + " not highlighted");
     	}
     	
-    	if (index != -1)
-    	{
-    		((Face) faces.get(index)).highlighted = true;
-//    		System.out.println("Face " + index + " highlighted");
-    	}
+		try
+		{
+			getFace(index).highlighted = true;
+//    			System.out.println("Face " + index + " highlighted");
+		}
+		catch(ArrayIndexOutOfBoundsException ex)
+		{
+		}
     }
     
     /**
@@ -190,7 +201,7 @@ class FaceManager implements Animable
      */
     synchronized public Face getFace(int index)
     {
-    	return (Face) faces.get(index);
+    	return (Face) faces.get(index - faces.size() % 2);
     }
     
     /**
@@ -417,6 +428,10 @@ class FaceManager implements Animable
     )
     {
     	Face face;
+
+		// limita el texto
+		try { text = text.substring(0, 70); } 
+		catch(IndexOutOfBoundsException ex) {}
     	
     	pos -= faces.size() % 2;
     	if (pos < 0) return;
@@ -424,7 +439,7 @@ class FaceManager implements Animable
     	face = (Face) faces.get(pos);
     	face.pushText
     	(
-    		text, highlighted, 500 + (long) text.length() * 50
+    		text, highlighted, 700 + (long) text.length() * 50
     	);
     	face.pushText(null, false, 100);
     }

@@ -2,8 +2,13 @@ package py.edu.uca.fcyt.toluca.table;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.ListDataListener;
+import java.util.EventListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
 
-class Watchers extends JScrollPane /*JPanel*/{
+class Watchers extends JScrollPane {
 
 	//private JScrollPane scroll;
 	private DefaultListModel listModel;
@@ -12,11 +17,11 @@ class Watchers extends JScrollPane /*JPanel*/{
 	private float matiz = 170;
 	private float saturacion = 160;
 	private float luminosidad = 110;
+	private int sel = -1;
 
 	public Watchers(){
 		super();
 		initComponents();
-
 	}
 
 	private void initComponents(){
@@ -30,15 +35,19 @@ class Watchers extends JScrollPane /*JPanel*/{
     }
 
 
-	public void addPlayer(/*Player p*/String name){
+	public void addPlayer(String name){
 		listModel.addElement(name);
 	}
 
 
-	public void removePlayer(/*Player p*/String  name){
+	public void removePlayer(String  name){
 		listModel.removeElement(name);
 	}
-
+	
+	public String getSelection()
+	{
+		return (String) list.getSelectedValue();
+	}
 
 
 	/*static public void main(String []args){

@@ -49,13 +49,25 @@ class JTrucoTable extends JPanel implements ComponentListener
 		add(jpChat, BorderLayout.SOUTH);
 		add(score, BorderLayout.EAST);
 
-		buttons = new JButton[1];
-		
-		buttons[0] = new JButton("Iniciar");
+		if (table.isHost())
+		{
+			buttons = new JButton[]
+			{
+				new JButton("Iniciar"),
+				new JButton("Hechar")
+			};
+		}
+		else
+		{
+			buttons = new JButton[]
+			{
+				new JButton("Iniciar")
+			};
+		}
 		
 		buttons[0].setEnabled(false);
 
-		JLabel obs = new JLabel("Observadores");
+		JLabel obs = new JLabel("       Personas        ");
 		obs.setPreferredSize(new Dimension(100,30));
 
 		jpLeftPanel.setLayout(new BoxLayout(jpLeftPanel, BoxLayout.Y_AXIS));

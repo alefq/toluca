@@ -40,6 +40,8 @@ implements RoomListener, TableListener,TrucoListener {
     public int init() {
         return XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
     }
+    public void playerLeft(TableEvent te) {
+    }
     
     public void sendXmlPackage(Document doc) {
         

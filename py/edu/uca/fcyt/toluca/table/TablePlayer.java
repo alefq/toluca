@@ -212,8 +212,8 @@ class TablePlayer implements Animable, TableCardListener
 		// establece el estado del TableCard como para jugarla
 		tCard.pushState
 		(
-			(int) (posX + 10 * Math.cos(angle) * (played.size() - 1)),
-			(int) (posY + 10 * Math.sin(angle) * (played.size() - 1)),
+			(int) (posX + 5 * Math.cos(angle) * (played.size() - 2)),
+			(int) (posY + 5 * Math.sin(angle) * (played.size() - 2)),
 			angle, Util.cardScale, card, duration
 		);
 		
@@ -270,8 +270,8 @@ class TablePlayer implements Animable, TableCardListener
 			// establece el estado del TableCard como para jugarla
 			tCard.pushState
 			(
-				(int) (posX + 10 * Math.cos(angle) * (i - 1)),
-				(int) (posY + 10 * Math.sin(angle) * (i - 1)),
+				(int) (posX + 5 * Math.cos(angle) * (i - 1)),
+				(int) (posY + 5 * Math.sin(angle) * (i - 1)),
 				angle, Util.cardScale, null, duration
 			);
 		}
@@ -338,10 +338,7 @@ class TablePlayer implements Animable, TableCardListener
 		{
 			tCard = getUnplayed(i);
 			m = (c == 0) ? 15 : 0;
-			try
-			{
-				card = cards[i];
-			}
+			try { card = cards[i]; }
 			catch (NullPointerException ex)
 			{
 				card = tCard.getCard();
@@ -366,20 +363,22 @@ class TablePlayer implements Animable, TableCardListener
 		boolean restore, long duration
 	)
 	{
-		double m, x, y;
+		double m, n, x, y;
 		TCardState tcState;
 		TableCard tCard;
-
-		m = restore ? 10 : 60;
 		
+
+		m = restore ? 0 : 50;
+		n = (played.size() - 1) / 2.0;
+
 		// establece los estados de cada TableCard
 		for (int i = 0; i < played.size(); i++)
 		{
 			tCard = getPlayed(i);
 			tCard.pushState
 			(
-				(int) (getX() + (m * (i - 1)) * Math.cos(angle)),
-				(int) (getY() + (m * (i - 1)) * Math.sin(angle)),
+				posX + (int) ((5 * (i - 1) + (i - n) * m) * Math.cos(angle)),
+				posY + (int) ((5 * (i - 1) + (i - n) * m) * Math.sin(angle)),
 				angle, Util.cardScale, tCard.getCard(), duration
 			);
 		}

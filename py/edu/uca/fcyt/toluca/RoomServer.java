@@ -102,7 +102,10 @@ implements ChatPanelContainer {
      */
     public void createTable(TrucoPlayer player) {
         // your code here
+        System.err.println("Dentor del create table del room server");
         TableServer tableServer= new TableServer(player);
+        
+        tableServer.addPlayer(player);
         //Table table = new Table(player, true);
         vTables.add(tableServer);
         fireTableCreated(tableServer);
@@ -119,12 +122,19 @@ implements ChatPanelContainer {
      * </p>
      */
     protected void fireTableCreated(TableServer table) {
-        // 
+        //
+        System.out.println("dentro del firetalbe created del room server");
+        Vector players = table.getPlayers();
+        
+        
+
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_CREATED);
         //re.setTableNumber(-108);
         re.addTables(table);
-        re.setTableNumber(table.getTableNumber());  // Esto es muy feo, habría que cambiarlo
+        re.setPlayers(players);
+        
+        re.setTableNumber(table.getTableNumber());  
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
