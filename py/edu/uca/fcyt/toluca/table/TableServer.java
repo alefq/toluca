@@ -159,7 +159,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     	TrucoTeam team2 = tg.getTeams()[1];
 
     	try {
-			getRoomServer().getDbOperations().updateGameData(team1, team2, tg.getTeamGanador());
+			obtenerRoomServer().getDbOperations().updateGameData(team1, team2, tg.getTeamGanador());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -430,10 +430,10 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		
 	}
 	
-	public RoomServer getRoomServer() {
+	public RoomServer obtenerRoomServer() {
 		return roomServer;
 	}
-	public void setRoomServer(RoomServer roomServer) {
+	public void guardarRoomServer(RoomServer roomServer) {
 		this.roomServer = roomServer;
 	}
 }

@@ -30,6 +30,7 @@ public class CommunicatorClient extends Communicator{
 	protected Logger logeador = Logger.getLogger(CommunicatorClient.class.getName());
 	private String serverString;
 	private int portNumber;
+	private boolean loggedIn = false;
 	public CommunicatorClient(RoomClient client,String serverString,int portNumber) {
 		
 		this(serverString,portNumber);
@@ -85,8 +86,29 @@ public class CommunicatorClient extends Communicator{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.Communicator#receiveObject(java.lang.Object)
+	 */
+	public void receiveObject(Object bean) {
+
+		if (isLoggedIn()) 
+			super.receiveObject(bean);			
+		else if(bean instanceof RoomEvent)
+		{
+			RoomEvent event = (RoomEvent)bean;
+
+			if (event.getType() == RoomEvent.TYPE_LOGIN_COMPLETED || event.getType() == RoomEvent.TYPE_LOGIN_FAILED)	
+				super.receiveObject(bean);
+		}		
+
+	}
 	
-	
+	/**
+	 * @return
+	 */
+	private boolean isLoggedIn() {
+		return loggedIn;
+	}
 	//REQUEST DE LA TABLA
 	public void playerSitRequest(TableEvent event) {
 		super.sendXmlPackage(event);
@@ -205,5 +227,9 @@ public class CommunicatorClient extends Communicator{
 	}
 	public void setPortNumber(int portNumber) {
 		this.portNumber = portNumber;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
 	}
 }

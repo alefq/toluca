@@ -50,6 +50,8 @@ public class EventDispatcherClient extends EventDispatcher {
 
     }
 
+    
+    
     /*
      * (non-Javadoc)
      * 
@@ -59,16 +61,25 @@ public class EventDispatcherClient extends EventDispatcher {
 
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Cliente Login
         // completed");
-        HashMap jugadores = event.getPlayers();
-        Iterator it = event.getPlayers().keySet().iterator();
-        while (it.hasNext()) {
 
-            String keyClave = (String) it.next();
+    	
+//      if (trucoPlayer == null) {
+    	trucoPlayer = event.getPlayer();
+		commClient.setTrucoPlayer(trucoPlayer);
+		((RoomClient) room).loginCompleted(trucoPlayer);
+		getCommClient().setLoggedIn(true);
+//  }
+    	
+//        HashMap jugadores = event.getPlayers();
+        
+        Iterator it = event.getPlayers().values().iterator();
+        while (it.hasNext()) {
+            //String keyClave = (String) it.next();
             //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " Se va a
             // cargar "+newPlayer);
-            if (!trucoPlayer.getName().equals(keyClave)) {
-
-                room.addPlayer((TrucoPlayer) jugadores.get(keyClave));
+        	TrucoPlayer tp = (TrucoPlayer) it.next();
+            if (!trucoPlayer.getName().equals(tp.getName())) {
+                room.addPlayer(tp);
             }
         }
 
@@ -131,11 +142,6 @@ public class EventDispatcherClient extends EventDispatcher {
     public void playerJoined(RoomEvent event) {
 
         room.addPlayer(event.getPlayer());
-        if (trucoPlayer == null) {
-            trucoPlayer = event.getPlayer();
-            commClient.setTrucoPlayer(trucoPlayer);
-            ((RoomClient) room).loginCompleted(trucoPlayer);
-        }
 
     }
 

@@ -176,7 +176,8 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#loginCompleted(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void loginCompleted(RoomEvent ev) {
-		// TODO Auto-generated method stub
+
+		
 		
 	}
 	/* (non-Javadoc)

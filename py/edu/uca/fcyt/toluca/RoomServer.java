@@ -124,7 +124,7 @@ implements ChatPanelContainer, TableListener {
         logger.debug("Dentor del create table del room server: "
                 + player.getName());
         TableServer tableServer = new TableServer(player);
-        tableServer.setRoomServer(this);
+        tableServer.guardarRoomServer(this);
         //tableServer.addPlayer(player);Comentado porque en el constructor del
         // TableServer
         //ya se esta haciendo un addPlayer, osea esto esta alpedo
@@ -341,7 +341,7 @@ implements ChatPanelContainer, TableListener {
      *            </p>
      * @throws SQLException
      */
-    public void login(String username, String password, CommunicatorServer cs)
+    synchronized public void login(String username, String password, CommunicatorServer cs)
     // py.edu.uca.fcyt.toluca.LoginFailedException
     {
         // your code here
@@ -358,10 +358,9 @@ implements ChatPanelContainer, TableListener {
             logger.debug("Se creo el jugador: " + jogador.getName());
 
             cs.setTrucoPlayer(jogador);
-            firePlayerJoined(jogador);
+
             fireLoginCompleted(jogador);
-            //firePlayerJoined(jogador);
-            //  return jogador;
+            firePlayerJoined(jogador);            
         } catch (LoginFailedException le) {
             logger.info("Fallo el intento de logearse de " + username);
             RoomEvent event = new RoomEvent();
@@ -520,9 +519,6 @@ implements ChatPanelContainer, TableListener {
          * RoomListener ltmp = (py.edu.uca.fcyt.toluca.RoomListener)iter.next();
          * ltmp.playerJoined(jogador); ltmp.loginCompleted(re); }
          */
-        /* Agrego el jugador a la lista de jugadores. */
-        addPlayer(jogador);
-
         logger.debug("Dentro de fire user joined (Room Server) , jugador = "
                 + jogador.getName());
         RoomEvent re = new RoomEvent();
@@ -558,11 +554,15 @@ implements ChatPanelContainer, TableListener {
         // inexistente SpaceEvent
 
         try {
+            /* Agrego el jugador a la lista de jugadores. */
+            addPlayer(jogador);
+        	
+        	
             logger.debug("Dentro de fire login completed , jugador = "
                     + jogador.getName());
             RoomEvent re = new RoomEvent();
             re.setType(RoomEvent.TYPE_LOGIN_COMPLETED);
-
+            re.setPlayer(jogador);
             re.setPlayers(getHashPlayers());
             re.setTablesServers(getTablesServers());
 

@@ -50,9 +50,7 @@ import py.edu.uca.fcyt.toluca.table.TableServer;
  */
 public class RoomEvent {
     
-	///////////////////////////////////////
-	// attributes
-    
+
     
 	/**
 	 * <p>
@@ -259,8 +257,7 @@ public class RoomEvent {
 	public void addPlayers(TrucoPlayer player) {        /** lock-end */
         
 		try {
-			
-				players.put(player.getName(),player);           
+			players.put(player.getName(),player);           
 		} catch (java.lang.NullPointerException npe) {
 			System.out.println("El collection de players no esta instaciado");
 			throw npe;
