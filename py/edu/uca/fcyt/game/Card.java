@@ -22,6 +22,9 @@ public class Card
 		setKind(kind);
 		setValue(value);
 	}
+	public Card()
+	{
+	}
 
 	// devuelven el valor y el palo de la carta, y si está abierta o no
 	public int getValue() { return value; }
@@ -65,64 +68,78 @@ public class Card
 	}
 	
 	/**
-     * Retorna el código hash.
-     * c1.hashCode() == c2.hashCode(), si y sólo si 
-     * c1.getValue() == c2.Value() y c1.getKind() == c2.getKind()
-     */
-    public int hashCode()
-    {
-    	return (kind - 1) * 12 + value - 1;
-    }
+	 * Retorna el código hash.
+	 * c1.hashCode() == c2.hashCode(), si y sólo si 
+	 * c1.getValue() == c2.Value() y c1.getKind() == c2.getKind()
+	 */
+	public int hashCode()
+	{
+		return (kind - 1) * 12 + value - 1;
+	}
     
-    /**
-     * Retorna verdadero si una carta es igual a ésta. Si 
-     * <code> o </code> no es un Card, retorna falso.
-     * @param o		la carta en cuestion
-     */
-    public boolean equals(Object o)
-    {
-    	Card card;
-    	try
-    	{
-    		card = (Card) o;
-    		return card.value == value && card.kind == kind;
-    	}
-    	catch (ClassCastException ex)
-    	{
-    		return false;
-    	}
-    }
+	/**
+	 * Retorna verdadero si una carta es igual a ésta. Si 
+	 * <code> o </code> no es un Card, retorna falso.
+	 * @param o		la carta en cuestion
+	 */
+	public boolean equals(Object o)
+	{
+		Card card;
+		try
+		{
+			card = (Card) o;
+			return card.value == value && card.kind == kind;
+		}
+		catch (ClassCastException ex)
+		{
+			return false;
+		}
+	}
     
-    /**
-     * Retorna un Hashtable con los pares 
-     * (palo: int, nombre: String)
-     */
-    private static Hashtable getKindNames()
-    {
-    	Hashtable ret;
+	/**
+	 * Retorna un Hashtable con los pares 
+	 * (palo: int, nombre: String)
+	 */
+	private static Hashtable getKindNames()
+	{
+		Hashtable ret;
     	
-    	ret = new Hashtable();
-    	ret.put(new Integer(COPA), "Copa");
-    	ret.put(new Integer(ORO), "Oro");
-    	ret.put(new Integer(BASTO), "Basto");
-    	ret.put(new Integer(ESPADA), "Espada");
-    	return ret;
-    }
+		ret = new Hashtable();
+		ret.put(new Integer(COPA), "Copa");
+		ret.put(new Integer(ORO), "Oro");
+		ret.put(new Integer(BASTO), "Basto");
+		ret.put(new Integer(ESPADA), "Espada");
+		return ret;
+	}
     
-    /**
-     * Retorna el nombre de un palo
-     * @param kind	Palo
-     */
-    public static String getKindName(int kind)
-    {
-    	return (String) kNames.get(new Integer(kind));
-    }
+	/**
+	 * Retorna el nombre de un palo
+	 * @param kind	Palo
+	 */
+	public static String getKindName(int kind)
+	{
+		return (String) kNames.get(new Integer(kind));
+	}
     
-    /**
-     * Retorna la descripción de la carta
-     */
-    public String getDescription()
-    {
-    	return new String(getValue() + " de " + getKindName(kind));
-    }
+	/**
+	 * Retorna la descripción de la carta
+	 */
+	public String getDescription()
+	{
+		return new String(getValue() + " de " + getKindName(kind));
+	}
+	/**
+	 * @param b
+	 */
+	public void setKind(byte b) {
+		kind = b;
+	}
+
+	/**
+	 * @param b
+	 */
+	public void setValue(byte b) {
+		value = b;
+	}
+
 }
