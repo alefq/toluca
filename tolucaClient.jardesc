@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="/home/dcricco/tolucaClient.jar"/>
+    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/toluca/tolucaClient.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.inicio"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table.state"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Copa"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsers.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{EventDispatcherClient.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{Communicator.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{EventDispatcher.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.event"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{CommunicatorClient.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{Room.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Basto"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{TolucaUsersManager.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.net{XmlPackagesSession.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginDialog.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{HashUtils.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util{LoginPanel.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.webmanager"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Espada"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{RoomClient.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.game"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{TolucaConstants.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.net{ConnectionManager.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.faces.standard"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.game"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db{DbOperations.java"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Oro"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame.statusGameCliente"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.guinicio"/>
+        <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca{LoginFailedException.java"/>
+    </selectedElements>
+</jardesc>
