@@ -186,6 +186,7 @@ class TrListener implements TrucoListener
 		int valEnvido;
 		
 		System.out.println("Turn for player " + event.getPlayer().getName());
+		System.out.println("Turn type: " + event.getTypeEvent());
 		
 		// obtiene el TrucoGame de la mesa y el jugador actual
 		tGame = table.getTGame();

@@ -338,8 +338,15 @@ public class TrucoHand
 		}
 		System.out.println("controlo la flor con exito");
 	}
-	protected void finDeMano_controlarEnvido()
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	protected int [] finDeMano_controlarEnvido()
 	{
+		int [] result = {0,0};
+		
 		int resultadoEnvido = statusTable.resultadoEnvido(primerTurnoNumber);
 		TrucoPlayer responsable = teams[resultadoEnvido%2].getTrucoPlayerNumber(resultadoEnvido/2);
 		if (!statusTable.mostroEnvido(resultadoEnvido))
@@ -349,15 +356,47 @@ public class TrucoHand
 		}
 		if(resultadoEnvido%2 == 0 )
 		{
-			points[0] = points[0] + pointsOfEnvido;
+			result [0]= pointsOfEnvido;
+		}else{
+			result [1] =pointsOfEnvido;
+		}
+		return result;
+	}
+
+	/**
+	 * Chanchada máxima:  @see finDeMano_controlarEnvido
+	 * 
+	 * es un copy paste de ese método.
+	 */
+	protected void finDeManoSetearEnvido()
+	{
+		int [] result = finDeMano_controlarEnvido();
+
+		int resultadoEnvido = statusTable.resultadoEnvido(primerTurnoNumber);
+		TrucoPlayer responsable = teams[resultadoEnvido%2].getTrucoPlayerNumber(resultadoEnvido/2);
+		if (!statusTable.mostroEnvido(resultadoEnvido))
+		{
+			resultadoEnvido = (resultadoEnvido+1)%2;
+			puntosParaEnvido=puntosParaEnvido+20;
+		}
+		if(resultadoEnvido%2 == 0 )
+		{
+			points[0] = points[0] + result[0];
 			detalleDePuntaje.add(new PointsDetail(teams[0],puntosParaEnvido,pointsOfEnvido,responsable));
 		}
 		else
 		{
+			points[1] = points[1] + result[1];
 			detalleDePuntaje.add(new PointsDetail(teams[1],puntosParaEnvido,pointsOfEnvido,responsable));
-			points[1] = points[1] + pointsOfEnvido;
 		}
-	}
+	}	
+	
+	
+	/**
+	 * 
+	 * @param win el nro de equipo que ganó (0, 1) 
+	 * @throws InvalidPlayExcepcion
+	 */
 	protected void finDeMano(int win) throws InvalidPlayExcepcion
 	{
 		
@@ -366,8 +405,8 @@ public class TrucoHand
 		seTerminoLaMano = true;
 		
 		if(huboRondaDeEnvido)/*si hubo ronda de envido*/
-			finDeMano_controlarEnvido();/*controlar*/
-		
+//			finDeMano_controlarEnvido();/*controlar*/
+			finDeManoSetearEnvido();
 		/*controlas los puntos por flor*/
 		finDeMano_controlarFlor();
 		if(win%2 == 0)
@@ -1476,8 +1515,21 @@ public class TrucoHand
 			return;
 		}
 		volverAEstadoDeJuego();
-		playTurn();
+		// puntos actuales
+		//puntos obtenidos por envido.
+		int [] resultEnvido = finDeMano_controlarEnvido();
+		
+		if (game.getGameTotalPoints(teams[0])+ resultEnvido[0] >= 30 
+				|| game.getGameTotalPoints(teams[1])+ resultEnvido[1] >= 30 ) {
+			seTerminoLaMano = true;
+			displayFinDeMano();
+			finDeManoSetearEnvido();
+			game.fireEndOfHandEvent();
+		} else 
+			playTurn();
 	}
+	
+	
 	protected Team cambiarEquipo(TrucoPlayer pl)
 	{
 		if(teams[0].isPlayerTeam(pl))

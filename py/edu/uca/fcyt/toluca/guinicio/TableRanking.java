@@ -11,7 +11,7 @@ import javax.swing.table.TableColumn;
 
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
-import py.edu.uca.fcyt.toluca.table.TableModelRankingMesa;
+
 
 public class TableRanking extends JTable {
 

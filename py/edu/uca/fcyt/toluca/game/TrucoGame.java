@@ -335,13 +335,13 @@ public class TrucoGame extends Game
 		{
 			((TrucoListener)(listenerlist.get(i))).endOfHand(event);
 		}
-		System.out.println("------------------------------------------------------------------------");
-		System.out.println("--------------------------------------Puntajes--------------------------");
-		for (int i=0; i<2; i++)
-			System.out.println(teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
-		
-		for (int i=0; i<detalleDelPuntaje.size(); i++)
-			System.out.println(((PointsDetail)detalleDelPuntaje.get(i)).aString());
+//		System.out.println("------------------------------------------------------------------------");
+//		System.out.println("--------------------------------------Puntajes--------------------------");
+//		for (int i=0; i<2; i++)
+//			System.out.println(teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
+//		
+//		for (int i=0; i<detalleDelPuntaje.size(); i++)
+//			System.out.println(((PointsDetail)detalleDelPuntaje.get(i)).aString());
 		
 	}
 	public void EndOfHandEvent()
