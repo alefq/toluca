@@ -165,7 +165,6 @@ public class CommunicatorClient extends Communicator {
 		}
 		if(aux.compareTo("TerminalMessage")==0)
 		{
-			
 			super.xmlReadTerminalMessage(child);
 		}
     }
@@ -327,7 +326,10 @@ public class CommunicatorClient extends Communicator {
      *
      */
     public void createTableRequested(RoomEvent ev) {
-        
+        //peticion de createTable
+        Document doc;
+        doc = super.xmlCreateTableRequested(ev);
+        super.sendXmlPackage(doc);
     }
     
 	/*public static void main(String[] args)
@@ -356,4 +358,3 @@ public class CommunicatorClient extends Communicator {
 	}*/
     
 }
-

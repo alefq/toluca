@@ -17,7 +17,7 @@ import org.jdom.*;
  *
  * @author  PABLO JAVIER
  */
-public class CommunicatorServer 
+public class CommunicatorServer
 extends Communicator {
     
     /** Creates a new instance of ChatSessionServer */
@@ -68,20 +68,20 @@ extends Communicator {
     }
     public void loginCompleted(RoomEvent re){
         //RoomEvent te;
-
-/*  
+        
+/*
         RoomEvent te=new RoomEvent();
         Vector jugadores=new Vector();
         Vector mesas=new Vector();
         Player jug1=new Player("Daniel",10);
         Player jug2=new Player("José",20);
-        
+ 
         Table mesa1=new Table();
         Table mesa2=new Table();
         jugadores.add(jug1);
         jugadores.add(jug2);
         mesa1.setTableNumber(2);
-        
+ 
         mesa1.addPlayer(jug1);
         mesa1.addPlayer(jug2);
         mesa2.setTableNumber(10);
@@ -91,7 +91,7 @@ extends Communicator {
         mesas.add(mesa2);
         te.setTabless(mesas);
         te.setPlayerss(jugadores);
-        
+ 
         te.setUser("AAdaniAA");
         te.setPassword("AAcriccoAAA");
  *
@@ -131,7 +131,7 @@ extends Communicator {
                 System.out.println("Player: "+user);
                 System.out.println("Mensaje: "+message);
                 System.out.println("Enviando Respuesta");
-//                chatMessageSent(new Player(user,0),message);
+                //                chatMessageSent(new Player(user,0),message);
                 pieza.sendChatMessage(new Player(user,0),message);
             }
         }
@@ -152,31 +152,28 @@ extends Communicator {
         if(aux.compareTo("ChatMsg")==0) {
             xmlReadChatMsg(child);
         }
-		if(aux.compareTo("SendCards")==0)
-		{
-			super.xmlreadSendCards(child);
-		}
-		if(aux.compareTo("Canto")==0)
-		{	
-			super.xmlReadCanto(child);
-		}
-		if(aux.compareTo("Cardsend")==0)
-		{
-			super.xmlReadCard(child);
-		}
-		if(aux.compareTo("CantarTanto")==0)
-		{
-			super.xmlReadCantarTanto(child);
-		}
-		if(aux.compareTo("Turno")==0)
-		{
-			super.xmlReadTurno(child);
-		}
-		if(aux.compareTo("TerminalMessage")==0)
-		{
-			
-			super.xmlReadTerminalMessage(child);
-		}
+        if(aux.compareTo("SendCards")==0) {
+            super.xmlreadSendCards(child);
+        }
+        if(aux.compareTo("Canto")==0) {
+            super.xmlReadCanto(child);
+        }
+        if(aux.compareTo("Cardsend")==0) {
+            super.xmlReadCard(child);
+        }
+        if(aux.compareTo("CantarTanto")==0) {
+            super.xmlReadCantarTanto(child);
+        }
+        if(aux.compareTo("Turno")==0) {
+            super.xmlReadTurno(child);
+        }
+        if(aux.compareTo("TerminalMessage")==0) {
+            
+            super.xmlReadTerminalMessage(child);
+        }
+        if(aux.compareTo("CreateTable")==0) {
+            xmlReadCreateTable(child);
+        }
         
     }
     public void chatMessageSent(Player jug,String message) {
@@ -184,7 +181,7 @@ extends Communicator {
         Document doc;
         doc=super.xmlCreateChatMsg(jug,message);
         super.sendXmlPackage(doc);
-//        pieza.sendChatMessage(jug, message);
+        //        pieza.sendChatMessage(jug, message);
     }
     
     public void setRoom(RoomServer pieza) {
@@ -228,7 +225,7 @@ extends Communicator {
                 } catch (py.edu.uca.fcyt.toluca.LoginFailedException lfe){
                     System.err.println("hubo un error en el login");
                     System.err.println("enviar uno paquete indicando el error");
-                //No se pudo logear
+                    //No se pudo logear
                 }
             }
         }
@@ -250,9 +247,8 @@ extends Communicator {
      */
     public void chatMessageRequested(ChatPanelContainer chatPanelContainer, Player player, String htmlMessage) {
     }
-
-    public void createTableRequested(RoomEvent ev) {
-    }
+    
+    //   public void createTableRequested(RoomEvent ev) { }
     
     /** <p>
      * Does ...
@@ -263,15 +259,66 @@ extends Communicator {
      */
     public void gameStartRequested() {
     }
-
+    
     public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
         System.out.println("Enviando msg de chat del jug: " + player.getName());
         Document doc;
         doc=super.xmlCreateChatMsg(player,htmlMessage);
         super.sendXmlPackage(doc);
     }
-
     
+    /** <p>
+     * Does ...
+     * </p><p>
+     *
+     * @param ev ...
+     * </p><p>
+     *
+     * </p>
+     *
+     */
+    public void createTableRequested(RoomEvent ev) {
+    }
     
+    public void xmlReadCreateTable(Object o) {
+        String aux;
+        if (o instanceof Element) {
+            Element element = (Element) o;
+            aux=element.getName();
+            if(aux.compareTo("Player")==0) {
+                //System.out.println("PLAYER:"+element.getText());
+                user=element.getAttributeValue("id");
+            }
+            List children = element.getContent();
+            Iterator iterator = children.iterator();
+            while (iterator.hasNext()) {
+                Object child = iterator.next();
+                xmlReadCreateTable(child);
+            }
+            if(aux.compareTo("CreateTable")==0) {
+                System.out.println("Player: "+user);
+                pieza.createTable(new TrucoPlayer(user));
+            }
+        }
+    }
+    
+    /** <p>
+     * Does ...
+     * </p><p>
+     *
+     * </p><p>
+     *
+     * @param ev ...
+     * </p>
+     */
+    public void tableCreated(RoomEvent ev) {
+        System.out.println("Se creo una tabla. soy: " + getClass().getName());
+        Document doc;
+        doc = xmlCreateTableRequested(ev);
+        super.sendXmlPackage(doc);
+    }
+    
+    public Document xmlCreateTableCreated(RoomEvent te) {
+        return new Document();
+    }
 }
-

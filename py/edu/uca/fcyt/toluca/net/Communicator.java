@@ -118,28 +118,18 @@ implements RoomListener, TableListener {
         
     }
 	
-        /*
-        public static Document xmlCreateCreateTable(RoomEvent te)
+        
+        public Document xmlCreateTableRequested(RoomEvent te)
         {
                 Element ROOT = new Element("CreateTable");
                 Element PLAYER=new Element("Player");
-                Element PLAYERS=new Element("Players");//cantidad de jugadores
-                Element NAME=new Element("Name");
          
-                //PLAYER.setAttribute("id",String.valueOf(te.getPlayerId()));
-                //PLAYERS.setText(String.valueOf(te.getNplayers()));
-                //NAME.setText(String.valueOf(te.getTablename()));
-         
+                PLAYER.setAttribute("id",String.valueOf(te.getUser()));
                 ROOT.addContent(PLAYER);
-                ROOT.addContent(PLAYERS);
-                ROOT.addContent(NAME);
-         
+        
                 Document doc = new Document(ROOT);
                 return doc;
-         
-         
-         
-        }*/
+        }
     
     public  Document xmlCreateLoginOk(RoomEvent te) {
         Element ROOT=new Element("LoginOk");
@@ -455,6 +445,10 @@ implements RoomListener, TableListener {
 			 }
         }
 	}
+
+
+//private RoomServer pieza; No
+        //by sacoleiro
     public void chatMessageRequested(SpaceListener spaceListener, Player player, String htmlMessage) {
         
     }
@@ -922,17 +916,18 @@ implements RoomListener, TableListener {
     public void sitRequested(Player player, int position) {
     }
     
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * </p><p>
-     *
-     * @param ev ...
-     * </p>
-     */
-    public void tableCreated(RoomEvent ev) {
-    }
+//    /** <p>
+//     * Does ...
+//     * </p><p>
+//     *
+//     * </p><p>
+//     *
+//     * @param ev ...
+//     * </p>
+//     */
+//    public void tableCreated(RoomEvent ev) {
+//    }
+//    Se fue al server
     
     public void tableJoinRequested(RoomEvent ev) {
     }
@@ -1059,4 +1054,5 @@ implements RoomListener, TableListener {
   public void sitRequest(TableEvent ev) {
     }
     
+          
 }

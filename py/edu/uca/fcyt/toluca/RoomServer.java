@@ -100,9 +100,9 @@ implements ChatPanelContainer {
      *
      * </p>
      */
-    public void createTable() {
+    public void createTable(TrucoPlayer player) {
         // your code here
-        Table table = new Table();
+        Table table = new Table(player, true);
         vTables.add(table);
         fireTableCreated(table);
     } // end createTable
@@ -472,7 +472,6 @@ implements ChatPanelContainer {
     
     
 } // end RoomServer
-
 
 
 

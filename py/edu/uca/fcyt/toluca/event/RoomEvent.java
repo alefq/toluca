@@ -379,6 +379,8 @@ public class RoomEvent {
      * </p>
      */
     public void addTables(Table _tables) {        /** lock-end */
+        if(tables == null)
+            tables = new Vector();
         if (! tables.contains(_tables))
             tables.add(_tables);
     } // end addTables        /** lock-begin */
