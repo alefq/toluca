@@ -1,15 +1,22 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
-import java.awt.geom.*;
-import java.util.*;
-import py.edu.uca.fcyt.toluca.table.animation.Animable;
-import py.edu.uca.fcyt.toluca.table.state.*;
-import java.awt.image.BufferedImage;
-import java.awt.geom.AffineTransform;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import javax.swing.ImageIcon;
+
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
 
 /**
  * Maneja el dibujo de una carita en el juego

@@ -1,16 +1,14 @@
 package py.edu.uca.fcyt.toluca;
 
-import java.util.*;
-import java.util.Vector;
+import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Collection;
-import javax.swing.*;
+import java.util.Vector;
 
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.event.*;
+import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.RoomListener;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
-import py.edu.uca.fcyt.game.*;
 
 /**
  *

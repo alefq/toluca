@@ -5,15 +5,12 @@ package py.edu.uca.fcyt.toluca.event;
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
-import java.util.*;
-import org.jdom.*;
-import java.net.*;
-import java.io.*;
-import org.jdom.output.XMLOutputter;
-import java.util.*;
+import org.jdom.Document;
+import org.jdom.Element;
+
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 public class TrucoEvent {
 

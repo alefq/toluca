@@ -1,17 +1,16 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.animation.*;
-import py.edu.uca.fcyt.toluca.table.state.*;
-import java.awt.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import java.util.*;
-import py.edu.uca.fcyt.toluca.table.animation.Animable;
-import java.awt.image.*;
-import java.awt.geom.*;
-import java.awt.image.BufferedImage;
-import java.awt.geom.AffineTransform;
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.security.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.security.InvalidParameterException;
+import java.util.Iterator;
+import java.util.Vector;
+
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import py.edu.uca.fcyt.toluca.table.animation.Animator;
 
 /**
  * Maneja a las caritas en el juego

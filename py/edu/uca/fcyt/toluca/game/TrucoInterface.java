@@ -1,6 +1,5 @@
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
 
 public class TrucoInterface {
     public TrucoInterface(){

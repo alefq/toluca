@@ -1,7 +1,8 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import java.util.Hashtable;
+
 import py.edu.uca.fcyt.game.Card;
-import java.util.*;
 
 /**
  * Clase que contiene las constantes de las señas

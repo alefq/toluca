@@ -1,18 +1,27 @@
 
 package py.edu.uca.fcyt.toluca.net;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.table.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
-import py.edu.uca.fcyt.net.*;
 
-import java.util.*;
-import java.io.*;
-import org.jdom.*;
+import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.net.XmlPackagesSession;
+import py.edu.uca.fcyt.toluca.RoomServer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+import py.edu.uca.fcyt.toluca.table.TableServer;
 
 /**
  *
@@ -299,7 +308,7 @@ extends Communicator {
                                                   TrucoGame tgame=tabela.getTrucoGame();
                                                   tgame.play(tp);
                                                   } catch (java.lang.NullPointerException e) {
-                                                           System.e.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER METODO xmlReadTrucoPlay");
+                                                           System.e.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER Método xmlReadTrucoPlay");
                                                            e.printStackTrace();
                                                           throw e;
                 }*/
@@ -424,7 +433,7 @@ extends Communicator {
                 System.out.println("El table a sentarse es "+idAux);
                 System.out.println("La posicion es "+posAux);
                 //ATENCION ESTE TRY HAY QUE DESCOMENTAR PARA QUE FUNCIONE. ESTA COMOENTADO PORQUE EL TABLESERVER
-                //TODAVIA NO TIENE UN METODO PlayerSit
+                //TODAVIA NO TIENE UN Método PlayerSit
                 try {
                     String tid = String.valueOf(idAux);
                     TableServer tabela = (TableServer)getTables().get(tid);
@@ -671,7 +680,7 @@ extends Communicator {
                     RoomEvent re = new RoomEvent();
                     re.setPlayer(tptmp);
                     re.setTableServer(tstmp);
-                    re.setType(re.TYPE_TABLE_JOINED);
+                    re.setType(RoomEvent.TYPE_TABLE_JOINED);
                     pieza.joinTable(re);
                     
                 } catch (NullPointerException npe) {

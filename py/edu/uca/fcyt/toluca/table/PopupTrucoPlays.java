@@ -6,8 +6,9 @@
 
 package py.edu.uca.fcyt.toluca.table;
 
+import java.util.Vector;
+
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
-import java.util.*;
 
 /**
  *

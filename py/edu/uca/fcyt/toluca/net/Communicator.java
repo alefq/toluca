@@ -1,18 +1,27 @@
 package py.edu.uca.fcyt.toluca.net;
 
-import org.jdom.*;
-import java.util.*;
-import java.math.BigInteger;
-import java.io.IOException;
-import org.jdom.output.XMLOutputter;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.table.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.net.*;
+import org.jdom.CDATA;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+
+import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.game.Game;
+import py.edu.uca.fcyt.net.XmlPackagesSession;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.RoomListener;
+import py.edu.uca.fcyt.toluca.event.SpaceListener;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TableListener;
+import py.edu.uca.fcyt.toluca.event.TrucoListener;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableServer;
 
 public abstract class Communicator extends XmlPackagesSession
 implements RoomListener, TableListener,TrucoListener {

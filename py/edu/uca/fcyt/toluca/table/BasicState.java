@@ -1,6 +1,6 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.state.*;
+import py.edu.uca.fcyt.toluca.table.state.State;
 
 /**
  * Aloja el estado de un objeto general

@@ -1,10 +1,13 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentListener;
-import java.util.EventListener;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+import javax.swing.JPanel;
 
 class Score extends JPanel implements ComponentListener {
 	

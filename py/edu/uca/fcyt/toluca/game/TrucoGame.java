@@ -5,9 +5,12 @@ package py.edu.uca.fcyt.toluca.game;
  *
  * Created on 3 de marzo de 2003, 10:25 PM
  */
-import java.util.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
+import java.util.LinkedList;
+import java.util.Vector;
+
+import py.edu.uca.fcyt.game.Game;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoListener;
 
 /** Clase que representa y administra un juego de Truco.
  * @authors Julio Rey || Christian Benitez

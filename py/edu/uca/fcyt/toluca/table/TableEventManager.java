@@ -1,11 +1,11 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import java.util.*;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TableListener;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  * Dispara eventos de TableListeners

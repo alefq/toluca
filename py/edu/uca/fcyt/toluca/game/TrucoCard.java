@@ -14,8 +14,7 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.game.Card;
 
 public class TrucoCard extends Card {
 	private byte ValueInGame = 0;	//Guarda el valor de la carta

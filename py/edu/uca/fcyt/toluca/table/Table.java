@@ -1,24 +1,26 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.animation.*;
-
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.*;
-
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
-
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.*;
-import java.awt.event.ActionListener;
-import java.util.EventListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TableListener;
+import py.edu.uca.fcyt.toluca.event.TrucoListener;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+import py.edu.uca.fcyt.toluca.table.animation.Animator;
 
 /**
  * Maneja el juego de truco

@@ -5,10 +5,7 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.game.*;
-
-import java.util.*;
+import java.util.LinkedList;
 
 /** Clase que representa a un Equipo de cualquier juego.
  * @authors Julio Rey || Christian Benitez

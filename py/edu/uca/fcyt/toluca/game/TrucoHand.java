@@ -6,10 +6,11 @@
 
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.statusGame.*;
-import py.edu.uca.fcyt.toluca.event.*;
+import java.util.LinkedList;
+import java.util.Vector;
 
-import java.util.*;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.statusGame.TrucoStatusTable;
 
 /** constructor
  * @author Julio Rey || Cristian Benitez

@@ -1,17 +1,22 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.animation.*;
-import py.edu.uca.fcyt.toluca.table.state.*;
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import java.awt.image.*;
-import java.awt.*;
-import javax.swing.*;
-import java.awt.geom.*;
+import javax.swing.ImageIcon;
+
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import py.edu.uca.fcyt.toluca.table.state.State;
 import py.edu.uca.fcyt.toluca.table.state.StateListener;
+import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
 
 // representa a una carta en la mesa
 class TableCard implements Animable, StateListener

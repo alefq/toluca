@@ -1,11 +1,14 @@
 package py.edu.uca.fcyt.toluca.table.animation;
 
-import py.edu.uca.fcyt.toluca.table.*;
-import py.edu.uca.fcyt.game.*;
-import java.util.*;
-import java.awt.geom.*;
-import java.awt.*;
-import java.awt.image .*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.Vector;
+
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.table.Util;
 
 /**
  * Clase que anima las cartas y las caritas

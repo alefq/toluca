@@ -1,8 +1,9 @@
 package py.edu.uca.fcyt.toluca;
-import org.jdom.*;
-import org.jdom.input.SAXBuilder;
-import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
 
 
 public class Reader{

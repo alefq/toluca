@@ -4,21 +4,21 @@ package py.edu.uca.fcyt.toluca;
  *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
-import java.util.*;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.ListIterator;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.JOptionPane;
-import java.awt.Event;
-import java.awt.BorderLayout;
+import java.util.Vector;
 
-import py.edu.uca.fcyt.toluca.table.*;
-import py.edu.uca.fcyt.toluca.net.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import py.edu.uca.fcyt.game.ChatMessage;
+import py.edu.uca.fcyt.game.ChatPanel;
+import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.net.CommunicatorClient;
+import py.edu.uca.fcyt.toluca.table.Table;
 
 
 /**

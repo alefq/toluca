@@ -6,12 +6,12 @@
 
 package py.edu.uca.fcyt.toluca.net;
 
-import py.edu.uca.fcyt.toluca.*;
-
-import py.edu.uca.fcyt.net.*;
-
 import java.util.Vector;
-import java.util.Iterator;
+
+import py.edu.uca.fcyt.net.XmlPackagesServer;
+import py.edu.uca.fcyt.net.XmlPackagesServerListener;
+import py.edu.uca.fcyt.net.XmlPackagesSession;
+import py.edu.uca.fcyt.toluca.RoomServer;
 
 /**
  *

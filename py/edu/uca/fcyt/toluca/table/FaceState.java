@@ -1,5 +1,5 @@
 package py.edu.uca.fcyt.toluca.table;
-import py.edu.uca.fcyt.toluca.table.state.*;
+import py.edu.uca.fcyt.toluca.table.state.State;
 
 /**
  * Clase que maneja el tiempo de un estado de carita

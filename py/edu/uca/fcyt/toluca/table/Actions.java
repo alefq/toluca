@@ -1,10 +1,10 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
+import java.awt.Dimension;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 
 class Actions extends JButton
 {

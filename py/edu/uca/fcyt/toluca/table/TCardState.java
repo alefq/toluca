@@ -1,7 +1,7 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.state.*;
-import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.table.state.State;
 
 /**
  * Aloja el estado de una carta

@@ -21,7 +21,7 @@ public class Game {
     
     public int getGameNumber() { //obtener el numero de juego
        return (gameNumber);
-    }
+    } 
     
     public void setGameNumber(int gameNumber) { //asigna el numero de Juego
         this.gameNumber = gameNumber;

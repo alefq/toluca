@@ -6,11 +6,10 @@
 
 package py.edu.uca.fcyt.toluca;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
-import py.edu.uca.fcyt.toluca.table.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.game.ChatPanel;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  *

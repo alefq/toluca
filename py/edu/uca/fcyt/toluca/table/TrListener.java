@@ -1,13 +1,16 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.animation.*;
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
+import java.security.InvalidParameterException;
+import java.util.LinkedList;
+import java.util.Vector;
 
-import java.util.*;
-import java.security.*;
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoListener;
+import py.edu.uca.fcyt.toluca.game.TrucoGame;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.animation.Animator;
 
 /**
  * Escucha los eventos del juego

@@ -6,7 +6,6 @@
 
 package py.edu.uca.fcyt.util;
 
-import javax.swing.JOptionPane;
 
 /**
  *

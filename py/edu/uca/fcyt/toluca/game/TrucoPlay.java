@@ -5,14 +5,13 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
-import java.util.*;
-import org.jdom.*;
-import java.net.*;
-import java.io.*;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
-import java.util.*;
 /**
  * <p>
  * 

@@ -1,12 +1,15 @@
 package py.edu.uca.fcyt.toluca;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
-import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.TableCellEditor;
 
 /**
  *

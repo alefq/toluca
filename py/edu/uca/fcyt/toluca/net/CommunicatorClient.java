@@ -6,20 +6,30 @@
 
 package py.edu.uca.fcyt.toluca.net;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.table.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
-import py.edu.uca.fcyt.toluca.event.*;
-
-import py.edu.uca.fcyt.net.*;
-
-import java.util.*;
-import org.jdom.*;
-import java.net.*;
-import java.io.*;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
+
+import py.edu.uca.fcyt.game.ChatPanelContainer;
+import py.edu.uca.fcyt.net.XmlPackagesSession;
+import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoCard;
+import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+import py.edu.uca.fcyt.toluca.table.Table;
 /**
  *
  * @author  PABLO JAVIER
@@ -211,7 +221,7 @@ public class CommunicatorClient extends Communicator {
                                                         TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
                                                         trucoGame.play(te);
                                         } catch (java.lang.NullPointerException e) {
-                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadCantarTanto ");
+                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
                                                         e.printStackTrace();
                                                                 throw e;
                                                         }*/
@@ -270,7 +280,7 @@ public class CommunicatorClient extends Communicator {
                                                         TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
                                                         trucoGame.play(te);
                                         } catch (java.lang.NullPointerException e) {
-                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadCantarTanto ");
+                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
                                                         e.printStackTrace();
                                                                 throw e;
                                         }*/
@@ -424,7 +434,7 @@ public class CommunicatorClient extends Communicator {
                                                         TrucoGameClient trucoGame=(TrucoGameClient)tabela.getTGame();
                                                         trucoGame.play(te);
                                         } catch (java.lang.NullPointerException e) {
-                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlReadCantarTanto ");
+                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlReadCantarTanto ");
                                                         e.printStackTrace();
                                                                 throw e;
                                         }*/
@@ -497,7 +507,7 @@ public class CommunicatorClient extends Communicator {
                                                                         trucoGame.play(te);
                                                  
                                                                 } catch (java.lang.NullPointerException e) {
-                                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT METODO xmlreadSendCardsAlg ");
+                                                                        System.err.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT Método xmlreadSendCardsAlg ");
                                                                         e.printStackTrace();
                                                                 throw e;
                                                         }*/
@@ -835,7 +845,7 @@ public class CommunicatorClient extends Communicator {
      TrucoGame truco=new TrucoGame(team1,team2);
      tabela.startGame(truco);
      } catch (java.lang.NullPointerException e) {
-     System.e.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT EN EL METODO xmlReadGameStarted");
+     System.e.println("LA TABLA ES NULL EN EL COMUNICATOR CLIENT EN EL Método xmlReadGameStarted");
      e.printStackTrace();
      throw e;
                 }*/

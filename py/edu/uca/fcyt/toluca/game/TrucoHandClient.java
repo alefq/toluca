@@ -6,9 +6,9 @@
 
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.*;
-import py.edu.uca.fcyt.toluca.statusGame.*;
-import java.util.*;
+import java.util.Vector;
+
+import py.edu.uca.fcyt.toluca.statusGame.statusGameCliente.TrucoStatusTableCliente;
 /**
  *
  * @author  Julio Rey

@@ -1,18 +1,12 @@
 package py.edu.uca.fcyt.toluca.table;
-import py.edu.uca.fcyt.toluca.*;
-
-import java.util.*;
-import py.edu.uca.fcyt.toluca.table.animation.Animable;
-import py.edu.uca.fcyt.game.Card;
-import java.awt.image.*;
-import java.awt.geom.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.geom.AffineTransform;
 import java.awt.Graphics2D;
-import py.edu.uca.fcyt.toluca.table.TableCardListener;
-import py.edu.uca.fcyt.toluca.table.TableCard;
-import java.security.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.Vector;
+
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
 
 /**
  * Maneja a las cartas de un jugador

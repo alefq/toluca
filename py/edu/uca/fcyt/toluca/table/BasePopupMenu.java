@@ -8,8 +8,10 @@
 
 package py.edu.uca.fcyt.toluca.table;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Toolkit;
+
+import javax.swing.JComponent;
 
 /**
  *

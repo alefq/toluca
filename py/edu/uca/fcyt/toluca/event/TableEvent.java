@@ -1,11 +1,12 @@
 package py.edu.uca.fcyt.toluca.event;
 
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
-import py.edu.uca.fcyt.toluca.table.*;
-import java.security.*;
+import org.jdom.Document;
+import org.jdom.Element;
 
-import org.jdom.*;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.Table;
+import py.edu.uca.fcyt.toluca.table.TableServer;
+import py.edu.uca.fcyt.toluca.table.Util;
 
 /**
  * Contiene los datos necesarios para manejar un evento de mesa

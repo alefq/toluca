@@ -6,7 +6,8 @@
 
 package py.edu.uca.fcyt.util;
 
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 /**
  *

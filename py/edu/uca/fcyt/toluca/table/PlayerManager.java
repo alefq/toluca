@@ -1,12 +1,9 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
+import java.util.Iterator;
+import java.util.Vector;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.*;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /** 
  * Maneja la posicion de los jugadores en la mesa

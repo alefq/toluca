@@ -7,11 +7,11 @@ package py.edu.uca.fcyt.toluca.db;
  */
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
 
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.game.Game;
+import py.edu.uca.fcyt.toluca.LoginFailedException;
+import py.edu.uca.fcyt.toluca.RoomServer;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  * <p>

@@ -4,9 +4,7 @@ package py.edu.uca.fcyt.game;
  *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
-import java.util.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  * <p>

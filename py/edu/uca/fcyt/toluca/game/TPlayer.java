@@ -1,12 +1,19 @@
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.game.*;
+import java.awt.Dimension;
 
-import javax.swing.*;
-import java.awt.*;
-import java.lang.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.event.TrucoListener;
 //import java.*;
 
 public class TPlayer extends JFrame implements TrucoListener{

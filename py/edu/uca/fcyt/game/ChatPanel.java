@@ -6,10 +6,12 @@
 
 package py.edu.uca.fcyt.game;
 
-import javax.swing.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
-import java.awt.*;
+import java.awt.Font;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  *

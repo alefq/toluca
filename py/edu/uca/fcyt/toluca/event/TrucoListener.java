@@ -6,9 +6,7 @@
 
 package py.edu.uca.fcyt.toluca.event;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 
 /**
  *

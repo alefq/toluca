@@ -6,7 +6,8 @@
 
 package py.edu.uca.fcyt.util;
 
-import java.awt.event.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 /**
  *
  * @author  PABLO JAVIER

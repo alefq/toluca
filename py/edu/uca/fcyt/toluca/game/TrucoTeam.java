@@ -6,8 +6,6 @@
 
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.game.*;
 
 /** Clase que representa a un equipo de Truco.
  * @author Julio Rey

@@ -1,26 +1,24 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.animation.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.geom.*;
-import java.awt.event.*;
-
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.game.*;
-import py.edu.uca.fcyt.game.*;
-
-import java.awt.event.ComponentListener;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
-import java.util.*;
-import java.lang.*;
-import java.awt.event.MouseListener;
-import java.util.EventListener;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.awt.Image;
+
+import javax.swing.JPanel;
+
+import py.edu.uca.fcyt.toluca.table.animation.Animator;
+import py.edu.uca.fcyt.toluca.table.animation.Graphics2DPainter;
 
 /**
  * Maneja el panel donde se juega propiamente.

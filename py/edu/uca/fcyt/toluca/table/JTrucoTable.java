@@ -1,11 +1,17 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.game.*;
-import javax.swing.*;
-import java.util.EventListener;
-import java.awt.*;
-import javax.swing.border.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
+
+import py.edu.uca.fcyt.game.ChatPanel;
 
 /** Panel principal de juego*/
 class JTrucoTable extends JPanel implements ComponentListener 

@@ -1,7 +1,7 @@
 package py.edu.uca.fcyt.toluca.table.animation;
-import java.awt.image.*;
-import java.awt.geom.*;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 
 /**

@@ -5,10 +5,8 @@
  */
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.game.*;
-
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 /**
  *
  * @author  Julio Rey

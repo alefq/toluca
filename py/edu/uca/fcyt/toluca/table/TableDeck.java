@@ -1,15 +1,10 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.util.*;
-import py.edu.uca.fcyt.toluca.*;
-import py.edu.uca.fcyt.toluca.table.state.*;
-import py.edu.uca.fcyt.toluca.table.animation.Animable;
-import java.awt.image.*;
-import java.awt.geom.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.geom.AffineTransform;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
 
 /* 
  * Representa a un mazo en la mesa

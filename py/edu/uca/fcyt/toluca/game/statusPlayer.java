@@ -1,6 +1,5 @@
 package py.edu.uca.fcyt.toluca.game;
 
-import py.edu.uca.fcyt.toluca.game.*;
 
 /** Guarda y controla el estado de un jugador en la mano
  */

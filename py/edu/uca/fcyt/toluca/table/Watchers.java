@@ -1,12 +1,11 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import java.util.EventListener;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 class Watchers extends JScrollPane {
 

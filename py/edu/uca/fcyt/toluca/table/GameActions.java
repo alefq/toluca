@@ -1,7 +1,7 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 class GameActions implements MouseListener {
     public GameActions() {

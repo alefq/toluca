@@ -1,16 +1,16 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.table.state.*;
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import java.awt.image.*;
-import java.awt.geom.*;
-import java.io.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.security.InvalidParameterException;
-import py.edu.uca.fcyt.game.*;
-import py.edu.uca.fcyt.toluca.event.*;
-import py.edu.uca.fcyt.toluca.game.*;
+import java.util.Hashtable;
+
+import javax.swing.ImageIcon;
+
+import py.edu.uca.fcyt.game.Card;
+import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 
 public class Util
 {
