@@ -30,6 +30,10 @@ public class CommunicatorClient extends Communicator {
     Player mi_jugador=null;
     /** Creates a new instance of XmlPackageSessionTest */
     ChatPanelContainer Chatpanel;
+    
+    /** Holds value of property player. */
+    private Player player;
+    
     public CommunicatorClient(RoomClient pieza) {
         this.pieza = pieza;
         int retinit = init();
@@ -49,6 +53,7 @@ public class CommunicatorClient extends Communicator {
     public int init() {
         int ret = -1;
         try {
+            //setSocket(new Socket("interno.roshka.com.py", 6767));
             setSocket(new Socket("localhost", 6767));
             ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
         } catch (UnknownHostException e) {
@@ -111,6 +116,7 @@ public class CommunicatorClient extends Communicator {
                 //Chatpanel.showChatMessage(user,message);
                 System.out.println("Player: "+user);
                 System.out.println("Mensaje: "+message);
+                pieza.showChatMessage(new Player(user, 0), message);
             }
         }
     }
@@ -125,7 +131,7 @@ public class CommunicatorClient extends Communicator {
         
         
         if(aux.compareTo("ChatMsg")==0) {
-            System.out.println("LLego un mensaje de chat");
+            System.out.println("LLego un mensaje de chat, soy " + player.getName());
             xmlReadChatMsg(child);
         }
         
@@ -178,6 +184,7 @@ public class CommunicatorClient extends Communicator {
                     mi_jugador=new Player(jugname,rating);
                     System.out.println("Jugador nuevo name="+mi_jugador.getName()+"rating"+mi_jugador.getRating());
                     pieza.loginCompleted(mi_jugador);
+                    setPlayer(mi_jugador);
                 }
                 else {
                     pieza.addPlayer(new Player(jugname, rating));
@@ -292,6 +299,37 @@ public class CommunicatorClient extends Communicator {
     public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
         
     }
+    
+    /** Getter for property player.
+     * @return Value of property player.
+     *
+     */
+    public Player getPlayer() {
+        return this.player;
+    }
+    
+    /** Setter for property player.
+     * @param player New value of property player.
+     *
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    
+    /** <p>
+     * Does ...
+     * </p><p>
+     *
+     * @param ev ...
+     * </p><p>
+     *
+     * </p>
+     *
+     */
+    public void createTableRequested(RoomEvent ev) {
+        
+    }
+    
 	/*public static void main(String[] args)
 	{
 		TrucoCard []cards=new TrucoCard[3];

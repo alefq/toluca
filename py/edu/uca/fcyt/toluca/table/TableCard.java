@@ -163,7 +163,7 @@ class TableCard implements TableObject
 			BufferedImage.TYPE_3BYTE_BGR
 		);
 
-		Util.copyImage(new ImageIcon("..\\imagenes\\dorso.gif"), back);
+		Util.copyImage(new ImageIcon("c:\\pablo\\toluca\\py\\edu\\uca\\fcyt\\toluca\\images\\dorso.gif"), back);
 
 		return back;
 	}

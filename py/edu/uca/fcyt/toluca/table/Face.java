@@ -469,7 +469,7 @@ class Face
 	//obtiene la imagen de la carita
 	public ImageIcon getFaceImage(int sign)
 	{
-		return new ImageIcon("..\\imagenes\\faces\\standard\\" + sign + ".jpg");
+		return new ImageIcon("c:\\pablo\\toluca\\py\\edu\\uca\\fcyt\\toluca\\images\\faces\\standard\\" + sign + ".jpg");
 	}
 	
 	// dibuja 'bfIn' en 'bfOut' en la posición 

@@ -131,7 +131,8 @@ extends Communicator {
                 System.out.println("Player: "+user);
                 System.out.println("Mensaje: "+message);
                 System.out.println("Enviando Respuesta");
-                chatMessageSent(new Player(user,0),message);
+//                chatMessageSent(new Player(user,0),message);
+                pieza.sendChatMessage(new Player(user,0),message);
             }
         }
     }
@@ -179,9 +180,11 @@ extends Communicator {
         
     }
     public void chatMessageSent(Player jug,String message) {
+        System.out.println("Enviando msg de chat del jug: " + jug.getName());
         Document doc;
         doc=super.xmlCreateChatMsg(jug,message);
         super.sendXmlPackage(doc);
+//        pieza.sendChatMessage(jug, message);
     }
     
     public void setRoom(RoomServer pieza) {
@@ -247,6 +250,9 @@ extends Communicator {
      */
     public void chatMessageRequested(ChatPanelContainer chatPanelContainer, Player player, String htmlMessage) {
     }
+
+    public void createTableRequested(RoomEvent ev) {
+    }
     
     /** <p>
      * Does ...
@@ -259,7 +265,10 @@ extends Communicator {
     }
 
     public void chatMessageSent(ChatPanelContainer cpc, Player player, String htmlMessage) {
-        
+        System.out.println("Enviando msg de chat del jug: " + player.getName());
+        Document doc;
+        doc=super.xmlCreateChatMsg(player,htmlMessage);
+        super.sendXmlPackage(doc);
     }
 
     

@@ -145,17 +145,19 @@ implements RoomListener, TableListener {
         Element ROOT=new Element("LoginOk");
         Document doc=new Document(ROOT);
         
-        Vector jugadores=new Vector();
-        Vector mesas=new Vector();
+        Vector jugadores/*=new Vector()*/;
+        Vector mesas/*=new Vector()*/;
         
         jugadores=(Vector)te.getPlayerss();
+        System.out.println("El tam de jugadores es: " + jugadores.size());
         mesas=(Vector)te.getTabless();
+        System.out.println("El tam de mesas es: " + mesas.size());
         Player jug;
         
         Element player;
         for (Enumeration e = jugadores.elements() ; e.hasMoreElements() ;) {
-            
             jug=(Player)e.nextElement();
+            System.out.println("Se agrega el player: " + jug.getName() + " al xml que va a viajar");
             
             player=new Element("Player");
             player.setAttribute("name",jug.getName());
@@ -768,13 +770,7 @@ implements RoomListener, TableListener {
         
     }
     public void loginFailed(RoomEvent te){}
-    
-    public void ChatMessageRequested(ChatPanelContainer chatpanel,Player jug,String message){
-        
-    }
-    public void ChatMessageSent(Player chatpanel,String message){
-        //envia el mensaje al communicator correspondiente
-    }
+            
     
     /*
     public static void main(String[] args) {
@@ -858,8 +854,7 @@ implements RoomListener, TableListener {
      *
      * </p>
      */
-    public void createTableRequested(RoomEvent ev) {
-    }
+    public abstract void createTableRequested(RoomEvent ev);
     
     /** <p>
      * Does ...
