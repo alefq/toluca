@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
@@ -22,7 +23,11 @@ public class TableGame extends JTable{
 	{
 		super();
 		setModel(getTableModelGame());
+		TableColumn mesaCol=getColumn("Mesa");
+		mesaCol.setPreferredWidth(40);
+		mesaCol.setMaxWidth(40);
 		setSelectionBackground(new Color(240,248,146));		
+		setDefaultRenderer(Object.class, new SimpleObjectRenderer());
 	}
 	
 	public Dimension getPreferredScrollableViewportSize()

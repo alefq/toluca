@@ -26,29 +26,33 @@ public class TableRankingRender implements TableCellRenderer{
 		this.colorSelected=selected;
 	}
 	public Component getTableCellRendererComponent(JTable jTable, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-
-		JPanel panel=new JPanel();
+	    JLabel l = new JLabel(value.toString());
+		/*JPanel panel=new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel.setBackground(colorBack);
 		panel.setOpaque(true);
 		if(isSelected)
-			panel.setBackground(colorSelected);
+			panel.setBackground(colorSelected);*/
 		if(col==0)
 		{
 			
 			RowRanking rowRanking=(RowRanking) value;
 			
 			ImageIcon icon=(ImageIcon) imagenes.get(rowRanking.getRankingStatus());
-			panel.add(new JLabel(icon));
-			panel.add(new JLabel(rowRanking.getUser()));
+			l = new JLabel(icon);
+			l.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+			l.setHorizontalAlignment(JLabel.LEFT);
+			l.setText(rowRanking.getUser());
+			l.setToolTipText(rowRanking.getUser() + ": " + rowRanking.getRanking());
+//			panel.add(l);
 			
 		}
 		else
 		{
-			JLabel label=new JLabel(value.toString());
+			l=new JLabel(value.toString());
 			
 		}
-		return panel;
+		return l;
 	}
 
 }

@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
@@ -39,7 +36,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     private TableRanking rankTable;
 
-    private RoomUING rui;
+    private RoomUING roomUING;
 
     private CommunicatorClient cc;
 
@@ -48,24 +45,21 @@ public class RoomClient extends Room implements ChatPanelContainer,
     ///////////////////////////////////////
     // operations
 
-    public RoomClient(RoomUING rui, String username, String password) {
+    public RoomClient(RoomUING rui) {
         super();
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea el
         // roomClient");
-        String serverString=rui.getParameter("serverString");
-        String portNumberString=rui.getParameter("portNumber");
+        String serverString = rui.getParameter("serverString");
+        String portNumberString = rui.getParameter("portNumber");
         int portNumber;
-        try
-		{
-        	portNumber = Integer.parseInt(portNumberString);
-		}
-        catch(java.lang.NumberFormatException e)
-		{
-        	portNumber=6767;
+        try {
+            portNumber = Integer.parseInt(portNumberString);
+        } catch (java.lang.NumberFormatException e) {
+            portNumber = 6767;
         }
-        cc = new CommunicatorClient(this,serverString,portNumber);
-        this.rui = rui;
-        addRoomListener(cc);        
+        cc = new CommunicatorClient(this, serverString, portNumber);
+        setRoomUING(rui);
+        addRoomListener(cc);
         //SwingUtilities.invokeLater(cc);
         new Thread(cc).start();
         //init();
@@ -80,13 +74,13 @@ public class RoomClient extends Room implements ChatPanelContainer,
     }
 
     public void cerrarConexion() {
-    	try {
-			cc.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            cc.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
+
     public void setMainTable(TableGame game) {
         this.mainTable = game;
     }
@@ -114,8 +108,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
         // remueve la mesa de la Lista de Mesas de juego
         super.removeTable(table);
 
-//        // remueve la mesa de la Tabla Principal
-//        mainTable.eliminarFila(table.getTableNumber());
+        //        // remueve la mesa de la Tabla Principal
+        //        mainTable.eliminarFila(table.getTableNumber());
     }
 
     /*
@@ -293,7 +287,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         }
     }
 
-    public synchronized void  fireLoginRequested(String username, String password) {
+    public synchronized void fireLoginRequested(String username, String password) {
         /** lock-end */
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_LOGIN_REQUESTED);
@@ -316,8 +310,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "el chatpanel
         // del room es "+chatPanel);
         setRoomPlayer(player);
-        player.setFullName(player.getName());
-        rui.setOwner(player);
+        player.setFullName(player.getName());        
+        getRoomUING().loginCompleted(player);
     } // end loginCompleted /** lock-begin */
 
     /*
@@ -333,10 +327,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
         // mainTable.addPlayer( (TrucoPlayer) col.elementAt(0),tableNumber);
     }
 
-    public void loginFailed(String msg) {
-        /** lock-end */
-        JOptionPane.showMessageDialog(new JButton(), ": Login Failed! " + msg);
-
+    public void loginFailed(RoomEvent event) {
+        getRoomUING().loginFailed(event);
     }
 
     /**
@@ -346,9 +338,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *  
      */
     public TableRanking getRankTable() {
-        if(rankTable == null)
-        {
-            setRankTable(rui.getTableRanking());
+        if (rankTable == null) {
+            setRankTable(roomUING.getTableRanking());
         }
         return rankTable;
     }
@@ -361,8 +352,10 @@ public class RoomClient extends Room implements ChatPanelContainer,
      *  
      */
     public void setRankTable(TableRanking ranking) {
-        /*logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
-                "Se settea el rank table -> " + ranking);*/
+        /*
+         * logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se settea el
+         * rank table -> " + ranking);
+         */
         this.rankTable = ranking;
     }
 
@@ -572,17 +565,32 @@ public class RoomClient extends Room implements ChatPanelContainer,
 
     }
 
-	/* (non-Javadoc)
-	 * @see py.edu.uca.fcyt.toluca.event.TableListener#tableDestroyed(py.edu.uca.fcyt.toluca.event.TableEvent)
-	 */
-	public void tableDestroyed(TableEvent event) {
-		
-		
-	}
-	public void tableDestroyed(Table table)
-	{
-		removeTable(table);
-		rui.removeTable(table);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see py.edu.uca.fcyt.toluca.event.TableListener#tableDestroyed(py.edu.uca.fcyt.toluca.event.TableEvent)
+     */
+    public void tableDestroyed(TableEvent event) {
 
+    }
+
+    public void tableDestroyed(Table table) {
+        removeTable(table);
+        roomUING.removeTable(table);
+    }
+
+    /**
+     * @return Returns the uiNG.
+     */
+    public RoomUING getRoomUING() {
+        return roomUING;
+    }
+
+    /**
+     * @param uiNG
+     *            The uiNG to set.
+     */
+    public void setRoomUING(RoomUING uiNG) {
+        this.roomUING = uiNG;
+    }
 } // end RoomClient

@@ -32,9 +32,11 @@ public class TableRanking extends JTable{
 		cellSelectionEnabled=false;
 		setMaximumSize(new Dimension(100,400));
 		TableColumn userCol=getColumn("User");
-		//userCol.setMaxWidth(200);
+		userCol.setPreferredWidth(90);
+		userCol.setMaxWidth(200);
 		TableColumn puntajeCol=getColumn("Puntaje");
-		//puntajeCol.setMaxWidth(50);						
+		puntajeCol.setPreferredWidth(60);
+		puntajeCol.setMaxWidth(60);				
 		setRowHeight(25);
 		HashMap coloresRanking = new HashMap();
 
@@ -58,7 +60,8 @@ public class TableRanking extends JTable{
 	    userCol.setCellRenderer(
 		new TableRankingRender(
                 coloresRanking, new Color(255, 255, 255), new Color(240,
-                        248, 146))); 
+                        248, 146)));
+	    setAutoResizeMode(AUTO_RESIZE_OFF);
     }
 
     public TableRanking(TableCellRenderer render)

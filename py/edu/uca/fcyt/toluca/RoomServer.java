@@ -173,8 +173,8 @@ implements ChatPanelContainer, TableListener {
 
         re.setTableNumber(table.getTableNumber());
         Iterator iter = roomListeners.listIterator();
-        while (iter.hasNext()) {                       
-            RoomListener ltmp = (RoomListener) iter.next();            
+        while (iter.hasNext()) {
+            RoomListener ltmp = (RoomListener) iter.next();
             ltmp.tableCreated(re);
         }
     } // end fireTableCreated
@@ -292,7 +292,7 @@ implements ChatPanelContainer, TableListener {
 
     }
 
-    protected  synchronized void firePlayerLeft(TrucoPlayer player) {
+    protected synchronized void firePlayerLeft(TrucoPlayer player) {
         Iterator iter = roomListeners.listIterator();
 
         RoomEvent re = new RoomEvent();
@@ -341,7 +341,7 @@ implements ChatPanelContainer, TableListener {
      *            </p>
      * @throws SQLException
      */
-    public void login(String username, String password, CommunicatorServer cs) 
+    public void login(String username, String password, CommunicatorServer cs)
     // py.edu.uca.fcyt.toluca.LoginFailedException
     {
         // your code here
@@ -393,7 +393,7 @@ implements ChatPanelContainer, TableListener {
      *            archivo de configuraci&#243;n?
      *            </p>
      */
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         DOMConfigurator.configure(System.getProperty("user.dir")
                 + System.getProperty("file.separator") + "log.xml");
         RoomServer rs = new RoomServer();
@@ -412,9 +412,15 @@ implements ChatPanelContainer, TableListener {
                 rs.leerComandos();
             } catch (Exception e) {
                 logger.error("no hya beleza", e);
+                System.err.println(e.getMessage());
+                System.exit(1);
             }
-        } else
-            logger.error("Se necesita la ubicación del archivo: " + props);
+        } else {
+            String tmp = "Se necesita la ubicación del archivo: " + props;
+            logger.error(tmp);
+            System.err.println(tmp);
+            System.exit(1);
+        }
 
     } // end main
 
@@ -592,7 +598,8 @@ implements ChatPanelContainer, TableListener {
     /**
      * Dispara el evento de chatMessageSent
      */
-    protected synchronized void fireChatMessageSent(TrucoPlayer jogador, String htmlMessage) {
+    protected synchronized void fireChatMessageSent(TrucoPlayer jogador,
+            String htmlMessage) {
         Iterator iter = roomListeners.listIterator();
         int i = 0;
         while (iter.hasNext()) {
@@ -622,7 +629,7 @@ implements ChatPanelContainer, TableListener {
         fireChatMessageSend(event);
     }
 
-    /** 
+    /**
      * 
      *  
      */
@@ -843,87 +850,88 @@ implements ChatPanelContainer, TableListener {
     public void setProperties(java.util.Properties properties) {
         this.properties = properties;
     }
-    
-	/**
-	 * 
-	 */
-	private void leerComandos() {
-		try {
-			BufferedReader in =
-				new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("roomServer> ");
-			String command = in.readLine().trim();
-			while (!command.equals("salir")) {
-				if (command.equalsIgnoreCase("showUsers")) {
-					showUsers();
-				} else if (command.equalsIgnoreCase("showComm")) {
-					showCommunicators();
-				} else if (command.equalsIgnoreCase("showTables")) {
-					showTables();
-				} else if(command.trim().length() > 0){
-					System.out.println("Comando incorrecto");					
-				}
-				System.out.print("roomServer> ");
-				command = in.readLine();
-			}			
-			System.out.println(
-				"Finalizo la sesion del administrador en el server");
-			System.exit(0);
 
-		} catch (IOException ioe) {
-			// Communication is broken
-		}
-	}
+    /**
+     *  
+     */
+    private void leerComandos() {
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    System.in));
+            System.out.print("roomServer> ");
+            String command = in.readLine().trim();
+            while (!command.equals("salir")) {
+                if (command.equalsIgnoreCase("showUsers")) {
+                    showUsers();
+                } else if (command.equalsIgnoreCase("showComm")) {
+                    showCommunicators();
+                } else if (command.equalsIgnoreCase("showTables")) {
+                    showTables();
+                } else if (command.trim().length() > 0) {
+                    System.out.println("Comando incorrecto");
+                }
+                System.out.print("roomServer> ");
+                command = in.readLine();
+            }
+            System.out
+                    .println("Finalizo la sesion del administrador en el server");
+            System.exit(0);
 
-	/**
-	 * 
-	 */
-	private synchronized void showTables() {
-		ArrayList list = new ArrayList();
-		TableServer ts[] = getTablesServers();
-		for (int i = 0; i< ts.length; i++) {
-			list.add(ts[i]);
-		}
-		
-		showList(list);
-	}
+        } catch (IOException ioe) {
+            // Communication is broken
+        }
+    }
 
-	/**
-	 * 
-	 */
-	private synchronized void showUsers() {
-		showHashMap(getHashPlayers());
-	}
-	
-	private synchronized void showCommunicators() {
-		showList(getConnManager().getVecSesiones());
+    /**
+     *  
+     */
+    private synchronized void showTables() {
+        ArrayList list = new ArrayList();
+        TableServer ts[] = getTablesServers();
+        for (int i = 0; i < ts.length; i++) {
+            list.add(ts[i]);
+        }
 
-	}
-	
-	public synchronized void showHashMap(java.util.HashMap ht) {
-		java.util.Iterator it = ht.values().iterator();
-		int i = 0;
-		System.out.println("Toluca:");
-		while (it.hasNext()) {
-			System.out.println("element #" + (i++) + " -> " + (it.next()));
-		}
-		System.out.println("terminado");
-	}
-	
-	public synchronized void showList(java.util.List l) {
-		java.util.Iterator it = l.iterator();
-		int i = 0;
-		System.out.println("Toluca:");
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof TableServer)
-				System.out.println("element #" + (i++) + " -> " + ((TableServer) o).toString2());
-			else
-				System.out.println("element #" + (i++) + " -> " + (o));				
-		}
-		System.out.println("terminado");
-		
-	}
-	
+        showList(list);
+    }
+
+    /**
+     *  
+     */
+    private synchronized void showUsers() {
+        showHashMap(getHashPlayers());
+    }
+
+    private synchronized void showCommunicators() {
+        showList(getConnManager().getVecSesiones());
+
+    }
+
+    public synchronized void showHashMap(java.util.HashMap ht) {
+        java.util.Iterator it = ht.values().iterator();
+        int i = 0;
+        System.out.println("Toluca:");
+        while (it.hasNext()) {
+            System.out.println("element #" + (i++) + " -> " + (it.next()));
+        }
+        System.out.println("terminado");
+    }
+
+    public synchronized void showList(java.util.List l) {
+        java.util.Iterator it = l.iterator();
+        int i = 0;
+        System.out.println("Toluca:");
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof TableServer)
+                System.out.println("element #" + (i++) + " -> "
+                        + ((TableServer) o).toString2());
+            else
+                System.out.println("element #" + (i++) + " -> " + (o));
+        }
+        System.out.println("terminado");
+
+    }
+
 } // end RoomServer
 

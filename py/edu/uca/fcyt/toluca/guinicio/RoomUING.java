@@ -1,14 +1,15 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/01/04 20:12:57 $
- * @version $Revision: 1.14 $ 
+ * Last modified: $Date: 2005/01/07 20:32:01 $
+ * @version $Revision: 1.15 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
@@ -22,9 +23,11 @@ import javax.swing.JScrollPane;
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
 
+import javax.swing.JTextArea;
 /**
  * 
  * @author afeltes
@@ -36,11 +39,11 @@ public class RoomUING extends JApplet {
 //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
 //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20050104-1808";
+    public static final String VERSION = "20050107-1804";
     
     public static final String CLAVE_LOGIN = "claveLogin";
     
-    private javax.swing.JPanel jContentPane = null;
+    private javax.swing.JPanel jProomPanel = null;
 
     private JPanel panelPrincipal = null; //  @jve:decl-index=0:visual-constraint="25,16"
 
@@ -79,6 +82,11 @@ public class RoomUING extends JApplet {
 
     private RoomClient roomClient;
 
+    private LoginPanel loginPanel;
+
+    private JPanel jContenPane;
+
+	private JTextArea jTextArea = null;
     /**
      * This method initializes panelPrincipal
      * 
@@ -122,7 +130,7 @@ public class RoomUING extends JApplet {
             panelTitle.setLogo(logo);
             panelTitle.setStartColor(new Color(50, 255, 50));
             panelTitle.setLargo(50);
-            panelTitle.setNombre("Dani Cricco");
+            panelTitle.setNombre("desconocido");
             
             panelTitle.setMinimumSize(new Dimension(logo.getIconWidth(), logo
                     .getIconHeight()));
@@ -321,7 +329,19 @@ public class RoomUING extends JApplet {
         return tableRanking;
     }
 
-    public static void main(String[] args) {
+	/**
+	 * This method initializes jTextArea	
+	 * 	
+	 * @return javax.swing.JTextArea	
+	 */    
+	private JTextArea getJTextArea() {
+		if (jTextArea == null) {
+			jTextArea = new JTextArea();
+			jTextArea.setText("Aqui va a ir los avisos y demas yerbas");
+		}
+		return jTextArea;
+	}
+     public static void main(String[] args) {
     }
 
     /**
@@ -342,23 +362,67 @@ public class RoomUING extends JApplet {
 //        DOMConfigurator.configure(System.getProperty("user.dir")
 //                + System.getProperty("file.separator") + "log.xml");
         loadAppletParameters();
+        setRoomClient(new RoomClient(this));
         this.setSize(750, 470);
-        this.setContentPane(getJContentPane());
-        login();
+        //this.setContentPane(getRoomPanel());        
+        this.setContentPane(getCcontenPane());
+        //login();
     }
 
     /**
-     * This method initializes jContentPane
+     * @return
+     */
+    private JPanel getCcontenPane() {
+        if(jContenPane == null)
+        {
+            jContenPane = new JPanel();
+            jContenPane.setLayout(new BorderLayout());
+            jContenPane.add(getLoginPanel(), BorderLayout.NORTH);            
+            jContenPane.add(getJTextArea(), java.awt.BorderLayout.CENTER);
+        }
+        return jContenPane;
+    }
+
+
+    /**
+     * @return
+     */
+    private LoginPanel getLoginPanel() {
+        if(loginPanel == null)
+        {
+            loginPanel = new LoginPanel();
+            loginPanel.setRoomUING(this);            
+        }
+        return loginPanel;
+    }
+
+
+    /**
+     * @param client
+     */
+    private void setRoomClient(RoomClient client) {
+        this.roomClient = client;
+        getChatPanel().setCpc(roomClient);        
+        roomClient.setChatPanel(getChatPanel());
+        roomClient.setMainTable(getTableGame());
+        roomClient.setRankTable(getTableRanking());
+        getPanelComandos().setRoomClient(roomClient);        
+    }
+
+
+    /**
+     * This method initializes jProomPanel
      * 
      * @return javax.swing.JPanel
      */
-    private javax.swing.JPanel getJContentPane() {
-        if (jContentPane == null) {
-            jContentPane = new javax.swing.JPanel();
-            jContentPane.setLayout(new java.awt.BorderLayout());
-            jContentPane.add(getPanelPrincipal(), java.awt.BorderLayout.CENTER);
+    private javax.swing.JPanel getRoomPanel() {
+        if (jProomPanel == null) {
+            jProomPanel = new javax.swing.JPanel();
+            jProomPanel.setSize(750, 470);
+            jProomPanel.setLayout(new java.awt.BorderLayout());
+            jProomPanel.add(getPanelPrincipal(), java.awt.BorderLayout.CENTER);
         }
-        return jContentPane;
+        return jProomPanel;
     }
 
     protected void loadAppletParameters() {
@@ -407,7 +471,7 @@ public class RoomUING extends JApplet {
         py.edu.uca.fcyt.util.LoginDialog ld = new py.edu.uca.fcyt.util.LoginDialog(
                 JOptionPane.getRootFrame(), true);
         ld.setVisible(true);
-        roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
+        //roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
         getChatPanel().setCpc(roomClient);
         
         //System.out.println("El chatpanel del roomui es "+chatPanel);
@@ -444,4 +508,31 @@ public class RoomUING extends JApplet {
     {
     	tableGame.eliminarFila(table.getTableNumber());
     }
+    /**
+     * @return Returns the roomClient.
+     */
+    public RoomClient getRoomClient() {
+        return roomClient;
+    }
+        
+    /**
+     * @param event
+     */
+    public void loginFailed(RoomEvent event) {
+        getLoginPanel().getJLestado().setForeground(Color.RED);
+        getLoginPanel().getJLestado().setText(">  " + event.getErrorMsg() + "  <");
+        getLoginPanel().getJLestado().setToolTipText(event.getErrorMsg());
+    }
+
+
+    /**
+     * @param player
+     */
+    public void loginCompleted(TrucoPlayer player) {
+        getContentPane().removeAll();
+        getContentPane().add(getRoomPanel());
+        setOwner(player);
+        validateTree();           
+    }
+    
 }  //  @jve:decl-index=0:visual-constraint="10,30"

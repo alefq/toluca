@@ -159,8 +159,7 @@ public class EventDispatcherClient extends EventDispatcher {
      * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#loginFailed(py.edu.uca.fcyt.toluca.event.RoomEvent)
      */
     public void loginFailed(RoomEvent event) {
-
-        ((RoomClient) room).loginFailed(event.getErrorMsg());
+        ((RoomClient) room).loginFailed(event);
     }
 
     /*

@@ -1,5 +1,6 @@
 package py.edu.uca.fcyt.toluca;
 
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 
 /** Java class "LoginFailedException.java" generated from Poseidon for UML.
  *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
@@ -13,71 +14,93 @@ package py.edu.uca.fcyt.toluca;
  */
 public class LoginFailedException extends Exception {
 
-  ///////////////////////////////////////
-  // attributes
+    private RoomEvent revent = null;
 
+    ///////////////////////////////////////
+    // attributes
 
-    public LoginFailedException()
-    {
+    public LoginFailedException() {
     }
-    
-    public LoginFailedException(String msg)
-    {
-        super(msg);        
+
+    public LoginFailedException(String msg) {
+        super(msg);
     }
-    
-/**
- * <p>
- * Represents ...
- * </p>
- */
-    private int type; 
 
-/**
- * <p>
- * Represents ...
- * </p>
- */
-    public static final int USER_DOES_NOT_EXISTS = 1; 
+    /**
+     * @param event
+     */
+    public LoginFailedException(RoomEvent event) {
+        super(event.getErrorMsg());
+        setRevent(event);
+    }
 
-/**
- * <p>
- * Represents ...
- * </p>
- */
-    public static final int PASSWORD_DOES_NOT_MATCH = 2; 
+    /**
+     * <p>
+     * Represents ...
+     * </p>
+     */
+    private int type;
 
-  ///////////////////////////////////////
-  // operations
+    /**
+     * <p>
+     * Represents ...
+     * </p>
+     */
+    public static final int USER_DOES_NOT_EXISTS = 1;
 
+    /**
+     * <p>
+     * Represents ...
+     * </p>
+     */
+    public static final int PASSWORD_DOES_NOT_MATCH = 2;
 
-/**
- * <p>
- * Does ...
- * </p><p>
- * 
- * @return a int with ...
- * </p>
- */
-    public int getType() {        
+    ///////////////////////////////////////
+    // operations
+
+    /**
+     * <p>
+     * Does ...
+     * </p>
+     * <p>
+     * 
+     * @return a int with ...
+     *         </p>
+     */
+    public int getType() {
         return type;
-    } // end getType        
+    } // end getType
 
-/**
- * <p>
- * Does ...
- * </p><p>
- * 
- * </p><p>
- * 
- * @param _type ...
- * </p>
- */
-    public void setType(int _type) {        
+    /**
+     * <p>
+     * Does ...
+     * </p>
+     * <p>
+     * 
+     * </p>
+     * <p>
+     * 
+     * @param _type
+     *            ...
+     *            </p>
+     */
+    public void setType(int _type) {
         type = _type;
-    } // end setType        
+    } // end setType
 
+    /**
+     * @return Returns the revent.
+     */
+    public RoomEvent getRevent() {
+        return revent;
+    }
+
+    /**
+     * @param revent
+     *            The revent to set.
+     */
+    public void setRevent(RoomEvent revent) {
+        this.revent = revent;
+    }
 } // end LoginFailedException
-
-
 

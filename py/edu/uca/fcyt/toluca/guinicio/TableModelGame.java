@@ -10,7 +10,7 @@ import javax.swing.table.AbstractTableModel;
 
 public class TableModelGame extends AbstractTableModel{
 	private ArrayList datos;
-	private final String [] columnNames={"Mesa","Jug 1","Jug 2","Jug 3","Jug 4","Jug 5","Jug 6","Espec 1","Espect 2"};
+	private final String [] columnNames={"Mesa","Jug 1","Jug 2","Jug 3","Jug 4","Jug 5","Jug 6"};
     public static final int INDICE_MESA = 0;
 	
 	public TableModelGame()
