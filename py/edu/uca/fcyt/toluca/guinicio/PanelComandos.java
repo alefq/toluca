@@ -76,6 +76,7 @@ public class PanelComandos extends JPanel {
     protected void botonSalirActionPerformed(ActionEvent e) {
         getApplet().setVisible(false);
         try {
+        	System.out.println("Saliendo del applet mmmmmmmmmm");
             getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/close.html"));
         } catch (MalformedURLException e1) {
             System.out.println(e1.getMessage());
@@ -167,6 +168,11 @@ public class PanelComandos extends JPanel {
         botonUnirse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 botonUnirseActionPerformed(e);
+            }
+        });
+        botonSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                botonSalirActionPerformed(e);
             }
         });
         setPanel();

@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/12/28 21:51:07 $
- * @version $Revision: 1.12 $ 
+ * Last modified: $Date: 2004/12/28 22:37:32 $
+ * @version $Revision: 1.13 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -36,7 +36,7 @@ public class RoomUING extends JApplet {
 //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
 //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20041228-19444";
+    public static final String VERSION = "20041228-2021";
     
     public static final String CLAVE_LOGIN = "claveLogin";
     
@@ -102,7 +102,7 @@ public class RoomUING extends JApplet {
     /* (non-Javadoc)
 	 * @see java.applet.Applet#stop()
 	 * 
-	 * Programación porcina aa / af el 23 de Diciembre de 2004
+	 * Programaciï¿½n porcina aa / af el 23 de Diciembre de 2004
 	 * Cerramos el socket al cerrar el applet.
 	 * 
 	 */
@@ -234,6 +234,7 @@ public class RoomUING extends JApplet {
             //        BorderLayout.EAST);
             panelComandos.setBackground(RoomUING.COLOR_DE_FONDO);
             panelComandos.setTableGame(getTableGame());
+            panelComandos.setApplet(this);
         }
         return panelComandos;
     }
@@ -405,7 +406,7 @@ public class RoomUING extends JApplet {
         // El login lo escribo por n-ï¿½sima vez - CVS urgeeeeente!
         py.edu.uca.fcyt.util.LoginDialog ld = new py.edu.uca.fcyt.util.LoginDialog(
                 JOptionPane.getRootFrame(), true);
-        ld.show();
+        ld.setVisible(true);
         roomClient = new RoomClient(this, ld.getUsername(), ld.getPassword());
         getChatPanel().setCpc(roomClient);
         
