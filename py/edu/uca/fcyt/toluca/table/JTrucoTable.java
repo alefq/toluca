@@ -14,7 +14,7 @@ class JTrucoTable extends JPanel
 		jpChat;		// panel de chat
 
 	public JPanel jpLeftPanel;		// panel de botones
-	public Score jpPuntaje;		// panel de puntajes
+	protected Score score;		// panel de puntajes
 	public Watchers jpWatchers;	// observadores
 	public PlayTable pTable;
 
@@ -29,16 +29,16 @@ class JTrucoTable extends JPanel
 		jpLeftPanel = new JPanel();
 		jpPlayers = new JPanel();
 		jpChat = new JPanel();
-		jpPuntaje = new Score(30);
+		score = new Score(30);
 		jpWatchers = new Watchers();
 
 		// agrega
 		jpPlayers.add(new JLabel("Jugadores"));
 		jpChat.add(new JLabel("Chat"));
 
-		jpPuntaje.setLayout(new BoxLayout(jpPuntaje, BoxLayout.Y_AXIS));
-		jpPuntaje.add(new JLabel(" ---- Puntaje ---- "));
-		jpPuntaje.add(new JLabel(" Equipo1   Equipo2 "));
+		score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
+		score.add(new JLabel(" ---- Puntaje ---- "));
+		score.add(new JLabel(" Equipo1   Equipo2 "));
 
 
 		setLayout(new BorderLayout());
@@ -47,7 +47,7 @@ class JTrucoTable extends JPanel
 		add(jpLeftPanel, BorderLayout.WEST);
 		add(jpPlayers, BorderLayout.NORTH);
 		add(jpChat, BorderLayout.SOUTH);
-		add(jpPuntaje, BorderLayout.EAST);
+		add(score, BorderLayout.EAST);
 
 		JLabel obs = new JLabel("Observadores");
 		obs.setPreferredSize(new Dimension(100,30));
@@ -62,11 +62,10 @@ class JTrucoTable extends JPanel
 		jpChat.setBorder(new EtchedBorder());
 		jpLeftPanel.setBorder(new EtchedBorder());
 		jpPlayers.setBorder(new EtchedBorder());
-		jpPuntaje.setBorder(new EtchedBorder());
+		score.setBorder(new EtchedBorder());
 
 		JPanel aux;
 
-		jpPuntaje.actualizarPuntaje(13, 5);
 	}
 
 	/** retorna el PlayTable asociado a la mesa */

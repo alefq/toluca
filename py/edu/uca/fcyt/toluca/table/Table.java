@@ -3,6 +3,7 @@ package py.edu.uca.fcyt.toluca.table;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.*;
 
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
@@ -17,6 +18,13 @@ import java.util.*;
  * Maneja el juego de truco
  */
 public class Table implements MouseListener, PTableListener, ChatPanelContainer {
+
+	protected static final int SIT = 0;
+	protected static final int PLAY = 1;
+	protected static final int CALL = 2;
+	protected static final int WAIT = 3;
+
+	protected int status = SIT;	// estado actual 
     protected JFrame jFrame;				 // jFrame principal
     protected JTrucoTable jtTable;		 // panel principal
     protected PlayTable pTable;			 // mesa de juego
@@ -27,11 +35,13 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
     protected TrucoGame tGame;			 // juego de truco asociado
     protected boolean host;				 // es o no el host
     protected PlayerManager pManager;	 // manejador de jugadores
-    protected Player actualPlayer; 		 // jugador actual
+    protected TrucoPlayer actualPlayer;  // jugador actual
     protected int tableNumber;
     
-    // listeners de eventos de mesa
-    protected TableEventManager tableEventMan;
+    // manejador de eventos de mesa
+    protected TableEventManager tEventMan;
+    
+    // TrucoListener asociado
     protected TrListener trListener;
     
     public Vector getPlayers() { return players; }
@@ -80,16 +90,21 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
         
         // agrega las caritas a 'pTable'
         for (i = 0; i < 6; i++)
-            pTable.addFace(new Face(i, 6, "Player's Nick Name Ultra"));
+            pTable.addFace(new Face
+            (
+            	i, 6, "Player's Nick Name Ultra",
+            	getChairColor(i)
+        	));
         
     }
     
     /** Crea un Table asociado con 'player' */
-    public Table(Player player, boolean host) {
+    public Table(TrucoPlayer player, boolean host) 
+    {
         this();
         actualPlayer = player;
-        tableEventMan = new TableEventManager(this);
-        trListener = new TrListener(this, player);
+        tEventMan = new TableEventManager(this);
+        trListener = new TrListener(this);
         
         jFrame = new JFrame();
         jFrame.setTitle("Toluca: " + actualPlayer.getName());
@@ -119,7 +134,7 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
     
     /** Registra un TableListener */
     public void addTableListener(TableListener t) {
-        tableEventMan.addListener(t);
+        tEventMan.addListener(t);
     }
     
     /** Registra un TrucoListener */
@@ -128,8 +143,10 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
     }
     
     /** Inicia el juego de esta mesa con Game 'game'*/
-    public void startGame(TrucoGame game) {
+    public void startGame(TrucoGame game) 
+    {
         Player player;
+        int chair;
         
         // verificaciones
         Util.verif(actualPlayer != null, "No hay jugador actual");
@@ -147,13 +164,16 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
         
         pManager.controlStartGame();
         
-        for (int i = 1; i < pManager.getPlayerCount(); i++) {
-            player = pManager.getPlayer(pManager.getChair(i));
+        for (int i = 1; i < pManager.getPlayerCount(); i++) 
+        {
+        	chair = pManager.getChair(i);
+            player = pManager.getPlayer(chair);
             pTable.addFace(new Face
             (
-            i, pManager.getPlayerCount(),
-            player.getName()
+	            i, pManager.getPlayerCount(),
+	            player.getName(), getChairColor(chair)
             ));
+            
             System.out.println("Adding face of " + player.getName());
         }
         
@@ -175,14 +195,16 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
     }
     
     /** Retorna el Player propietario de esta mesa */
-    public Player getOwner() {
+    public Player getOwner() 
+    {
         return actualPlayer;
     }
     
     
     /** Inicia el juego */
-    public void mouseClicked(MouseEvent e) {
-        tableEventMan.fireGameStartRequest(null);
+    public void mouseClicked(MouseEvent e) 
+    {
+        tEventMan.fireGameStartRequest(null);
     }
     
     public void mousePressed(MouseEvent e) {}
@@ -191,19 +213,36 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
     public void mouseExited(MouseEvent e) {}
     
     
-    public void mouseClicked(float x, float y, MouseEvent e) {
-        sitIfClick(e.getX(), (int) e.getY());
-        
-        
-        //		if (e.getButton() == e.BUTTON1)
-        //		{
-        //			if (!cManager.playCardIfClick(x, y))
-        //				cManager.showPlayedIfClick(x, y);
-        //		}
-        //		else
-        //		{
-        //	        pTrucoPlays.show(pTable, e.getX(), e.getY());
-        //		}
+    public void mouseClicked(float x, float y, MouseEvent e) 
+    {
+    	switch (status)
+    	{
+    		case SIT:
+		        sitIfClick(e.getX(), (int) e.getY());
+		        break;
+		    
+		    case PLAY:
+        		if (e.getButton() == e.BUTTON1)
+        		{
+        			Card card;
+        			
+        			card = cManager.playCardIfClick(x, y);
+        			
+        			if (card == null)
+	        			cManager.showPlayedIfClick(x, y);
+	        		else
+	        			tGame.play(new TrucoPlay
+	        			(
+	        				actualPlayer, 
+	        				(byte) TrucoPlay.JUGAR_CARTA, 
+	        				(TrucoCard) card
+	        			));
+        		}
+        		else
+        		{
+        	        pTrucoPlays.show(pTable, e.getX(), e.getY());
+        		}
+        }
     }
     
     /**
@@ -230,13 +269,59 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
                 if (actChair != -1)
                     return false;
                 
-                tableEventMan.fireSitRequested(actualPlayer, i);
+                tEventMan.fireSitRequested(actualPlayer, i);
                 return true;
             }
         }
         
         return false;
     }
+    
+    protected Color getChairColor(int chair)
+    {
+    	if (chair % 2 == 0) return Color.RED;
+    	else return Color.BLUE;
+    }
+
+	public void say(int say)
+	{
+		String strPts;
+		int intPts;
+		
+		switch (say)
+		{
+			case TrucoPlay.CANTO_ENVIDO:
+				strPts = Util.lineInput("Puntos: ", 5);
+				intPts = Integer.parseInt(strPts);
+				tGame.play(new TrucoPlay(actualPlayer, (byte) say, intPts));
+				break;
+			
+			default:
+				tGame.play(new TrucoPlay(actualPlayer, (byte) say));
+				break;
+		}
+	}
+
+	public void drawBalloon(Player player, String text)
+	{
+		Face face;
+		
+		if (player == actualPlayer) return;
+
+		face = pTable.getFace
+		(
+			pManager.getPos(player) - 1
+		);
+	
+		face.setBalloonText(text);
+		pTable.drawObjects();
+		Util.sleep(1000);
+		face.setBalloonText(null);
+		pTable.drawObjects();
+		
+		
+	}
+    	
     
     // rutina principal
     public static void main(String args[]) {

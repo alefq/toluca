@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 import java.awt.geom.*;
+import java.util.*;
 
 class Face
 {
@@ -57,10 +58,8 @@ class Face
 	protected int dir = Dir.CENTER;
 	protected float x,y;
 	protected int playerPosition;
-	protected int faceWidth, faceHeight;
 	protected BufferedImage Bface;
 	protected String playerName;
-
 	protected BufferedImage biOut;
 	protected Graphics2D grOut;
 	protected int chairBounds[];
@@ -69,6 +68,13 @@ class Face
 	protected String nameShown;
 	protected int nameShownWidth;
 	protected int nameShownDescent;
+	protected int nameShownAscent;
+	protected float triAng;
+	protected float triOffset;
+	protected Font font;
+	protected Color borderColor;
+	protected String balloonText;
+	protected AffineTransform afTrans;
 
 //  -------------------------------------------------------------	
 //	Métodos
@@ -77,11 +83,19 @@ class Face
 	/**
 	 * Construye la carita del jugador correspondiente en su
 	 * lugar correspondiente*/
-	public Face(int numPlayer, int cantPlayers, String playerName)
+	public Face
+	(
+		int numPlayer, int cantPlayers, 
+		String playerName, Color borderColor
+	)
 	{ 
+		int max;
+		
 		calculatePosicion(numPlayer,cantPlayers);
-		setSign(Sign.ORO_7);
 		this.playerName = playerName;
+		this.borderColor = borderColor;
+		afTrans = new AffineTransform();
+		setSign(Sign.ESPADA_7);
 	}
 	
 	
@@ -90,30 +104,71 @@ class Face
 		switch(cant)
 		{
 			case 6:
-				if (playerPosition < 2) positionPlayer(playerPosition);
-				else if (playerPosition < 5) positionPlayer(playerPosition + 1);
-				else positionPlayer(playerPosition + 2);
+				if (playerPosition < 2) setPosition(playerPosition);
+				else if (playerPosition < 5) setPosition(playerPosition + 1);
+				else setPosition(playerPosition + 2);
 				break;
 			case 4:
-				positionPlayer(playerPosition * 2);
+				setPosition(playerPosition * 2);
 				break;
 			case 2:
-				positionPlayer(playerPosition * 4);
+				setPosition(playerPosition * 4);
 				break;		
 		}
 	}		
 	
-	private void positionPlayer(int playerPosition){
+	protected void setBorderColor(Color color)
+	{
+		borderColor = color;
+	}
+	
+	protected void setPosition(int playerPosition)
+	{
 		this.playerPosition = playerPosition;
-		switch(playerPosition){
-			case Pos.DOWN_CENTER:	x = 1;   y = 2-OFFSET;break;
-			case Pos.DOWN_RIGHT:	x = 2-OFFSET;   y = 2-OFFSET;break;
-			case Pos.MID_RIGHT:		x =	2-OFFSET;   y = 1;break;
-			case Pos.UP_RIGHT: 		x = 2-OFFSET; 	 y = OFFSET; break;
-			case Pos.UP_CENTER:		x = 1; y = OFFSET; break;
-			case Pos.UP_LEFT: 		x = OFFSET;  y = OFFSET; break;
-			case Pos.MID_LEFT:		x = OFFSET;  y = 1;break;
-			case Pos.DOWN_LEFT:		x = OFFSET;  y = 2-OFFSET;break;
+		
+		switch(playerPosition)
+		{
+			case Pos.DOWN_CENTER:	
+				x = 1; y = 2-OFFSET;
+				triAng = (float) Math.PI;
+				triOffset = 0;
+				break;
+			case Pos.DOWN_RIGHT:	
+				x = 2-OFFSET; y = 2-OFFSET;
+				triAng = (float) ((Math.PI*3)/4);
+				triOffset = 0;
+				break;
+			case Pos.MID_RIGHT:
+				x =	2-OFFSET; y = 1;
+				triAng = (float) ((Math.PI)/2);
+				triOffset = 0; //scaleWidth/5;
+				break;
+			case Pos.UP_RIGHT:
+				x = 2-OFFSET;
+				y = OFFSET; 
+				triAng = (float) ((Math.PI)/4);
+				triOffset = 0;
+				break;
+			case Pos.UP_CENTER:
+				x = 1; y = OFFSET; 
+				triAng = 0;
+				triOffset = 0;
+				break;
+			case Pos.UP_LEFT: 
+				x = OFFSET; y = OFFSET; 
+				triAng = (float) ((Math.PI*7)/4);
+				triOffset = 0;
+				break;
+			case Pos.MID_LEFT:
+				x = OFFSET;  y = 1;
+				triAng = (float) ((Math.PI*3)/2);
+				triOffset = 0; //-scaleWidth/5;
+				break;
+			case Pos.DOWN_LEFT:
+				x = OFFSET;  y = 2-OFFSET;
+				triAng = (float) ((Math.PI*5)/4);
+				triOffset = 0;
+				break;
 		}		
 	}
 	
@@ -169,23 +224,22 @@ class Face
 		return dir;
 	}
 	
-	
-	public void dibujarSeñas(){
-	
+	public void setBalloonText(String text)
+	{
+		balloonText = text;
 	}
-	
 	
 	public void paint()
 	{
-		drawChair();
-		//drawFace(Bface, i,0,.5f,new AffineTransform());
-		drawName();
+		int max;
 		
-		/*este esta nomas mientras tanto aca, pero en realidad
-		 este metodo tiene que ser llamado nose por quien
-		 cada vez que un jugador de una mesa haya cantado alguna
-		 seña*/
-		//mostrarDialog(i,"Truco",playerPosition);
+		max = Math.max(biOut.getWidth(), biOut.getHeight());
+		
+		drawChair();
+		drawFace(Bface, biOut, 0, max / 800f, afTrans);
+		drawName();
+		if (balloonText != null) 
+			drawDialog(balloonText);
 	}
 
 
@@ -219,6 +273,12 @@ class Face
 		
 		chairInnerOffset = (int) (max * .013) + 1;
 		chairRounded = (int) (max * .1);
+
+		font = new Font
+		(
+			"SansSerif", Font.BOLD, 
+			(int) (max * .044)
+		);
 		
 		setName(playerName);
 	}
@@ -233,6 +293,17 @@ class Face
 			chairBounds[1], 
 			chairBounds[2], 
 			chairBounds[3],
+			chairRounded, 
+			chairRounded
+		);	
+
+		grOut.setColor(borderColor);
+		grOut.fillRoundRect
+		(
+			chairBounds[0] + 1, 
+			chairBounds[1] + 1, 
+			chairBounds[2] - 2, 
+			chairBounds[3] - 2,
 			chairRounded, 
 			chairRounded
 		);	
@@ -262,15 +333,14 @@ class Face
 		y = Math.max(y, 0);
 		y = Math.min(y, biOut.getHeight() - nameShownDescent);
 		
+
+		grOut.setFont(font);
 		grOut.setColor(Color.BLACK);	
 		grOut.drawString(nameShown, x, y);
 	}
 	
 	public boolean inside(int x, int y)
 	{
-//		System.out.println("x: " + x + "  y: " + y);
-//		System.out.println(chairBounds[0] + " " + chairBounds[1]);
-//		System.out.println(chairBounds[2] + " " + chairBounds[3]);
 		return 
 			x >= chairBounds[0] &&
 			y >= chairBounds[1] &&
@@ -284,17 +354,22 @@ class Face
 	 *recibe como argumentos un bufferImage, la accion que debe cantar
 	 *y el numero de jugador, o sea su posicion en la mesa*/
 	 
-	public void mostrarDialog(BufferedImage i,String accion,int playerPosition){
-		
+	public void drawDialog(String accion)
+	{
+		int[] xPointsDown, yPointsDown;
+		int[] xPointsUp, yPointsUp;
+		int[] x1Points, y1Points;
+
 		/**Se calcula el punto central del globito que depende del tamaño de 
 		 *la mesa y de la posicion en la que se encuentra*/
 		 
-		int x = (int) (i.getWidth()*.4 * (this.x-1));
-		int y = (int) (i.getHeight()*.4 * (this.y-1));
+		int x = (int) (biOut.getWidth()*.4 * (this.x-1));
+		int y = (int) (biOut.getHeight()*.4 * (this.y-1));
 	
-		x+=i.getWidth()/2;
-		y+=i.getHeight()/2;
+		x+=biOut.getWidth()/2;
+		y+=biOut.getHeight()/2;
 		
+		grOut.setFont(font);
 		
 		int width;
 		
@@ -308,125 +383,93 @@ class Face
 			width = 10*(accion.length()-2);
 		
 		/**Se pone el ancho y alto del globito de acuerdo al tamaño de la mesa*/	
-		int scaleWidth = (int)  (width * i.getWidth()/PlayTable.TABLE_WIDTH);
-		int scaleHeight = (int) (40 * i.getHeight()/PlayTable.TABLE_HEIGHT);
+		int scaleWidth = (int)  (width * biOut.getWidth()/PlayTable.TABLE_WIDTH);
+		int scaleHeight = (int) (40 * biOut.getHeight()/PlayTable.TABLE_HEIGHT);
 		
-		double angulo = 0; //angulo del triangulito
-		//si es 90 y 270 tienen que tener un desplazamiento hacia la 
+//		double triAng = 0; //triAng del triangulito
+		//si es 90 y 270 tienen que tener un triOffset hacia la 
 		//izq y der respectivamente para q no se quede abajo del ovalo
-		int desplazamiento = 0;	//sirve para los triangulitos de los costados 	
+//		int triOffset = 0;	//sirve para los triangulitos de los costados 	
 
-		Graphics2D g;
-		Font nameFont; //para poder ponerle size y estilo a la letra del globito
-		
-		g = i.createGraphics(); 
-		
-		
-		g.setRenderingHint
-		(
-			RenderingHints.KEY_ANTIALIASING, 
-			RenderingHints.VALUE_ANTIALIAS_ON
-		);
-					
 	
-		int[] xPointsDown = {0,(int) (-11 * i.getWidth()/PlayTable.TABLE_WIDTH),(int) (11 * i.getWidth()/PlayTable.TABLE_WIDTH)};
-		int[] yPointsDown = {-(scaleHeight/2)-(int) (21 * i.getHeight()/PlayTable.TABLE_HEIGHT),-(scaleHeight/2),-(scaleHeight/2)};
+		xPointsDown = new int[]
+		{
+			0,
+			(int) (-11 * biOut.getWidth()/PlayTable.TABLE_WIDTH),
+			(int) (11 * biOut.getWidth()/PlayTable.TABLE_WIDTH)
+		};
 		
-		int[] xPointsUp = {0,(int) (-10 * i.getWidth()/PlayTable.TABLE_WIDTH),(int) (10 * i.getWidth()/PlayTable.TABLE_WIDTH)};
-		int[] yPointsUp = {-(scaleHeight/2)-(int) (20 * i.getHeight()/PlayTable.TABLE_HEIGHT),-(scaleHeight/2),-(scaleHeight/2)};
+		yPointsDown = new int[]
+		{
+			-(scaleHeight/2)-(int) (21 * biOut.getHeight()/PlayTable.TABLE_HEIGHT),
+			-(scaleHeight/2),-(scaleHeight/2)
+		};
+		
+		xPointsUp = new int[] 
+		{
+			0,
+			(int) (-10 * biOut.getWidth()/PlayTable.TABLE_WIDTH),
+			(int) (10 * biOut.getWidth()/PlayTable.TABLE_WIDTH)
+		};
+		
+		yPointsUp = new int[] 
+		{
+			-(scaleHeight/2)-(int) (20 * biOut.getHeight()/PlayTable.TABLE_HEIGHT),
+			-(scaleHeight/2),-(scaleHeight/2)
+		};
 	
-		int[] x1Points = new int[3];
-		int[] y1Points = new int[3];
-		int nPoints = 3;
+		x1Points = new int[3];
+		y1Points = new int[3];
 
 
-		/**De acuerdo a la posicion del jugador en la mesa
-		 *se elige un angulo para q gire el triangulito*/	
-		switch(playerPosition){
-			case Pos.DOWN_CENTER: 
-				/*creo q no tiene q hacer nada*/
-				break;
-			case Pos.DOWN_RIGHT: //esq inferior derecha
-				angulo = (Math.PI*3)/4;
-				desplazamiento = 0;
-				break;
-			case Pos.MID_RIGHT: //ver medio derecho
-				angulo = (Math.PI)/2;
-				desplazamiento = scaleWidth/5;
-				break;
-			case Pos.UP_RIGHT: //esquina superior derecha
-				angulo = (Math.PI)/4;
-				desplazamiento = 0;
-				break;
-			case Pos.UP_CENTER: //centro arriba
-				angulo = 0;
-				desplazamiento = 0;
-				break;
-			case Pos.UP_LEFT://esq sup izq
-				angulo = (Math.PI*7)/4;
-				desplazamiento = 0;
-				break;
-			case Pos.MID_LEFT: //medio izq
-				angulo = (Math.PI*3)/2;
-				desplazamiento = -scaleWidth/5;
-				break;
-			case Pos.DOWN_LEFT: //esquina inferior izq
-				angulo = (Math.PI*5)/4;
-				desplazamiento = 0;
-				break;
-		}
-		
-		
 		/**Se calculan los puntos de acuerdo al tamaño de la mesa y
 		 *la posicion del jugador y se dibuja el dialogo negro(el de fondo)*/		
-		for (int j=0; j<3; j++){ 
-			x1Points[j] =(int) (Math.cos(angulo)*xPointsDown[j] - Math.sin(angulo)*yPointsDown[j]);
-			y1Points[j] = (int) (Math.sin(angulo)*xPointsDown[j] + Math.cos(angulo)*yPointsDown[j]);
-			x1Points[j] += x+desplazamiento;
+		for (int j=0; j<3; j++)
+		{ 
+			x1Points[j] =(int) (Math.cos(triAng)*xPointsDown[j] - Math.sin(triAng)*yPointsDown[j]);
+			y1Points[j] = (int) (Math.sin(triAng)*xPointsDown[j] + Math.cos(triAng)*yPointsDown[j]);
+			x1Points[j] += x+triOffset;
 			y1Points[j] += y;
 		}
 	
 		//se dibuja el triangulito
-		g.setColor(Color.BLACK);
-		g.fillPolygon(x1Points,y1Points,nPoints);
+		grOut.setColor(Color.BLACK);
+		grOut.fillPolygon(x1Points,y1Points,3);
 		
 		//se dibuja la elipse de abajo en color negro
-		g.setColor(Color.BLACK);
-		g.fillOval((int)x-scaleWidth/2-1,(int)y-scaleHeight/2-1,scaleWidth+2,scaleHeight+2);
+		grOut.setColor(Color.BLACK);
+		grOut.fillOval((int)x-scaleWidth/2-1,(int)y-scaleHeight/2-1,scaleWidth+2,scaleHeight+2);
 		
 		
 		/**Se calculan los puntos de acuerdo al tamaño de la mesa y
 		 *la posicion del jugador y se dibuja el dialogo amarillo*/			
 		for (int j=0; j<3; j++){ 
-			x1Points[j] =(int) (Math.cos(angulo)*xPointsUp[j] - Math.sin(angulo)*yPointsUp[j]);
-			y1Points[j] = (int) (Math.sin(angulo)*xPointsUp[j] + Math.cos(angulo)*yPointsUp[j]);
-			x1Points[j] += x+desplazamiento;
+			x1Points[j] =(int) (Math.cos(triAng)*xPointsUp[j] - Math.sin(triAng)*yPointsUp[j]);
+			y1Points[j] = (int) (Math.sin(triAng)*xPointsUp[j] + Math.cos(triAng)*yPointsUp[j]);
+			x1Points[j] += x+triOffset;
 			y1Points[j] += y;
 		}
 		
 		//se dibuja el triangulito
-		g.setColor(Color.yellow);
-		g.fillPolygon(x1Points,y1Points,nPoints);
+		grOut.setColor(Color.yellow);
+		grOut.fillPolygon(x1Points,y1Points,3);
 		
 		//se dibuja la elipse	
-		g.setColor(Color.yellow.brighter().brighter());
-		g.fillOval((int)x-scaleWidth/2,(int)y-scaleHeight/2,scaleWidth,scaleHeight);
+		grOut.setColor(Color.yellow.brighter().brighter());
+		grOut.fillOval((int)x-scaleWidth/2,(int)y-scaleHeight/2,scaleWidth,scaleHeight);
 		
 		//Se coloca la accion al globito
-		g.setColor(Color.black.darker());	
+		grOut.setColor(Color.black);	
 		//Tamaño del texto de acuerdo al tamaño de la mesa y estilo de letra
-		nameFont = new Font(accion,Font.ROMAN_BASELINE,(int) (16 * i.getWidth()/PlayTable.TABLE_WIDTH));
-		g.setFont(nameFont);
-		g.drawString(accion,(int)x - (int) ((4*accion.length()-1)* i.getWidth()/PlayTable.TABLE_WIDTH),y+(5*i.getHeight()/PlayTable.TABLE_HEIGHT));
+		grOut.drawString(accion,(int)x - (int) ((4*accion.length()-1)* biOut.getWidth()/PlayTable.TABLE_WIDTH),y+(5*biOut.getHeight()/PlayTable.TABLE_HEIGHT));
 	}
+
+
 	
 	//obtiene la imagen de la carita
 	public ImageIcon getFaceImage(int sign)
 	{
-	
-//		return  new ImageIcon("c:\\Powerpuf.bmp");
-		return  new ImageIcon("..\\imagenes\\Powerpuf.gif");
-		
+		return new ImageIcon("..\\imagenes\\faces\\standard\\" + sign + ".jpg");
 	}
 	
 	// dibuja 'bfIn' en 'bfOut' en la posición 
@@ -439,12 +482,19 @@ class Face
 	)
 	{
 
-		int x = (int) (bfOut.getWidth()*.5 * (this.x-1));
-		int y = (int) (bfOut.getHeight()*.49 * (this.y-1));
-	
-		x+=bfOut.getWidth()/2;
-		y+=bfOut.getHeight()/2-10;
+		int x;
+		int y;
 		
+		
+		x = chairBounds[0] + chairBounds[2] / 2;
+
+		y = (int) (chairBounds[1] + chairBounds[3] - nameShownDescent - chairInnerOffset);
+		y = Math.max(y, 0);
+		y = Math.min(y, biOut.getHeight() - nameShownDescent);
+		y -= (int) ((bfIn.getHeight() + 3) * scale / 2);
+		y -= nameShownAscent;
+
+				
 		AffineTransformOp afTransOp;	// Dibujador de la imagen
 		int centX, centY;
 
@@ -503,7 +553,6 @@ class Face
 	public void setName(String name)
 	{
 		FontMetrics fMetrics;
-		Font nameFont;
 		int nameCharsShown;
 		int max;
 		char[] nameChars;
@@ -512,18 +561,12 @@ class Face
 		
 		max = Math.max(biOut.getWidth(), biOut.getHeight());
 
-
-		nameFont = new Font
-		(
-			"SansSerif", Font.BOLD, 
-			(int) (max * .022)
-		);
-		grOut.setFont(nameFont);
-		fMetrics = grOut.getFontMetrics(nameFont);
+		fMetrics = grOut.getFontMetrics(font);
 
 		nameChars = playerName.toCharArray();
 		
 		nameShownWidth = fMetrics.stringWidth(playerName);
+		nameShownAscent = fMetrics.getAscent();
 		nameShownDescent = fMetrics.getDescent();
 		
 		nameCharsShown = nameChars.length;
@@ -538,3 +581,7 @@ class Face
 	   	nameShown = playerName.substring(0, nameCharsShown);
 	}
 }
+
+
+
+

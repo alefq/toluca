@@ -50,5 +50,12 @@ class Util
 			return null;
 		}
 	}
-
+	
+	static public void sleep(long msecs)
+	{
+		long tAct;
+		
+		tAct = System.currentTimeMillis();
+		while (tAct + msecs > System.currentTimeMillis());
+	}
 }

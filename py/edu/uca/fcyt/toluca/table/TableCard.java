@@ -57,13 +57,13 @@ class TableCard implements TableObject
 		this.covered = covered;
 	}
 	
-	public void setCard(Card c)
+	public void setCard(Card card)
 	{
 		// copia la imágen de la carta en el BufferedImage 'img'
-		if (card != null) Util.copyImage(c.getImageIcon(), biCard);
+		if (card != null) Util.copyImage(card.getImageIcon(), biCard);
 
 		// Guarda la referencia a la carta
-		card = c;
+		this.card = card;
 	}
 	
 		

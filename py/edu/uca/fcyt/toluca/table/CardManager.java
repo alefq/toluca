@@ -1,6 +1,7 @@
 package py.edu.uca.fcyt.toluca.table;
 
 import py.edu.uca.fcyt.toluca.*;
+import py.edu.uca.fcyt.game.Card;
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -145,7 +146,6 @@ class CardManager
 				else tCard.setTimes((j * players.length + i + playerCount - dealer - 1) % (3 * players.length) * 250, 350);
 			}
 		}
-		
 
 		pTable.animate();
 	}
@@ -290,6 +290,33 @@ class CardManager
 		players[0].setTimes(0, 500, false);
 		pTable.animate();
 	}
+	
+	/** Asigna las cartas del jugador actual */
+	public void setCards(Card cards[])
+	{
+		for (int i = 0; i < 3; i++)
+			players[0].getTableCard(i).setCard(cards[i]);
+	}
+	
+	/** 
+	 * Establece siguiente TableCarta no jugada del  
+	 * 'player'-ésimo player a 'card'. Devuelve su índice'*/
+	public int setCard(int player, Card card)
+	{
+		TableCard tCard;
+		
+		for (int i = 0; i < 3; i++)
+		{
+			tCard = players[player].getTableCard(i);
+			
+			if (!players[player].getPlayed(i))
+			{
+				tCard.setCard(card);
+				return i;
+			}
+		}
+		throw new RuntimeException("Todas las cartas asignadas");
+	}
 
 	/** Hace que el jugador actual esconda sus cartas */
 	public void hideCards()
@@ -297,6 +324,16 @@ class CardManager
 		players[0].setTake();
 		players[0].setTimes(0, 500, false);
 		pTable.animate();
+	}
+	
+	/** 
+	 * Hace que las cartas del jugador actual se 
+	 * muestren en el orden correcto al pintarlas 
+	 */
+	public void toTop()
+	{
+		for (int i = 0; i < 3; i++)
+			pTable.toTop(players[0].getTableCard(i));
 	}
 
 	/**
@@ -334,10 +371,10 @@ class CardManager
 	}
 
 	/**
-	 * Juega una carta del jugador
-	 * actual si se clickeó en ella
+	 * Juega una carta del jugador actual si 
+	 * se clickeó en ella, y la devuelve
 	 */
-	public boolean playCardIfClick(float x, float y)
+	public Card playCardIfClick(float x, float y)
 	{
 		TableCard tc;
 		float r2;
@@ -364,10 +401,10 @@ class CardManager
 
 				showCards();
 
-				return true;
+				return tc.getCard();
 			}
 		}
-		return false;
+		return null;
 	}
 
 	/**

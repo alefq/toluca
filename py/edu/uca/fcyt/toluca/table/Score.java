@@ -5,13 +5,13 @@ import java.awt.*;
 
 class Score extends JPanel{
 	
-	static final int ABAJO = 0;
-	static final int ARRIBA = 1;
-	static final int IZQUIERDA = 0;
-	static final int DERECHA = 1;
-	private int ptsTeam1=0;
-	private int ptsTeam2=0;
-	public int puntos;
+	protected static final int ABAJO = 0;
+	protected static final int ARRIBA = 1;
+	protected static final int IZQUIERDA = 0;
+	protected static final int DERECHA = 1;
+	protected int ptsTeam1;
+	protected int ptsTeam2;
+	protected int puntos;
 	
 	public Score(int totalPts)
 	{
@@ -22,15 +22,16 @@ class Score extends JPanel{
 		
 	}	
 
-	public void paint(Graphics g){
+	public void paint(Graphics g)
+	{
 		
+		super.paint(g);
 		((Graphics2D) g).setRenderingHint
 		(
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON
 		);
 		
-		super.paint(g);
 		//se pintan los puntajes representados por fósforos
 		drawMatch(20,55,g,ptsTeam1);
 		drawMatch(70,55,g,ptsTeam2);
@@ -49,7 +50,7 @@ class Score extends JPanel{
 	public void actualizarPuntaje(int ptsTeam1,int ptsTeam2){
 		this.ptsTeam1 = ptsTeam1;
 		this.ptsTeam2 = ptsTeam2;
-		repaint();
+		paint(getGraphics());
 	}
 	
 	//------------------------------------------
@@ -58,6 +59,8 @@ class Score extends JPanel{
 		int cont1 = 0;
 		int cont2 = 0;
 		y += 2;
+		
+		if (pts == 0) return;
 		
 		label:  //goto
 		while(true){ 

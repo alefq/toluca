@@ -57,6 +57,5 @@ public class Card
 		String[] kinds = new String[] {"Oro", "Espada", "Copa", "Basto"};
 
 		return new ImageIcon("..\\imagenes\\" + kinds[kind - 1] + "\\" + value + ".gif");
-		//return new ImageIcon("c:\\1.gif");
 	}
 }

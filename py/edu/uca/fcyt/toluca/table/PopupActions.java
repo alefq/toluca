@@ -13,10 +13,10 @@ import java.awt.event.*;
  */
 class PopupActions extends javax.swing.AbstractAction 
 {
-    private PTableListener ptListener;
+    protected PTableListener ptListener;
     int action;
     
-    /** Creates a new instance of ActComponentCut */
+    /** Creates a new instance of PopupActions */
     public PopupActions
     (
     	PTableListener ptListener, int action, String title
@@ -29,7 +29,6 @@ class PopupActions extends javax.swing.AbstractAction
     
     public void actionPerformed(ActionEvent actionEvent) 
     {
-        System.out.println(this.NAME);
+    	ptListener.say(action);
     }
-    
 }

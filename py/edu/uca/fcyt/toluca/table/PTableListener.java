@@ -6,4 +6,6 @@ import java.awt.event.*;
 interface PTableListener
 {
 	public void mouseClicked(float x, float y, MouseEvent e);
+	
+	public void say(int say);
 }	
