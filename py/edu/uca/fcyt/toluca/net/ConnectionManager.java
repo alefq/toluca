@@ -23,6 +23,11 @@ public class ConnectionManager implements XmlPackagesServerListener {
     /** Fully qualified name de la clase*/
     public static final String SERVER_FQN = "py.edu.uca.fcyt.toluca.net.CommunicatorServer";
     
+    /** Nombre de la propiedad para el Puerto donde escucha el conn mannager */
+    public static String PROP_SERVER_PORT = "integer.server_port";
+    /** Nombre de la propiedad para el Fully qualified name de la clase*/
+    public static final String PROP_SERVER_FQN = "string.server_fqn";
+    
     /** Holds value of property roomserver. */
     private RoomServer roomServer;
     
@@ -35,7 +40,8 @@ public class ConnectionManager implements XmlPackagesServerListener {
             logger.debug("Soy un Connection mannager y ya fui instanciado");
             roomServer=rs;
             vecSesiones = new ArrayList();
-            server = new XmlPackagesServer( ConnectionManager.SERVER_PORT , ConnectionManager.SERVER_FQN);
+            int port = Integer.parseInt(rs.getProperties().getProperty(PROP_SERVER_PORT));
+            server = new XmlPackagesServer( port, rs.getProperties().getProperty(PROP_SERVER_FQN));
             server.addXmlPackagesServerListener(this);
             new Thread(server).start();
             
