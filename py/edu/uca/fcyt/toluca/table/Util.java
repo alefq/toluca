@@ -336,9 +336,16 @@ public class Util
 			{
 				len = getNChars(token, 0, width, grOut);
 
-				lines.add(token.substring(0, len - 1));
-				token = token.substring(len, token.length() - 1);
-				tokWidth = fMetrics.stringWidth(token);
+				try {
+                    lines.add(token.substring(0, len - 1));
+                    token = token.substring(len, token.length() - 1);
+                    tokWidth = fMetrics.stringWidth(token);
+                } catch (Exception e) {
+                    System.out.println("Hubo un error al querer parsear ->>   " + text);
+                    token = "";
+                    tokWidth = fMetrics.stringWidth(token);
+                    break;
+                }
 			}
 
 			// incrementa el tamaño actual de la línea
