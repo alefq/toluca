@@ -13,8 +13,8 @@ import py.edu.uca.fcyt.toluca.table.Table;
 
 public class TableGame extends JTable{
 
-    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
-            .getLogger(TableGame.class);
+//    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+//            .getLogger(TableGame.class);
     
     private TableModelGame tableModelGame = new TableModelGame();
     
@@ -43,14 +43,14 @@ public class TableGame extends JTable{
      * @param tableNumber
      */
     public void eliminarFila(int tableNumber) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");      
+        //System.out.println("falta copiar lo que se hac�a antes en el RoomUI viejo");      
     }
 
     /**
      * @param player
      */
     public void removeplayer(TrucoPlayer player) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo"); 
+    	//System.out.println("falta copiar lo que se hac�a antes en el RoomUI viejo"); 
     }
 
     /**
@@ -58,7 +58,7 @@ public class TableGame extends JTable{
      * @param tableNumber
      */
     public void addObserver(TrucoPlayer player, int tableNumber) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
+    	//System.out.println("falta copiar lo que se hac�a antes en el RoomUI viejo");        
     }
 
     /**
@@ -66,7 +66,7 @@ public class TableGame extends JTable{
      * @param b
      */
     public void setGameStatus(int tableNumber, boolean b) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
+    	//System.out.println("falta copiar lo que se hac�a antes en el RoomUI viejo");        
     }
 
     /**
@@ -88,7 +88,7 @@ public class TableGame extends JTable{
      * @param tableNumber
      */
     public void removeplayer(TrucoPlayer player, int tableNumber) {
-        logger.debug("falta copiar lo que se hac�a antes en el RoomUI viejo");        
+    	//System.out.println("falta copiar lo que se hac�a antes en el RoomUI viejo");        
     }
     
     public int getNumeroDeMesa(int row)
