@@ -358,10 +358,9 @@ public class EventDispatcherClient extends EventDispatcher {
         // "+event.getValue());
         TableServer tableServer = event.getTableServer();
         TrucoPlayer playerServer = event.getPlayer()[0];
-
         int chair = event.getValue();
-
         Table table = room.getTable(tableServer.getTableNumber());
+        
         TrucoPlayer playerClient = room.getPlayer(playerServer.getName());
 
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "La silla de
