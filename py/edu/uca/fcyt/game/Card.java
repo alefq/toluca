@@ -56,6 +56,6 @@ public class Card
 	{
 		String[] kinds = new String[] {"Oro", "Espada", "Copa", "Basto"};
 
-		return new ImageIcon("c:\\pablo\\toluca\\py\\edu\\uca\\fcyt\\toluca\\images\\" + kinds[kind - 1] + "\\" + value + ".gif");
+		return new ImageIcon("/home/aalliana/toluca/py/edu/uca/fcyt/toluca/images/" + kinds[kind - 1] + "/" + value + ".GIF");
 	}
 }

@@ -18,7 +18,7 @@ public class TPlayer extends JFrame implements TrucoListener{
     JTextField turno = new JTextField();
     JButton miscartas[] = new JButton[3];
     PlayButton botones[] = new PlayButton[3];
-    Icon icon = new ImageIcon("c:\\imagenes\\dorso.gif");
+    Icon icon = new ImageIcon("/home/aalliana/toluca/imagenes/dorso.GIF");
     JPanel elPanel = new JPanel();
     JButton cartasJugadas[];
     TrucoTeam team;
@@ -51,7 +51,7 @@ public class TPlayer extends JFrame implements TrucoListener{
         elPanel.add(textfield);
         
         for(i=0; i<cartasAJugar; i++){
-            cartasJugadas[i] = new JButton(new ImageIcon("c:\\imagenes\\dorso.gif"));
+            cartasJugadas[i] = new JButton(new ImageIcon("/home/aalliana/toluca/imagenes/dorso.GIF"));
             elPanel.add(cartasJugadas[i]);
         }
         losbotones();
@@ -166,7 +166,7 @@ public class TPlayer extends JFrame implements TrucoListener{
     public void handStarted(TrucoEvent event){
         setTitle("Truco - "+ TG.getNumberOfHand()+" - " + asociado.getName() + " // " + team.getPoints() +" - " + team2.getPoints());//el titulo del panel
        for(int i=0; i<cartasAJugar; i++){
-            cartasJugadas[i].setIcon(new ImageIcon("c:\\imagenes\\dorso.gif"));
+            cartasJugadas[i].setIcon(new ImageIcon("/home/aalliana/toluca/imagenes/dorso.GIF"));
           
         }
 
@@ -185,16 +185,16 @@ public class TPlayer extends JFrame implements TrucoListener{
         String lacarta = null;
         switch(carta.getKind()){
             case Card.ORO:
-                lacarta = "c:\\imagenes\\" + "oro\\"+carta.getValue()+".gif";
+                lacarta = "/home/aalliana/toluca/imagenes/" + "Oro/"+carta.getValue()+".GIF";
                 break;
             case Card.BASTO:
-                lacarta = "c:\\imagenes\\" + "basto\\"+carta.getValue()+".gif";
+                lacarta = "/home/aalliana/toluca/imagenes/" + "Basto/"+carta.getValue()+".GIF";
                 break;
             case Card.COPA:
-                lacarta = "c:\\imagenes\\" + "copa\\"+carta.getValue()+".gif";
+                lacarta = "/home/aalliana/toluca/imagenes/" + "Copa/"+carta.getValue()+".GIF";
                 break;
             case Card.ESPADA:
-                lacarta = "c:\\imagenes\\" + "espada\\"+carta.getValue()+".gif";
+                lacarta = "/home/aalliana/toluca/imagenes/" + "Espada/"+carta.getValue()+".GIF";
                 break;
         }
         icon = new ImageIcon(lacarta);
