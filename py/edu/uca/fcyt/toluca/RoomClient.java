@@ -61,7 +61,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
         setRoomUING(rui);
         addRoomListener(cc);
         //SwingUtilities.invokeLater(cc);
-        new Thread(cc).start();
+        new Thread(cc, "comm-client").start();
         //init();
     }
 

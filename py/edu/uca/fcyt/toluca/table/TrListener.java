@@ -6,8 +6,6 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import javax.swing.JLabel;
-
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
@@ -31,7 +29,7 @@ class TrListener implements TrucoListener
 	public TrListener(Table table)
 	{
 		trucoListeners = new LinkedList();
-		this.table = table;
+		setTable(table);
 	}
 	
 	/** Registra un listener de eventos TrucoListener */
@@ -46,8 +44,8 @@ class TrListener implements TrucoListener
 	{
 		//System.out.println("Game started for player " + getAssociatedPlayer().getName());
 //		new Throwable("").printStackTrace(System.out);
-		table.getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
-		table.getJTrucoTable().getJButton("Ayuda").setEnabled(false);
+		getTable().getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
+		getTable().getJTrucoTable().getJButton("Ayuda").setEnabled(false);
 	}
 	
 	/**
@@ -75,11 +73,11 @@ class TrListener implements TrucoListener
 		CardManager cManager;
 		Card card;
 		int team;
-		JLabel jlSaying; 
+//		JLabel jlSaying; 
 
-		table.setCursor(Cursor.DEFAULT_CURSOR);
+		getTable().setCursor(Cursor.DEFAULT_CURSOR);
 		
-		jlSaying = table.getJTrucoTable().jlSaying; 
+//		jlSaying = getTable().getJTrucoTable().jlSaying; 
 		
 		cManager = getCManager();
 		
@@ -87,7 +85,7 @@ class TrListener implements TrucoListener
 		player = event.getPlayer();
 		pos = getPManager().getPos(player);
 		name = Util.getEventName(type);
-		team = table.getPManager().getChair(player) % 2;
+		team = getTable().getPManager().getChair(player) % 2;
 		//si name da null quiere decir q no fue ninguna jugada que se cante. ale
 		
 //		System.out.println
@@ -103,7 +101,7 @@ class TrListener implements TrucoListener
 				card = event.getCard();
 				cManager.playCard(pos, card);
 				// Somos la estirpe guaran�
-				if (table.getPlayer() == player)
+				if (getTable().getPlayer() == player)
 					//if (getAssociatedPlayer() == player)
 					cManager.showCards(null);
 				else if (endOfHand)
@@ -132,12 +130,13 @@ class TrListener implements TrucoListener
 						event.getPlayer(), val,	true
 					);
 
-					jlSaying.setText
+					/*jlSaying.setText
 					(
 						jlSaying.getText() + 
 						(jlSaying.getText().equals("Canto: ") ? "" : " - ") + 
 						" " + val + (team == 0 ? "(R)" : "(A)") 
-					);
+					);*/
+					getTable().addJugada(team, val);
 				}
 
 				break;
@@ -151,14 +150,15 @@ class TrListener implements TrucoListener
 					drawBalloon(event.getPlayer(), name, true);
 
 					if (type ==  TrucoEvent.TRUCO)
-						jlSaying.setText("Canto: ");
+						getTable().handStarted();
 						
-					jlSaying.setText
+					/*jlSaying.setText
 					(
 						jlSaying.getText() + 
 						(jlSaying.getText().equals("Canto: ") ? "" : " - ") + 
 						" " + name + (team == 0 ? "(R)" : "(A)") 
-					);
+					);*/
+					getTable().addJugada(team, name);
 				}
 				catch(InvalidParameterException ex)
 				{
@@ -189,20 +189,20 @@ class TrListener implements TrucoListener
 		System.out.println("Turn type: " + event.getTypeEvent());
 		
 		// obtiene el TrucoGame de la mesa y el jugador actual
-		tGame = table.getTGame();
-		aPlayer = (TrucoPlayer) table.getPlayer();
+		tGame = getTable().getTGame();
+		aPlayer = (TrucoPlayer) getTable().getPlayer();
 		
 		// establece el estado de la mesa
 		if (event.getPlayer() == getAssociatedPlayer())
 		{
-			table.flash(true);
+			getTable().flash(true);
 			
 			if (event.getTypeEvent() == TrucoEvent.TURNO_JUGAR_CARTA)
-				table.setStatus(Table.PLAY);
+				getTable().setStatus(Table.PLAY);
 			else
-				table.setStatus(Table.PLAYCANTO);
+				getTable().setStatus(Table.PLAYCANTO);
 			
-			table.envidoPoints = event.getValue();
+			getTable().envidoPoints = event.getValue();
 			
 			// caga el vector de jugadas habilitadas
 			for (int i = 0; i < Util.getPlayCount(); i++)
@@ -215,7 +215,7 @@ class TrListener implements TrucoListener
 					(
 						(TrucoPlayer) aPlayer,
 						play,
-						table.envidoPoints
+						getTable().envidoPoints
 					);
 				}
 				else
@@ -225,21 +225,21 @@ class TrListener implements TrucoListener
 					aPlays.add(new Byte(play));
 			}
 			
-			table.setAllowedPlays(aPlays);
+			getTable().setAllowedPlays(aPlays);
 		}
 		else 
 		{
-			table.flash(false);
-			if (table.getPManager().isSitted(table.getPlayer()))
-				table.setStatus(Table.WAIT);
+			getTable().flash(false);
+			if (getTable().getPManager().isSitted(getTable().getPlayer()))
+				getTable().setStatus(Table.WAIT);
 			else
-				table.setStatus(Table.WATCH);
+				getTable().setStatus(Table.WATCH);
 		}
 		
 		// resalta la carita con turno
 		getFManager().setHighlight
 		(
-		table.getPManager().getPos(event.getPlayer())
+		getTable().getPManager().getPos(event.getPlayer())
 		);
 		
 	}
@@ -249,16 +249,16 @@ class TrListener implements TrucoListener
 		int pun1, pun2;
 		TrucoGame tGame;
 		
-		table.flash(false);
+		getTable().flash(false);
 
 		//System.out.println("End of hand for player " + getAssociatedPlayer().getName());
 		
-		tGame = table.getTGame();
+		tGame = getTable().getTGame();
 		
-		pun1 = table.getPoints(0);
-		pun2 = table.getPoints(1);
+		pun1 = getTable().getPoints(0);
+		pun2 = getTable().getPoints(1);
 		
-		table.updateScore(pun1, pun2);
+		getTable().updateScore(pun1, pun2);
 		
 		String sStrings[], string, token;
 		Vector vStrings;
@@ -266,18 +266,18 @@ class TrListener implements TrucoListener
 		
 		vPoints = tGame.getDetallesDeLaMano();
 		 
-		sStrings = new String[vPoints.size() + (table.getStatus() == Table.WATCH ? 0 : 1)];
+		sStrings = new String[vPoints.size() + (getTable().getStatus() == Table.WATCH ? 0 : 1)];
 		for (int i = 0; i < vPoints.size(); i++)
 			sStrings[i] = ((PointsDetail) vPoints.get(i)).aString();
 
-		if (table.getStatus() != Table.WATCH)
+		if (getTable().getStatus() != Table.WATCH)
 		{			
 			sStrings[sStrings.length - 1] = "Presiona Ok para continuar";
-			table.setStatus(Table.WAIT);
-			table.getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
+			getTable().setStatus(Table.WAIT);
+			getTable().getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
 		}
 			
-		table.getTTextAnimator().showStrings
+		getTable().getTTextAnimator().showStrings
 		(
 			sStrings, new Color[]
 			{
@@ -309,7 +309,7 @@ class TrListener implements TrucoListener
 			for (int i = 0; i < 3; i++)
 			{
 				sign = Sign.getSign(cards[i]);
-				if (sign != Sign.NONE) table.addSign(sign);
+				if (sign != Sign.NONE) getTable().addSign(sign);
 				//System.out.println(table.getPlayer().getName() + " con se�a " + Sign.getName(sign));
 			}
 			getCManager().showCards(cards);
@@ -322,18 +322,18 @@ class TrListener implements TrucoListener
 		int dealPos, turnPos;
 		CardManager cManager;
 
-		table.getTTextAnimator().clearAll();
+		getTable().getTTextAnimator().clearAll();
 		
-		table.getJTrucoTable().jlSaying.setText("Canto: ");
+		getTable().getJTrucoTable().jlSaying.setText("Canto: ");
 		
 		//new Exception("player: " + getAssociatedPlayer().getName()).printStackTrace(System.out);
 		//System.out.println("New hand started for player " + getAssociatedPlayer().getName());
 		
 		endOfHand = false;
-		table.getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
+		getTable().getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
 		cManager = getCManager();
 		
-		table.clearSigns();
+		getTable().clearSigns();
 		
 		
 		tPlayer = (TrucoPlayer) event.getTrucoPlayer();
@@ -355,12 +355,12 @@ class TrListener implements TrucoListener
 	
 	public void endOfGame(TrucoEvent event)
 	{
-		table.endOfGame(event);
+		getTable().endOfGame(event);
 	}
 	
 	public TrucoPlayer getAssociatedPlayer()
 	{
-		return table.getPlayer();
+		return getTable().getPlayer();
 	}
 	
 	public void drawBalloon
@@ -396,23 +396,29 @@ class TrListener implements TrucoListener
 	
 	/** Retorna el animador */
 	private Animator getAnimator()
-	{ return table.getAnimator(); }
+	{ return getTable().getAnimator(); }
 	
 	/** Retorna el manejador de cartas */
 	private CardManager getCManager()
-	{ return table.getCManager(); }
+	{ return getTable().getCManager(); }
 	
 	/** Retorna el manejador de jugadores */
 	private PlayerManager getPManager()
-	{ return table.getPManager(); }
+	{ return getTable().getPManager(); }
 	
 	/** Retorna el manejador de caritas */
 	private FaceManager getFManager()
-	{ return table.getFManager(); }
+	{ return getTable().getFManager(); }
 	
 	/** Retorna el TrucoGame */
 	private TrucoGame getTGame()
 	{ 
-		return table.getTGame(); 
+		return getTable().getTGame(); 
 	}
+    public Table getTable() {
+        return table;
+    }
+    public void setTable(Table table) {
+        this.table = table;
+    }
 }

@@ -126,7 +126,7 @@ public abstract class XmlPackagesSession implements Runnable
 
 			
 
-					
+			//TODO no convendría un sleep chiquito? - 20050214		
 			}
 			
 		} catch (IOException e) {

@@ -12,6 +12,9 @@ package py.edu.uca.fcyt.toluca.game;
  */
 public class TrucoTeam extends Team{
     
+    public static final int ROJO = 0;
+    public static final int AZUL = 1;
+    
     /** Constructor de instancia de TrucoTeam.
      * @param name String que representa el nombre identificador del TrucoTeam.
      */

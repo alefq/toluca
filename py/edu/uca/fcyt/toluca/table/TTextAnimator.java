@@ -242,7 +242,7 @@ class TTextAnimator implements Animable, StateListener
 	{
 		String[] texts;
 		Color[] col;
-		Thread th;
+//		Thread th;
 		
 		col = new Color[]
 		{

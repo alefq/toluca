@@ -6,14 +6,13 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 class Actions extends JButton implements ChangeListener
 {
-	JSlider jSlider;
-	JLabel fps; 
+//	JSlider jSlider;
+//	JLabel fps; 
 
 	//Constructor	
 	public Actions
@@ -32,17 +31,18 @@ class Actions extends JButton implements ChangeListener
 			buttons[i].addActionListener(actListener);
 			add(buttons[i]);
 		}
-		add(fps = new JLabel("FPS: 5"));
-		add(jSlider = new JSlider(1, 100, 5));
+//		add(fps = new JLabel("FPS: 5"));
+		/*add(jSlider = new JSlider(1, 100, 5));
 		jSlider.addChangeListener(chListener);
-		jSlider.addChangeListener(this);
+		jSlider.addChangeListener(this);*/
 		
 		setBorder(null);
 	}
 	
 	public int getValue()
 	{
-		return jSlider.getValue();
+//		return jSlider.getValue();
+	    return 0;
 	}
 		
 	/* (non-Javadoc)
@@ -50,7 +50,7 @@ class Actions extends JButton implements ChangeListener
 	 */
 	public void stateChanged(ChangeEvent arg0)
 	{
-		fps.setText("FPS: " + jSlider.getValue());
+//		fps.setText("FPS: " + jSlider.getValue());
 	}
 
 }

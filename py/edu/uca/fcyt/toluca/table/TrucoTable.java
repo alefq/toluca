@@ -18,6 +18,7 @@ import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 
+import java.awt.GridLayout;
 /** Panel principal de juego */
 class TrucoTable extends JPanel implements ComponentListener {
     public static final int BUTTON_INICIAR_OK = 0;
@@ -39,7 +40,7 @@ class TrucoTable extends JPanel implements ComponentListener {
 
     private Table table;
 
-    private PlayTable playTable = null; //  @jve:decl-index=0:visual-constraint="232,59"
+    private PlayTable playTable = null;  //  @jve:decl-index=0:visual-constraint="387,56"
 
     private ChatPanel chatPanel = null;
 
@@ -51,6 +52,8 @@ class TrucoTable extends JPanel implements ComponentListener {
 
     private TableRanking tableRanking = null;
 
+	private JPanel jPmedio = null;
+	private JPanel jPbotonesJugadas = null;
     /**
      * Construye un TrucoTable con ptListener como listener de eventos de la
      * mesa
@@ -67,11 +70,11 @@ class TrucoTable extends JPanel implements ComponentListener {
      */
     private void initialize() {
         this.setLayout(new BorderLayout());
-        this.add(getPlayTable(), BorderLayout.CENTER);
         this.add(getChatPanel(), java.awt.BorderLayout.SOUTH);
         this.add(getJpLeftPanel(), java.awt.BorderLayout.WEST);
         this.add(getJpCantos(), java.awt.BorderLayout.NORTH);
         this.add(getScore(), java.awt.BorderLayout.EAST);
+        this.add(getJPmedio(), java.awt.BorderLayout.CENTER);
     }
 
     /**
@@ -231,6 +234,7 @@ class TrucoTable extends JPanel implements ComponentListener {
         if (jpCantos == null) {
             jpCantos = new JPanel();
             jpCantos.add(jlSaying = new JLabel("Canto: "));
+            jpCantos.setBorder(new EtchedBorder());
         }
         return jpCantos;
     }
@@ -275,4 +279,37 @@ class TrucoTable extends JPanel implements ComponentListener {
         //getJpWatchers().removePlayer(player.getName());
         getTableRanking().removeplayer(player);
     }
-}
+	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */    
+	private JPanel getJPmedio() {
+		if (jPmedio == null) {
+			jPmedio = new JPanel();
+			jPmedio.setLayout(new BorderLayout());
+			jPmedio.add(getPlayTable(), java.awt.BorderLayout.CENTER);
+			//jPmedio.add(getJSPbotonesJugadas(), java.awt.BorderLayout.SOUTH);
+			jPmedio.add(getJPbotonesJugadas(), java.awt.BorderLayout.SOUTH);
+		}
+		return jPmedio;
+	}
+	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */    
+	public JPanel getJPbotonesJugadas() {
+		if (jPbotonesJugadas == null) {
+			java.awt.GridLayout gridLayout1 = new GridLayout();
+			jPbotonesJugadas = new JPanel();
+			jPbotonesJugadas.setLayout(gridLayout1);
+			jPbotonesJugadas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jugadas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12), java.awt.Color.blue));					
+			gridLayout1.setRows(1);
+		}
+		return jPbotonesJugadas;
+	}
+    public JLabel getJlSaying() {
+        return jlSaying;
+    }
+  }

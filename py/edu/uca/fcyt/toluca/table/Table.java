@@ -4,6 +4,7 @@ package py.edu.uca.fcyt.toluca.table;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -96,6 +97,8 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     private RoomClient room;
 
+    private boolean esMiTurno;
+
     public Vector getPlayers() {
         return players;
     }
@@ -187,8 +190,10 @@ public class Table implements PTableListener, ChatPanelContainer,
         // agrega los jugadores a la lista mostrada
         for (int i = 0; i < players.size(); i++)
             getJTrucoTable().addPlayer((TrucoPlayer) players.get(i));
-            /*trucoTable.getJpWatchers().addPlayer(((TrucoPlayer) players.get(i))
-                    .getName());*/
+        /*
+         * trucoTable.getJpWatchers().addPlayer(((TrucoPlayer) players.get(i))
+         * .getName());
+         */
 
         animator.addAnim(ttAnimator);
 
@@ -207,7 +212,8 @@ public class Table implements PTableListener, ChatPanelContainer,
 
         jFrame.addWindowListener(this);
         trucoTable.getChatPanel().setCpc(this);
-        trucoTable.getChatPanel().showChatMessage(actualPlayer,
+        trucoTable.getChatPanel().showChatMessage(
+                actualPlayer,
                 "Inicia tus mensajes con \\ si no quieres que "
                         + "salgan en la mesa.", new String[] { "[", "]" });
 
@@ -217,7 +223,8 @@ public class Table implements PTableListener, ChatPanelContainer,
     public void showSystemMessage(String message) {
         TrucoPlayer trucoPlayer = new TrucoPlayer();
         trucoPlayer.setName("System");
-        trucoTable.getChatPanel().showSystemMessage(message, new String[] { "[", "]" });
+        trucoTable.getChatPanel().showSystemMessage(message,
+                new String[] { "[", "]" });
 
     }
 
@@ -248,7 +255,8 @@ public class Table implements PTableListener, ChatPanelContainer,
                     + " removePlayer: tgame no es nulo y player sentado");
             System.out.println(getClass().getName()
                     + " removePlayer: deberia de mostrar el chat message");
-            trucoTable.getChatPanel().showChatMessage(new TrucoPlayer("[ System ]"),
+            trucoTable.getChatPanel().showChatMessage(
+                    new TrucoPlayer("[ System ]"),
                     "El juego ha finalizado debido a que el jugador "
                             + player.getName() + " lo ha abandonado.");
             initialize();
@@ -386,8 +394,8 @@ public class Table implements PTableListener, ChatPanelContainer,
             face.setName("");
             face.loadFacesFromURL(null);
 
-            trucoTable.buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(pManager
-                    .evenTeams());
+            trucoTable.buttons[TrucoTable.BUTTON_INICIAR_OK]
+                    .setEnabled(pManager.evenTeams());
         }
 
         // avisa que el player se levant� correctamente
@@ -683,6 +691,34 @@ public class Table implements PTableListener, ChatPanelContainer,
      */
     protected void setAllowedPlays(Vector aPlays) {
         this.aPlays = aPlays;
+        loadPlays();
+    }
+
+    /**
+     *  
+     */
+    private void loadPlays() {
+        getJTrucoTable().getJPbotonesJugadas().removeAll();
+        if (esMiTurno && aPlays != null && !aPlays.isEmpty()) {
+            byte play;
+            String name;
+
+            for (int i = 0; i < aPlays.size(); i++) {
+                play = ((Byte) aPlays.get(i)).byteValue();
+                name = Util.getPlayName(play);
+
+                if (envidoPoints != -1 && play == TrucoPlay.QUIERO
+                        || play == TrucoPlay.CANTO_ENVIDO)
+                    name = name + ", " + envidoPoints;
+
+                getJTrucoTable().getJPbotonesJugadas().add(
+                        new ButtonPlayAction(this, play, name));
+            }
+        }
+        //PP total - Ale
+        jFrame.dispatchEvent(new ContainerEvent(getJTrucoTable(),
+                ContainerEvent.COMPONENT_RESIZED, getJTrucoTable()
+                        .getJPbotonesJugadas()));
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -706,26 +742,30 @@ public class Table implements PTableListener, ChatPanelContainer,
                     trucoTable.buttons[TrucoTable.BUTTON_HECHAR]
                             .setText("Confirmar");
                     Util.wait(this, 3000);
-                    trucoTable.buttons[TrucoTable.BUTTON_HECHAR].setText("Echar");
+                    trucoTable.buttons[TrucoTable.BUTTON_HECHAR]
+                            .setText("Echar");
                 }
             }.start();
         } else if (text.equals("Confirmar")) {
             trucoTable.buttons[TrucoTable.BUTTON_HECHAR].setText("Echar");
             //TODO Deprecada la hechada hasta nuevo aviso
-/*            pName = trucoTable.getJpWatchers().getSelection();
-
-            for (int i = 0; i < players.size(); i++) {
-                tPlayer = (TrucoPlayer) players.get(i);
-                if (tPlayer != actualPlayer && tPlayer.getName().equals(pName))
-                    tEventMan.firePlayerKickRequest(tPlayer);
-            }*/
+            /*
+             * pName = trucoTable.getJpWatchers().getSelection();
+             * 
+             * for (int i = 0; i < players.size(); i++) { tPlayer =
+             * (TrucoPlayer) players.get(i); if (tPlayer != actualPlayer &&
+             * tPlayer.getName().equals(pName))
+             * tEventMan.firePlayerKickRequest(tPlayer); }
+             */
         } else if (text.equals("Ayuda")) {
             ttAnimator.showIndications();
             new Thread() {
                 public void run() {
-                    trucoTable.buttons[TrucoTable.BUTTON_AYUDA].setEnabled(false);
+                    trucoTable.buttons[TrucoTable.BUTTON_AYUDA]
+                            .setEnabled(false);
                     Util.wait(this, 20000);
-                    trucoTable.buttons[TrucoTable.BUTTON_AYUDA].setEnabled(true);
+                    trucoTable.buttons[TrucoTable.BUTTON_AYUDA]
+                            .setEnabled(true);
                 }
             }.start();
         }
@@ -857,7 +897,9 @@ public class Table implements PTableListener, ChatPanelContainer,
     }
 
     void flash(boolean on) {
+        this.esMiTurno = on;
         tFrame.flash(on);
+        loadPlays();
     }
 
     protected TTextAnimator getTTextAnimator() {
@@ -954,7 +996,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         Iterator iter = getPlayers().iterator();
         while (iter.hasNext()) {
             TrucoPlayer element = (TrucoPlayer) iter.next();
-            if(element.getName().equals(string))
+            if (element.getName().equals(string))
                 ret = true;
         }
         return ret;
@@ -966,6 +1008,7 @@ public class Table implements PTableListener, ChatPanelContainer,
     public void setRoom(RoomClient room) {
         this.room = room;
     }
+
     public RoomClient getRoom() {
         return room;
     }
@@ -975,6 +1018,27 @@ public class Table implements PTableListener, ChatPanelContainer,
      */
     public void actualizarRanking(TrucoPlayer playerClient) {
         getJTrucoTable().getTableRanking().actualizarPuntaje(playerClient);
+    }
+
+    /**
+     * @param team
+     * @param val
+     */
+    public void addJugada(int team, String val) {
+        String txt = getJTrucoTable().getJlSaying().getText();
+        if (txt.trim().length() == 0) {
+            txt = "<html>Canto: ";
+        } else if(!txt.startsWith("<html>"))
+        {
+            txt = "<html>" + txt;
+        }
+        txt = txt + "<font color=\""
+                + (team == TrucoTeam.ROJO ? "ff0000" : "0000ff") + "\"> - " + val + "</font>";
+        getJTrucoTable().getJlSaying().setText(txt);
+    }
+
+    public void handStarted() {
+        getJTrucoTable().getJlSaying().setText("Canto: ");
     }
 }
 
