@@ -11,6 +11,7 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.sound.PlaySound;
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
 import py.edu.uca.fcyt.toluca.game.PointsDetail;
 import java.awt.Color;
@@ -99,6 +100,7 @@ class TrListener implements TrucoListener
 		switch (type)
 		{
 			case TrucoEvent.JUGAR_CARTA:
+				PlaySound.play(PlaySound.CARD_PLAYED_SOUND_URL);
 				card = event.getCard();
 				cManager.playCard(pos, card);
 				// Somos la estirpe guaran�
@@ -341,6 +343,8 @@ class TrListener implements TrucoListener
 		turnPos = (dealPos + 1) % playerCount();
 		
 		cManager.gatherCards(dealPos);
+
+		PlaySound.play(PlaySound.DEAL_SOUND_URL);		
 		cManager.deal(dealPos, false);
 		cManager.take();
 		cManager.putDeckInTable
