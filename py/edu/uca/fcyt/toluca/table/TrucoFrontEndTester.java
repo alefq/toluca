@@ -174,7 +174,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         new TrucoFrontEndTester().show();
         System.out.println(" - TrucoFrontEndTester - ");
         System.out.println
-        (
+        ( 
         "User dir: " + System.getProperty("user.dir")
         );
     }
