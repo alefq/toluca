@@ -1,5 +1,4 @@
 package py.edu.uca.fcyt.toluca.table;
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -426,34 +425,21 @@ class TablePlayer implements Animable, TableCardListener
 	public int getY() { return posY; }
 	public double getAngle() { return angle; }
 	
-	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans) 
+	synchronized public void paint(int buffIndex) 
 	{
 		for (int i = 0; i < onTable.size(); i++)
-			getOnTable(i).paint(biOut, afTrans);
+			getOnTable(i).paint(buffIndex);
 		for (int i = 0; i < inHand.size(); i++)
-			getInHand(i).paint(biOut, afTrans);
+			getInHand(i).paint(buffIndex);
 	}
 
-	synchronized public void clear(Graphics2D grOut) 
-	{
-//		for (int i = 0; i < tCards.size(); i++)
-//			getTCard(i).clear(grOut);
-	}
-
-	synchronized public boolean advance() 
+	synchronized public void advance() 
 	{
 		for (int i = 0; i < played.size(); i++)
 			getPlayed(i).advance();
 
 		for (int i = 0; i < unplayed.size(); i++)
 			getUnplayed(i).advance();
-			
-		return true;
-	}
-
-	public boolean isEnabled() 
-	{
-		return true;
 	}
 
     /**
@@ -587,4 +573,14 @@ class TablePlayer implements Animable, TableCardListener
 	    }
 	    else if (!toHand.contains(tCard)) toHand.add(tCard);
     }
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.animation.Animable#setOut(java.awt.image.BufferedImage, java.awt.geom.AffineTransform)
+	 */
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans)
+	{
+		for (int i = 0; i < onTable.size(); i++)
+			getOnTable(i).setOut(biOut, afTrans);
+		for (int i = 0; i < inHand.size(); i++)
+			getInHand(i).setOut(biOut, afTrans);
+	}
 }

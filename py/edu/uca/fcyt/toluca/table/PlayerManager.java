@@ -1,6 +1,5 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
@@ -22,11 +21,10 @@ public class PlayerManager
 	/** Crea un PlayerManager */
 	public PlayerManager(int playerCount)
 	{
-		players= new Vector(playerCount);//vector de referencias 
+		players = new Vector(playerCount);//vector de referencias 
 													   //de los players		
 		players.setSize(playerCount);
 	}
-	
 	
 	
 	/** 
@@ -82,26 +80,37 @@ public class PlayerManager
 	 */
 	public void startGame()
 	{
-		int[] teamCount; // cantidad de jugadores de cada team
+		int[] teamCount; 	// cantidad de jugadores de cada team
+		Vector[] teams; 		// equipos
+		Object player;
 		
-		teamCount = getTeamCount();
-		
-		//si los contadores son iguales se empieza el juego
-		if (teamCount[0] == teamCount[1])
+		// crea el vector de 2 equipos
+		teams = new Vector[]
 		{
-			Iterator pIter;
-			
-			pIter = players.listIterator();
-			
-			while (pIter.hasNext())
-				if (pIter.next() == null) pIter.remove();
+			new Vector(3), new Vector(3)
+		};
+
+		for (int i = 0; i < players.size(); i++)
+		{
+			player = players.get(i);
+			if (player != null)	teams[i % 2].add(player);
+		}
+
+		if (teams[0].size() == teams[1].size())
+		{
+			players.clear();
+			for (int i = 0; i < teams[0].size(); i++)
+			{
+				players.add(teams[0].get(i));
+				players.add(teams[1].get(i));
+			}
 				
 			started = true;
 		} 
 		else throw new IllegalStateException
 		(
-			"Equipos no parejos: Equipo 0 tiene " + teamCount[0]
-			+ ", equipo 1 tiene " + teamCount[1]
+			"Equipos no parejos: Equipo 0 tiene " + teams[0].size()
+			+ ", equipo 1 tiene " + teams[1].size()
 		);
 	}
 	

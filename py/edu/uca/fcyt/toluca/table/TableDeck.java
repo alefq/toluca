@@ -1,6 +1,5 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -161,30 +160,24 @@ class TableDeck implements Animable
 			return per;
 	}
 
-	public void paint(BufferedImage biOut, AffineTransform afTrans) 
+	public void paint(int buffIndex) 
 	{
 		for (int i = 0; i < cards.length; i++)
-			cards[i].paint(biOut, afTrans);
+			cards[i].paint(buffIndex);
 	}
 
-	public void clear(Graphics2D grOut) 
-	{
-		for (int i = 0; i < cards.length; i++)
-			cards[i].clear(grOut);
-	}
-
-	public boolean advance() 
+	public void advance() 
 	{
 		for (int i = 0; i < cards.length; i++)
 			cards[i].advance();
-		
-		return true;
 	}
 
-	public boolean isEnabled() 
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans)
 	{
-		return true;
-	}	
+		for (int i = 0; i < cards.length; i++)
+			cards[i].setOut(biOut, afTrans);
+	}
+
 }
 	
 	

@@ -27,6 +27,7 @@ public class TableEvent {
     public static int EVENT_signSendRequest = 11;
     public static int EVENT_signSent = 12;
     public static int EVENT_showPlayed = 13;
+	public static int EVENT_playerLeft = 14;
     private static int PLAYER_MASK = 0x4000;
     private static int VALUE_MASK = 0x8000;
     
@@ -196,55 +197,8 @@ public class TableEvent {
         if(event ==EVENT_gameStartRequest) {
             doc=xmlCreateGameStartRequest();
         }
-        
-        if (event == EVENT_playerKickRequest ) {
-			doc = xmlCreatePlayerKickedRequest();        	
+            return doc;
         }
-        
-		if (event == EVENT_playerKicked ) {
-			doc = xmlCreatePlayerKicked();        	
-		}
-        
-        return doc;
-    }
-	/**
-	 * @return
-	 */
-	private Document xmlCreatePlayerKicked() {
-		Element ROOT=new Element("TableLeft");
-		Element TABLE=new Element("Table");
-		TABLE.setAttribute("id",String.valueOf((getTableServer()).getTableNumber()));
-		Element POS=new Element("Pos");
-		POS.setAttribute("pos",String.valueOf(getValue()));
-        
-		Element PLAYER=new Element("Player");
-		PLAYER.setAttribute("name",player.getName());
-        
-		ROOT.addContent(POS);
-		ROOT.addContent(PLAYER);
-		ROOT.addContent(TABLE);
-		Document doc=new Document(ROOT);
-		return doc;
-	}
-	/**
-	 * @return
-	 */
-	private Document xmlCreatePlayerKickedRequest() {
-		Element ROOT=new Element("TableLeftRequest");
-		Element TABLE=new Element("Table");
-		TABLE.setAttribute("id",String.valueOf((getTable()).getTableNumber()));
-		Element POS=new Element("Pos");
-		POS.setAttribute("pos",String.valueOf(getValue()));
-        
-		Element PLAYER=new Element("Player");
-		PLAYER.setAttribute("name",player.getName());
-        
-		ROOT.addContent(POS);
-		ROOT.addContent(PLAYER);
-		ROOT.addContent(TABLE);
-		Document doc=new Document(ROOT);
-		return doc;
-	}
         
         /**
          * Ejemplo de uso. La máscara juega el rol de tipo de

@@ -3,6 +3,7 @@ package py.edu.uca.fcyt.toluca.table;
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.Vector;
+import java.awt.Cursor;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
@@ -11,7 +12,9 @@ import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
-import py.edu.uca.fcyt.toluca.table.*;
+import py.edu.uca.fcyt.toluca.game.PointsDetail;
+import java.awt.Color;
+import javax.swing.JLabel;
 
 /**
  * Escucha los eventos del juego
@@ -68,6 +71,12 @@ class TrListener implements TrucoListener
 		String name;
 		CardManager cManager;
 		Card card;
+		int team;
+		JLabel jlSaying; 
+
+		table.setCursor(Cursor.DEFAULT_CURSOR);
+		
+		jlSaying = table.getJTrucoTable().jlSaying; 
 		
 		cManager = getCManager();
 		
@@ -75,11 +84,13 @@ class TrListener implements TrucoListener
 		player = event.getPlayer();
 		pos = getPManager().getPos(player);
 		name = Util.getEventName(type);
+		team = table.getPManager().getChair(player) % 2;
 		//si name da null quiere decir q no fue ninguna jugada que se cante. ale
 		
 		System.out.println
 		(
-		"\nPlay for player " + getAssociatedPlayer().getName() + ": " + name
+			"\nJugada para jugador " + 
+			getAssociatedPlayer().getName() + ": " + name
 		);
 		
 		switch (type)
@@ -93,7 +104,7 @@ class TrListener implements TrucoListener
 					cManager.showCards(null);
 				else if (endOfHand)
 					cManager.pushPause(pos, 250);
-				System.out.println("Card played: " + card.getDescription());
+				System.out.println("Carta jugada: " + card.getDescription());
 				break;
 				
 			case TrucoEvent.CERRARSE:
@@ -102,19 +113,32 @@ class TrListener implements TrucoListener
 				break;
 				
 			case TrucoEvent.PLAYER_CONFIRMADO:
-				System.out.println("TrucoPlayer confirmed");
+				System.out.println("TrucoPlayer confirmado");
 				break;
 				
 			case TrucoEvent.CANTO_ENVIDO:
 				if (event.getValue() == -1)
 					System.out.println("Canto envido inváldo!");
 				else
+				{
+					String val = Integer.toString(event.getValue());
+					
 					drawBalloon
 					(
-					event.getPlayer(),
-					Integer.toString(event.getValue()),
-					true
+						event.getPlayer(), val,	true
 					);
+
+					////////////////////
+					// CODIGO NUEVO   //
+					jlSaying.setText
+					(
+						jlSaying.getText() + 
+						(jlSaying.getText().equals("Canto: ") ? "" : " - ") + 
+						" " + val + (team == 0 ? "(R)" : "(A)") 
+					);
+					////////////////////
+				}
+
 				break;
 				
 			case TrucoEvent.CARTAS_REPARTIDAS:
@@ -124,6 +148,19 @@ class TrListener implements TrucoListener
 				try
 				{
 					drawBalloon(event.getPlayer(), name, true);
+
+					////////////////////
+					// CODIGO NUEVO   //
+					if (type ==  TrucoEvent.TRUCO)
+						jlSaying.setText("Canto: ");
+						
+					jlSaying.setText
+					(
+						jlSaying.getText() + 
+						(jlSaying.getText().equals("Canto: ") ? "" : " - ") + 
+						" " + name + (team == 0 ? "(R)" : "(A)") 
+					);
+					////////////////////
 				}
 				catch(InvalidParameterException ex)
 				{
@@ -159,7 +196,12 @@ class TrListener implements TrucoListener
 		// establece el estado de la mesa
 		if (event.getPlayer() == getAssociatedPlayer())
 		{
-			table.setStatus(Table.PLAY);
+			table.flash(true);
+			
+			if (event.getTypeEvent() == TrucoEvent.TURNO_JUGAR_CARTA)
+				table.setStatus(Table.PLAY);
+			else
+				table.setStatus(Table.PLAYCANTO);
 			
 			table.envidoPoints = event.getValue();
 			
@@ -172,14 +214,13 @@ class TrListener implements TrucoListener
 				{
 					tPlay = new TrucoPlay
 					(
-					(TrucoPlayer) aPlayer,
-					play,
-					table.envidoPoints
+						(TrucoPlayer) aPlayer,
+						play,
+						table.envidoPoints
 					);
 				}
 				else
 					tPlay = new TrucoPlay(aPlayer, play);
-				
 				
 				if (tGame.esPosibleJugar(tPlay))
 					aPlays.add(new Byte(play));
@@ -187,10 +228,14 @@ class TrListener implements TrucoListener
 			
 			table.setAllowedPlays(aPlays);
 		}
-		else if (table.getPManager().isSitted(table.getPlayer()))
-			table.setStatus(Table.WAIT);
-		else
-			table.setStatus(Table.WATCH);
+		else 
+		{
+			table.flash(false);
+			if (table.getPManager().isSitted(table.getPlayer()))
+				table.setStatus(Table.WAIT);
+			else
+				table.setStatus(Table.WATCH);
+		}
 		
 		// resalta la carita con turno
 		getFManager().setHighlight
@@ -203,17 +248,45 @@ class TrListener implements TrucoListener
 	public void endOfHand(TrucoEvent event)
 	{
 		int pun1, pun2;
+		TrucoGame tGame;
+		
+		////////////////////
+		/// CODIGO NUEVO ///
+		table.flash(false);
+		////////////////////
 		
 		System.out.println("End of hand for player " + getAssociatedPlayer().getName());
+		
+		tGame = table.getTGame();
 		
 		pun1 = table.getPoints(0);
 		pun2 = table.getPoints(1);
 		
 		table.updateScore(pun1, pun2);
 		
+		String sStrings[], string, token;
+		Vector vStrings;
+		Vector vPoints;
+		
+		vPoints = tGame.getDetallesDeLaMano();
+		 
+		sStrings = new String[vPoints.size()];
+		for (int i = 0; i < sStrings.length; i++)
+			sStrings[i] = ((PointsDetail) vPoints.get(i)).aString();
+			
+		table.getTTextAnimator().showStrings
+		(
+			sStrings, new Color[]
+			{
+				Color.BLACK, 
+				Color.YELLOW, 
+				Color.ORANGE
+			}, -50, 500, 15000
+		);
+		///////////////////
+		
 		table.setStatus(Table.WAIT);
 		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
-		getCManager().pushGeneralPause(2000);
 		endOfHand = true;
 	}
 	
@@ -237,7 +310,6 @@ class TrListener implements TrucoListener
 			if (sign != Sign.NONE) table.addSign(sign);
 		}
 		
-		// TODO Agregado por PS y AA porque así parecería que tiene que ser
 		if (event.getPlayer() == getAssociatedPlayer())
 			getCManager().showCards(cards);
 	}
@@ -247,6 +319,13 @@ class TrListener implements TrucoListener
 		TrucoPlayer tPlayer;
 		int dealPos, turnPos;
 		CardManager cManager;
+
+		///////////////////
+		// CODIGO NUEVO ///
+		table.getTTextAnimator().clearAll();
+		///////////////////
+		
+		table.getJTrucoTable().jlSaying.setText("Canto: ");
 		
 		//new Exception("player: " + getAssociatedPlayer().getName()).printStackTrace(System.out);
 		System.out.println("New hand started for player " + getAssociatedPlayer().getName());
@@ -287,7 +366,7 @@ class TrListener implements TrucoListener
 	
 	public void drawBalloon
 	(
-	TrucoPlayer player, String text, boolean highlighted
+		TrucoPlayer player, String text, boolean highlighted
 	)
 	{
 		Face face;
@@ -301,10 +380,10 @@ class TrListener implements TrucoListener
 			// obtiene la carita
 			face = getFManager().getFace
 			(
-			getPManager().getPos(player)
+				getPManager().getPos(player)
 			);
 			
-			face.pushText(text, highlighted, 750);
+			face.pushText(text, highlighted, 1750);
 			face.pushText(null, false, 100);
 		}
 		
@@ -312,7 +391,7 @@ class TrListener implements TrucoListener
 		if (!(table.getStatus() == Table.WATCH))
 			table.getJTrucoTable().jpChat.showChatMessage
 			(
-			player, text
+				player, text
 			);
 	}
 	
@@ -334,5 +413,7 @@ class TrListener implements TrucoListener
 	
 	/** Retorna el TrucoGame */
 	private TrucoGame getTGame()
-	{ return table.getTGame(); }
+	{ 
+		return table.getTGame(); 
+	}
 }

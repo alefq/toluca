@@ -1,6 +1,4 @@
 package py.edu.uca.fcyt.toluca.table.animation;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 /**
  * Esta interface contiene métodos que retornan
@@ -10,18 +8,17 @@ import java.awt.image.BufferedImage;
  
 public interface Graphics2DPainter
 {
-	/**
-     * Retorna la transformación adecuada de la salida
-     */
-	public AffineTransform getTransform();
-	
-	/**
-     * Retorna un {@link BufferedImage} para pintar en él
-     */
-	public BufferedImage getBImage();
+	/** @return El índice de la imagen búfer en la cual pintar */ 
+	public int getBuffIndex();
 	
 	/**
      * Repinta la salida
      */
     public void repaint();
+    
+    /** Agrega un listener de eventos de pintado */
+    public void addListener(ObjectsPainter obj);
+    
+    public int getOutWidth();
+    public int getOutHeight();
 }

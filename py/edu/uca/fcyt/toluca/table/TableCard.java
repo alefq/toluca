@@ -1,8 +1,5 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -35,8 +32,8 @@ class TableCard implements Animable, StateListener
 	private BufferedImage biCard;		// BufferedImage para la carta
 	private StatesTransitioner states;	// cola de estados de la carta
 	private LinkedList stateListeners;	// listeners de eventos
-	private static final RenderingHints rendHints = getRHints(); 
-
+	private BufferedImage[] biOut;
+	private AffineTransform afTrans;
 	
 
 	/**
@@ -127,15 +124,18 @@ class TableCard implements Animable, StateListener
 //		return ret;
 //	}
 
-	public void paint(BufferedImage biOut, AffineTransform afTrans)
+	public void paint(int buffIndex)
 	{
-		AffineTransformOp afTransOp;	// Dibujador de la imagen
 		int centX, centY;
 		BufferedImage biCard;
 		TCardState cState;
+		AffineTransform afTrans;
+		
+		if (this.afTrans == null) return;
+		if (this.biOut == null) return; 
 		
 		// crea una copia de 'afTrans'
-		afTrans = new AffineTransform(afTrans);
+		afTrans = new AffineTransform(this.afTrans);
 		
 		// obtiene el estado actual
 		cState = (TCardState) states.getCurrState();
@@ -174,26 +174,26 @@ class TableCard implements Animable, StateListener
 		new AffineTransformOp
 		(
 			afTrans, AffineTransformOp.TYPE_BILINEAR
-		).filter(biCard, biOut);
+		).filter(biCard, this.biOut[buffIndex]);
 	}
 	
-    public void clear(Graphics2D grOut)
-    {
-    	TCardState cState;
-    	
-    	cState = (TCardState) states.getCurrState();
-    	
-    	if (cState == null) return;
-//		grOut.setColor(new Color((int) (Math.random() * Math.pow(2, 24))));
-		grOut.setColor(Color.GREEN.darker());
-		grOut.fillRect
-		(
-			(int) cState.x - TableCard.CARD_RADIUS,
-			(int) cState.y - TableCard.CARD_RADIUS,
-			(int) TableCard.CARD_DIAMETER, 
-			(int) TableCard.CARD_DIAMETER
-		);
-	}
+//    public void clear(Graphics2D grOut)
+//    {
+//    	TCardState cState;
+//    	
+//    	cState = (TCardState) states.getCurrState();
+//    	
+//    	if (cState == null) return;
+////		grOut.setColor(new Color((int) (Math.random() * Math.pow(2, 24))));
+//		grOut.setColor(Color.GREEN.darker());
+//		grOut.fillRect
+//		(
+//			(int) cState.x - TableCard.CARD_RADIUS,
+//			(int) cState.y - TableCard.CARD_RADIUS,
+//			(int) TableCard.CARD_DIAMETER, 
+//			(int) TableCard.CARD_DIAMETER
+//		);
+//	}
 	
 	/**
      * Agrega una pausa a la cola de estados
@@ -207,9 +207,9 @@ class TableCard implements Animable, StateListener
     /**
      * Avanza la animación de esta carta
      */
-    public boolean advance()
+    public void advance()
     {
-    	return states.advance();
+    	states.advance();
     }
     
     /**
@@ -226,11 +226,6 @@ class TableCard implements Animable, StateListener
     public TCardState getCurrState() 
     {
     	return (TCardState) states.getCurrState();
-    }
-    
-    public boolean isEnabled()
-    {
-    	return true;
     }
     
     /**
@@ -304,7 +299,7 @@ class TableCard implements Animable, StateListener
      * {@link StateListener#transitionCompleted()}
      * de cada uno de los listeners registrados.
      */
-    private void fireTransitionCompleted()
+    private void fireTransitionCompleted(TableCard o)
     {
     	Iterator slIter;
     	
@@ -313,31 +308,27 @@ class TableCard implements Animable, StateListener
     		((TableCardListener) slIter.next()).transitionCompleted(this);
     }
 
-	public void transitionCompleted() 
+	public void transitionCompleted(Object o) 
 	{
-		fireTransitionCompleted();
+		fireTransitionCompleted(this);
 	}
 	
-	private static final RenderingHints getRHints()
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.animation.Animable#setOut(java.awt.image.BufferedImage, java.awt.geom.AffineTransform)
+	 */
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans)
 	{
-		RenderingHints ret = null;
-		
-//		try
-//		{
-//			ret = new RenderingHints
-//			(
-//				RenderingHints.KEY_INTERPOLATION, 
-//				RenderingHints.VALUE_INTERPOLATION_BILINEAR
-//			);
-//	
-//			ret.put
-//			(
-//				RenderingHints.KEY_RENDERING,
-//				RenderingHints.VALUE_COLOR_RENDER_SPEED
-//			);
-//		}
-		
-		
-		return ret;
+		this.biOut = biOut;
+		this.afTrans = afTrans;
 	}
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.state.StateListener#animationCompleted()
+	 */
+	public void animationCompleted(Object o)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
 }

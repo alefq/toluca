@@ -14,11 +14,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
+import java.util.Vector;
+import java.awt.Cursor;
 
 import javax.swing.JPanel;
 
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
 import py.edu.uca.fcyt.toluca.table.animation.Graphics2DPainter;
+//import py.edu.uca.fcyt.toluca.table.animation.ObjectsPainter;
 
 /**
  * Maneja el panel donde se juega propiamente.
@@ -34,6 +38,7 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 
 	private Image img;
 	private Graphics2D grImg;
+	private Vector oPainter;
 	
 	private int currBuff = 0;
 
@@ -67,6 +72,8 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 		biBuff = new BufferedImage[2];
 		afTrans = new AffineTransform();
 		animator = new Animator(this);
+		oPainter = new Vector();
+		addListener(animator);
 	}
 
 	/** rutina de pintado */
@@ -86,10 +93,10 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 		Rectangle bounds;
 		double scale;
 		
-		img = this.createImage(1000, 1000);
-		grImg = (Graphics2D) img.getGraphics();
-		
-		grImg.fillOval(0, 0, 100, 100);
+//		img = this.createImage(1000, 1000);
+//		grImg = (Graphics2D) img.getGraphics();
+//		
+//		grImg.fillOval(0, 0, 100, 100);
 		
 		// obtiene las coordenadas del área de pintado
 		bounds = getBounds();
@@ -122,13 +129,15 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 		afTrans = new AffineTransform();
 		afTrans.scale(scale, scale);
 		afTrans.translate(TABLE_WIDTH/2, TABLE_HEIGHT/2);
+		
+		fireSetOut();
 	}
 	
 	// a implementar
 	public void componentMoved(ComponentEvent e) {}
 	public void componentShown(ComponentEvent e) {}
 	public void componentHidden(ComponentEvent e) {}
-	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
@@ -138,7 +147,7 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 	 * mouseClicked de 'ptListener' con las coordenadas
 	 * transformadas y el MouseEvent 'e'
 	 */
-	public void mouseClicked(MouseEvent e)
+	public void mousePressed(MouseEvent e)
 	{
 		Point2D p;
 		
@@ -169,7 +178,7 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 
 	public BufferedImage getBImage()
 	{
-		return biBuff[(currBuff + 1) % biBuff.length];
+		return biBuff[getBuffIndex()];
 	}
 	
 	public AffineTransform getTransform()
@@ -190,5 +199,42 @@ implements ComponentListener, MouseListener, Graphics2DPainter, ImageObserver
 	{
 		if (animator.drawComplete)
 			currBuff = (currBuff + 1) % biBuff.length;
+	}
+	public void addListener(ObjectsPainter obj)
+	{
+		oPainter.add(obj);
+	}
+	
+	/**
+	 * Dispara el evento {@see ObjectsPainter.setOut
+	 * (BufferedImage biOut, AffineTransform afTrans)}
+	 * de todos los {@see ObjectsPainter}s registrados.
+	 */
+	private void fireSetOut()
+	{
+		for (int i = 0; i < oPainter.size(); i++)
+			((ObjectsPainter) oPainter.get(i)).setOut(biBuff, afTrans);
+	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.animation.Graphics2DPainter#getBuffIndex()
+	 */
+	public int getBuffIndex()
+	{
+		return (currBuff + 1) % biBuff.length;
+	}
+	
+	public int getOutWidth()
+	{
+		return TABLE_WIDTH; 
+	}
+
+	public int getOutHeight()
+	{
+		return TABLE_HEIGHT; 
+	}
+	
+	public void setCursor(int type)
+	{
+		setCursor(new Cursor(type));	
 	}
 }

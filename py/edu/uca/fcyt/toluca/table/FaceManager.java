@@ -1,7 +1,6 @@
 package py.edu.uca.fcyt.toluca.table;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
@@ -21,6 +20,8 @@ class FaceManager implements Animable
 	private Vector faces;			// caritas
 	private final FaceState[] pts;	// posiciones de cada carita
 	private Vector toRemove;		// vector de caritas a borrar
+	private BufferedImage[] biOut;
+	private AffineTransform afTrans;
 	
 	/**
      * Construye un FaceManager con un 
@@ -36,8 +37,8 @@ class FaceManager implements Animable
 		// crea el vector de caritas a remover
 		toRemove = new Vector();
 		
-		w = (PlayTable.TABLE_WIDTH - Face.WIDTH) / 2 + 17;
-		h = (PlayTable.TABLE_HEIGHT - Face.HEIGHT) / 2 + 17;
+		w = (PlayTable.TABLE_WIDTH - Face.WIDTH - 16) / 2 + 17;
+		h = (PlayTable.TABLE_HEIGHT - Face.HEIGHT - 16) / 2 + 17;
 
 		// carga las posiciones de cada carita
 		pts = new FaceState[]
@@ -107,7 +108,12 @@ class FaceManager implements Animable
             );
             
             //face.setFacesDir(Util.getImagesDir() + "/faces/standard/");
-	    face.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
+            face.setOut(biOut, afTrans);
+            
+	    	face.loadFacesFromURL
+	    	(
+				"/py/edu/uca/fcyt/toluca/images/faces/standard/"
+			);
 
         	// agrega la carita 
             faces.add(face);
@@ -219,29 +225,17 @@ class FaceManager implements Animable
 		}
     }
 
-	synchronized public void paint
-	(
-		BufferedImage biOut, AffineTransform afTrans
-	) 
+	synchronized public void paint(int buffIndex) 
 	{
 		for (int i = 0; i < faces.size(); i++)
-			((Face) faces.get(i)).paint(biOut, afTrans);
+			((Face) faces.get(i)).paint(buffIndex);
 
 		for (int i = 0; i < toRemove.size(); i++)
-			((Face) toRemove.get(i)).paint(biOut, afTrans);
+			((Face) toRemove.get(i)).paint(buffIndex);
 
 		removePending();
 	}
 
-	synchronized public void clear(Graphics2D grOut) 
-	{
-//		Iterator fIter;
-//		Face face;
-//		
-//		for (int i = 0; i < faces.size(); i++)
-//			((Face) faces.get(i)).clear(grOut);
-	}
-	
 	/**
      * Remueve las caritas marcadas para eliminación
      */
@@ -259,20 +253,13 @@ class FaceManager implements Animable
 		}
 	}
 
-	synchronized public boolean advance() 
+	synchronized public void advance() 
 	{
 		for (int i = 0; i < faces.size(); i++)
 			((Face) faces.get(i)).advance();
 		
 		for (int i = 0; i < toRemove.size(); i++)
 			((Face) toRemove.get(i)).advance();
-
-		return true;
-	}
-
-	synchronized public boolean isEnabled() 
-	{
-		return true;
 	}
 	
 	/**
@@ -443,4 +430,15 @@ class FaceManager implements Animable
     	);
     	face.pushText(null, false, 100);
     }
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.animation.Animable#setOut(java.awt.image.BufferedImage, java.awt.geom.AffineTransform)
+	 */
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans)
+	{
+		this.biOut = biOut;
+		this.afTrans = afTrans;
+		for (int i = 0; i < faces.size(); i++)
+			((Face) faces.get(i)).setOut(biOut, afTrans);
+	}
+
 }

@@ -1090,4 +1090,8 @@ implements RoomListener, TableListener,TrucoListener
 		this.tables = tables;
 	}
 	
+	public void playerLeft(RoomEvent re) {
+		new Exception("Not implemented yet");		
+	}
+	
 }

@@ -10,18 +10,19 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+import java.awt.BasicStroke;
 
 import javax.swing.ImageIcon;
 
 import py.edu.uca.fcyt.toluca.table.animation.Animable;
 import py.edu.uca.fcyt.toluca.table.state.StatesTransitioner;
+import py.edu.uca.fcyt.toluca.table.state.StateListener;
+import py.edu.uca.fcyt.toluca.table.state.GeneralState;
 
 /**
  * Maneja el dibujo de una carita en el juego
  */
-class Face implements Animable
+class Face implements Animable, StateListener
 {
 	public final static int WIDTH = (int) (PlayTable.TABLE_WIDTH * .2);
 	public final static int HEIGHT = (int) (PlayTable.TABLE_HEIGHT * .2);
@@ -36,6 +37,11 @@ class Face implements Animable
 	private String playerName;
 	private double ballAng;
 	public boolean highlighted = false;
+	private Graphics2D[] grOut;
+	private BufferedImage[] biOut;
+	private AffineTransformOp afTransOp;
+	private AffineTransform afTrans;
+	private StatesTransitioner blinker;
 
 	/**
 	 * Construye un nuevo Face. 
@@ -57,6 +63,11 @@ class Face implements Animable
 
 		this.playerName = name == null ? "": name;
 		this.borderColor = borderColor;
+		
+		this.blinker = new StatesTransitioner();
+		blinker.addListener(this);
+
+		animationCompleted(blinker);
 		
 		fonts = new Font[3];
 		fonts[0] = new Font("SansSerif", Font.BOLD, 13);
@@ -130,86 +141,47 @@ class Face implements Animable
 			new StringState(text, highlighted), duration
 		);
 	}
-
-	/** 
-	 * Cuando el jugador hace click en un jugador a su 
-	 * izq,der o centro el ojo se tiene que mover, en realidad 
-	 * se cambia el archivo de cara correspondiente
-	 */
-//	public void setEyedireccion(int d){
-//		switch(d){
-//			case Dir.LEFT:
-//				if (dir != Dir.LEFT)
-//					//tiene que buscar el arch correspondiente
-//				break;
-//			case Dir.CENTER:
-//				if (dir != Dir.CENTER)
-//				
-//				//tiene que buscar el arch correspondiente				
-//				break;
-//			case Dir.RIGHT:
-//				if (dir != Dir.RIGHT)
-//					//tiene que buscar el arch correspondiente				
-//				break;
-//		}
-//		dir = d; //se coloca el nuevo valor	
-//	}
 	
-	
-//	public int getEyedireccion(){
-//		return dir;
-//	}
-	
-	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans)
+	synchronized public void paint(int buffIndex)
 	{
 		int width, height;
 		FaceState fState;
-		Graphics2D grOut;
-		
+		Graphics2D grOut2;
+
+		if (grOut == null) return;
+		if (this.afTrans == null) return;
+
 		// obtiene el estado actual
 		fState = (FaceState) states[0].getCurrState();
 		
 		// si no hay estado actual, salir
 		if (fState == null) return;
 		
-		// obtiene un Graphics2D de 'biOut'
-		grOut = biOut.createGraphics();
-		
-		// aplica 'afTrans' al Graphics2D
-		grOut.setTransform(afTrans);
-		
-		// establece el antialiasing al Graphics2D
-		grOut.setRenderingHint
-		(
-			RenderingHints.KEY_ANTIALIASING,
-			RenderingHints.VALUE_ANTIALIAS_ON
-		);
+		// obtiene una copia del Graphics2D a pintar
+		grOut2 = (Graphics2D) grOut[buffIndex].create();
 		
 		// translada el orígen a la coordenada 
 		// (x, y) del cuadradito blanco
-		grOut.translate
+		grOut2.translate
 		(
 			fState.x, fState.y
 		);
 
 		// dibuja el cuadradito blanco
-		drawChair(grOut);
+		drawChair(grOut2);
 
 		// translada el orígen a la coordenada 
 		// (x, y) del centro de los demás objetos
-		grOut.translate
+		grOut2.translate
 		(
 			 fState.offX, fState.offY
 		);
 
-//		grOut.setColor(Color.BLACK);
-//		grOut.fillOval(-5, -5, 5, 5);
+		drawName(grOut2);
+		drawFace(biOut[buffIndex], grOut2.getTransform());
+		drawDialog(grOut2);
 		
-		drawName(biOut, grOut.getTransform());
-		drawFace(biOut, grOut.getTransform());
-		drawDialog(biOut, grOut.getTransform());
-		
-		grOut.dispose();
+		grOut2.dispose();
 	}
 
 
@@ -217,27 +189,39 @@ class Face implements Animable
 	synchronized private void drawChair(Graphics2D grOut)
 	{
 		int x, y;
+		float blk;
 		
 		x = -WIDTH / 2;
 		y = -HEIGHT / 2;
+
+		grOut.setStroke(new BasicStroke(6));
 
 		// si la carita está seleccionada, dibujar el 
 		// borde amarillo
 		if (highlighted)
 		{
-			grOut.setColor(Color.YELLOW.brighter());
-			grOut.fillRoundRect
+			try
+			{
+				blk = (float) ((GeneralState) blinker.getCurrState()).getValue(0);
+			}
+			catch (NullPointerException ex)
+			{
+				blk = 1;
+			}
+			
+			grOut.setColor(new Color(1, 1, 0, blk));
+			grOut.drawRoundRect
 			(
-				(int) x - 2, 
-				(int) y - 2, 
-				(int) WIDTH + 4,
-				(int) HEIGHT + 4,
+				(int) x - 4, 
+				(int) y - 3, 
+				(int) WIDTH + 8,
+				(int) HEIGHT + 6,
 				33, 33
 			);	
 		}
 		
 		grOut.setColor(Color.BLACK);
-		grOut.fillRoundRect
+		grOut.drawRoundRect
 		(
 			(int) x, 
 			(int) y, 
@@ -247,46 +231,48 @@ class Face implements Animable
 		);	
 
 		grOut.setColor(borderColor);
-		grOut.fillRoundRect
+		grOut.drawRoundRect
 		(
-			(int) (x + 1), 
-			(int) (y + 1), 
-			(int) (WIDTH - 2), 
-			(int) (HEIGHT - 2),
+			(int) (x + 2), 
+			(int) (y + 2), 
+			(int) (WIDTH - 4), 
+			(int) (HEIGHT - 4),
 			33, 33
 		);	
 
 		grOut.setColor(Color.WHITE);
 		grOut.fillRoundRect
 		(	
-			(int) (x + 5), 
-			(int) (y + 5), 
-			(int) (WIDTH - 10), 
-			(int) (HEIGHT - 10),
-			23, 23
+			(int) (x + 3), 
+			(int) (y + 3), 
+			(int) (WIDTH - 6), 
+			(int) (HEIGHT - 6),
+			29, 29
 		);
 	}
 	
 	/**
      * Dibuja el nombre de la carita
      */
-	synchronized private void drawName(BufferedImage biOut, AffineTransform afTrans)
+	synchronized private void drawName(Graphics2D grOut)
 	{
 		int x, y;
 		int off;
-		Graphics2D grOut;
 		String nameShown;
 		int shownLen, shownWidth;
 		
-		// obtiene un nuevo Graphics2D basado en 'biOut' y 'afTrans'
-		grOut = getGraphics2D(biOut, afTrans);
-
+		// obtiene una copia de grOut
+		grOut = (Graphics2D) grOut.create();
+		
 		grOut.setFont(fonts[0]);
 		
-		shownLen = getNChars(playerName, 0, WIDTH - 40, grOut);
+		shownLen = Util.getNChars(playerName, 0, WIDTH - 40, grOut);
 		
 		nameShown = playerName.substring(0, shownLen);
-		shownWidth = grOut.getFontMetrics().stringWidth(nameShown);
+		shownWidth = grOut.getFontMetrics().stringWidth
+		(
+			nameShown
+		);
 		
 		x = (int) (-shownWidth / 2);
 		y = (int) (HEIGHT * .42);
@@ -361,7 +347,7 @@ class Face implements Animable
 	 *recibe como argumentos un bufferImage, la accion que debe cantar
 	 *y el numero de jugador, o sea su posicion en la mesa*/
 	 
-	synchronized private void drawDialog(BufferedImage biOut, AffineTransform afTrans)
+	synchronized private void drawDialog(Graphics2D grOut)
 	{
 		int width, height;
 		int textWidth = 0, textHeight = 0;
@@ -387,8 +373,8 @@ class Face implements Animable
 		if (text == null) return;
 		
 		// obtiene nuevos Graphics2D basados en 'biOut' y 'afTrans'
-		grBall = getGraphics2D(biOut, afTrans);
-		grTri = getGraphics2D(biOut, afTrans);
+		grBall = (Graphics2D) grOut.create();
+		grTri = (Graphics2D) grOut.create();
 
 		// resaltar el texto o no
 		if (highlighted)
@@ -397,7 +383,7 @@ class Face implements Animable
 			grBall.setFont(fonts[1]);
 
 		// obtiene las líneas de texto a mostrar
-		lines = getLines(text, WIDTH, grBall);
+		lines = Util.getLines(text, WIDTH, grBall);
 		
 		// obtiene las medidas de la fuente actual
 		fMetrics = grBall.getFontMetrics();
@@ -484,159 +470,14 @@ class Face implements Animable
 	{
 		playerName = name;
 	}
-	 
-	
-	/**
-     * Obtiene la cantidad de caracteres de un texto que entran 
-     * en una cierta cantidad de píxeles a lo largo del texto.
-     * @param text	Texto a analizar.
-     * @param start	Posición inicial del análisis.
-     * @param width	Tamaño máximo en píxeles.
-     * @param grOut	Contexto de dibujo del texto
-     */
-	private int getNChars
-	(
-		String text, int start, int width, Graphics2D grOut
-	)
-	{
-		FontMetrics fMetrics;
-		int max, shown, currWidth;
-		char[] chars;
 
-		// obtiene las medidas de la fuente actual
-		fMetrics = grOut.getFontMetrics();
-
-		// carga el tamaño actual y la cantidad 
-		// de caracteres mostrados actualmente
-		currWidth = 0;
-		shown = 0;
-
-		try
-		{
-			while(currWidth < width) 
-			{
-				currWidth += fMetrics.charWidth
-				(
-					text.charAt(start + shown++)
-				);
-			}
-		}
-		catch(IndexOutOfBoundsException ex) {}
-		
-		shown --;
-		
-	   	return shown;
-	}
-	
-	/**
-     * Retorna un vector de Strings que es un texto separado
-     * en varias líneas de manera que su ancho no sea mayor
-     * que <code>width</code>.
-     * @param text	Texto a analizar
-     * @param width	Tamaño máximo en puntos
-     * @param grOut	contexto de dibujo de la fuente
-     */
-	private String[] getLines
-	(
-		String text, int width, Graphics2D grOut
-	)
-	{
-		LinkedList lines;
-		StringTokenizer strTok;
-		FontMetrics fMetrics;
-		int lineSize = 0, tokWidth;
-		String token, currLine;
-		String[] strLines;
-		int len;
-		
-		// crea la lista enlazada de líneas
-		lines = new LinkedList();
-		
-		// obtiene los tókens (palabras) de 'text'
-		strTok = new StringTokenizer(text, " ", true);
-		
-		// obtiene las medidas de la fuente de 'grOut'
-		fMetrics = grOut.getFontMetrics();
-		
-		// inicializa el tamaño actual de la línea como para 
-		// que al principio sobrepase el tamaño máximo
-		lineSize = 0;
-		
-		// inicaliza la línea actual
-		currLine = new String();
-		
-		// carga las líneas de texto
-		while(strTok.hasMoreElements())
-		{
-			// obtiene el tóken y su tamaño
-			token = (String) strTok.nextElement();
-			tokWidth = fMetrics.stringWidth(token);
-			
-			// si el tamaño del tóken es mayor que 'width'
-			while (tokWidth > width)
-			{
-				len = getNChars(token, 0, width, grOut);
-
-				lines.add(token.substring(0, len - 1));
-				token = token.substring(len, token.length() - 1);
-				tokWidth = fMetrics.stringWidth(token);
-			}
-
-			// incrementa el tamaño actual de la línea
-			lineSize += tokWidth;
-			
-			// si ha excedido el tamaño, habilitar una nueva línea
-			if (lineSize > width)
-			{
-				lineSize = tokWidth;
-				lines.add(currLine);
-				currLine = new String(token);
-			}
-			// si no, agregar el tóken a la línea
-			else currLine = currLine.concat(token);
-		}
-		
-		lines.add(currLine);
-		
-		// crea el vector de Strings y lo carga
-		strLines = new String[lines.size()];
-		System.arraycopy(lines.toArray(), 0, strLines, 0, lines.size());
-
-		return strLines;
-	}
-	
-	synchronized public void clear(Graphics2D grOut) 
-	{
-		FaceState cState;
-		int w, h;
-		
-		// obtiene el estado anterior
-		cState = (FaceState) states[0].getCurrState();
-		
-		// si no hay estado anterior, salir
-		if (cState == null) return;
-		
-		grOut.setColor(Color.GREEN.darker());
-//		grOut.setColor(new Color((int) (Math.random() * Math.pow(2, 24))));
-		grOut.fillRect
-		(
-			(int) (cState.x - WIDTH / 2 - 5), 
-			(int) (cState.y - HEIGHT / 2 - 5),
-			(int) WIDTH + 10, (int) HEIGHT + 10
-		);
-	}
-
-	synchronized public boolean advance() 
+	synchronized public void advance() 
 	{
 		states[0].advance();
 		states[1].advance();
 		states[2].advance();
-		return true;
-	}
-
-	synchronized public boolean isEnabled() 
-	{
-		return true;
+		
+		blinker.advance();
 	}
 	
 	/**
@@ -738,10 +579,8 @@ class Face implements Animable
 		
 		// obtiene la seña
 		sign = sState.getSign();
-		
-		// crea una copia de 'afTrans'
-		afTrans = new AffineTransform(afTrans);
 
+		// escala la imagen;
 		afTrans.scale(.8, .8);
 		
 		// translada la carita a su posición
@@ -751,8 +590,6 @@ class Face implements Animable
 			-faces[sign].getHeight() / 2
 		);
 		
-
-		// dibuja la imagen 'bfIn' en 'biOut
 		new AffineTransformOp
 		(
 			afTrans, AffineTransformOp.TYPE_BILINEAR
@@ -790,6 +627,46 @@ class Face implements Animable
 		
 		return ret;
 	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.animation.Animable#setOut(java.awt.image.BufferedImage, java.awt.geom.AffineTransform)
+	 */
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans)
+	{
+		int width, height;
+		FaceState fState;
+		
+		grOut = new Graphics2D[biOut.length];
+		
+		for (int i = 0; i < grOut.length; i++)
+		{
+			// obtiene el graficador
+			grOut[i] = (Graphics2D) biOut[i].getGraphics();
+			
+			// transforma la salida
+			grOut[i].setTransform(new AffineTransform(afTrans));
+			
+			// establece el antialiasing al Graphics2D
+			grOut[i].setRenderingHint
+			(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON
+			);
+		}
+		
+		this.biOut = biOut;
+		this.afTrans = afTrans; 
+	}
+
+	public void animationCompleted(Object o)
+	{
+		blinker.pushState(new GeneralState(new double[]{1}), 500);
+		blinker.pushState(new GeneralState(new double[]{0}), 500);
+	}
+
+	public void transitionCompleted(Object o)
+	{
+	}
+
 }
 
 

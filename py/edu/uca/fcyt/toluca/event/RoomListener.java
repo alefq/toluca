@@ -79,7 +79,12 @@ public interface RoomListener extends SpaceListener {
     public void loginRequested(RoomEvent ev);
     /** * <p> * Does ... * </p><p> *  * </p><p> *  * @param ev ... * </p> */    
     /** * <p> * Does ... * </p><p> *  * </p><p> *  * @param ev ... * </p> */    
-    public void loginFailed(RoomEvent ev);    
+    public void loginFailed(RoomEvent ev);
+    
+    /*
+     * Nuevo, ver si esta correcto
+     */
+    public void playerLeft(RoomEvent ev);
 } // end RoomListener
 
 

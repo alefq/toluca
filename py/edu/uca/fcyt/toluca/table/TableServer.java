@@ -8,7 +8,7 @@ package py.edu.uca.fcyt.toluca.table;
 
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.*;
+
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -49,11 +49,6 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
         System.out.println("El HOST de la tabela es: " + getHost().getName());
     }
-    public TableServer()
-    {
-    	players=new Vector();
-    	
-    }//para prueba de Redes. Dani Cricco
     
     public void addTableServerListener(TableListener tableListener) {        /**
      * lock-end */
@@ -80,7 +75,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         
         // se crea el TrucoGame con los teams creados
         tGame = new TrucoGame(tTeams[0], tTeams[1]);
-        tGame.addTrucoListener(this);
+        tGame.addTrucoListener(this);  
 
 		//primero disparamos el evento, asi los cc se registran
 		// como listeners del tgame
@@ -150,10 +145,6 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     public void turn(TrucoEvent event) {
         // IGNORAR en el lado del servidor
     }
-    public PlayerManager getPlayerManager()
-    {
-    	return pManager;
-    }
     
     /** <p>
      * Does ...
@@ -197,7 +188,6 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
         Iterator iter = tableListeners.listIterator();
         int i =0;
-        System.out.println("\n\nDentro de playerSat\n\n");
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
             System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
@@ -269,22 +259,31 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         return tGame;
     }
 
-	/**
-	 * @param tptmp
-	 */
-	public void kickPlayer(TrucoPlayer tptmp) {
+	public void standPlayer(TableEvent event)
+	{
+		pManager.standPlayer(event.getValue());
+
+		// avisa que el player se levantó correctamente
+		for (int i = 0; i < tableListeners.size(); i++)
+			((TableListener) tableListeners.get(i)).playerStanded(event);
+	}
+
+	public void showSign(TableEvent event)
+	{
+		for (int i = 0; i < tableListeners.size(); i++)
+			((TableListener) tableListeners.get(i)).signSent(event);
+	}
+
+	public void kickPlayer(TrucoPlayer tptmp) 
+	{
 		// TODO Auto-generated method stub
 		System.out.println("Se fue: " + tptmp.getName());
 		getPlayers().remove(tptmp);
 		
 		TableEvent te = new TableEvent(TableEvent.EVENT_playerKicked, this, tptmp, 0);
 		firePlayerKicked(te);
-		
 	}
 
-	/**
-	 * @param te
-	 */
 	private void firePlayerKicked(TableEvent te) {
 		Iterator iter = tableListeners.listIterator();
 		int i =0;
@@ -293,18 +292,14 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 			ltmp.playerKicked(te);
 		}
 	}
-	public String toString()
-	{	
-		
-		String cadena=new String("***************\nDatos de la tabla Server\n");
-		cadena=cadena.concat("Numero: "+getTableNumber()+"\n");
-		
-		for(Enumeration e=players.elements();e.hasMoreElements();)
-		{
-			TrucoPlayer jug=(TrucoPlayer)e.nextElement();
-			cadena=cadena.concat("Jugador : "+jug.getName()+"\n");
-		}
-		cadena=cadena.concat("*****************");
-		return cadena;	
+	
+	public PlayerManager getPlayerManager()
+	{
+		return pManager;
+	}
+	
+	public int getChair(TrucoPlayer p)
+	{
+		return pManager.getChair(p);
 	}
 }

@@ -16,6 +16,8 @@ import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
+import py.edu.uca.fcyt.toluca.event.TableEvent;
+import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.net.CommunicatorClient;
 import py.edu.uca.fcyt.toluca.table.Table;
@@ -26,7 +28,7 @@ import py.edu.uca.fcyt.toluca.table.Table;
  * @author  Interfaz de Inicio
  */
 public class RoomClient extends Room
-implements ChatPanelContainer
+implements ChatPanelContainer, TableListener
 {
 	
 	private ChatPanel chatPanel;
@@ -138,7 +140,7 @@ implements ChatPanelContainer
 	 */
 	private void fireTableJoinRequested(int tableNumber)
 	{        /** lock-end */
-		System.out.println("Voy a disparar el tableJoinRequest sobre la tabela: " + tableNumber);
+		System.out.println("Voy a disparar el tableJoinRequest sobre la tabla: " + tableNumber);
 		RoomEvent re = new RoomEvent();
 		re.setType(RoomEvent.TYPE_TABLE_JOIN_REQUESTED);
 		re.setTableNumber(tableNumber);
@@ -146,7 +148,7 @@ implements ChatPanelContainer
 		Iterator iter = roomListeners.listIterator();
 		while(iter.hasNext())
 		{
-			System.out.println("A lo meor no tiene listeners asociados carajo");
+			System.out.println("A lo mejor no tiene listeners asociados carajo");
 			RoomListener ltmp = (RoomListener)iter.next();
 			ltmp.tableJoinRequested(re);
 		}
@@ -190,20 +192,34 @@ implements ChatPanelContainer
 	{
 		super.addPlayer(player);
 		System.out.println("Gooool!! Carajo");
+                
 		if (rankTable == null) System.out.println("Nulooooo!!!");
 		rankTable.addPlayer(player);
 	}
 	
-	public void removePlayer(TrucoPlayer player)
+        
+       	public void removePlayer(TrucoPlayer player)
 	{        /** lock-end */
 		super.removePlayer(player);
+                // aca se le quita del rankingTable
 		rankTable.removeplayer( player);
+                
+                /*
+                 * linea nueva
+                 */
+                // aca se le quita de las mesas de la Tabla Principal
+                mainTable.removeplayer(player);
 	} // end removePlayer        /** lock-begin */
 	
 	public void modifyPlayer(TrucoPlayer player)
 	{        /** lock-end */
 		super.modifyPlayer(player);
 		rankTable.modifyplayer(player);
+                /*
+                 * linea nueva
+                 */
+                // aca se le modifica en las mesas de la Tabla Principal
+                mainTable.removeplayer(player);
 	}
 	
 	private void fireLoginRequested(String username, String password)
@@ -219,8 +235,7 @@ implements ChatPanelContainer
 			ltmp.loginRequested(re);
 		}
 	} // end fireLoginRequested        /** lock-begin */
-	
-	
+		
 	public void loginCompleted(TrucoPlayer player)
 	{        /** lock-end */
 		System.out.println("Login completed???");
@@ -266,6 +281,172 @@ implements ChatPanelContainer
 		this.rankTable = rankTable;
 	}
 	
+        
+        
+         /*
+         * Metodo nuevo para cuando al player se le cierra la ventana
+         */
+        public void eliminatePlayer(){
+            fireEliminatePlayer(roomPlayer.getName());
+        }
+        
+        /*
+         * Metodo nuevo, avisa a todos los listeners q se
+         * cayo alguien...
+         */
+        public void fireEliminatePlayer(String playerName){
+            RoomEvent re = new RoomEvent();
+            re.setType(RoomEvent.TYPE_PLAYER_LEFT);
+            re.setUser(playerName);
+            Iterator iter = roomListeners.listIterator();
+            while(iter.hasNext())
+            {
+            	RoomListener ltmp = (RoomListener)iter.next();
+		ltmp.playerLeft(re);
+            }
+        }
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#gameStartRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void gameStartRequest(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#gameStarted(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void gameStarted(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#gameFinished(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void gameFinished(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerStandRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerStandRequest(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerStanded(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerStanded(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerKickRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerKickRequest(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerKicked(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerKicked(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerLeft(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerLeft(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerSitRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerSitRequest(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerSit(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void playerSit(TableEvent event) {
+			// TODO Auto-generated method stub
+			System.out.println("Se sento!!!!!");
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#signSendRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void signSendRequest(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#signSent(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void signSent(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.TableListener#showPlayed(py.edu.uca.fcyt.toluca.event.TableEvent)
+		 */
+		public void showPlayed(TableEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#playerJoined(py.edu.uca.fcyt.toluca.game.TrucoPlayer)
+		 */
+		public void playerJoined(TrucoPlayer player) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#playerLeft(py.edu.uca.fcyt.toluca.game.TrucoPlayer)
+		 */
+		public void playerLeft(TrucoPlayer player) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageRequested(py.edu.uca.fcyt.game.ChatPanelContainer, py.edu.uca.fcyt.toluca.game.TrucoPlayer, java.lang.String)
+		 */
+		public void chatMessageRequested(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageSent(py.edu.uca.fcyt.game.ChatPanelContainer, py.edu.uca.fcyt.toluca.game.TrucoPlayer, java.lang.String)
+		 */
+		public void chatMessageSent(ChatPanelContainer cpc, TrucoPlayer player, String htmlMessage) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		public void seAgregoTable(Table t) {
+			t.addTableListener(this);
+		}
+        
+        
 } // end RoomClient
 
 

@@ -1,5 +1,6 @@
+
 package py.edu.uca.fcyt.toluca.table.animation;
-import java.awt.Graphics2D;
+
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -10,24 +11,19 @@ import java.awt.image.BufferedImage;
  */
 public interface Animable
 {
+	/** Establece la salida y su transformación */
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans);
+	
 	/** 
 	 * Pinta el objeto.
 	 * 
 	 * El pintado se realiza sobre el estado actual del objeto.
-	 * @param biOut		imagen en donde se pintará el objeto
-	 * @param afTrans	transformación inicial del objeto
+	 * @param index		Índice del bufer en el cual pintar.
 	 * 
 	 * @see #advance() advance
 	 */
-	public void paint(BufferedImage biOut, AffineTransform afTrans);
+	public void paint(int buffIndex);
 	
-	/**
-     * Borra el objeto.
-     * El borrado se realiza sobre la posición anterior del objeto.
-     * </p>
-     */
-    public void clear(Graphics2D grOut);
-
     /**
      * Avanza el estado actual del objeto. Antes de avanzar
      * se guarda el estado anterior del objeto, el cual
@@ -35,11 +31,5 @@ public interface Animable
      * estado es utilizado por 
      * {@link #paint(BufferedImage biOut, AffineTransform afTrans)}
      */
-	public boolean advance();
-	
-	/**
-     * @return verdadero si el objeto puede mostrarse
-     */	
-    public boolean isEnabled();
-
+	public void advance();
 }

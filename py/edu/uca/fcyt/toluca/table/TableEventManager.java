@@ -2,6 +2,7 @@ package py.edu.uca.fcyt.toluca.table;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.awt.Cursor;
 
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -27,7 +28,6 @@ class TableEventManager
     {
         Util.verifParam(t != null, "Parámetro 't' nulo");
         tableListeners.add(t);
-        Util.verif(tableListeners.size() != 2, "This is the part where you ask why 2 TableListeners");
     }
 
     /**
@@ -40,19 +40,6 @@ class TableEventManager
         while(iter.hasNext()) 
         {
             ((TableListener)iter.next()).playerJoined(player);
-        }
-    }
-
-    /**
-     * Dispara el 'playerLeft' de todos los
-     * TableListeners registrados
-     */
-    public void firePlayerLeft(TrucoPlayer player) 
-    {
-        Iterator iter = tableListeners.iterator();
-        while(iter.hasNext()) 
-        {
-            ((TableListener)iter.next()).playerLeft(player);
         }
     }
 
@@ -93,8 +80,8 @@ class TableEventManager
      */
     public void fireGameStartRequest() 
     {
-        System.out.println("//////////////////////////////////////////////////////");
-        System.out.println("Voy a disparar un fireGameStartRequest");
+		table.setCursor(Cursor.WAIT_CURSOR);
+
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
@@ -116,6 +103,8 @@ class TableEventManager
      */
     public void fireGameStarted() 
     {
+		table.setCursor(Cursor.DEFAULT_CURSOR);
+    	
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
@@ -156,6 +145,8 @@ class TableEventManager
      */
     public void firePlayerStandRequest(int chair) 
     {
+		table.setCursor(Cursor.WAIT_CURSOR);
+		
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
@@ -176,6 +167,8 @@ class TableEventManager
      */
     public void firePlayerStanded() 
     {
+		table.setCursor(Cursor.DEFAULT_CURSOR);
+    	
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) 
         {
@@ -243,8 +236,8 @@ class TableEventManager
             (
             	new TableEvent
             	(
-            		TableEvent.EVENT_playerKickRequest,
-            		table, table.getPlayer(), -1
+            		TableEvent.EVENT_playerLeft,
+            		table, null, -1
             	)
             );
         }
@@ -256,6 +249,8 @@ class TableEventManager
      */
     public void firePlayerSitRequest(int chair) 
     {
+		table.setCursor(Cursor.WAIT_CURSOR);
+    	
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) {
             ((TableListener)iter.next()).playerSitRequest
@@ -275,6 +270,8 @@ class TableEventManager
      */
     public void firePlayerSit() 
     {
+		table.setCursor(Cursor.DEFAULT_CURSOR);
+
         Iterator iter = tableListeners.iterator();
         while(iter.hasNext()) {
             ((TableListener)iter.next()).playerSit

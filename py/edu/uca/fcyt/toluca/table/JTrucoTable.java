@@ -26,6 +26,7 @@ class JTrucoTable extends JPanel implements ComponentListener
 	protected Watchers jpWatchers;	// observadores
 	protected PlayTable pTable;
 	protected JButton[] buttons;
+	protected JLabel jlSaying;
 
 	/**
 	 * Construye un JTrucoTable con ptListener
@@ -42,7 +43,7 @@ class JTrucoTable extends JPanel implements ComponentListener
 		jpWatchers = new Watchers();
 
 		// agrega
-		jpPlayers.add(new JLabel("Jugadores"));
+		jpPlayers.add(jlSaying = new JLabel("Canto: "));
 //		jpChat.add(new JLabel("Chat"));
 
 		score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
@@ -62,7 +63,7 @@ class JTrucoTable extends JPanel implements ComponentListener
 			buttons = new JButton[]
 			{
 				new JButton("Iniciar"),
-				new JButton("Hechar")
+				new JButton("Echar")
 			};
 		}
 		else

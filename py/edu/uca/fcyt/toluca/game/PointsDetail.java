@@ -80,130 +80,130 @@ public class PointsDetail {
         String detalle = new String();
         switch (ganadosPor){
             case 1:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido de: "+responsable.getName();
+                detalle =  puntosGanados + " puntos para "+ equipoGanador.getName()+" por envido de " + responsable.getName();
                 break;
             case 2:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido de: "+responsable.getName();
+                detalle =  puntosGanados + " puntos para "+ equipoGanador.getName()+" por envido, envido de " + responsable.getName();
                 
                 break;
             case 3:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, Envido de: "+responsable.getName();
+                detalle =  puntosGanados + " puntos para "+ equipoGanador.getName()+" por envido, envido, envido de " + responsable.getName();
                 break;
             case 4:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido de: "+responsable.getName();
+                detalle =  puntosGanados + " puntos para "+ equipoGanador.getName()+" por real envido de " + responsable.getName();
                 break;
             case 5:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, Real Envido de: "+responsable.getName();
+                detalle =  puntosGanados + " puntos para "+ equipoGanador.getName()+" por envido, envido, real envido de " + responsable.getName();
                 break;
             case 6:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Real Envido, Real Envido de: "+responsable.getName();
+                detalle =  puntosGanados + " puntos para " + equipoGanador.getName()+" por envido, real envido, real envido de "+responsable.getName();
                 break;
             case 7:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, Real Envido, Real Envido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido, real envido, real envido de "+responsable.getName();
                 break;
             case 8:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Falta Envido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por falta envido de "+responsable.getName();
                 break;
             case 9:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, Real Envido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido, real envido de "+responsable.getName();
                 break;
             case 10:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Real Envido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, real envido de "+responsable.getName();
                 break;
                 
             case 11:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido no querido de "+responsable.getName();
                 break;
             case 12:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, envido no querido de "+responsable.getName();
                 break;
             case 13:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, envido, envido no querido de "+responsable.getName();
                 break;
             case 14:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido no querido de "+responsable.getName();
                 break;
             case 15:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, Real Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, envido, real envido no querido de "+responsable.getName();
                 break;
             case 16:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Real Envido, Real Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, real envido, real envido no querido de "+responsable.getName();
                 break;
             case 17:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, Envido, Real Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido, envido, real envido no querido de "+responsable.getName();
                 break;
             case 18:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Falta Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Falta envido no querido de "+responsable.getName();
                 break;
             case 19:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Real Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, real envido no querido de "+responsable.getName();
                 break;
             case 20:   
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, Real Envido No Querido de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido, real envido no querido de "+responsable.getName();
                 break;
             case 21:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido no mostrado de "+responsable.getName();
                 break;
             case 22:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, No Mostrado "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, envido no mostrado "+responsable.getName();
                 break;
             case 23:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, envido, envido, no mostrado de "+responsable.getName();
                 break;
             case 24:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido no mostrado de "+responsable.getName();
                 break;
                 
             case 25:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Envido, Real Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, envido, real envido no mostrado de "+responsable.getName();
                 break;
             case 26:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Real Envido, Real Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, real envido, real envido no mostrado de "+responsable.getName();
                 break;
             case 27:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, Real Envido, Real Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido, real envido, real envido no mostrado de "+responsable.getName();
                 break;
             case 28:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Falta Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Falta envido, no mostrado de "+responsable.getName();
                 break;
             case 29:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Envido, Real Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por envido, real envido, no mostrado de "+responsable.getName();
                 break;
             case 30:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Real Envido, Real Envido, No Mostrado de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por real envido, real envido, no mostrado de "+responsable.getName();
                 break;
             case 31:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Flor de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por flor de "+responsable.getName();
                 break;
             case 32:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Flor no Mostrada de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por flor no mostrada de "+responsable.getName();
                 break;
             case 33:    
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Flor no Cantada de: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por flor no cantada de "+responsable.getName();
                 break;
             case 50:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por que se retiraron sin que dejar que canten ALGO . Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por que se retiraron sin que dejar que canten algo";
                 break;
             case 51:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por que NO se Canto Nada. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por que no se canto nada";
                 break;
             case 52:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Truco No Querido. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por truco no querido";
                 break;
             case 53:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Truco. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por truco";
                 break;
             case 54:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Re-Truco No Querido. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por retruco no querido";
                 break;
             case 55:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Re-Truco. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por retruco";
                 break;
             case 56:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Vale Cuatro No Querido. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por vale cuatro no querido";
                 break;
             case 57:
-                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por Vale Cuatro. Pie: "+responsable.getName();
+                detalle =  puntosGanados+" puntos para "+ equipoGanador.getName()+" por vale cuatro. Pie";
                 break;
             default:
                 detalle = "desconocido por"+ganadosPor;

@@ -1,6 +1,5 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -382,38 +381,31 @@ class CardManager implements Animable
     	players[pos].pushPause(duration);
     }
 
-	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans) 
+	synchronized public void paint(int buffIndex) 
 	{
-		tDeck.paint(biOut, afTrans);
+		tDeck.paint(buffIndex);
 		
 		for (int i = 0; i < players.length; i++)
 			players[((Integer) toDraw.get(i)).intValue()].paint
 			(
-				biOut, afTrans
+				buffIndex
 			);
 	}
 
-	synchronized public void clear(Graphics2D grOut) 
-	{
-		for (int i = 0; i < players.length; i++)
-			players[i].clear(grOut);
+//	synchronized public void clear(Graphics2D grOut) 
+//	{
+//		for (int i = 0; i < players.length; i++)
+//			players[i].clear(grOut);
+//
+//		tDeck.clear(grOut);
+//	}
 
-		tDeck.clear(grOut);
-	}
-
-	synchronized public boolean advance() 
+	synchronized public void advance() 
 	{
 		for (int i = 0; i < players.length; i++)
 			players[i].advance();
 
 		tDeck.advance();
-			
-		return true;
-	}
-
-	synchronized public boolean isEnabled() 
-	{
-		return true;
 	}
  
     /**
@@ -469,4 +461,13 @@ class CardManager implements Animable
 		for (int i = 0; i < playerCount; i++)
 			players[i].initUnplayed();
 	}
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.table.animation.Animable#setOut(java.awt.image.BufferedImage, java.awt.geom.AffineTransform)
+	 */
+	public void setOut(BufferedImage[] biOut, AffineTransform afTrans)
+	{
+		for (int i = 0; i < players.length; i++)
+			players[i].setOut(biOut, afTrans);
+	}
+
 }

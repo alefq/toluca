@@ -1098,49 +1098,4 @@ public class CommunicatorServer extends Communicator
 			System.err.println(e);
 			}
 	}
-	public static void main(String[] args)
-	{
-					RoomEvent te=new RoomEvent();
-					
-					
-       				Vector jugadores=new Vector();
-					jugadores.add(new TrucoPlayer("Dani",105));
-					jugadores.add(new TrucoPlayer("Cricco",5));
-					jugadores.add(new TrucoPlayer("Crey",108));
-					
-					CommunicatorServer cc=new CommunicatorServer();
-					te.setPlayers(jugadores);
-					
-					Vector mesas=new Vector();
-					TableServer mesa1=new TableServer();
-					mesa1.addPlayer(new TrucoPlayer("Jose",5));
-					mesa1.addPlayer(new TrucoPlayer("Menganito",8));
-					
-					
-					mesas.add(mesa1);
-					te.setTabless(mesas);
-					
-					TableServer mesa2=new TableServer();
-					mesa2.addPlayer(new TrucoPlayer("Juan",5));
-					mesa2.addPlayer(new TrucoPlayer("Fulanito",8));
-					mesas.add(mesa2);
-					mesa2.setTableNumber(5);
-					te.setTabless(mesas);
-					Document doc=cc.xmlCreateLoginOk(te);
-														
-					cc.impXml(doc);
-					
-					CommunicatorClient cc1 = new CommunicatorClient();
-					System.out.println("************************");
-					List children = doc.getContent();
-					Iterator iterator = children.iterator();
-					Object child = iterator.next();
-					Element element = (Element) child;
-					String aux = element.getName();
-				
-					cc1.xmlReadLoginOk(child);
-					System.out.println("El table es: "+mesa1);
-					
-					 //cc.cabecera(doc);
-	}
 }

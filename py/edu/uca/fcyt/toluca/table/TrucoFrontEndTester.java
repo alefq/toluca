@@ -120,11 +120,13 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         table = new Table(player, host);
         table.addTableListener(this);
         
-        if (host) {
+        if (host) 
+        {
             hostTable = table;
             table.sitPlayer(player, 0);
         }
-        else {
+        else 
+        {
             // agrega a la nueva tabla los Players cargados
             for (int i = 0; i < hostTable.getPlayerCount(); i++)
                 table.addPlayer(hostTable.getPlayer(i));
@@ -134,7 +136,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
                 if (hostTable.getPlayerInChair(i) != null)
                     table.sitPlayer
                     (
-                    hostTable.getPlayerInChair(i), i
+                    	hostTable.getPlayerInChair(i), i
                     );
         }
         
@@ -366,7 +368,8 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         }
     }
     
-    public void playerStandRequest(TableEvent event) {
+    public void playerStandRequest(TableEvent event) 
+    {
         Enumeration tEnum;
         int chair;
         TrucoPlayer player;
@@ -380,6 +383,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         }
     }
     
-    public void playerStanded(TableEvent event) {
+    public void playerStanded(TableEvent event) 
+    {
     }
 }

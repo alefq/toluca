@@ -16,7 +16,7 @@ class TCardState extends BasicState
      */	
 	public TCardState
 	(
-		int x, int y, double angle, 
+		double x, double y, double angle, 
 		double scale, Card card
 	)
 	{

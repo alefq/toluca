@@ -120,6 +120,7 @@ public class RoomUI extends javax.swing.JApplet
         System.out.println("numeroDeFila=" + numeroDeFila);
         if( numeroDeFila >= 0){
             numeroDeFila = mainTable.getNumeroDeMesa(numeroDeFila);
+            System.out.println("////////////// JOINNN /////////////");
             System.out.println("Se presiono el join..." +numeroDeFila);
             roomClient.joinTableRequest(numeroDeFila);
         }
@@ -133,16 +134,16 @@ public class RoomUI extends javax.swing.JApplet
        
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jpChat;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jpBotones;
-    private javax.swing.JPanel jpTabla;
-    private javax.swing.JPanel jpMain;
+    private javax.swing.JPanel jpLogo;
+    private javax.swing.JPanel jpChat;
     private javax.swing.JButton jbCreateTable;
     private javax.swing.JPanel jpChatRanking;
-    private javax.swing.JPanel jpLogo;
-    private javax.swing.JPanel jpRanking;
+    private javax.swing.JPanel jpTabla;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jpMain;
     private javax.swing.JButton jbJoin;
+    private javax.swing.JPanel jpRanking;
     // End of variables declaration//GEN-END:variables
     
     private void custInitComponents()
@@ -205,7 +206,8 @@ public class RoomUI extends javax.swing.JApplet
     }
     
     public void destroy() {
-        
+        System.out.println("El player cerro su RoomUI!");
+        roomClient.eliminatePlayer();
     }
 
      /** <p>

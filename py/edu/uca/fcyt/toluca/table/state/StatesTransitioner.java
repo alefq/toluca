@@ -62,8 +62,22 @@ public class StatesTransitioner
     	
     	slIter = stateListeners.iterator();
     	while (slIter.hasNext())
-    		((StateListener) slIter.next()).transitionCompleted();
+    		((StateListener) slIter.next()).transitionCompleted(this);
     }
+    
+	/**
+	 * Dispara el evento 
+	 * {@link StateListener#transitionCompleted()}
+	 * de cada uno de los listeners registrados.
+	 */
+	private void fireAnimationCompleted()
+	{
+		Iterator slIter;
+    	
+		slIter = stateListeners.iterator();
+		while (slIter.hasNext())
+			((StateListener) slIter.next()).animationCompleted(this);
+	}    
 	
 	/**
      * Realiza el avance entre de estados.
@@ -121,20 +135,23 @@ public class StatesTransitioner
 				remainingTime = 0;
 			}
 			fireTransitionCompleted();
+			if (remainingTime == 0) fireAnimationCompleted(); 
 		}
 		// Si el tiempo es menor que el restante, establecer
 		// el estado actual a 'elapsedTime' milisegundos después
 		// y restar el tiempo avanzado
 		else
 		{
-			float timeRatio;
+			double timeRatio;
 			
-			timeRatio = (float) elapsedTime / nextState.duration / 1;
-			nextState.duration -= elapsedTime / 1;
+			timeRatio = (double) elapsedTime / nextState.duration;
+			
+			nextState.duration -= elapsedTime;
 			remainingTime -= elapsedTime;
+
 			if (remainingTime < 0) remainingTime = 0;
 
-			if (nextState.state != null) 
+			if (nextState.state != null && currState != null) 
 				currState.transition(nextState.state, timeRatio);
 		}
 		return true;
@@ -151,7 +168,7 @@ public class StatesTransitioner
 		StateDuration stDur;
 		
 		// verificaciones
-		Util.verifParam(state != null, "Parámetro 'state' nulo");
+//		Util.verifParam(state != null, "Parámetro 'state' nulo");
 		Util.verifParam
 		(
 			duration >= 0, "Parámetro duration inválido: " + duration
@@ -161,13 +178,10 @@ public class StatesTransitioner
 		remainingTime += duration;
 
 		// si el estado actual es nulo, que sea éste		
-    	if (currState == null)
-    	{
-    		currState = state;
-    	}
-    	// si no, agregarlo a la cola de estados
-    	else
-		{
+
+//    	// si no, agregarlo a la cola de estados
+//    	else
+//		{
 			// crea el nuevo estado y lo agrega a la cola
 			stDur = new StateDuration(state, duration);
 			states.add(stDur);
@@ -179,7 +193,7 @@ public class StatesTransitioner
 				lastTime = System.currentTimeMillis();
 				nextState = stDur;
 			}
-		}
+//		}
 	}
 	
 
@@ -198,17 +212,17 @@ public class StatesTransitioner
     	}
     	catch (InvalidParameterException ex1) 
     	{
-    		try
-    		{
+//    		try
+//    		{
     			pushState(getCurrState(), duration);
-    		}
-    		catch (InvalidParameterException ex2)
-    		{
-    			throw new IllegalStateException
-    			(
-    				"No hay un estado actual"
-    			);
-    		}
+//    		}
+//    		catch (InvalidParameterException ex2)
+//    		{
+//    			throw new IllegalStateException
+//    			(
+//    				"No hay un estado actual"
+//    			);
+//    		}
     	}
     }
 
@@ -252,11 +266,29 @@ public class StatesTransitioner
     	catch (NoSuchElementException ex) {	return null; }
     	catch (NullPointerException ex)
     	{
-    		throw new IllegalStateException
-    		(
-    			"Hay un estado en la cola que es nulo"
-    		);
+    		return null;
+//    		throw new IllegalStateException
+//    		(
+//    			"Hay un estado en la cola que es nulo"
+//    		);
     	}
     }
-     
+    
+	public static void main(String[] args)
+	{
+		double a = 10;
+		double b = 50;
+		double ratio;
+		int interval;
+		
+		interval = (int) (Math.random() * 10 + 5);
+		
+		for (int t = 1000; t > 0; t-=interval)
+		{
+			ratio = (double) interval / t;
+//			System.out.println("t: " +  t + " a: " + a);
+			a = (1 - ratio) * a + ratio * b; 
+		}
+	}
+
 }

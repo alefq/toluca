@@ -8,7 +8,7 @@ class FaceState extends BasicState
 {
 	// desplazamiento (x, y) de los objetos 
 	// dentro del cuadrado blanco
-	public int offX, offY;
+	public double offX, offY;
 	
 	/**
      * Crea un nuevo FaceState a partir de otro
@@ -32,7 +32,7 @@ class FaceState extends BasicState
      */
 	public FaceState
 	(
-		int x, int y, int offX, int offY, 
+		double x, double y, double offX, double offY, 
 		double angle, double scale 
 	)
 	{
@@ -47,8 +47,8 @@ class FaceState extends BasicState
 		
 		fState = (FaceState) state;
 		
-		offX = (int) (offX * ratio + fState.offX * (1 - ratio));
-		offY = (int) (offY * ratio + fState.offY * (1 - ratio));
+		offX = offX * ratio + fState.offX * (1 - ratio);
+		offY = offY * ratio + fState.offY * (1 - ratio);
 		super.transition(state, ratio);
 	}
 	

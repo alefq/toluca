@@ -226,6 +226,7 @@ public class TrucoGameClient extends TrucoGame
 		teams[1].setPoints(points[1]);
 		TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,TrucoEvent.FIN_DE_MANO);
+		detalleDelPuntaje = trucoHand.getPointsDetail();
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).endOfHand(event);
@@ -234,7 +235,7 @@ public class TrucoGameClient extends TrucoGame
 		System.out.println("--------------------------------------Puntajes--------------------------");
 		for (int i=0; i<2; i++)
 			System.out.println(teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
-		detalleDelPuntaje = trucoHand.getPointsDetail();
+		
 		for (int i=0; i<detalleDelPuntaje.size(); i++)
 			System.out.println(((PointsDetail)detalleDelPuntaje.get(i)).aString());
 		

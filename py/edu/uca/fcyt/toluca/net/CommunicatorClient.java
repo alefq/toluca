@@ -1270,6 +1270,7 @@ public class CommunicatorClient extends Communicator
 				if (getAssociatedPlayer().getName().equals(tp.getName()))
 				{
 					t = new Table(getAssociatedPlayer(), true);
+					pieza.seAgregoTable(t);
 					t.setTableNumber(Integer.parseInt(tableidAux));
 					t.addTableListener(this);
 					getTables().put(tableidAux, t);
@@ -1282,6 +1283,7 @@ public class CommunicatorClient extends Communicator
 				} else
 				{
 					t = new Table(getAssociatedPlayer(), false);
+					pieza.seAgregoTable(t);
 					t.setTableNumber(Integer.parseInt(tableidAux));
 					t.addTableListener(this);
 					getTables().put(tableidAux, t);
@@ -1352,9 +1354,7 @@ public class CommunicatorClient extends Communicator
 				String host=element.getAttributeValue("host");
 				
 				TrucoPlayer jughost=pieza.getPlayer(host);
-				//Table mesa=new Table(jughost,true);
 				String tableid=element.getAttributeValue("number");
-				//mesa.setTableNumber(number);
 				current=Mesas.size();
 				
 				System.out.println("La mesa: "+tableid +"Con el host: "+ host);
@@ -1364,6 +1364,7 @@ public class CommunicatorClient extends Communicator
 				if (getAssociatedPlayer().getName().equals(jughost.getName()))
 				{
 					t = new Table(getAssociatedPlayer(), true);
+					pieza.seAgregoTable(t);
 					t.setTableNumber(Integer.parseInt(tableid));
 					t.addTableListener(this);
 					getTables().put(new Integer(tableid), t);
@@ -1375,6 +1376,7 @@ public class CommunicatorClient extends Communicator
 				} else
 				{
 					t = new Table(getAssociatedPlayer(), false);
+					pieza.seAgregoTable(t);
 					t.setTableNumber(Integer.parseInt(tableid));
 					t.addTableListener(this);
 					getTables().put(new Integer(tableid), t);

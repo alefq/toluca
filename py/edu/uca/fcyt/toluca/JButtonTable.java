@@ -29,6 +29,9 @@ public class JButtonTable extends JPanel {
     Vector mesas = new Vector();
     Vector encabezado = new Vector();
     JTable jtable;
+        
+    ///////////////////////////////////////
+  // operations
     
     public JButtonTable(){
         
@@ -44,9 +47,9 @@ public class JButtonTable extends JPanel {
         encabezado.add(new String("Jugador6"));        
         encabezado.add(new String("Observando"));        
             
-        System.out.println("Se instancia el RankingTableModel-i");
+        System.out.println("Se instancia el MainTableModel-i");
         mtm = new MainTableModel();
-        System.out.println("Se termina de instanciarddddd");
+        System.out.println("Se termina de instanciar el MainTableModel-i");
           
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         System.out.println("Antes de crear la tabla");
@@ -148,20 +151,18 @@ public class JButtonTable extends JPanel {
         return -1;
     }
     
-    	/*
-         * Este renderer es provisorio, sirve para las celdas
-         * de la tabla que son JLabel.
-         */
-        public class MainTableCellRenderer implements TableCellRenderer {
-            
-            public Component getTableCellRendererComponent(JTable table, Object value, 
-                             boolean isSelected, boolean hasFocus,int row, int column) {
+    /*
+     * Este renderer es provisorio, sirve para las celdas
+     * de la tabla que son JLabel.
+     */
+    public class MainTableCellRenderer implements TableCellRenderer {
+          
+        public Component getTableCellRendererComponent(JTable table, Object value, 
+                        boolean isSelected, boolean hasFocus,int row, int column) {
                 
-                JLabel lab = new JLabel((value ==null) ? "Jugar" : value.toString() );
-                return lab;
-            }
-               
-            
-        } // Fin del renderer
+            JLabel lab = new JLabel((value ==null) ? "Libre" : value.toString() );
+            return lab;
+        }       
+    } // Fin del renderer
     
 }

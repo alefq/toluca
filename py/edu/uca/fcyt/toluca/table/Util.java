@@ -5,8 +5,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
@@ -281,4 +286,152 @@ public class Util
     {
     	return "E:/Mis documentos/Programas/Java/Toluca/Table/py/edu/uca/fcyt/toluca/images/";
     }
+
+	/**
+	 * Retorna un vector de Strings que es un texto separado
+	 * en varias líneas de manera que su ancho no sea mayor
+	 * que <code>width</code>.
+	 * @param text	Texto a analizar
+	 * @param width	Tamaño máximo en puntos
+	 * @param grOut	contexto de dibujo de la fuente
+	 */
+	public static String[] getLines
+	(
+		String text, int width, Graphics2D grOut
+	)
+	{
+		LinkedList lines;
+		StringTokenizer strTok;
+		FontMetrics fMetrics;
+		int lineSize = 0, tokWidth;
+		String token, currLine;
+		String[] strLines;
+		int len;
+		
+		// crea la lista enlazada de líneas
+		lines = new LinkedList();
+		
+		// obtiene los tókens (palabras) de 'text'
+		strTok = new StringTokenizer(text, " ", true);
+		
+		// obtiene las medidas de la fuente de 'grOut'
+		fMetrics = grOut.getFontMetrics();
+		
+		// inicializa el tamaño actual de la línea como para 
+		// que al principio sobrepase el tamaño máximo
+		lineSize = 0;
+		
+		// inicaliza la línea actual
+		currLine = new String();
+		
+		// carga las líneas de texto
+		while(strTok.hasMoreElements())
+		{
+			// obtiene el tóken y su tamaño
+			token = (String) strTok.nextElement();
+			tokWidth = fMetrics.stringWidth(token);
+			
+			// si el tamaño del tóken es mayor que 'width'
+			while (tokWidth > width)
+			{
+				len = getNChars(token, 0, width, grOut);
+
+				lines.add(token.substring(0, len - 1));
+				token = token.substring(len, token.length() - 1);
+				tokWidth = fMetrics.stringWidth(token);
+			}
+
+			// incrementa el tamaño actual de la línea
+			lineSize += tokWidth;
+			
+			// si ha excedido el tamaño, habilitar una nueva línea
+			if (lineSize > width)
+			{
+				lineSize = tokWidth;
+				lines.add(currLine);
+				currLine = new String(token);
+			}
+			// si no, agregar el tóken a la línea
+			else currLine = currLine.concat(token);
+		}
+		
+		lines.add(currLine);
+		
+		// crea el vector de Strings y lo carga
+		strLines = new String[lines.size()];
+		System.arraycopy(lines.toArray(), 0, strLines, 0, lines.size());
+
+		return strLines;
+	}
+
+	/**
+	 * Obtiene la cantidad de caracteres de un texto que entran 
+	 * en una cierta cantidad de píxeles a lo largo del texto.
+	 * @param text	Texto a analizar.
+	 * @param start	Posición inicial del análisis.
+	 * @param width	Tamaño máximo en píxeles.
+	 * @param grOut	Contexto de dibujo del texto
+	 */
+	public static int getNChars
+	(
+		String text, int start, int width, Graphics2D grOut
+	)
+	{
+		FontMetrics fMetrics;
+		int max, shown, currWidth;
+		char[] chars;
+
+		// obtiene las medidas de la fuente actual
+		fMetrics = grOut.getFontMetrics();
+
+		// carga el tamaño actual y la cantidad 
+		// de caracteres mostrados actualmente
+		currWidth = 0;
+		shown = 0;
+
+		try
+		{
+			while(currWidth < width) 
+			{
+				currWidth += fMetrics.charWidth
+				(
+					text.charAt(start + shown++)
+				);
+			}
+		}
+		catch(IndexOutOfBoundsException ex) {}
+		
+		shown --;
+		
+		return shown;
+	}
+
+	public static String[] getLines(String text, int charWidth)
+	{
+		Vector vString;
+		String[] strings;
+		int lIndex, index;
+		
+		vString = new Vector();
+		index = 0;
+		while(true)
+		{
+			if (charWidth + index > text.length())
+				if (index == text.length() + 1)	
+					break;
+				else 
+					lIndex = text.length();
+			else 
+				lIndex = text.lastIndexOf(' ', charWidth + index - 1);
+				
+			vString.add(new String(text.substring(index, lIndex)));
+			index = lIndex + 1;
+			
+		}
+		strings = new String[vString.size()];
+		for (int i = 0; i < strings.length; i++)
+			strings[i] = (String) vString.get(i);
+			
+		return strings;
+	}
 }
