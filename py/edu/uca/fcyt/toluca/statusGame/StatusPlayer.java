@@ -267,9 +267,10 @@ public class StatusPlayer{
     {//Busca la carta y verifica si la carta no se jugo ya
         if(!seCerro){           
             for(int i=0;i<3;i++){
-                if(cartas[i]==cual && cartas[i].isFlipped()==false)
+                //if(cartas[i]==cual && cartas[i].isFlipped()==false)
+				if(cartas[i].equals(cual) && cartas[i].isFlipped()==false)
                     return 1;
-                else if(cartas[i]==cual && cartas[i].isFlipped()==true){
+                else if(cartas[i].equals(cual) && cartas[i].isFlipped()==true){
                     return 0;}
             }       
         }

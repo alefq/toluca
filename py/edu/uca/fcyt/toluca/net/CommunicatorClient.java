@@ -676,6 +676,7 @@ public class CommunicatorClient extends Communicator {
             event.getCard());
         else {
             new Exception(
+            //TODO PENSAR EN UN MÉTODO ESTÁTICO QUE TE DEVUELVA UN TP DADO UN TE O SI NO EN UNIFICAR LOS NROS.
             "Aca posiblemente debe ir un cacho de _switch_ para cada jugada")
             .printStackTrace(
             System.out);

@@ -60,4 +60,11 @@ public class TrucoCard extends Card {
 		super(kind, value);
 		agregarValor((byte) kind,(byte) value);
 	}
+	
+	public boolean equals(TrucoCard tc) {
+		if (kind == tc.getKind() && value == tc.getValue())
+			return true;
+	    else 
+	    	return false;
+	}
 }
