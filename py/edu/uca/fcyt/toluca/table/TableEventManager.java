@@ -89,7 +89,7 @@ class TableEventManager
 		
         while(iter.hasNext()) 
         {
-            System.out.println("iterando...");
+            //System.out.println("iterando...");
             ((TableListener)iter.next()).gameStartRequest  (     event    );
         }
     }

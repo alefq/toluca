@@ -324,7 +324,7 @@ public class Table implements
 	 */
 	public void sitPlayer(TrucoPlayer player, int chair)
 	{
-		System.out.println("Mesa de " + getPlayer() + ": sentando a " + player + " en la mesa " + chair);
+		//System.out.println("Mesa de " + getPlayer() + ": sentando a " + player + " en la mesa " + chair);
 		Face face;
 		
 		pManager.sitPlayer(player, chair);
@@ -830,12 +830,12 @@ public class Table implements
 				tGame.getTeam(1)
 			};
 			
-			for (int i = 0; i < 2; i++)
-			{
-				System.out.println("TEAM: " + i);
-				for (int j = 0; j < tTeams[i].getNumberOfPlayers(); j++)
-					System.out.println("PLAYER: " + tTeams[i].getPlayerNumber(j));
-			}
+//			for (int i = 0; i < 2; i++)
+//			{
+//				System.out.println("TEAM: " + i);
+//				for (int j = 0; j < tTeams[i].getNumberOfPlayers(); j++)
+//					System.out.println("PLAYER: " + tTeams[i].getPlayerNumber(j));
+//			}
 			
 			return tTeams;
 		}

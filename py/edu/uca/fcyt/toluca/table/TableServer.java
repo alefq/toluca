@@ -45,8 +45,8 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         addPlayer(host);
         setHost(host);
         setTableNumber(nextTableNumber++);
-        System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
-        System.out.println("El HOST de la tabela es: " + getHost().getName());
+        //System.out.println("EL TABLE NUMBER SETEADO ES: " + getTableNumber());
+        //System.out.println("El HOST de la tabela es: " + getHost().getName());
         asientos=new HashMap();
     }
     public TableServer()
@@ -92,7 +92,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         //TrucoGame tGame;
         TrucoTeam tTeams[];
         
-        System.out.println("Requesting game start...");
+        logger.info("Requesting game start...");
         tTeams = createTeams();
         
         // se crea el TrucoGame con los teams creados
@@ -202,7 +202,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         int i =0;
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
-            System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+            //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
             ltmp.chatMessageSent(this, jogador, htmlMessage);
         }
     }
@@ -212,7 +212,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
-            System.out.println("VOY A DISPARAR UN GAME STARTED EN EL SERVA. -> " + ltmp.getClass().getName());
+            //System.out.println("VOY A DISPARAR UN GAME STARTED EN EL SERVA. -> " + ltmp.getClass().getName());
             ltmp.gameStarted(te);
         }
     }
@@ -223,7 +223,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         logger.debug("tableListeners.size() = "+tableListeners.size());
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
-            System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+            //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
             TableEvent te= new TableEvent(TableEvent.EVENT_playerSit,this, jogador, null,chair);
             ltmp.playerSit(te);
         }
@@ -312,8 +312,8 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	
 	public void kickPlayer(TrucoPlayer tptmp) 
 	{
-		// TODO Auto-generated method stub
-		System.out.println("Se fue: " + tptmp.getName());
+
+		//System.out.println("Se fue: " + tptmp.getName());
 		int chair=getChair(tptmp);
 		if(chair>=0)
 		{//si estaba sentado primero que se pare

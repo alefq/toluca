@@ -44,7 +44,7 @@ class TrListener implements TrucoListener
 	/** Invocado cuando se inicia el juego de truco */
 	public void gameStarted(TrucoEvent event)
 	{
-		System.out.println("Game started for player " + getAssociatedPlayer().getName());
+		//System.out.println("Game started for player " + getAssociatedPlayer().getName());
 //		new Throwable("").printStackTrace(System.out);
 		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
 		table.getJTrucoTable().getJButton("Ayuda").setEnabled(false);
@@ -90,11 +90,11 @@ class TrListener implements TrucoListener
 		team = table.getPManager().getChair(player) % 2;
 		//si name da null quiere decir q no fue ninguna jugada que se cante. ale
 		
-		System.out.println
-		(
-			"\nJugada para jugador " + 
-			getAssociatedPlayer().getName() + ": " + name
-		);
+//		System.out.println
+//		(
+//			"\nJugada para jugador " + 
+//			getAssociatedPlayer().getName() + ": " + name
+//		);
 		
 		switch (type)
 		{
@@ -107,16 +107,16 @@ class TrListener implements TrucoListener
 					cManager.showCards(null);
 				else if (endOfHand)
 					cManager.pushPause(pos, 250);
-				System.out.println("Carta jugada: " + card.getDescription());
+				//System.out.println("Carta jugada: " + card.getDescription());
 				break;
 				
 			case TrucoEvent.CERRARSE:
-				System.out.println("Cerrarse! pos: " + pos);
+				//System.out.println("Cerrarse! pos: " + pos);
 				cManager.playClosed(pos);
 				break;
 				
 			case TrucoEvent.PLAYER_CONFIRMADO:
-				System.out.println("TrucoPlayer confirmado");
+				//System.out.println("TrucoPlayer confirmado");
 				break;
 				
 			case TrucoEvent.CANTO_ENVIDO:
@@ -249,7 +249,7 @@ class TrListener implements TrucoListener
 		
 		table.flash(false);
 
-		System.out.println("End of hand for player " + getAssociatedPlayer().getName());
+		//System.out.println("End of hand for player " + getAssociatedPlayer().getName());
 		
 		tGame = table.getTGame();
 		
@@ -294,12 +294,12 @@ class TrListener implements TrucoListener
 		int sign;
 		
 		//Fnew Exception("dealing cards...").printStackTrace(System.out);
-		System.out.println("Cards deal for player " + getAssociatedPlayer().getName());
+		//System.out.println("Cards deal for player " + getAssociatedPlayer().getName());
 		
 		cards = event.getCards();
 		
-		for (int i = 0; i < 3; i++)
-			System.out.println(cards[i].getDescription());
+//		for (int i = 0; i < 3; i++)
+//			System.out.println(cards[i].getDescription());
 		
 		if (event.getPlayer() == getAssociatedPlayer())
 		{
@@ -308,7 +308,7 @@ class TrListener implements TrucoListener
 			{
 				sign = Sign.getSign(cards[i]);
 				if (sign != Sign.NONE) table.addSign(sign);
-				System.out.println(table.getPlayer().getName() + " con se�a " + Sign.getName(sign));
+				//System.out.println(table.getPlayer().getName() + " con se�a " + Sign.getName(sign));
 			}
 			getCManager().showCards(cards);
 		}
@@ -325,7 +325,7 @@ class TrListener implements TrucoListener
 		table.getJTrucoTable().jlSaying.setText("Canto: ");
 		
 		//new Exception("player: " + getAssociatedPlayer().getName()).printStackTrace(System.out);
-		System.out.println("New hand started for player " + getAssociatedPlayer().getName());
+		//System.out.println("New hand started for player " + getAssociatedPlayer().getName());
 		
 		endOfHand = false;
 		table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
@@ -337,7 +337,7 @@ class TrListener implements TrucoListener
 		tPlayer = (TrucoPlayer) event.getTrucoPlayer();
 		
 		dealPos = getPManager().getPos(tPlayer);
-		System.out.println(tPlayer.getName() + " is dealing");
+		//System.out.println(tPlayer.getName() + " is dealing");
 		turnPos = (dealPos + 1) % playerCount();
 		
 		cManager.gatherCards(dealPos);
@@ -351,7 +351,7 @@ class TrListener implements TrucoListener
 	
 	public void endOfGame(TrucoEvent event)
 	{
-		System.out.println("End of game for player " + table.getPlayer());
+		//System.out.println("End of game for player " + table.getPlayer());
 		table.getJTrucoTable().getJButton("Ayuda").setEnabled(true);
 
 		if (table.getJTrucoTable() != null)
