@@ -9,7 +9,7 @@ import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.toluca.event.*;
 import py.edu.uca.fcyt.game.*;
-
+import py.edu.uca.fcyt.toluca.ai.TolucaAgent;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
@@ -37,7 +37,7 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
     protected PlayerManager pManager;	 // manejador de jugadores
     protected TrucoPlayer actualPlayer;  // jugador actual
     protected int tableNumber;
-    
+    protected TolucaAgent agente;
     // manejador de eventos de mesa
     protected TableEventManager tEventMan;
     
@@ -111,6 +111,22 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
         jFrame.getContentPane().add(jtTable);
         jFrame.setSize(600, 500);
     }
+
+    /** Crea un Table asociado con 'player' */
+    public Table(TrucoPlayer player, boolean host, TolucaAgent ta) 
+    {
+        this();
+        actualPlayer = player;
+        tEventMan = new TableEventManager(this);
+        trListener = new TrListener(this);
+        agente = ta;
+        jFrame = new JFrame();
+        jFrame.setTitle("Toluca: " + actualPlayer.getName());
+        jFrame.getContentPane().add(jtTable);
+        jFrame.setSize(600, 500);
+    }
+
+    
     
     public void show() {
         jFrame.show();
@@ -158,7 +174,7 @@ public class Table implements MouseListener, PTableListener, ChatPanelContainer 
         // actualiza el TrucoGame actual y carga su TrucoListener
         tGame = game;
         tGame.addTrucoListener(trListener);
-        
+        tGame.addTrucoListener(agente);
         // quita todas las caritas
         pTable.removeFaces();
         

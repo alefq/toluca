@@ -469,7 +469,7 @@ class Face
 	//obtiene la imagen de la carita
 	public ImageIcon getFaceImage(int sign)
 	{
-		return new ImageIcon("c:\\pablo\\toluca\\py\\edu\\uca\\fcyt\\toluca\\images\\faces\\standard\\" + sign + ".jpg");
+		return new ImageIcon("/home/aalliana/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/" + sign + ".jpg");
 	}
 	
 	// dibuja 'bfIn' en 'bfOut' en la posición 
@@ -557,6 +557,7 @@ class Face
 		int max;
 		char[] nameChars;
 
+                System.out.println("name = " + name);
 		playerName = name;
 		
 		max = Math.max(biOut.getWidth(), biOut.getHeight());
@@ -579,6 +580,7 @@ class Face
 			);
 	   	}
 	   	nameShown = playerName.substring(0, nameCharsShown);
+                System.out.println("termino setName");
 	}
 }
 
