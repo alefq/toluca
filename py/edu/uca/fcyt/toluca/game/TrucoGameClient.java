@@ -5,22 +5,27 @@
  */
 
 package py.edu.uca.fcyt.toluca.game;
+import py.edu.uca.fcyt.toluca.event.*;
 
 /**
  *
  * @author  PABLO JAVIER
  */
-public class TrucoGameClient extends TrucoGame {
+public class TrucoGameClient extends TrucoGame implements TrucoListener{
     
     /** Creates a new instance of TrucoClient */
+    protected TrucoHandClient trucoHand;
+    TrucoPlayer asociado;
     public TrucoGameClient(TrucoTeam t1, TrucoTeam t2) {
         super(t1, t2);
         System.err.println("Se crea un nuevo truco Game Client");
     }
-        
     /** Enviar mensaje a todos los oyentes sobre el final del juego.
      *
      */
+    public void recibirCartas (TrucoPlayer tp,TrucoCard cards[]){
+        
+    }
     public void fireEndOfGameEvent() {
     }
     
@@ -80,6 +85,24 @@ public class TrucoGameClient extends TrucoGame {
     }
     
     public void fireTurnEvent(TrucoPlayer pl, byte type, int value) { //avisar el Turno con envio del value of envido
+    }
+    public void play(TrucoEvent event){
+    }
+    public void turn (TrucoEvent event){
+    }
+    public void endOfHand(TrucoEvent event){
+    }
+    public void cardsDeal(TrucoEvent event){
+    }
+    public void handStarted(TrucoEvent event){
+    }
+    public void gameStarted(TrucoEvent event){
+    }
+     
+    public void endOfGame(TrucoEvent event){
+    }
+    public TrucoPlayer getAssociatedPlayer(){
+        return asociado;
     }
     
 }
