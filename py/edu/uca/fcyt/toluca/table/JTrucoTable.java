@@ -1,44 +1,45 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import py.edu.uca.fcyt.game.*;
 import javax.swing.*;
 import java.util.EventListener;
 import java.awt.*;
 import javax.swing.border.*;
+import java.awt.event.*;
 
 /** Panel principal de juego*/
 class JTrucoTable extends JPanel
 {
 	// paneles
-	private JPanel
-		jpPlayers,	// panel de jugadores
-		jpChat;		// panel de chat
-
-	public JPanel jpLeftPanel;		// panel de botones
-	protected Score score;		// panel de puntajes
-	public Watchers jpWatchers;	// observadores
-	public PlayTable pTable;
+	protected JPanel jpPlayers; 	// panel de jugadores
+	protected ChatPanel jpChat;		// panel de chat
+	protected JPanel jpLeftPanel;	// panel izquierdo
+	protected Score score;			// panel de puntajes
+	protected Watchers jpWatchers;	// observadores
+	protected PlayTable pTable;
+	protected JButton[] buttons;
 
 	/**
 	 * Construye un JTrucoTable con ptListener
 	 * como listener de eventos de la mesa
 	 */
-	public JTrucoTable(PTableListener ptListener)
+	public JTrucoTable(Table table)
 	{
 		// crea los componentes
-		pTable = new PlayTable(ptListener);
+		pTable = new PlayTable(table);
 		jpLeftPanel = new JPanel();
 		jpPlayers = new JPanel();
-		jpChat = new JPanel();
+		jpChat = new ChatPanel(table, table.getPlayer());
 		score = new Score(30);
 		jpWatchers = new Watchers();
 
 		// agrega
 		jpPlayers.add(new JLabel("Jugadores"));
-		jpChat.add(new JLabel("Chat"));
+//		jpChat.add(new JLabel("Chat"));
 
 		score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
 		score.add(new JLabel(" ---- Puntaje ---- "));
-		score.add(new JLabel(" Equipo1   Equipo2 "));
+		score.add(new JLabel("   Rojo     Azul   "));
 
 
 		setLayout(new BorderLayout());
@@ -49,13 +50,19 @@ class JTrucoTable extends JPanel
 		add(jpChat, BorderLayout.SOUTH);
 		add(score, BorderLayout.EAST);
 
+		buttons = new JButton[1];
+		
+		buttons[0] = new JButton("Iniciar");
+		
+		buttons[0].setEnabled(false);
+
 		JLabel obs = new JLabel("Observadores");
 		obs.setPreferredSize(new Dimension(100,30));
 
 		jpLeftPanel.setLayout(new BoxLayout(jpLeftPanel, BoxLayout.Y_AXIS));
 		jpLeftPanel.add(obs);
 		jpLeftPanel.add(jpWatchers);
-		jpLeftPanel.add(new Actions());
+		jpLeftPanel.add(new Actions(buttons, table));
 		jpLeftPanel.setPreferredSize(new Dimension(125,200));
 
 		pTable.setBorder(new EtchedBorder());

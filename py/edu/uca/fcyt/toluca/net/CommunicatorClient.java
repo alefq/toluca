@@ -25,7 +25,7 @@ import org.jdom.output.XMLOutputter;
  * @author  PABLO JAVIER
  */
 public class CommunicatorClient extends Communicator {
-    
+     
     RoomClient pieza;
     Player mi_jugador=null;
     /** Creates a new instance of XmlPackageSessionTest */
@@ -170,7 +170,7 @@ public class CommunicatorClient extends Communicator {
 		}
 		if(aux.compareTo("TerminalMessage")==0)
 		{
-			super.xmlReadTerminalMessage(child);
+			//super.xmlReadTerminalMessage(child);
 		}
     }
     
@@ -235,11 +235,11 @@ public class CommunicatorClient extends Communicator {
                 //mesa.addPlayer(jugaux);
             }
             if(aux.compareTo("Table")==0) {
-                Table mesa=new Table();
+/*                Table mesa=new Table();
                 int number=Integer.parseInt(element.getAttributeValue("number"));
                 mesa.setTableNumber(number);
                 current=Mesas.size();
-                Mesas.add(mesa);
+                Mesas.add(mesa); */
             }
             List children = element.getContent();
             Iterator iterator = children.iterator();
@@ -335,6 +335,39 @@ public class CommunicatorClient extends Communicator {
         Document doc;
         doc = super.xmlCreateTableRequested(ev);
         super.sendXmlPackage(doc);
+    }
+    
+    public void gameFinished(TableEvent event) {
+    }
+    
+    public void gameStarted(TableEvent event) {
+    }
+    
+    public void playerKickRequest(TableEvent event) {
+    }
+    
+    public void playerKicked(TableEvent event) {
+    }
+    
+    public void playerSit(TableEvent event) {
+    }
+    
+    public void playerSitRequest(TableEvent event) {
+    }
+    
+    public void playerStandRequest(TableEvent event) {
+    }
+    
+    public void playerStanded(TableEvent event) {
+    }
+    
+    public void showPlayed(TableEvent event) {
+    }
+    
+    public void signSendRequest(TableEvent event) {
+    }
+    
+    public void signSent(TableEvent event) {
     }
     
 	/*public static void main(String[] args)

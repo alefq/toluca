@@ -56,6 +56,35 @@ public class Card
 	{
 		String[] kinds = new String[] {"Oro", "Espada", "Copa", "Basto"};
 
-		return new ImageIcon("/home/aalliana/toluca/py/edu/uca/fcyt/toluca/images/" + kinds[kind - 1] + "/" + value + ".GIF");
+		return new ImageIcon("c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/" + kinds[kind - 1] + "\\" + value + ".gif");
 	}
+	
+	/**
+     * Retorna el código hash.
+     * c1.hashCode() == c2.hashCode(), si y sólo si 
+     * c1.getValue() == c2.Value() y c1.getKind() == c2.getKind()
+     */
+    public int hashCode()
+    {
+    	return (kind - 1) * 12 + value - 1;
+    }
+    
+    /**
+     * Retorna verdadero si una carta es igual a ésta. Si 
+     * <code> o </code> no es un Card, retorna falso.
+     * @param o		la carta en cuestion
+     */
+    public boolean equals(Object o)
+    {
+    	Card card;
+    	try
+    	{
+    		card = (Card) o;
+    		return card.value == value && card.kind == kind;
+    	}
+    	catch (ClassCastException ex)
+    	{
+    		return false;
+    	}
+    }
 }

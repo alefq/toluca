@@ -1,10 +1,5 @@
 package py.edu.uca.fcyt.toluca.event;
 
-
-/** Java interface "TableListener.java" generated from Poseidon for UML.
- *  Poseidon for UML is developed by <A HREF="http://www.gentleware.com">Gentleware</A>.
- *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
- */
 import java.util.*;
 
 import py.edu.uca.fcyt.toluca.*;
@@ -14,29 +9,27 @@ import py.edu.uca.fcyt.game.*;
 
 
 /**
- * <p>
- *
- * @author Owner
- * </p>
+ * Listener de eveos de mesa
+ * @author Grupo Interfaz de Juego
  */
-public interface TableListener extends SpaceListener {
-
-	///////////////////////////////////////
-	// operations
-
-
+public interface TableListener extends SpaceListener 
+{
 	public void gameStartRequest(TableEvent event);
-	public void gameStarted(Game game);
-	public void gameFinished(Game game);
-	public void tableLocked(Table table);
-	public void tableUnlocked (Table table);
-	public void playerKicked(Player player);
-    public void sitRequested(Player player, int chair);
-//    public void standRequested(Player player, int chair);
-    public void playerSit(Player player, int chair);
-//    public void playerStand(Player player, int chair);
-
-} // end TableListener
+	public void gameStarted(TableEvent event);
+	public void gameFinished(TableEvent event);
+//	public void tableLocked(TableEvent event);
+//	public void tableUnlocked (TableEvent event);
+//  public void standRequested(TableEvent event);
+	public void playerStandRequest(TableEvent event);
+	public void playerStanded(TableEvent event);
+	public void playerKickRequest(TableEvent event);
+	public void playerKicked(TableEvent event);
+    public void playerSitRequest(TableEvent event);
+    public void playerSit(TableEvent event);
+    public void signSendRequest(TableEvent event);
+    public void signSent(TableEvent event);
+    public void showPlayed(TableEvent event);
+} 
 
 
 

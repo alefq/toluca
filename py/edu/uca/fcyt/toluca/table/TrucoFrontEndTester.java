@@ -22,25 +22,23 @@ import java.awt.*;
  *
  * @author  PABLO JAVIER
  */
-class TrucoFrontEndTester extends JFrame
-implements TableListener, TrucoListener {
+class TrucoFrontEndTester extends JFrame implements TableListener {
     private Vector tables;
     private Vector players;
-    private TrucoPlayer[] gamePlayers;
+    private TrucoPlayer[] gamePlayers;   
     private TolucaAgent agent;
-    
     
     /** Creates new form TrucoFrontEndTester */
     public TrucoFrontEndTester() {
         tables = new Vector();
         players = new Vector();
         gamePlayers = new TrucoPlayer[6];
-    
+        
         agent = new TolucaAgent("Agente");
-        players.add(agent);        
-       // Table table = new Table(agent, false);
+        players.add(agent);
+        // Table table = new Table(agent, false);
         //table.addTableListener(this);
-       // tables.add(table);
+        // tables.add(table);
         
         
         initComponents();
@@ -130,15 +128,17 @@ implements TableListener, TrucoListener {
         
         // obtiene los Players cargados actualmente
         pEnum = players.elements();
-
         
-
+        
+        
         // agrega a la nueva tabla los Players cargados
-        //table.addPlayer(agent);                
+        //table.addPlayer(agent);
         while (pEnum.hasMoreElements())
             table.addPlayer((Player) pEnum.nextElement());
         
-        
+        // sienta a los jugadores
+        for (int i = 0; i < 6; i++)	if (gamePlayers[i] != null)
+            table.sitPlayer(gamePlayers[i], i);
         
         // agrega a la nueva tabla al vector de tablas
         tables.add(table);
@@ -149,15 +149,15 @@ implements TableListener, TrucoListener {
         // agrega a cada tabla el Player creado
         while (tEnum.hasMoreElements()) {
             Table t = ((Table) tEnum.nextElement());
-
-//            t.addPlayer(agent);
-            t.addPlayer(player);            
+            
+            //            t.addPlayer(agent);
+            t.addPlayer(player);
             //agrega el agente a la mesa
             //((Table) tEnum.).addPlayer(agent);
         }
         // agrega a 'player' al vector de Players, el agente ya fué agregado en el constructor
         players.add(player);
-
+        
         table.show();
         
     }//GEN-LAST:event_jbJoinActionPerformed
@@ -176,7 +176,7 @@ implements TableListener, TrucoListener {
     }//GEN-LAST:event_jbCreateActionPerformed
     
     private void jtRatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtRatingActionPerformed
-                    }//GEN-LAST:event_jtRatingActionPerformed
+                            }//GEN-LAST:event_jtRatingActionPerformed
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
@@ -208,6 +208,7 @@ implements TableListener, TrucoListener {
     }
     
     
+    
     public void gameFinished(Game game) {}
     
     /** Invocado cuando se desea iniciar el juego */
@@ -233,15 +234,25 @@ implements TableListener, TrucoListener {
         tGame.startGame();
     }
     
+    public void gameStarted(TableEvent event){}
+
+    public void playerKicked(TableEvent event) 
+    {
+        System.out.println("Player kicked");
+    }
+    
+    public void playerJoined(Player player) 
+    {
+        System.out.println("Player joined");
+    }
+    
     public void gameStarted(Game game) {
         System.out.println("empezó el juego!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
     }
     
     
-    public void playerJoined(Player player) {
-        System.out.println("Player joined");
+    public void playerKickRequest(TableEvent event) {
     }
-    
     
     public void playerKicked(Player player) {
         System.out.println("Player kicked");
@@ -250,6 +261,20 @@ implements TableListener, TrucoListener {
     
     public void playerLeft(Player player) {
         System.out.println("Player left");
+    }
+    
+    public void playerSitRequest(TableEvent event) {
+        Enumeration tEnum;
+        int chair;
+        Player player;
+        
+        chair = event.getValue();
+        player = event.getTable().getPlayer();
+        
+        System.out.println
+        (
+        "Player " + player + " sitting..."
+        );
     }
     
     public void playerSit(Player player, int chair) {
@@ -283,8 +308,12 @@ implements TableListener, TrucoListener {
         
     }
     
+    public void playerSit(TableEvent event) {
+    }
+    
     public void cardsDeal(TrucoEvent event) {
     }
+    
     
     public void endOfGame(TrucoEvent event) {
     }
@@ -295,6 +324,7 @@ implements TableListener, TrucoListener {
     
     public void gameStarted(TrucoEvent event) {
     }
+    
     
     public Player getAssociatedPlayer() {
         return null;
@@ -331,28 +361,70 @@ implements TableListener, TrucoListener {
         };
         
         // se agregan los players a los teams
-        for (int i = 0; i < 6; i++)
+        for (int i = 0, j = 0; i < 6; i++)
             if (gamePlayers[i] != null) {
-                tTeams[i % 2].addPlayer(gamePlayers[i]);
-                System.out.println("Team " + (i % 2) + ": player " + gamePlayers[i].getName());
+                tTeams[j].addPlayer(gamePlayers[i]);
+                System.out.println("Team " + j + ": player " + gamePlayers[i].getName());
+                j = (j + 1) % 2;
             }
         
         return tTeams;
     }
     
-    /** <p>
-     * Does ...
-     * </p><p>
-     *
-     * @param player ...
-     * </p><p>
-     * @param htmlMessage ...
-     * </p><p>
-     *
-     * </p>
-     *
-     */
-    public void chatMessageRequested(ChatPanelContainer cpc, Player player, String htmlMessage) {
+    public void signSendRequest(TableEvent event) {
+        Enumeration tEnum;
+        
+        // se llama al 'sendSign' de todas las tablas
+        tEnum = tables.elements();
+        while (tEnum.hasMoreElements()) {
+            ((Table) tEnum.nextElement()).showSign(event);
+        }
+    }
+    
+    public void signSent(TableEvent event) {
+    }
+    
+    
+    public void chatMessageRequested
+    (
+    ChatPanelContainer cpc, Player player, String htmlMessage
+    ) {
+        Enumeration tEnum;
+        
+        tEnum = tables.elements();
+        while (tEnum.hasMoreElements()) {
+            ((Table) tEnum.nextElement()).showChatMessage(player, htmlMessage);
+        }
+    }
+    
+    public void gameFinished(TableEvent event) {
+        Enumeration tEnum;
+        
+        tEnum = tables.elements();
+        while (tEnum.hasMoreElements()) {
+            ((Table) tEnum.nextElement()).initialize();
+        }
+    }
+    
+    public void showPlayed(TableEvent event) {
+        Enumeration tEnum;
+        
+        tEnum = tables.elements();
+        while (tEnum.hasMoreElements()) {
+            ((Table) tEnum.nextElement()).showPlayed(event.getValue());
+        }
+    }
+    
+    public void playerStandRequest(TableEvent event) {
+        Enumeration tEnum;
+        
+        tEnum = tables.elements();
+        while (tEnum.hasMoreElements()) {
+            ((Table) tEnum.nextElement()).standPlayer(event.getValue());
+        }
+    }
+    
+    public void playerStanded(TableEvent event) {
     }
     
 }

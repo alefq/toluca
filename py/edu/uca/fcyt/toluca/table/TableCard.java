@@ -1,8 +1,11 @@
 package py.edu.uca.fcyt.toluca.table;
 
+import py.edu.uca.fcyt.toluca.table.animation.*;
+import py.edu.uca.fcyt.toluca.table.state.*;
 import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.game.*;
+import java.util.*;
 
 import java.awt.image.*;
 import java.awt.*;
@@ -10,149 +13,77 @@ import javax.swing.*;
 import java.awt.geom.*;
 
 // representa a una carta en la mesa
-class TableCard implements TableObject
+class TableCard implements Animable
 {
 	// tamaño de la carta
 	final public static int CARD_WIDTH = 88;
 	final public static int CARD_HEIGHT = 127;
 	final public static int CARD_RADIUS = 78;
-
-	Card card;				// carta
-	boolean covered;		// si la carta está cubierta o no
-
-	// estados inicial y final
-	ObjectState state[] = new ObjectState[]
-	{
-		new ObjectState(),
-		new ObjectState()
-	};
-
-	long startTime;			// tiempo de inicio de animación
-	long durationTime;		// tiempo de fin de animación
-
+	final public static int CARD_RADIUS2 = (int) Math.pow(CARD_RADIUS, 2);
+	final public static int CARD_DIAMETER = CARD_RADIUS * 2;
+	
 	// BufferedImage para el dorso
 	final private static BufferedImage biBack = createBack();
+	final private static Hashtable images = getImages();
+	
+	private BufferedImage biCard;		// BufferedImage para la carta
+	private StatesTransitioner states;	// cola de estados de la carta
+	
 
-	// BufferedImage para la carta
-	final private BufferedImage biCard = new BufferedImage
+	/**
+     * Construye un TableCard sin carta en él
+     */
+	public TableCard()
+	{
+		states = new StatesTransitioner();
+	}
+	
+	/**
+     * Establece el Card asociado con este TableCard
+     */
+//	synchronized public void setCard(Card card)
+//	{
+//		// verificaciones
+//		Util.verifParam(card != null, "Parámetro 'card' es nulo");
+//		
+//		// si no hay BufferedImage, crearlo
+//		if (biCard == null) biCard = new BufferedImage
+//		(
+//			CARD_WIDTH, CARD_HEIGHT,
+//			BufferedImage.TYPE_3BYTE_BGR
+//		);
+//		
+//		// copia la imágen de la carta en el BufferedImage 'img'
+//		Util.copyImage(card.getImageIcon(), biCard);
+//
+//		// Guarda la referencia a la carta
+//		this.card = card;
+//	}
+	
+	/** 
+	 * Agrega un nuevo estado a la cola de estados a animar,
+	 * con duración de transición igual a 'duration'
+	 */
+	synchronized public void pushState
 	(
-		CARD_WIDTH, CARD_HEIGHT,
-		BufferedImage.TYPE_3BYTE_BGR
-	);
-
-	// construye un TableCard sin carta en él
-	protected TableCard()
+		int x, int y, double angle, 
+		double scale, Card card, long duration
+	)
 	{
-		this.covered = true;
+		State state;
 
-		setTimes(0, -1);
-	}
-
-	// constructor
-	public TableCard(boolean covered)
-	{
-		super();
-
-		// crea el TableCard vacío
-		this.covered = covered;
-	}
-	
-	public void setCard(Card card)
-	{
-		// copia la imágen de la carta en el BufferedImage 'img'
-		if (card != null) Util.copyImage(card.getImageIcon(), biCard);
-
-		// Guarda la referencia a la carta
-		this.card = card;
-	}
-	
+		// crea el nuevo estado
+		state = new TCardState
+		(
+			x, y, angle, scale, card
+		);
 		
+		states.pushState(state, duration);
+	}
 	
-	/** Retorna el Card asociado al TableCard */
-	public Card getCard() { return card; }
-
-	// establece el i-ésimo estado del objeto
-	public void setState(int ind, float x, float y, float angle, float scale)
-	{
-		state[ind].x = x;
-		state[ind].y = y;
-		state[ind].angle = angle;
-		state[ind].scale = scale;
-	}
-
-	// establece el último estado como el primero
-	// y al último carga los datos pasados
-	public void pushState(float x, float y, float angle, float scale)
-	{
-		state[0].x = state[1].x;
-		state[0].y = state[1].y;
-		state[0].angle = state[1].angle;
-		state[0].scale = state[1].scale;
-
-		state[1].x = x;
-		state[1].y = y;
-		state[1].angle = angle;
-		state[1].scale = scale;
-	}
-
-	// establece el tiempo en el cual el objeto
-	// debe pasar del estado 0 al 1
-	public void setTimes(long startTime, long durationTime)
-	{
-		this.startTime = startTime;
-		this.durationTime = durationTime;
-	}
-
-	// retorna el tiempo en el cual comienza la animación
-	public long getStartTime()
-	{
-		return startTime;
-	}
-
-	// retorna el tiempo de duración de la animación
-	public long getDurationTime()
-	{
-		return durationTime;
-	}
-
-	// retornan alguna propiedad del 'ind'-ésimo estado
-	public float getX(int ind) { return state[ind].x; }
-	public float getY(int ind) { return state[ind].y; }
-	public float getAngle(int ind) { return state[ind].angle; }
-	public float getScale(int ind) { return state[ind].scale; }
-
-	// carga en 'out' la posición del objeto
-	// dependiendo del tiempo 'time'
-	public ObjectState getStateInTime(long time, ObjectState out)
-	{
-		float timeRatio, elapsedTime;
-
-		elapsedTime = time - startTime;
-
-		// establece la razón de tiempo (0 a 1)
-		if (elapsedTime < 0)
-			timeRatio = 0;
-		else if (elapsedTime > durationTime)
-			timeRatio = 1;
-		else
-			timeRatio = (float) elapsedTime / durationTime;
-
-		out.x = state[0].x * (1 - timeRatio) + state[1].x * timeRatio;
-		out.y = state[0].y * (1 - timeRatio) + state[1].y * timeRatio;
-		out.angle = state[0].angle * (1 - timeRatio) + state[1].angle * timeRatio;
-		out.scale = state[0].scale * (1 - timeRatio) + state[1].scale * timeRatio;
-
-		return out;
-	}
-
-	// retorna el BufferedImage de la carta
-	public BufferedImage getBImage()
-	{
-		if (covered) return biBack;
-		else return biCard;
-	}
-
-	// crea la imagen del dorso
+	/** 
+	 * Crea la imagen del dorso y la retorna
+	 */
 	private static BufferedImage createBack()
 	{
 		BufferedImage back;
@@ -163,8 +94,184 @@ class TableCard implements TableObject
 			BufferedImage.TYPE_3BYTE_BGR
 		);
 
-                    Util.copyImage(new ImageIcon("/home/aalliana/toluca/py/edu/uca/fcyt/toluca/images/dorso.GIF"), back);
+		Util.copyImage(new ImageIcon("..\\imagenes\\dorso.gif"), back);
 
 		return back;
 	}
+	
+//	/**
+//     * Devuelve una cadena identificadora del TableCard
+//     */
+//	public String toString()
+//	{
+//		String ret;
+//		ret = super.toString();
+//		if (card != null)
+//			ret += " [" + card.getValue() 
+//				+ " of " + Util.getKindName(card.getKind()) + "]";
+//				
+//		return ret;
+//	}
+
+	public void paint(BufferedImage biOut, AffineTransform afTrans)
+	{
+		AffineTransformOp afTransOp;	// Dibujador de la imagen
+		int centX, centY;
+		BufferedImage biCard;
+		TCardState cState;
+		
+		// crea una copia de 'afTrans'
+		afTrans = new AffineTransform(afTrans);
+		
+		// obtiene el estado actual
+		cState = (TCardState) states.getCurrState();
+		
+		if (cState == null) return;
+		
+		// obtiene la imagen de la carta
+		try
+		{
+			biCard = (BufferedImage) images.get(cState.card);
+		}
+		catch (NullPointerException ex)
+		{
+			biCard = biBack;
+		}
+		
+		// obtiene el centro de 'bfIn'
+		centX = (int) CARD_WIDTH / 2;
+		centY =	(int) CARD_HEIGHT / 2;
+
+		// escala, translada y rota la imagen
+		afTrans.translate
+		(
+			(int) cState.x,
+			(int) cState.y
+		);
+		afTrans.scale(cState.scale, cState.scale);
+		afTrans.rotate(cState.angle);
+		afTrans.translate
+		(
+			(int) - centX,
+			(int) - centY
+		);
+
+		// dibuja la imagen 'bfIn' en 'bfOut
+		new AffineTransformOp
+		(
+			afTrans, AffineTransformOp.TYPE_BILINEAR
+		).filter(biCard, biOut);
+	}
+	
+    public void clear(Graphics2D grOut)
+    {
+    	TCardState cState;
+    	
+    	cState = (TCardState) states.getCurrState();
+    	
+    	if (cState == null) return;
+//		grOut.setColor(new Color((int) (Math.random() * Math.pow(2, 24))));
+		grOut.setColor(Color.GREEN.darker());
+		grOut.fillRect
+		(
+			(int) cState.x - TableCard.CARD_RADIUS,
+			(int) cState.y - TableCard.CARD_RADIUS,
+			(int) TableCard.CARD_DIAMETER, 
+			(int) TableCard.CARD_DIAMETER
+		);
+	}
+	
+	/**
+     * Agrega una pausa a la cola de estados
+     * @param duration	duración de la pausa
+     */
+    synchronized public void pushPause(long duration)
+    {
+    	states.pushPause(duration);
+    }
+    
+    /**
+     * Avanza la animación de esta carta
+     */
+    public boolean advance()
+    {
+    	return states.advance();
+    }
+    
+    /**
+     * Retorna el tiempo restante de animación de la carta
+     */
+    public long getRemainingTime()
+    {
+    	return states.getRemainingTime();
+    }
+	
+	/**
+     * Retorna el estado actual.
+     */
+    public TCardState getCurrState() 
+    {
+    	return (TCardState) states.getCurrState();
+    }
+    
+    public boolean isEnabled()
+    {
+    	return true;
+    }
+    
+    /**
+     * Retorna un Hashtable con los pares (Card, BufferedImage),
+     * donde el BufferedImage la imagen del {@link Card}.
+     */
+    private static Hashtable getImages()
+    {
+    	int num;
+    	Card card;
+    	BufferedImage biCard;
+    	ImageIcon iiCard;
+    	Hashtable ret;
+    	
+    	ret = new Hashtable();
+    	
+    	// genera el Hashtable
+    	for (int i = 0; i < 40; i++)
+    	{
+    		num = i % 10;
+    		num += num > 6 ? 2: 0;
+    		card = new Card(i / 10 + 1, num + 1);
+    		iiCard = card.getImageIcon();
+    		biCard = new BufferedImage
+    		(
+    			iiCard.getIconWidth(),
+    			iiCard.getIconHeight(),
+    			BufferedImage.TYPE_3BYTE_BGR
+    		);
+    		Util.copyImage(iiCard, biCard);
+    		ret.put(card, biCard);
+//			System.out.println("Card added: " + card.hashCode());
+    	}
+    	
+    	return ret;
+    }
+    
+    /**
+     * Retorna la carta contenida
+     */
+    synchronized public Card getCard()
+    {
+    	Card card;
+    	
+		try { card = ((TCardState) states.getCurrState()).card; }
+		catch (NullPointerException ex) { card = null; } 
+		
+		return card;
+	}
+	
+	/**
+     * Retorna el último estado de este TableCard
+     */
+    synchronized public TCardState getLastState()
+    {
+    	return (TCardState) states.getLastState();
+    }
 }

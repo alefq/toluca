@@ -1,20 +1,46 @@
 package py.edu.uca.fcyt.toluca.table;
 
-import py.edu.uca.fcyt.toluca.*;
+import py.edu.uca.fcyt.toluca.table.animation.*;
 import py.edu.uca.fcyt.game.Card;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.*;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import java.awt.image.*;
+import java.awt.geom.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
 
 /**
  * Maneja la animación de las cartas
  */
-class CardManager
+class CardManager implements Animable
 {
+//	private class CardAction
+//	{
+//		public static final int HAND_STARTED = 0;
+//		public static final int CARDS_DEAL = 1;
+//		
+//		private int action;
+//		private int[] parameters;
+//		
+//		public CardAction(int action, int[] parameters)
+//		{
+//			 this.action = action;
+//			 this.parameters = parameters;
+//		}
+//		
+//		public int getAction() { return action; }
+//	}
+	
 	private TablePlayer players[];	// jugadores de mesa
+	private Vector toDraw;			// qué player[i] dibujar
 	private int playerCount = -1;	// cantidad de jugadores
 	private TableDeck tDeck; 		// maso
-	private PlayTable pTable;		// mesa de juego
-
+//	Stack actions;
+	
 
 //	public CardManager
 //	(
@@ -41,31 +67,21 @@ class CardManager
 //	}
 
 	/** construye un CardManager */
-	public CardManager(PlayTable pTable, int playerCount)
+	public CardManager(int playerCount)
 	{
 		int i;
 
 		// crea el maso el cual lo representan 6 cartas
 		tDeck = new TableDeck(6);
-		tDeck.setState
-		(
-			1,
-			PlayTable.TABLE_WIDTH * .7f,
-			PlayTable.TABLE_HEIGHT * .7f,
-			0f, Util.cardScale
-		);
 
 		// inicializa las variables
 		this.playerCount = playerCount;
-		this.pTable = pTable;
 
-		// agrega las cartas del maso a 'pTable'
-		for (i = 0; i < tDeck.getCardCount(); i++)
-			pTable.addCard(tDeck.getTableCard(i));
+		createTablePlayers();
 	}
 
 	// crea los jugadores de mesa
-	public void createTablePlayers()
+	synchronized private void createTablePlayers()
 	{
 		System.out.println("TablePlayers creados");
 		TableCard tCards[];
@@ -78,6 +94,9 @@ class CardManager
 
 		// crea el vector de jugadores de mesa
 		players =  new TablePlayer[playerCount];
+		
+		// crea el vector de orden de dibujo
+		toDraw = new Vector();
 
 		// carga las cartas a cada jugador de mesa
 		for (int i = 0; i < playerCount; i++)
@@ -85,113 +104,145 @@ class CardManager
 			tCards = new TableCard[3];
 			for (int j = 0; j < 3; j++)
 			{
-				pTable.addCard
-				(
-					tCards[j] = new TableCard(false)
-				);
-				tCards[j].setState
-				(
-					1,
-					PlayTable.TABLE_WIDTH * .7f,
-					PlayTable.TABLE_HEIGHT * .7f,
-					0f, Util.cardScale
-				);
+				tCards[j] = new TableCard();
 			}
 
 			// crea el 'i'-ésimo jugador de mesa
 			players[i] = new TablePlayer(i, playerCount, tCards);
+			
+			// el orden de dibujo es el orden de creación
+			toDraw.add(new Integer(i));
 		}
 	}
 	
-	public void resetTableCards()
-	{
-		for (int i = 0; i < pTable.getCardCount(); i++)
-			pTable.getTableCard(i).setCard(null);
-	}
-		
-
 	/** Pone todas las cartas en manos del jugador 'dealer' */
-	public void putCardsInDealer(int dealer)
+	synchronized public void putCardsInDealer(int dealer)
 	{
 		// pone el maso en el jugador 'dealer'
 		tDeck.pushState
 		(
-			players[dealer].getX() * 2f,
-			players[dealer].getY() * 3.4f,
-			0, Util.cardScale
+			(int) (players[dealer].getX() * 4),
+			(int) (players[dealer].getY() * 3.4),
+			0, Util.cardScale, 0
 		);
 
 
 		for (int i = 0; i < playerCount; i++)
-			players[i].pushState(players[dealer]);
+			players[i].pushState(players[dealer], 0);
 	}
 
 	/** Reparte las cartas */
-	public void deal(int dealer, boolean touch)
+	synchronized public void deal(int dealer, boolean touch)
 	{
+		int p, c;
 		TableCard tCard;
+		long startPause, endPause;
 
 		// verificaciones
-		Util.verif(dealer < playerCount, "Repartidor inválido");
+		Util.verifParam(dealer < playerCount, "Parámetro 'dealer' inválido");
 
-
-		for (int i = 0; i < players.length; i++)
+//		for (int i = 0; i < players.length; i++)
+//		{
+//			for (int j = 0; j < 3; j++)
+//			{
+//				
+//				tCard = players[i].getTableCard(j);
+//			
+//				if (touch)
+//					startPause = ((i + playerCount - dealer - 1) * 3 + j) % (3 * players.length) * 250;
+//				else 
+//					startPause = ((j + 1) * playerCount + i - dealer - 1) % (3 * playerCount) * 250;
+//
+//				tCard.pushPause(startPause);
+//				players[i].setDraw(j, 350);
+////				tCard.pushPause(2000 - startPause);
+//				tCard.pushPause(players.length * 3 * 250 - 100 - (250 * (playerCount - i - 1 + dealer) % (3 * playerCount)) - startPause);
+//			}
+//		}
+		Integer dealInt;
+		
+		dealInt = new Integer(dealer);
+		toDraw.remove(dealInt);
+		toDraw.add(0, dealInt);
+		
+		for (int i = 0; i < playerCount * 3; i++)
 		{
-			players[i].setDraw();
-			for (int j = 0; j < 3; j++)
-			{
-				tCard = players[i].getTableCard(j);
+			p = (i + dealer + 1) % playerCount;
+			c = i / playerCount;
 			
-				if (touch) tCard.setTimes(((i + playerCount - dealer - 1) * 3 + j) % (3 * players.length) * 250, 350);
-				else tCard.setTimes((j * players.length + i + playerCount - dealer - 1) % (3 * players.length) * 250, 350);
-			}
+			tCard = players[p].getTCard(c);
+			
+			tCard.pushPause(i * 250);
+			players[p].setDraw(tCard, 350);
+			tCard.pushPause((2 - c) * 250 * playerCount + 100);
 		}
 
-		pTable.animate();
+			
 	}
 
-	/** Hace que cada jugador toma sus cartas */
-	public void take()
+	/** Hace que cada jugador tome sus cartas */
+	synchronized public void take()
 	{
 		for (int i = 0; i < players.length; i++)
-		{
-			players[i].setTake();
-			players[i].setTimes(0, 1500, false);
-		}
-
-		pTable.animate();
+			players[i].setTake(1500);
 	}
 
 	/**
-	 * Hace que el 'player'-ésimo jugador
-	 * tome su 'card'-ésima carta
+	 * Hace que el 'player'-ésimo jugador no actual
+	 * juege su carta 'card'
 	 */
-	public void playCard(int player, int index)
+	synchronized public TableCard playCard(int player, Card card)
 	{
 		TableCard tCard;
-
+		
 		// verificaciones
-		Util.verif(player < playerCount, "Jugador inválido");
-
-		tCard = players[player].setPlayCard(index);
-		tCard.setTimes(0, 250);
-		pTable.toTop(tCard);
-		pTable.animate();
-		tCard.setTimes(0, -10);
+		Util.verifParam
+		(
+			player > 0 || player < playerCount, 
+			"Parámetro 'player' inválido: " +  player
+		);
+		
+		if (player == 0)
+			tCard = players[0].getTCard(card);
+		else
+			tCard = players[player].getNextHolding();
+		
+		players[player].setPlayCard(tCard, card, 250);
+		
+		return tCard;
 	}
+	
+//	/**
+//     * Hace que el jugador actual juege una carta
+//     * @param tCard		TableCard a jugar
+//     */
+//	synchronized public void playCard(TableCard tCard)
+//	{
+//		players[0].setPlayCard(tCard, tCard.getCard(), 250);
+//	}
+	
+	/**
+     * Hace que un jugador juege todas sus cartas cerradas.
+     * @param player	posición del jugador
+     */
+     public void playClosed(int player)
+     {
+     	players[player].setCloseCards(250);
+     	players[player].pushPause(1000);
+     }
 
 	/** Pone el maso en el jugador de índice 'dealer' */
-	public void putDeckInTable(int dealer)
+	synchronized public void putDeckInTable(long delay, int dealer)
 	{
 		int x, y;
-		float ang;
+		double ang;
 		int d;
 
 		// verificaciones
-		Util.verif
+		Util.verifParam
 		(
 			dealer >= 0 && dealer < playerCount,
-			"Repartidor de cartas inválido"
+			"Parámetro 'dealer' inválido"
 		);
 
 		d = (dealer == 0 ? playerCount - 1 : dealer - 1);
@@ -206,7 +257,7 @@ class CardManager
 		ang += players[d].getAngle();
 		ang /= 2;
 
-		if (dealer == 0) ang -= (float) Math.PI;
+		if (dealer == 0) ang -= Math.PI;
 
 		switch (playerCount)
 		{
@@ -225,28 +276,26 @@ class CardManager
 				break;
 		}
 
+		tDeck.pushPause(delay);
 		tDeck.pushState
 		(
-			x, y, ang, Util.cardScale
+			x, y, ang, Util.cardScale, 1000
 		);
-		tDeck.setTimes(0, 1000);
-
-		pTable.animate();
 	}
 
 	/**
 	 * Hace que el jugador 'dealer'
 	 * recoja las cartas y el maso
 	 */
-	public void gatherCards(int dealer)
+	synchronized public void gatherCards(int dealer)
 	{
-		float escX, escY;
+		double escX, escY;
 
 		// verificaciones
-		Util.verif
+		Util.verifParam
 		(
 			dealer >= 0 && dealer < playerCount,
-			"Repartidor de cartas inválido"
+			"Parámetro 'dealer' inválido"
 		);
 
 		switch (playerCount)
@@ -266,142 +315,90 @@ class CardManager
 
 		tDeck.pushState
 		(
-			players[dealer].getX() * escX,
-			players[dealer].getY() * escY,
-			0, Util.cardScale
+			(int) (players[dealer].getX() * escX),
+			(int) (players[dealer].getY() * escY),
+			0, Util.cardScale, 1000
 		);
-		tDeck.setTimes(0, 1000);
-
-		pTable.animate();
 
 		for (int i = 0; i < playerCount; i++)
-		{
-			players[i].pushState(players[dealer]);
-			players[i].setTimes(0, 1000, false);
-		}
-
-		pTable.animate();
+			players[i].pushState(players[dealer], 1000);
 	}
 
-	/** Hace que el jugador actual muestre sus cartas */
-	public void showCards()
-	{
-		players[0].setShowHand();
-		players[0].setTimes(0, 500, false);
-		pTable.animate();
-	}
-	
-	/** Asigna las cartas del jugador actual */
-	public void setCards(Card cards[])
-	{
-		for (int i = 0; i < 3; i++)
-			players[0].getTableCard(i).setCard(cards[i]);
-	}
+//	/** Asigna las cartas del jugador actual */
+//	synchronized public void setCards(Card cards[])
+//	{
+//		for (int i = 0; i < 3; i++)
+//			players[0].getTCard(i).setCard(cards[i]);
+//	}
 	
 	/** 
-	 * Establece siguiente TableCarta no jugada del  
-	 * 'player'-ésimo player a 'card'. Devuelve su índice'*/
-	public int setCard(int player, Card card)
-	{
-		TableCard tCard;
-		
-		for (int i = 0; i < 3; i++)
-		{
-			tCard = players[player].getTableCard(i);
-			
-			if (!players[player].getPlayed(i))
-			{
-				tCard.setCard(card);
-				return i;
-			}
-		}
-		throw new RuntimeException("Todas las cartas asignadas");
-	}
-
-	/** Hace que el jugador actual esconda sus cartas */
-	public void hideCards()
-	{
-		players[0].setTake();
-		players[0].setTimes(0, 500, false);
-		pTable.animate();
-	}
-	
-	/** 
-	 * Hace que las cartas del jugador actual se 
-	 * muestren en el orden correcto al pintarlas 
+	 * Establece siguiente TableCard no jugada del  
+	 * 'player'-ésimo player a 'card'. Devuelve su índice'
 	 */
-	public void toTop()
-	{
-		for (int i = 0; i < 3; i++)
-			pTable.toTop(players[0].getTableCard(i));
-	}
+//	synchronized public TableCard setCard(int player, Card card)
+//	{
+//		TableCard tCard;
+//		
+//		return players[player].setCard(card);
+//	}
 
+//	/** Hace que el jugador actual esconda sus cartas */
+//	synchronized public void hideCards()
+//	{
+//		players[0].setTake(false, 500);
+//	}
+	
 	/**
 	 * Hace que las cartas del 'player'-ésimo
 	 * jugador se muestren
 	 */
-	public void showPlayed(int player)
+	synchronized public void showPlayed(int player)
 	{
-		players[player].setShowPlayed(false);
-		players[player].setTimes(0, 500, true);
-		pTable.animate();
-		players[player].setShowPlayed(true);
-		players[player].setTimes(0, 500, true);
-		pTable.animate();
+		players[player].setShowPlayed(false, 500);
+		players[player].pushPause(500);
+		players[player].setShowPlayed(true, 500);
 	}
 
 	/** Corta el mazo en un porcentaje 'per' */
-	public void cutDeck(int per)
+	synchronized public void cutDeck(int per)
 	{
-		tDeck.setCutCards(per, false);
-		tDeck.setTimes(0, 500);
-		pTable.animate();
-		tDeck.setInvertCards(per);
-		tDeck.setTimes(0, 200);
-		pTable.animate();
+		tDeck.setCutCards(per, false, 500);
+		tDeck.setInvertCards(per, 200);
 
 		for (int i = 0; i < tDeck.getCardCount(); i++)
 		{
-			pTable.toTop(tDeck.getTableCard(i));
+//			animator.toTop(tDeck.getTableCard(i));
 		}
 
-		tDeck.setCutCards(per, true);
-		tDeck.setTimes(0, 500);
-		pTable.animate();
+		tDeck.setCutCards(per, true, 500);
 	}
 
 	/**
 	 * Juega una carta del jugador actual si 
 	 * se clickeó en ella, y la devuelve
 	 */
-	public Card playCardIfClick(float x, float y)
+	synchronized public Card playCardIfClick(int x, int y)
 	{
 		TableCard tc;
-		float r2;
-		r2 = (float) (Math.pow(TableCard.CARD_WIDTH / 2, 2));
+		TCardState tcState;
+		long r2;
+		r2 = (long) (Math.pow(TableCard.CARD_WIDTH / 2, 2));
 
-		for (int i = 2; i >= 0; i--)
+		for (int i = 2; i >= players[0].getPlayedCount(); i--)
 		{
-			tc = players[0].getTableCard(i);
-			if (!players[0].getPlayed(i)) if
+			tc = players[0].getTCard(i);
+			tcState = tc.getCurrState();
+			if
 			(
-				Math.pow(x - tc.getX(1), 2) +
-				Math.pow(y - tc.getY(1), 2)
+				Math.pow(x - tcState.x, 2) +
+				Math.pow(y - tcState.y, 2)
 				<= r2
 			)
 			{
-				hideCards();
-				playCard(0, i);
-
-				for (int j = 0; j < 3; j++)
-				{
-					if (!players[0].getPlayed(j))
-						pTable.toTop(players[0].getTableCard(j));
-				}
-
-				showCards();
-
-				return tc.getCard();
+				if (tc.getRemainingTime() == 0)
+					return tc.getCard();
+				else
+					return null;
 			}
 		}
 		return null;
@@ -411,33 +408,109 @@ class CardManager
 	 * Muestra las cartas de un jugador
 	 * si se cliqueó en ellas
 	 */
-	public boolean showPlayedIfClick(float x, float y)
+	synchronized public int getClickCards(int x, int y)
 	{
-		float r2;
+		long r2;
 
 
-		r2 = (float) Math.pow(Util.cardScale * TableCard.CARD_RADIUS, 2);
-		for (int i = 0; i < playerCount; i++)
-			if
-			(
-				Math.pow(x - players[i].getX(), 2) +
-				Math.pow(y - players[i].getY(), 2) <= r2
-			)
-			{
-				hideCards();
-				showPlayed(i);
-				showCards();
-				return true;
-			}
+		r2 = (long) Math.pow(Util.cardScale * TableCard.CARD_RADIUS, 2);
+		for (int i = 0; i < playerCount; i++) if
+		(
+			Math.pow(x - players[i].getX(), 2) +
+			Math.pow(y - players[i].getY(), 2) <= r2
+		) 
+		{
+			if (players[i].getRemainigTime() == 0)
+				return i;
+			else
+				return -1;
+		}
 
-		return false;
+		return -1;
 	}
-	// convierte 'ang' en un ángulo en el rango [-180, 180]
-/*	private static double minAng(double ang)
+	
+	/** Hace que el jugador actual muestre sus cartas */
+	synchronized public void showCards(Card[] cards)
 	{
-		while (ang > Math.PI) ang -= Math.PI * 2;
-		while (ang < -Math.PI) ang += Math.PI * 2;
+		players[0].setShowHand(cards, 500);
+	}
+	
+	/**
+     * Agrega una pausa a la animación de las 
+     * cartas del jugador en la posición 'pos'
+     */
+    synchronized public void pushPause(int pos, long duration)
+    {
+    	for (int i = 0; i < 3; i++)
+    		players[pos].getTCard(i).pushPause(duration);
+    }
 
-		return ang;
-	}	*/
+	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans) 
+	{
+		for (int i = 0; i < players.length; i++)
+			players[((Integer) toDraw.get(i)).intValue()].paint
+			(
+				biOut, afTrans
+			);
+		
+		tDeck.paint(biOut, afTrans);
+		
+	}
+
+	synchronized public void clear(Graphics2D grOut) 
+	{
+		for (int i = 0; i < players.length; i++)
+			players[i].clear(grOut);
+
+		tDeck.clear(grOut);
+	}
+
+	synchronized public boolean advance() 
+	{
+		for (int i = 0; i < players.length; i++)
+			players[i].advance();
+
+		tDeck.advance();
+			
+		return true;
+	}
+
+	synchronized public boolean isEnabled() 
+	{
+		return true;
+	}
+ 
+    /**
+     * Obtiene el tiempo que falta para que todas las
+     * cartas terminen de transicionar.
+     */
+    synchronized public long getRemainigTime()
+    {
+    	long actTime, maxTime = 0;
+    	
+    	// obtiene el tiempo máximo
+    	for (int i = 0; i < players.length; i++)
+    	{
+    		actTime = players[i].getRemainigTime();
+    		if (actTime > maxTime) maxTime = actTime;
+    	}
+    	
+    	return maxTime;
+    }		
+
+    /**
+     * Agrega una pausa a todas las cartas igual a <b>time</b> - 
+     * tiempo restante.
+     * Si existen caritas del vector que tienen un tiempo restante
+     * mayor que el tiempo especificado, éstas son omitidas,
+     * @param time		cantidad de tiempo especificado
+     */
+	synchronized public void pushGeneralPause(long time)
+	{
+		for (int i = 0; i < players.length; i++)
+			players[i].pushGeneralPause(time);
+		
+		tDeck.pushGeneralPause(time);
+	}   	
+	
 }

@@ -50,7 +50,7 @@ public class StatusPlayer{
     
     public boolean jugoTresCartas (){
         
-        System.out.println("cartas jugadas" + cCartas);
+        System.out.println("cartas jugadas" + cantidadDeCartasJugadas);
         if(cantidadDeCartasJugadas==3)
             return true;
         else
@@ -147,6 +147,24 @@ public class StatusPlayer{
             return false;
         }
     }
+    public int getValueOfEnvido (){
+        int valueOfEnvido=-1;
+        for (int i=0; i<3; i++){
+            if (son_mismo_palo(cartas[i],cartas[(i+1)%3])){
+                int valorAct = valor_envido(cartas[i])+valor_envido(cartas[(i+1)%3])+20;
+                if (valorAct>valueOfEnvido)
+                    valueOfEnvido = valorAct;
+            }
+        }
+        if(valueOfEnvido >= 0)
+            return valueOfEnvido;
+        for (int i=0; i<3; i++){
+            int valorAct = valor_envido(cartas[i]);
+            if (valorAct > valueOfEnvido)
+                valueOfEnvido = valorAct;
+        }
+        return valueOfEnvido;
+    }
     /** Devuelve Verdadero si el jugador tiene flor
      * @return  verdadero si el jugador puede cantar o si tiene una flor
      */
@@ -168,9 +186,46 @@ public class StatusPlayer{
         else 
             return 0;
     }
+    /*metodo insertado por julio*/
+    public TrucoCard getCardNoPlaying(){
+        for (int i=0; i<3; i++){
+            if(!cartas[i].isFlipped())
+                return cartas[i];
+        }
+        System.out.println("puede que halla jugadotodas sus cartas");
+        return null;
+    }
+    public TrucoCard getCardNoPlayingForEnvido(){
+        int valueOfEnvido=-1;
+        TrucoCard cartaAEnviar = null;
+        for (int i=0; i<3; i++){
+            if (son_mismo_palo(cartas[i],cartas[(i+1)%3])){
+                int valorAct = valor_envido(cartas[i])+valor_envido(cartas[(i+1)%3])+20;
+                if (valorAct>valueOfEnvido){
+                    valueOfEnvido = valorAct;
+                    if (!cartas[i].isFlipped())
+                        cartaAEnviar = cartas[i];
+                    if (!cartas[(i+1)%3].isFlipped())
+                        cartaAEnviar = cartas[(i+1)%3];
+                }
+            }
+        }
+        if(valueOfEnvido >= 0)
+            return cartaAEnviar;
+        for (int i=0; i<3; i++){
+            int valorAct = valor_envido(cartas[i]);
+            if (valorAct > valueOfEnvido){
+                valueOfEnvido = valorAct;
+                cartaAEnviar = cartas[i];
+            }
+        }
+        return cartaAEnviar;
+    }
     /** Marca una carta como jugada
      * @param cual indica que carta se va a jugar
      * @return  devuelve verdadero si se pudo jugar o falso y ocurrio un error (la carta no existe o ya se jugo)*/
+    
+
     public boolean jugarCarta (TrucoCard cual)
     {
         for(int i=0;i<3;i++){

@@ -68,6 +68,18 @@ public class TrucoStatusTable{
             return false;
                 
         }
+       public TrucoCard getCardNoPlaying(int Jugador){
+           if (Jugador >= 0 && Jugador < cJugadores)
+               return estado[Jugador].getCardNoPlaying();
+           System.out.println("ocurre un grave error!!!");
+           return null;
+       }
+       public TrucoCard getCardNoPlayingForEnvido(int Jugador){
+           if (Jugador >= 0 && Jugador < cJugadores)
+               return estado[Jugador].getCardNoPlayingForEnvido();
+           System.out.println("ocurre un grave error!!!");
+           return null;
+       }
        /** Juega una carta del jugador
         * @param jugador El nro de jugador
         * @param carta La carta que se va a jugar
@@ -76,12 +88,19 @@ public class TrucoStatusTable{
 	public boolean jugarCarta(int jugador, TrucoCard carta)
         {
             if(jugador>=0 && jugador< cJugadores && estado[jugador].puedeJugarCarta(carta)==1){
-               if(mano.jugarCarta(jugador,carta)!=5)
+               if(mano.jugarCarta(jugador,carta)!=5){
+                   System.out.println("mano.jugarCarta por este motivo no pude jugar....");
                    return false;
+               }
                return estado[jugador].jugarCarta(carta);
            } else
                return false;
         } 
+        public boolean jugarCartaOffLine(int jugador, TrucoCard carta){
+            if(jugador>=0 && jugador< cJugadores && estado[jugador].puedeJugarCarta(carta)==1)
+                return estado[jugador].jugarCarta(carta);
+            return false;
+        }
         
         /** Cierra a un jugador. Un jugador cerrado ya no puede jugar cartas
          * @param jugador
@@ -192,9 +211,9 @@ public class TrucoStatusTable{
         /** Devuelve quien gano la ronda de flores
          * @return 1 para el equipo par 2 para el impar 0 en caso de empate
          */        
-        public int resultadoFlor()
+        public int resultadoFlor(int equipoMano)
         {
-            return flores.florMayor();
+            return flores.florMayor(equipoMano);
         }
 //--------------------------------------------------------------------------------------------------------
 //        Seccion Envido
@@ -212,12 +231,21 @@ public class TrucoStatusTable{
             else
                 return false;
         }
-        
+        /*creado por Julio Rey, devolver el mejor envido*/
+        public int getValueOfEnvido(int jugador){
+            if(jugador >= 0 && jugador<cJugadores){
+                return estado[jugador].getValueOfEnvido();
+            }
+            return -1;
+            
+        }
         /**
          * @param jugador
          * @param valor
          * @return
          */        
+        
+        
         public boolean jugarEnvido(int jugador,int valor)
         {
             System.out.println("jugar envido verifica:"+jugador+"que quiere cantar"+valor);
@@ -229,9 +257,12 @@ public class TrucoStatusTable{
             System.out.println("TT - jugar envido , false;");
             return false;
         }
-        public int resultadoEnvido()
+        
+        
+
+        public int resultadoEnvido(int equipoMano)
         {
-            return envidos.envidoMayor();
+            return envidos.envidoMayor(equipoMano);
         }
         
         public boolean jugoTresCartas(int jugador){

@@ -2,12 +2,20 @@ package py.edu.uca.fcyt.toluca.table;
 
 import java.util.*;
 import py.edu.uca.fcyt.toluca.*;
+import py.edu.uca.fcyt.toluca.table.state.*;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import java.awt.image.*;
+import java.awt.geom.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
 
 /* 
  * Representa a un mazo en la mesa
  */
  
-class TableDeck implements TableObject
+class TableDeck implements Animable
 {
 	TableCard cards[];
 	
@@ -22,51 +30,49 @@ class TableDeck implements TableObject
 			cards[i] = new TableCard();
 	}
 
-	// establece la 'ind'-ésima posición del maso
-	public void setState
+	// agrega una nueva posición del maso
+	public void pushState
 	(
-		int ind, float x, float y, float angle, float scale
+		int x, int y, double angle, double scale, long duration
 	) 
 	{
-		float myScale;
+		double myScale;
 		
 		for (int i = 0; i < cards.length; i++)
 		{
-			myScale = (float) Math.exp(i / 130.0) * scale;
-			cards[i].setState
-			(
-				ind, x * myScale, y * myScale, 
-				angle, myScale
-			);
-		}
-	}
-
-	// "empuja" una nueva posición del maso
-	public void pushState(float x, float y, float angle, float scale) 
-	{
-		float myScale;
-		
-		for (int i = 0; i < cards.length; i++)
-		{
-			myScale = (float) Math.exp(i / 130.0);
+			myScale = Math.exp(i / 130.0);
 
 			cards[i].pushState
 			(
-				x * myScale, y * myScale, 
-				angle, myScale * scale
+				(int) (x * myScale), 
+				(int) (y * myScale), 
+				angle, myScale * scale, null, duration
 			);
 		}
 	}
-
-	// establece los tiempos de animación del maso
-	public void setTimes(long startTime, long durationTime) 
-	{
-		for (int i = 0; i < cards.length; i++)
-		{
-			cards[i].setTimes(startTime, durationTime);
-		}
-	}
 	
+	/**
+     * Agrega una pausa a la animación del maso
+     */
+    public void pushPause(long duration)
+    {
+    	for (int i = 0; i < cards.length; i++)
+    		cards[i].pushPause(duration);
+    }
+    
+    /**
+     * Agrega una pausa igual al tiempo que queda 
+     * por animar y <code>duration</code>
+     */
+    public void pushGeneralPause(long duration)
+    {
+    	for (int i = 0; i < cards.length; i++)
+    		cards[i].pushPause
+    		(
+    			duration - cards[i].getRemainingTime()
+    		);
+    }
+
 	// devuelve la 'index'-ésima carta que conforma el maso
 	public TableCard getTableCard(int index)
 	{
@@ -76,16 +82,18 @@ class TableDeck implements TableObject
 	// devuelve la cantidad de cartas que conforman el maso
 	public int getCardCount() {	return cards.length; }
 	
-	public void setCutCards(int per, boolean undo)
+	public void setCutCards(int per, boolean undo, long duration)
 	{
-		float s, c;
+		double s, c;
 		int sgn;
+		TCardState tcState;
 		
 		// separa las cartas
 		for (int i = 0; i < cards.length; i++)
 		{
-			c = (float) Math.cos(cards[i].getAngle(1));
-			s = (float) Math.sin(cards[i].getAngle(1));
+			tcState = cards[i].getCurrState();
+			c = Math.cos(tcState.angle);
+			s = Math.sin(tcState.angle);
 			if (undo)
 				sgn = (i < cards.length - (cards.length * fixPer(per)) / 100) ? -1 : 1;
 			else
@@ -93,33 +101,37 @@ class TableDeck implements TableObject
 
 			cards[i].pushState
 			(
-				cards[i].getX(1) + sgn * 40 * c,
-				cards[i].getY(1) + sgn * 40 * s,
-				cards[i].getAngle(1), 
-				cards[i].getScale(1)
+				(int) (tcState.x + sgn * 40 * c),
+				(int) (tcState.y + sgn * 40 * s),
+				tcState.angle, 
+				tcState.scale, 
+				null, duration
 			);
 		}
 		
 	}
 	
-	public void setInvertCards(int per)
+	public void setInvertCards(int per, long duration)
 	{
-		float myScale;
+		double myScale;
 		int cut;
 		TableCard[] copy = new TableCard[cards.length];
+		TCardState tcState;
 		
 		// nivela sus profundidades al la 
 		// profundidad de la primera carta
 		for (int i = 0; i < cards.length; i++)
 		{
-			myScale = (float) Math.exp(i / 130.0);
+			tcState = cards[i].getCurrState();
+			myScale = Math.exp(i / 130.0);
 
 			cards[i].pushState
 			(
-				cards[i].getX(1) / myScale, 
-				cards[i].getY(1) / myScale, 
-				cards[i].getAngle(1), 
-				cards[i].getScale(1) / myScale
+				(int) (tcState.x / myScale), 
+				(int) (tcState.y / myScale), 
+				tcState.angle, 
+				tcState.scale / myScale, 
+				null, duration
 			);
 			copy[i] = cards[i];
 		}
@@ -132,15 +144,16 @@ class TableDeck implements TableObject
 		// actualiza las profundidades de las cartas
 		for (int i = 0; i < cards.length; i++)
 		{
-			myScale = (float) Math.exp(i / 130.0);
+			tcState = cards[i].getCurrState();
+			myScale = Math.exp(i / 130.0);
 
-			cards[i].setState
+			cards[i].pushState
 			(
-				1, 
-				cards[i].getX(1) * myScale, 
-				cards[i].getY(1) * myScale, 
-				cards[i].getAngle(1), 
-				cards[i].getScale(1) * myScale
+				(int) (tcState.x * myScale), 
+				(int) (tcState.y * myScale), 
+				tcState.angle, 
+				tcState.scale * myScale, 
+				null, 0
 			);
 		}
 	}
@@ -151,6 +164,31 @@ class TableDeck implements TableObject
 			return 100 / cards.length + 1;
 		else
 			return per;
+	}
+
+	public void paint(BufferedImage biOut, AffineTransform afTrans) 
+	{
+		for (int i = 0; i < cards.length; i++)
+			cards[i].paint(biOut, afTrans);
+	}
+
+	public void clear(Graphics2D grOut) 
+	{
+		for (int i = 0; i < cards.length; i++)
+			cards[i].clear(grOut);
+	}
+
+	public boolean advance() 
+	{
+		for (int i = 0; i < cards.length; i++)
+			cards[i].advance();
+		
+		return true;
+	}
+
+	public boolean isEnabled() 
+	{
+		return true;
 	}	
 }
 	

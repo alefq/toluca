@@ -9,10 +9,10 @@ import py.edu.uca.fcyt.toluca.*;
 import py.edu.uca.fcyt.toluca.game.*;
 import py.edu.uca.fcyt.game.*;
 import java.util.*;
-import org.jdom.*;
+//import org.jdom.*;
 import java.net.*;
 import java.io.*;
-import org.jdom.output.XMLOutputter;
+//import org.jdom.output.XMLOutputter;
 import java.util.*;
 
 public class TrucoEvent {
@@ -62,6 +62,9 @@ public class TrucoEvent {
   public static final byte FIN_DE_MANO = 103;
   public static final byte FIN_DE_JUEGO = 104;
   public static final byte CARTAS_REPARTIDAS = 105;
+  /*para mensajes de confirmacion de espera del player*/
+  public static final byte PLAYER_CONFIRMADO = 110;
+  
   
     
   
@@ -137,7 +140,24 @@ public class TrucoEvent {
    public Player getPlayer (){
         return player;
     }
-   public Document xmlCreateSendCards()
+   
+   /** Getter for property value.
+    * @return Value of property value.
+    *
+    */
+   public int getValue() {
+       return value;
+   }
+   
+   /** Setter for property value.
+    * @param value New value of property value.
+    *
+    */
+   public void setValue(int value) {
+       this.value = value;
+   }
+   
+   /*public Document xmlCreateSendCards()
    {
 		Element ROOT =new Element ("SendCards");
 		
@@ -409,7 +429,7 @@ public class TrucoEvent {
 	   }
 	   return doc;
    }
-   
+ */  
 } // end TrucoEvent
 
 

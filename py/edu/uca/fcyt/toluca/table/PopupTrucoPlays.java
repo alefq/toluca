@@ -7,6 +7,7 @@
 package py.edu.uca.fcyt.toluca.table;
 
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
+import java.util.*;
 
 /**
  *
@@ -14,20 +15,21 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlay;
  */
 class PopupTrucoPlays extends BasePopupMenu 
 {
-    /** Creates a new instance of PopupTrucoPlays */
-    public PopupTrucoPlays(PTableListener ptListener) 
+    /** 
+     * Crea una nueva instancia de PopupTrucoPlays
+     * @param ptListener 	Listener de eventos de mesa de juego
+     * @param aPlays		Vector de Bytes de las jugadas habilitadas
+     */
+    public PopupTrucoPlays(PTableListener ptListener, Vector aPlays)
     {
-        add(new PopupActions(ptListener, TrucoPlay.ENVIDO, "Envido"));
-        add(new PopupActions(ptListener, TrucoPlay.REAL_ENVIDO, "Real Envido"));
-        add(new PopupActions(ptListener, TrucoPlay.FALTA_ENVIDO, "Falta Envido"));
-        add(new PopupActions(ptListener, TrucoPlay.FLOR, "Flor"));
-        add(new PopupActions(ptListener, TrucoPlay.TRUCO, "Truco"));
-        add(new PopupActions(ptListener, TrucoPlay.QUIERO, "Quiero"));
-        add(new PopupActions(ptListener, TrucoPlay.RETRUCO, "Quiero Retruco"));
-        add(new PopupActions(ptListener, TrucoPlay.VALE_CUATRO, "Quiero Vale 4"));
-        add(new PopupActions(ptListener, TrucoPlay.NO_QUIERO, "No quiero"));
-        add(new PopupActions(ptListener, TrucoPlay.CANTO_ENVIDO, "Cantar puntos"));
-        add(new PopupActions(ptListener, TrucoPlay.PASO_ENVIDO, "Paso envido"));
+    	Byte play;
+    	String name;
+    	for (int i = 0; i < aPlays.size(); i++)
+    	{
+    		play = (Byte) aPlays.get(i);
+    		name = (String) Table.pNames.get(play);
+    		add(new PopupActions(ptListener, play.byteValue(), name));
+    	}
     }
 }
 

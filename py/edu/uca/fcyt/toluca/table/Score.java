@@ -17,8 +17,12 @@ class Score extends JPanel{
 	{
 		super();
 		puntos = totalPts;
-		//PARA CONTROLAR EL PUNTAJE	què hace desps aca?
-		Util.verif(puntos == 30 || puntos == 20, "Puntaje inválido");
+
+		Util.verifParam
+		(
+			puntos == 30 || puntos == 20, 
+			"Parámetro 'totalPts' inválido"
+		);
 		
 	}	
 
@@ -37,8 +41,8 @@ class Score extends JPanel{
 		drawMatch(70,55,g,ptsTeam2);
 		
 		//se pintan las lìneas divisorias del puntaje
-		drawVerticalLine(g);
 		drawHorizontalLine(g, puntos);
+		drawVerticalLine(g);
 		
 		g.setColor(Color.black);
 
@@ -50,7 +54,11 @@ class Score extends JPanel{
 	public void actualizarPuntaje(int ptsTeam1,int ptsTeam2){
 		this.ptsTeam1 = ptsTeam1;
 		this.ptsTeam2 = ptsTeam2;
-		paint(getGraphics());
+		try
+		{
+			paint(getGraphics());
+		}
+		catch(NullPointerException ex){}
 	}
 	
 	//------------------------------------------
@@ -189,53 +197,45 @@ class Score extends JPanel{
 	//-----------------------------------------
 	
 	//dibuja las líneas divisorias del puntaje
-	private void drawVerticalLine(Graphics g){
+	private void drawVerticalLine(Graphics g)
+	{
+		int h, w;
+
+		h = (int) getHeight() - 3;
+		w = (int) (getWidth() - 3) / 2;
+		
 		g.setColor(Color.white);
-		g.drawLine(50,50,50,365);
+		g.drawLine(w,50,w,h);
 		g.setColor(Color.gray);
-		g.drawLine(51,50,51,365);
+		g.drawLine(w + 1,50, w + 1,h);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(52,50,52,365);
+		g.drawLine(w + 2,50, w + 2,h);
 	}
 	
-	private void drawHorizontalLine(Graphics g, int p){
+	private void drawHorizontalLine(Graphics g, int p)
+	{
+		int w, y;
+
+		w = (int) getWidth() - 3;
+		
+		
 		g.setColor(Color.black);
 		//dibuja la linea de separacion del titulo
 		g.setColor(Color.white);
-		g.drawLine(0,48,98,48);
+		g.drawLine(0,48,w,48);
 		g.setColor(Color.gray);
-		g.drawLine(0,49,49,49);
-		g.drawLine(51,49,98,49);
+		g.drawLine(0,49, w,49);
 		g.setColor(Color.DARK_GRAY);
-		g.drawLine(0,50,49,50);
-		g.drawLine(52,50,98,50);
-		
-		if (p == 20){ 
-		
-			g.setColor(Color.white);
-			g.drawLine(0,155,98,155);
-			g.setColor(Color.gray);
-			g.drawLine(0,156,49,156);
-			g.drawLine(51,156,98,156);
-			g.setColor(Color.DARK_GRAY);
-			g.drawLine(0,157,49,157);
-	   		g.drawLine(52,157,98,157);
-	    }
-			//g.drawLine(0,155,98,155);
-		else{ //p == 30
-		
-			g.setColor(Color.white);
-			g.drawLine(0,208,98,208);
-			g.setColor(Color.gray);
-			g.drawLine(0,209,49,209);
-			g.drawLine(51,209,98,209);
-			g.setColor(Color.DARK_GRAY);
-			g.drawLine(0,210,49,210);
-	   		g.drawLine(52,210,98,210);
-	    }
+		g.drawLine(0,50,w,50);
 		
 		
-		
+		y = 155 + (p - 20) * 5;
+		g.setColor(Color.white);
+		g.drawLine(0, y, w, y);
+		g.setColor(Color.gray);
+		g.drawLine(0, y + 1, w, y + 1);
+		g.setColor(Color.DARK_GRAY);
+		g.drawLine(0, y + 2, w, y + 2);
 	}
 
 }

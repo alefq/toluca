@@ -19,7 +19,40 @@ import org.jdom.*;
  */
 public class CommunicatorServer
 extends Communicator {
-    
+       public void showPlayed(TableEvent te) {
+           
+       }
+       public void signSent(TableEvent te) {
+           
+       }
+       public void playerSit(TableEvent te) {
+           
+       }
+       public void playerSitRequest(TableEvent te) {
+           
+       }
+       public void playerKicked(TableEvent te) {
+           
+       }
+       public void playerKickRequest(TableEvent te) {
+           
+       }
+       public void playerStanded(TableEvent te) {
+           
+       }
+       public void playerStandRequest(TableEvent te) {
+           
+       }
+       public void gameFinished(TableEvent te) {
+           
+       }
+       
+       public void signSendRequest(TableEvent te) {
+           
+       }
+       public void gameStarted(TableEvent te) {
+           
+       }
     /** Creates a new instance of ChatSessionServer */
     /*public CommunicatorServer(RoomSer pieza) {
         super(pieza);
@@ -169,7 +202,7 @@ extends Communicator {
         }
         if(aux.compareTo("TerminalMessage")==0) {
             
-            super.xmlReadTerminalMessage(child);
+            //super.xmlReadTerminalMessage(child);
         }
         if(aux.compareTo("CreateTable")==0) {
             xmlReadCreateTable(child);

@@ -14,12 +14,12 @@ import java.awt.event.*;
 class PopupActions extends javax.swing.AbstractAction 
 {
     protected PTableListener ptListener;
-    int action;
+    byte action;
     
     /** Creates a new instance of PopupActions */
     public PopupActions
     (
-    	PTableListener ptListener, int action, String title
+    	PTableListener ptListener, byte action, String title
     ) 
     {
     	super(title);

@@ -49,28 +49,22 @@ public class StatusFlor {
     /** Buscar flor mayor en los dos equipos
      * @return 0 si hay un empate, 1 si la flor mayor esta en el equipo 1 o 2 si esta en el equipo 2
      */    
-    public int florMayor()
-    {
+    public int florMayor(int equipoMano){
         int mayor,lugar;
         boolean empate=false;
         mayor=-1;
-        lugar=0;
-        for(int i=0;i<cjugadores;i++)        {
+        lugar=equipoMano;
+        for(int i=0;i<cjugadores;i++){
             if(valores[i]>mayor){
                 lugar=i;
                 mayor=valores[i];
                 empate=false;
-            }else if(valores[i]==mayor)
+            }else if(valores[i]==mayor && i%2 == equipoMano%2){
                 empate=true;
+                lugar = i;
+            }
         }
-        if(empate)
-            return -1;
-        else {
-            if((lugar%2)==0)
-                return 0;
-            else
-                return 1;
-        }
+        return lugar;
     }
     /** Creates a new instance of statusFlor
      * @param cantidad Indica el nro de jugadores

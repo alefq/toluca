@@ -2,23 +2,30 @@ package py.edu.uca.fcyt.toluca.table;
 import py.edu.uca.fcyt.toluca.*;
 
 import java.util.*;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import py.edu.uca.fcyt.game.Card;
+import java.awt.image.*;
+import java.awt.geom.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
 
 /**
  * Maneja a las cartas de un jugador
  */
-class TablePlayer
+class TablePlayer implements Animable
 {
 	private int posX, posY;	// posición x e y de la repartida
-	private float angle;	// ángulo de repartida
-	TableCard[] tCards;		// vector de TableCards
-	boolean played[];		// se ha jugado o no la i-ésima carta
-	int playedCount = 0;	// cantidad de cartas jugadas
-	int playerPos;			// número de silla
+	private double angle;	// ángulo de repartida
+	private Vector tCards;			// vector de TableCards
+	private int playedCount = 0;	// cantidad de cartas jugadas
+	private int playerPos;			// número de silla
 		
 
 	// escala de la posición x e y
-	private final static float POS_SCALE_X = .4f;
-	private final static float POS_SCALE_Y = .2f;
+	private final static double POS_SCALE_X = .4f;
+	private final static double POS_SCALE_Y = .2f;
 
 	/**
      * Construye un TablePlayer en la posición 'playerPos' con
@@ -29,7 +36,11 @@ class TablePlayer
 		int i, j, k;
 
 		// verificaciones
-		Util.verif(playerPos >= 0 && playerPos < 6, "Posición del jugador inválida");
+		Util.verifParam
+		(
+			playerPos >= 0 && playerPos < 6, 
+			"Parámetro 'playerPos' inválido"
+		);
 
 		// establece la posición (x, y) y el ángulo de juego
 		switch (playerCount)
@@ -37,12 +48,12 @@ class TablePlayer
 			case 2:
 				posX = (int) (POS_SCALE_X * PlayTable.TABLE_WIDTH * -Math.cos((playerPos + .5) * Math.PI));
 				posY = (int) (POS_SCALE_Y * PlayTable.TABLE_HEIGHT * Math.sin((playerPos + .5) * Math.PI));
-				angle = (float) -(playerPos * Math.PI);
+				angle = -(playerPos * Math.PI);
 				break;
 			case 4:
 				posX = (int) (.5f * POS_SCALE_X * PlayTable.TABLE_WIDTH * -Math.cos((playerPos + 1) * Math.PI / 2));
 				posY = (int) (POS_SCALE_Y * PlayTable.TABLE_HEIGHT * Math.sin((playerPos + 1) * Math.PI / 2));
-				angle = (float) -((playerPos) * Math.PI / 2);
+				angle = -((playerPos) * Math.PI / 2);
 				break;
 			case 6:
 				k = playerPos < 2 ? playerPos :
@@ -51,71 +62,77 @@ class TablePlayer
 
 				posX = (int) (POS_SCALE_X * PlayTable.TABLE_WIDTH * -Math.cos((k + 2) * Math.PI / 4));
 				posY = (int) (POS_SCALE_Y * PlayTable.TABLE_HEIGHT * Math.sin((k + 2) * Math.PI / 4));
-				angle = (float) -(k * Math.PI / 4);
+				angle = -(k * Math.PI / 4);
 
 				break;
 			default:
 				throw new RuntimeException("Cantidad de jugadores inválido");
 		}
 
-		// crea el vector que indica si la i-ésima carta fue jugada
-		played = new boolean[3];
-
+		// crea el vector de TableCards
+		this.tCards = new Vector();
+		
 		// carga el vector de TableCards
-		this.tCards = tCards;
+		for (i = 0; i < tCards.length; i++)
+			this.tCards.add(tCards[i]);
 
 		// carga la posición del jugador
 		this.playerPos = playerPos;
 	}
 
 	/**
-	 * Pone las posiciones finales de las cartas boca
-	 * abajo y de manera desordenada (las reparte)
+	 * Pone la posicion finales de la 'index'-ésima carta boca
+	 * abajo y de manera desordenada (la reparte), con
+	 * una duración de animación 'duration'
 	 */
-	public void setDraw()
+	synchronized public void setDraw
+	(
+		TableCard tCard, long duration
+	)
 	{
 		// reinicializa la cantidad de cartas jugadas
 		playedCount = 0;
-
-		// establece los estados para repartir las cartas
-		for (int i = 0; i < 3; i++)
-		{
-			played[i] = false;
-
-			tCards[i].covered = true;
-			tCards[i].pushState
-			(
-				(float) (posX + Math.random() * 5 - 2.5),
-				(float) (posY + Math.random() * 5 - 2.5),
-				(float) (Math.random() * Math.PI * 2 - 1),
-				Util.cardScale
-			);
-		}
+		
+		// manda al tope la carta y la reparte
+		//toTop(tCard);
+		tCard.pushState
+		(
+			(int) (posX + Math.random() * 5 - 2.5),
+			(int) (posY + Math.random() * 5 - 2.5),
+			Math.random() * Math.PI * 2 - 1,
+			Util.cardScale, null, duration
+		);
 	}
 
 	/**
 	 * Pone las posiciones finales de las
 	 * cartas en la mano de cada jugador
 	 */
-	public TablePlayer setTake()
+	synchronized public TablePlayer setTake(long duration)
 	{
-		float ang;
+		double ang;
+		TableCard tCard;
 
 		// pone el estado de las cartas en las manos de cada jugador
-		for(int i = 0; i < 3; i++)
+		for(int i = playedCount; i < 3; i++)
 		{
-			if (!played[i])
-			{
-				//ang = tCard.getAngle(1);
-				ang = angle;
+			tCard = getTCard(i);
+			ang = tCard.getLastState().angle;
+			tCard.pushState
+			(
+				(int) (posX * 2),
+				(int) (posY * 3.4),
+				ang + Util.normAng(angle - ang), 
+				Util.cardScale, null, duration
+			);
 
-				tCards[i].pushState
-				(
-					(float) (posX * 2),
-					(float) (posY * 3.4),
-					ang, Util.cardScale
-				);
-			}
+			tCard.pushState
+			(
+				(int) (posX * 2),
+				(int) (posY * 3.4),
+				angle, 
+				Util.cardScale, null, 0
+			);
 		}
 
 		return this;
@@ -123,46 +140,84 @@ class TablePlayer
 
 	/**
 	 * Establece los datos de animación
-	 * para jugar la 'card'-ésima carta
+	 * para jugar una carta.
+	 * @param tCard		TableCard a jugar
+	 * @param duration	duración de la animación
 	 */
-	public TableCard setPlayCard(int index)
+	synchronized public void setPlayCard
+	(
+		TableCard tCard, Card card, long duration
+	)
 	{
-		// Verificaciones
-		Util.verif(played[index] == false, "La carta " + index + " ya ha sido jugada");
-		Util.verif(index >= 0 && index < 3, "Indice " + index + " inválido");
+		// envía la carta al fondo y la guarda
+		tCards.remove(tCard);
+		tCards.add(playedCount, tCard);
 		
-		// establece el atributo cubierto del TableCard
-		tCards[index].covered = false;
-
 		// establece el estado del TableCard como para jugarla
-		tCards[index].pushState
+		tCard.pushState
 		(
-			(float) (posX + 10 * Math.cos(angle) * (playedCount - 1)),
-			(float) (posY + 10 * Math.sin(angle) * (playedCount - 1)),
-			angle,
-			Util.cardScale
+			(int) (posX + 10 * Math.cos(angle) * (playedCount - 1)),
+			(int) (posY + 10 * Math.sin(angle) * (playedCount - 1)),
+			angle, Util.cardScale, card, duration
 		);
 
-		// marca la carta como jugada
-		played[index] = true;
-		
 		// incrementa el contador de cartas jugadas
 		playedCount ++;
-		
-		// retorna la carta jugada
-		return tCards[index];
 	}
+
+	/**
+	 * Establece los datos de animación
+	 * para cerrar todas las cartas
+	 * @param duration	duración de la animación
+	 */
+	synchronized public void setCloseCards
+	(
+		long duration
+	)
+	{
+		TableCard tCard;
+		
+		for (int i = playedCount; i < 3; i++)
+		{
+			// establece el estado del TableCard como para jugarla
+			getTCard(i).pushState
+			(
+				(int) (posX + 10 * Math.cos(angle) * (i - 1)),
+				(int) (posY + 10 * Math.sin(angle) * (i - 1)),
+				angle, Util.cardScale, null, duration
+			);
+		}
+
+		// establece la cantidad de cartas jugadas
+		playedCount = 3;
+	}
+	
+	/**
+     * Retorna la cantidad de cartas jugadas
+     */
+    synchronized public int getPlayedCount()
+    {
+    	return playedCount;
+    }
 
 	/**
 	 * Establece los datos de animación para mostrar las cartas
 	 * del jugador (que debe estar en la posición 0)
+	 * @param duration	duración de la animación
 	 */
-	public void setShowHand()
+	synchronized public void setShowHand
+	(
+		Card[] cards, long duration
+	)
 	{
-		float c, m;
+		double c, m;
+		Card card;
+		TableCard tCard;
 
 		// verificaciones
 		Util.verif(playerPos == 0, "El jugador debe ser el 0");
+		
+		if (cards != null) playedCount = 0;
 
 		switch (playedCount)
 		{
@@ -171,48 +226,56 @@ class TablePlayer
 			default: c = 0;
 		}
 
-		for(int i = 0; i < 3; i++)
+		for (int i = playedCount; i < 3; i++)
 		{
-			tCards[i].covered = false;
-			if (!played[i])
+			tCard = getTCard(i);
+			m = (c == 0) ? 15 : 0;
+			try
 			{
-				m = (c == 0) ? 15 : 0;
-				tCards[i].pushState
-				(
-					40 * c,
-					PlayTable.TABLE_HEIGHT/2 - 40 - m,
-					.6f * c, 1
-				);
-				c++;
+				card = cards[i];
 			}
+			catch (NullPointerException ex)
+			{
+				card = tCard.getCard();
+			}
+			
+			tCard.pushState
+			(
+				(int) (40 * c),
+				(int) (PlayTable.TABLE_HEIGHT/2 - 40 - m),
+				.6f * c, 1, card, duration
+			);
+			c++;
 		}
-
 	}
 
 	/**
 	 * Establece los datos de animación para "abrir" o "cerrar" las
 	 * cartas jugadas dependiendo de restore (falso o verdadero resp.)
 	 */
-	public void setShowPlayed(boolean restore)
+	synchronized public void setShowPlayed
+	(
+		boolean restore, long duration
+	)
 	{
-		float m, x, y;
+		double m, x, y;
+		TCardState tcState;
+		TableCard tCard;
 
-		m = restore ? 1f/5f : 5;
+		m = restore ? 10 : 50;
+		
+//		System.out.println("Oaaa");
 
 		// establece los estados de cada TableCard
-		for(int i = 0; i < 3; i++)
+		for (int i = 0; i < playedCount; i++)
 		{
-			if (played[i])
-			{
-				x = tCards[i].getX(1) - getX();
-				y = tCards[i].getY(1) - getY();
-				tCards[i].pushState
-				(
-					x * m + getX(),
-					y * m + getY(),
-					angle, Util.cardScale
-				);
-			}
+			tCard = (TableCard) tCards.get(i);
+			tCard.pushState
+			(
+				(int) (getX() + (m * (i - 1)) * Math.cos(angle)),
+				(int) (getY() + (m * (i - 1)) * Math.sin(angle)),
+				angle, Util.cardScale, tCard.getCard(), duration
+			);
 		}
 	}
 
@@ -221,60 +284,178 @@ class TablePlayer
 	 * Pone la posición y ángulo de la carta a la posición
 	 * de colección de un cierto TablePlayer
 	 */
-	public void pushState(TablePlayer tPlayer)
+	synchronized public void pushState(TablePlayer tPlayer, long duration)
 	{
-		for(int i = 0; i < 3; i++)
-		{
-			tCards[i].pushState
-			(
-				(float) (tPlayer.posX * 2),
-				(float) (tPlayer.posY * 3.4f),
-				tPlayer.angle,
-				Util.cardScale
-			);
-		}
-	}
-
-	// establece los tiempos de animación
-	// de la 'card'-ésima carta
-	public void setTimes(int index, int start, int duration)
-	{
-		tCards[index].setTimes(start, duration);
-	}
-
-	/**
-	 * Establece los tiempos de animación para todas las cartas
-	 * jugadas si 'cPlayed' es verdadero, y no jugadas y es falso
-	 */
-	public void setTimes(int start, int duration, boolean cPlayed)
-	{
+		TableCard tCard;
+		Card card;
+		TCardState lastState = null;
+		
 		for (int i = 0; i < 3; i++)
 		{
-			if (cPlayed == played[i]) setTimes
+			tCard = getTCard(i);
+			
+			try 
+			{ 
+				lastState = tCard.getLastState();
+				card = lastState.card; 
+			}
+			catch(NullPointerException ex1) 
+			{ 
+				try
+				{
+					card = tCard.getCurrState().card;
+				}
+				catch(NullPointerException ex2)
+				{
+					card = null; 
+				}
+			}
+
+			tCard.pushState
 			(
-				i, start, duration
+				(int) (tPlayer.posX * 2),
+				(int) (tPlayer.posY * 3.4f),
+				tPlayer.angle,
+				Util.cardScale, 
+				card, duration
 			);
 		}
 	}
 
-//	/** Retorna el 'card'-ésimo TableCard en la mano */
-//	public TableCard getTableCard(int card)
+//	/** Retorna el 'index'-ésimo TableCard en la mano */
+//	public TableCard getTableCard(int index)
 //	{
-//		return ((TableCard) tCards.get(card)).tCard;
+//		return (TableCard) tCards[index];
 //	}
-
-	/** Retorna el 'index'-ésimo TableCard en la mano */
-	public TableCard getTableCard(int index)
-	{
-		return tCards[index];
-	}
 
 	// retornan la posición (x, y) de repartición
 	public int getX() { return posX; }
 	public int getY() { return posY; }
-	public float getAngle() { return angle; }
-	public boolean getPlayed(int index)
+	public double getAngle() { return angle; }
+	
+	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans) 
 	{
-		return played[index];
+		for (int i = 0; i < tCards.size(); i++)
+			getTCard(i).paint(biOut, afTrans);
 	}
+
+	synchronized public void clear(Graphics2D grOut) 
+	{
+		for (int i = 0; i < tCards.size(); i++)
+			getTCard(i).clear(grOut);
+	}
+
+	synchronized public boolean advance() 
+	{
+		for (int i = 0; i < tCards.size(); i++)
+			getTCard(i).advance();
+			
+		return true;
+	}
+
+	public boolean isEnabled() 
+	{
+		return true;
+	}
+
+    /**
+     * Agrega una pausa a todas las cartas igual a <b>time</b> - 
+     * tiempo restante.
+     * Si existen caritas del vector que tienen un tiempo restante
+     * mayor que el tiempo especificado, éstas son omitidas,
+     * @param time		cantidad de tiempo especificado
+     */
+	synchronized public void pushGeneralPause(long time)
+	{
+		TableCard card;
+		
+    	// agrega a cada carita la diferencia
+    	for (int i = 0; i < tCards.size(); i++)
+    	{
+			card = (TableCard) tCards.get(i);
+			card.pushPause(time - card.getRemainingTime());
+    	}
+	}  	
+	
+	/**
+     * Retorna una carta de la mano
+     * @param index	índice de la carta
+     */
+	synchronized public TableCard getTCard(int index)
+	{
+		return (TableCard) tCards.get(index);
+	}
+	
+    /**
+     * Obtiene el tiempo que falta para que todas las
+     * cartas terminen de transicionar.
+     */
+    synchronized public long getRemainigTime()
+    {
+    	long actTime, maxTime = 0;
+    	
+    	// obtiene el tiempo máximo
+    	for (int i = 0; i < tCards.size(); i++)
+    	{
+    		actTime = getTCard(i).getRemainingTime();
+    		if (actTime > maxTime) maxTime = actTime;
+    	}
+    	
+    	return maxTime;
+    }		
+    
+    /** 
+     * Envía una carta al principio del orden de dibujo
+     * @param tCard		carta a enviar
+     */
+    synchronized private void toTop(TableCard tCard)
+    {
+    	tCards.remove(tCard);
+    	tCards.add(tCard);
+    }
+	
+	/**
+     * Envía una {@link TableCard} al último orden de animación
+     * @param tCard		carta a enviar
+     */
+	synchronized public void toBottom(TableCard tCard)
+	{
+    	tCards.remove(tCard);
+    	tCards.add(0, tCard);
+	}
+	
+	/**
+     * Retorna la siguiente carta no jugada
+     */
+    synchronized public TableCard getNextHolding()
+    {
+    	return getTCard(playedCount);
+    }
+
+	/**
+     * Retorna el {@link TableCard} que contiene a 
+     * <code>card</code>. Si no existe dicho TableCard, 
+     * retorna <code>null</code>.
+     */
+    synchronized public TableCard getTCard(Card card)
+    {
+    	TableCard tCard;
+    	for (int i = 0; i < 3; i++)
+    	{
+    		tCard = (TableCard) tCards.get(i);
+    		if (card == tCard.getCard())
+    			return tCard;
+    	}
+    	return null;
+    }
+     
+    /**
+     * Agrega una pausa a todas las cartas
+     * @param duration	duración de la pausa
+     */
+     synchronized public void pushPause(long duration)
+     {
+     	for (int i = 0; i < 3; i++)
+     		getTCard(i).pushPause(duration);
+     }
 }

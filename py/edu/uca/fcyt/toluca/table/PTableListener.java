@@ -5,7 +5,13 @@ import java.awt.event.*;
 /** Listener de eventos en PlayTable */
 interface PTableListener
 {
-	public void mouseClicked(float x, float y, MouseEvent e);
+	/**
+     * Invocado cuando se hizo click en la mesa de juego
+     * @param x			posición x de la mesa
+     * @param y			posición y de la mesa
+     * @param button	botón (ver MouseEvent)
+     */
+	void mouseClicked(int x, int y, MouseEvent e);
 	
-	public void say(int say);
+	void say(byte say);
 }	

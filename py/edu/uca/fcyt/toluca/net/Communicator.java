@@ -195,7 +195,7 @@ implements RoomListener, TableListener {
 	}
 	public void xmlreadSendCardsAlg(Object o)
 	{
-		String aux;
+/*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
@@ -240,12 +240,12 @@ implements RoomListener, TableListener {
 
 				}
 			}
-        }
+        } */
 	}
 	int type;
 	public void xmlReadCanto(Object o)
 	{
-		String aux;
+/*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
@@ -277,12 +277,12 @@ implements RoomListener, TableListener {
 			   System.out.println("Hand:"+hand);
 			   System.out.println("Player:"+user);
             }
-        }
+        } */
 	}
 	TrucoCard cartaEnv;
 	public void xmlReadCard(Object o)
 	{
-		String aux;
+/*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
@@ -323,12 +323,12 @@ implements RoomListener, TableListener {
 			   System.out.println("Player:"+user);
 				System.out.println("Palo:"+cartaEnv.getKind()+"Value"+cartaEnv.getValue());
 			 }
-        }
+        } */
 	}
 	int tanto;
 	public void xmlReadCantarTanto(Object o)
 	{
-				String aux;
+/*				String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
@@ -365,11 +365,11 @@ implements RoomListener, TableListener {
 			   System.out.println("Player:"+user);
 			  System.out.println("Tanto"+tanto);
 			 }
-        }
+        } */
 	}
 	public void xmlReadTurno(Object o)
 	{
-		String aux;
+/*		String aux;
         if (o instanceof Element) {
             Element element = (Element) o;
             aux=element.getName();
@@ -443,7 +443,7 @@ implements RoomListener, TableListener {
 			   System.out.println("Player:"+user);
 				
 			 }
-        }
+        } */
 	}
 
 

@@ -5,18 +5,23 @@ import java.awt.image.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.util.*;
+import py.edu.uca.fcyt.toluca.table.animation.Animable;
+import py.edu.uca.fcyt.toluca.table.state.*;
+import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
 
-class Face
+/**
+ * Maneja el dibujo de una carita en el juego
+ */
+class Face implements Animable
 {
-//	-------------------------------------------------------------	
-//	Subclases
-//	-------------------------------------------------------------
-	public class State
-	{
-		public static final int BACK = 0;		
-		public static final int INVISIBLE = 1;	
-		public static final int VISIBLE = 2;	
-	}
+//	public class State
+//	{
+//		public static final int BACK = 0;		
+//		public static final int INVISIBLE = 1;	
+//		public static final int VISIBLE = 2;	
+//	}
 	
 	public class Dir
 	{
@@ -25,562 +30,722 @@ class Face
 		public static final int RIGHT= 2;
 	}	
 
-	class Sign
-	{
-		public static final int MACHO = 0;
-		public static final int HEMBRA = 1;
-		public static final int ESPADA_7 = 2;
-		public static final int ORO_7 = 3; 
-		public static final int VAL_3 = 4;
-		public static final int VAL_2 = 5;
-		public static final int VAL_1 = 6;
-		public static final int ENVIDO = 7;
-	}
-	
-	class Pos
-	{
-		static final int DOWN_CENTER = 0;
-		static final int DOWN_RIGHT = 1;
-		static final int MID_RIGHT = 2;
-		static final int UP_RIGHT = 3;
-		static final int UP_CENTER = 4;
-		static final int UP_LEFT = 5;
-		static final int MID_LEFT = 6;
-		static final int DOWN_LEFT = 7;
-	}
+	public final static int WIDTH = (int) (PlayTable.TABLE_WIDTH * .2);
+	public final static int HEIGHT = (int) (PlayTable.TABLE_HEIGHT * .2);
 
-	static final float OFFSET = .14f;
-
-//  -------------------------------------------------------------	
-//	Variables miembros
-//  -------------------------------------------------------------
-	protected int state = State.VISIBLE; 
-	protected int dir = Dir.CENTER;
-	protected float x,y;
-	protected int playerPosition;
-	protected BufferedImage Bface;
-	protected String playerName;
-	protected BufferedImage biOut;
-	protected Graphics2D grOut;
-	protected int chairBounds[];
-	protected int chairRounded;
-	protected int chairInnerOffset;
-	protected String nameShown;
-	protected int nameShownWidth;
-	protected int nameShownDescent;
-	protected int nameShownAscent;
-	protected float triAng;
-	protected float triOffset;
-	protected Font font;
-	protected Color borderColor;
-	protected String balloonText;
-	protected AffineTransform afTrans;
-
-//  -------------------------------------------------------------	
-//	Métodos
-//  -------------------------------------------------------------	
+	private StatesTransitioner[] states;
+	private final BufferedImage faces[] = loadFaces();
+	private static final int[][][] triPoints = triangPoints();
+	private Font[] fonts;
+	private Color borderColor;
+	private Rectangle txtClearRegion;
+	private int clearText;
+	private String playerName;
+	private double ballAng;
+	public boolean highlighted = false;
 
 	/**
-	 * Construye la carita del jugador correspondiente en su
-	 * lugar correspondiente*/
+	 * Construye un nuevo Face. 
+	 * @param name			nombre del jugador
+	 * @param borderColor	color del borde
+	 * @param ballAng		ángulo del globo
+	 */
 	public Face
 	(
-		int numPlayer, int cantPlayers, 
-		String playerName, Color borderColor
+		String name, Color borderColor, double ballAng
 	)
 	{ 
-		int max;
-		
-		calculatePosicion(numPlayer,cantPlayers);
-		this.playerName = playerName;
+		states = new StatesTransitioner[]
+		{
+			new StatesTransitioner(),
+			new StatesTransitioner(),
+			new StatesTransitioner()
+		};
+		this.playerName = name == null ? "": name;
 		this.borderColor = borderColor;
-		afTrans = new AffineTransform();
-		setSign(Sign.ESPADA_7);
+		
+		fonts = new Font[3];
+		fonts[0] = new Font("SansSerif", Font.BOLD, 13);
+		fonts[1] = new Font("SansSerif", Font.PLAIN, 13);
+		
+		this.ballAng = ballAng;
+		
+		pushSign(Sign.NONE, 0);
+		pushText(null, false, 0);
 	}
 	
 	
-	private void calculatePosicion(int playerPosition, int cant)
-	{
-		switch(cant)
-		{
-			case 6:
-				if (playerPosition < 2) setPosition(playerPosition);
-				else if (playerPosition < 5) setPosition(playerPosition + 1);
-				else setPosition(playerPosition + 2);
-				break;
-			case 4:
-				setPosition(playerPosition * 2);
-				break;
-			case 2:
-				setPosition(playerPosition * 4);
-				break;		
-		}
-	}		
+	/**
+     * Retorna el área afectada por el pintado del texto si 
+     * debe ser borrado, de lo contrario retorna nulo
+     */
+    public Rectangle getClearRegion()
+    {
+    	if (clearText == 1) 
+    	{
+    		clearText ++;
+    		return txtClearRegion;
+    	}
+    	else return null;
+    }
 	
-	protected void setBorderColor(Color color)
+	public void setBorderColor(Color color)
 	{
 		borderColor = color;
 	}
 	
-	protected void setPosition(int playerPosition)
+	
+	/**
+     * Agrega una nueva posición a la cola.
+     * @param x 	coordenada x de la nueva posición
+     * @param y		cooredenada y de la nueva posición
+     */
+	synchronized public void pushState(FaceState state, long duration)
 	{
-		this.playerPosition = playerPosition;
-		
-		switch(playerPosition)
-		{
-			case Pos.DOWN_CENTER:	
-				x = 1; y = 2-OFFSET;
-				triAng = (float) Math.PI;
-				triOffset = 0;
-				break;
-			case Pos.DOWN_RIGHT:	
-				x = 2-OFFSET; y = 2-OFFSET;
-				triAng = (float) ((Math.PI*3)/4);
-				triOffset = 0;
-				break;
-			case Pos.MID_RIGHT:
-				x =	2-OFFSET; y = 1;
-				triAng = (float) ((Math.PI)/2);
-				triOffset = 0; //scaleWidth/5;
-				break;
-			case Pos.UP_RIGHT:
-				x = 2-OFFSET;
-				y = OFFSET; 
-				triAng = (float) ((Math.PI)/4);
-				triOffset = 0;
-				break;
-			case Pos.UP_CENTER:
-				x = 1; y = OFFSET; 
-				triAng = 0;
-				triOffset = 0;
-				break;
-			case Pos.UP_LEFT: 
-				x = OFFSET; y = OFFSET; 
-				triAng = (float) ((Math.PI*7)/4);
-				triOffset = 0;
-				break;
-			case Pos.MID_LEFT:
-				x = OFFSET;  y = 1;
-				triAng = (float) ((Math.PI*3)/2);
-				triOffset = 0; //-scaleWidth/5;
-				break;
-			case Pos.DOWN_LEFT:
-				x = OFFSET;  y = 2-OFFSET;
-				triAng = (float) ((Math.PI*5)/4);
-				triOffset = 0;
-				break;
-		}		
+		states[0].pushState(state, duration);
 	}
 	
-	public void setState(int s){
-		state = s;	
-	}
-	
-//_________________________________________________________________________	
-	
-	public int getState(){
-		return state;
-	}
-	
-//_________________________________________________________________________	
-	
-	public void setSign(int sign){
-		
-		 Bface = createFace(sign);
-//		 paint(biOut);
-	}
-	
-//_________________________________________________________________________	
-
-	public void getSign(){
-	
-	}
-//_________________________________________________________________________	
-	
-	/*cuando el jugador hace click en un jugador a su izq,der o centro
-	el ojo se tiene que mover, en realidad se cambia el archivo de
-	cara correspondiente*/
-	public void setEyedireccion(int d){
-		switch(d){
-			case Dir.LEFT:
-				if (dir != Dir.LEFT)
-					//tiene que buscar el arch correspondiente
-				break;
-			case Dir.CENTER:
-				if (dir != Dir.CENTER)
-				
-				//tiene que buscar el arch correspondiente				
-				break;
-			case Dir.RIGHT:
-				if (dir != Dir.RIGHT)
-					//tiene que buscar el arch correspondiente				
-				break;
-		}
-		dir = d; //se coloca el nuevo valor	
-	}
-	
-	
-	public int getEyedireccion(){
-		return dir;
-	}
-	
-	public void setBalloonText(String text)
+	/**
+     * Agrega una pausa a la cola.
+     */
+	synchronized public void pushPause(long duration)
 	{
-		balloonText = text;
+		states[0].pushPause(duration);
 	}
 	
-	public void paint()
+	/**
+     * Agrega una nueva seña a la cola
+     */	
+	synchronized public void pushSign(int sign, long duration)
 	{
-		int max;
-		
-		max = Math.max(biOut.getWidth(), biOut.getHeight());
-		
-		drawChair();
-		drawFace(Bface, biOut, 0, max / 800f, afTrans);
-		drawName();
-		if (balloonText != null) 
-			drawDialog(balloonText);
+		// agrega la seña a la cola
+		states[1].pushState(new SignState(sign), duration);
 	}
 
+	/**
+     * Agrega una nuevo texto a la cola
+     */	
+	synchronized public void pushText
+	(
+		String text, boolean highlighted, long duration
+	)
+	{
+		// agrega la seña a la cola
+		states[2].pushState
+		(
+			new StringState(text, highlighted), duration
+		);
+	}
 
-	public void setOut(BufferedImage biOut)
-	{	
+	/** 
+	 * Cuando el jugador hace click en un jugador a su 
+	 * izq,der o centro el ojo se tiene que mover, en realidad 
+	 * se cambia el archivo de cara correspondiente
+	 */
+//	public void setEyedireccion(int d){
+//		switch(d){
+//			case Dir.LEFT:
+//				if (dir != Dir.LEFT)
+//					//tiene que buscar el arch correspondiente
+//				break;
+//			case Dir.CENTER:
+//				if (dir != Dir.CENTER)
+//				
+//				//tiene que buscar el arch correspondiente				
+//				break;
+//			case Dir.RIGHT:
+//				if (dir != Dir.RIGHT)
+//					//tiene que buscar el arch correspondiente				
+//				break;
+//		}
+//		dir = d; //se coloca el nuevo valor	
+//	}
 	
-		float r = .2f;
-		int width, height, max;
+	
+//	public int getEyedireccion(){
+//		return dir;
+//	}
+	
+	synchronized public void paint(BufferedImage biOut, AffineTransform afTrans)
+	{
+		int width, height;
+		FaceState fState;
+		Graphics2D grOut;
 		
-		this.biOut = biOut;
+		// obtiene el estado actual
+		fState = (FaceState) states[0].getCurrState();
+		
+		// si no hay estado actual, salir
+		if (fState == null) return;
+		
+		// obtiene un Graphics2D de 'biOut'
 		grOut = biOut.createGraphics();
-
-		// establece el antialiasing de 'grOut' a verdadero
+		
+		// aplica 'afTrans' al Graphics2D
+		grOut.setTransform(afTrans);
+		
+		// establece el antialiasing al Graphics2D
 		grOut.setRenderingHint
 		(
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON
 		);
-
-		width = biOut.getWidth() / 2;
-		height = biOut.getHeight() / 2;
-		max = Math.max(width, height);
 		
-		chairBounds = new int[]
-		{
-			(int) ((x-r) * width),
-			(int) ((y-r) * height), 
-			(int) ((r*2) * width), 
-			(int) ((r*2) * height)
-		};
-		
-		chairInnerOffset = (int) (max * .013) + 1;
-		chairRounded = (int) (max * .1);
-
-		font = new Font
+		// translada el orígen a la coordenada 
+		// (x, y) del cuadradito blanco
+		grOut.translate
 		(
-			"SansSerif", Font.BOLD, 
-			(int) (max * .044)
+			fState.x, fState.y
 		);
+
+		// dibuja el cuadradito blanco
+		drawChair(grOut);
+
+		// translada el orígen a la coordenada 
+		// (x, y) del centro de los demás objetos
+		grOut.translate
+		(
+			 fState.offX, fState.offY
+		);
+
+//		grOut.setColor(Color.BLACK);
+//		grOut.fillOval(-5, -5, 5, 5);
 		
-		setName(playerName);
+		drawName(biOut, grOut.getTransform());
+		drawFace(biOut, grOut.getTransform());
+		drawDialog(biOut, grOut.getTransform());
 	}
 
+
 	/* Dibuja el asiento blanquito*/
-	protected void drawChair()
+	private void drawChair(Graphics2D grOut)
 	{
+		int x, y;
+		
+		x = -WIDTH / 2;
+		y = -HEIGHT / 2;
+
+		// si la carita está seleccionada, dibujar el 
+		// borde amarillo
+		if (highlighted)
+		{
+			grOut.setColor(Color.YELLOW.brighter());
+			grOut.fillRoundRect
+			(
+				(int) x - 2, 
+				(int) y - 2, 
+				(int) WIDTH + 4,
+				(int) HEIGHT + 4,
+				33, 33
+			);	
+		}
+		
 		grOut.setColor(Color.BLACK);
 		grOut.fillRoundRect
 		(
-			chairBounds[0], 
-			chairBounds[1], 
-			chairBounds[2], 
-			chairBounds[3],
-			chairRounded, 
-			chairRounded
+			(int) x, 
+			(int) y, 
+			(int) WIDTH, 
+			(int) HEIGHT,
+			33, 33
 		);	
 
 		grOut.setColor(borderColor);
 		grOut.fillRoundRect
 		(
-			chairBounds[0] + 1, 
-			chairBounds[1] + 1, 
-			chairBounds[2] - 2, 
-			chairBounds[3] - 2,
-			chairRounded, 
-			chairRounded
+			(int) (x + 1), 
+			(int) (y + 1), 
+			(int) (WIDTH - 2), 
+			(int) (HEIGHT - 2),
+			33, 33
 		);	
 
 		grOut.setColor(Color.WHITE);
 		grOut.fillRoundRect
 		(	
-			chairBounds[0] + chairInnerOffset, 
-			chairBounds[1] + chairInnerOffset, 
-			chairBounds[2] - chairInnerOffset * 2, 
-			chairBounds[3] - chairInnerOffset * 2,
-			(int) (chairRounded * .7), 
-			(int) (chairRounded * .7)
+			(int) (x + 5), 
+			(int) (y + 5), 
+			(int) (WIDTH - 10), 
+			(int) (HEIGHT - 10),
+			23, 23
 		);
 	}
 	
-	protected void drawName()
+	/**
+     * Dibuja el nombre de la carita
+     */
+	private void drawName(BufferedImage biOut, AffineTransform afTrans)
 	{
 		int x, y;
+		int off;
+		Graphics2D grOut;
+		String nameShown;
+		int shownLen, shownWidth;
 		
-		x = chairBounds[0] + (chairBounds[2] - nameShownWidth) / 2;
-		y = (int) (chairBounds[1] + chairBounds[3] - nameShownDescent - chairInnerOffset);
-		
-		x = Math.max(x, 3);
-		x = Math.min(x, biOut.getWidth() - nameShownWidth);
+		// obtiene un nuevo Graphics2D basado en 'biOut' y 'afTrans'
+		grOut = getGraphics2D(biOut, afTrans);
 
-		y = Math.max(y, 0);
-		y = Math.min(y, biOut.getHeight() - nameShownDescent);
+		grOut.setFont(fonts[0]);
 		
-
-		grOut.setFont(font);
+		shownLen = getNChars(playerName, 0, WIDTH - 40, grOut);
+		
+		nameShown = playerName.substring(0, shownLen);
+		shownWidth = grOut.getFontMetrics().stringWidth(nameShown);
+		
+		x = (int) (-shownWidth / 2);
+		y = (int) (HEIGHT * .42);
+		
 		grOut.setColor(Color.BLACK);	
 		grOut.drawString(nameShown, x, y);
 	}
 	
-	public boolean inside(int x, int y)
+	/**
+     * Devuelve verdadero si x e y están dentro del cuadrito.
+     * Las coordenadas pasadas deben ser las transformadas por 
+     * el AffineTransform del Graphics2D en donde se pintó 
+     * la carita.
+     * @param x	coordenada x ya transformada
+     * @param y coordenada y ya transformada
+     */
+	synchronized public boolean inside(int x, int y)
 	{
+		FaceState cState;
+		Point2D p;
+		
+		// obtiene el estado actual, si es nulo sale
+		try	{ cState = (FaceState) states[0].getCurrState(); }
+		catch (NullPointerException ex) { return false; }
+
+		x -= cState.x;
+		y -= cState.y;		
+		
 		return 
-			x >= chairBounds[0] &&
-			y >= chairBounds[1] &&
-			x <= chairBounds[0] + chairBounds[2] &&	
-			y <= chairBounds[1] + chairBounds[3];
+			x >= -WIDTH / 2 &&
+			y >= -HEIGHT / 2 &&
+			x <=  WIDTH / 2 &&	
+			y <= HEIGHT / 2 ;
 	}
 			
-//_________________________________________________________________________	
+	/**
+     * Devuelve las coordenadas de 2 triángulos equilátero, el
+     * segundo más chico que el primero.
+     * @return 	Una matriz de coordenadas, donde la posición
+     *			i = 0, 1 para el primer y segundo triáng. resp.
+     * 			j = 0, 1 para x e y respectivamente, y 
+     *			k = 0, 1, 2 para el primer, segundo y tercer punto.
+     *			Ejemplo: (1, 1, 1) = coordenada y del punto 1 del 
+     *			segundo triángulo
+     */	
+	private static int[][][] triangPoints()
+	{
+		int[][][] ret;
+		
+		ret = new int[][][]
+		{
+			new int[][]{new int[3], new int[3]}, 
+			new int[][]{new int[3], new int[3]}
+		};
+		
+		for (int i = 0; i < 3; i++)
+		{
+			ret[0][0][i] = (int) (20 * Math.cos(Math.PI / 3 * i * 2 + .5));
+			ret[0][1][i] = (int) (20 * Math.sin(Math.PI / 3 * i * 2 + .5));
+
+			ret[1][0][i] = (int) (18 * Math.cos(Math.PI / 3 * i * 2 + .5));
+			ret[1][1][i] = (int) (18 * Math.sin(Math.PI / 3 * i * 2 + .5));
+		}
+		
+		return ret;
+	}
+		
 	
 	/** Este método es llamado cuando un jugador canta alguna jugada
 	 *recibe como argumentos un bufferImage, la accion que debe cantar
 	 *y el numero de jugador, o sea su posicion en la mesa*/
 	 
-	public void drawDialog(String accion)
+	private void drawDialog(BufferedImage biOut, AffineTransform afTrans)
 	{
-		int[] xPointsDown, yPointsDown;
-		int[] xPointsUp, yPointsUp;
-		int[] x1Points, y1Points;
+		int width, height;
+		int textWidth = 0, textHeight = 0;
+		int[] xPoints, yPoints;
+		StringState sState;
+		String text;
+		String[] lines;
+		FontMetrics fMetrics;
+		int triAng = 0, triOffset = 0;
+		int lineHeight, lineWidth;
+		int lineAscent;
+		Graphics2D grBall, grTri;
+		boolean highlighted;
+		
+		// obtiene el estado actual
+		sState = (StringState) states[2].getCurrState();
+		
+		// obtiene el estado resaltado
+		highlighted = sState.isHighlighted();
+		
+		// obtiene el texto actual, si no hay texto actual sale
+		text = sState.getText();
+		if (text == null) return;
+		
+		// obtiene nuevos Graphics2D basados en 'biOut' y 'afTrans'
+		grBall = getGraphics2D(biOut, afTrans);
+		grTri = getGraphics2D(biOut, afTrans);
 
-		/**Se calcula el punto central del globito que depende del tamaño de 
-		 *la mesa y de la posicion en la que se encuentra*/
-		 
-		int x = (int) (biOut.getWidth()*.4 * (this.x-1));
-		int y = (int) (biOut.getHeight()*.4 * (this.y-1));
-	
-		x+=biOut.getWidth()/2;
-		y+=biOut.getHeight()/2;
-		
-		grOut.setFont(font);
-		
-		int width;
-		
-		/**Aca se elige de acuerdo a la longitud del string el ancho
-		 *del globito. Si la longitud es menor 10 hay un ancho por defecto
-		 *sino se hace un calculo*/	
-		 
-		if ((10*accion.length()) < 100)
-			width = 100;
+		// resaltar el texto o no
+		if (highlighted)
+			grBall.setFont(fonts[0]);
 		else
-			width = 10*(accion.length()-2);
-		
-		/**Se pone el ancho y alto del globito de acuerdo al tamaño de la mesa*/	
-		int scaleWidth = (int)  (width * biOut.getWidth()/PlayTable.TABLE_WIDTH);
-		int scaleHeight = (int) (40 * biOut.getHeight()/PlayTable.TABLE_HEIGHT);
-		
-//		double triAng = 0; //triAng del triangulito
-		//si es 90 y 270 tienen que tener un triOffset hacia la 
-		//izq y der respectivamente para q no se quede abajo del ovalo
-//		int triOffset = 0;	//sirve para los triangulitos de los costados 	
+			grBall.setFont(fonts[1]);
 
-	
-		xPointsDown = new int[]
+		// obtiene las líneas de texto a mostrar
+		lines = getLines(text, WIDTH, grBall);
+		
+		// obtiene las medidas de la fuente actual
+		fMetrics = grBall.getFontMetrics();
+		
+		// obtiene el ancho y el alto del globito
+		for (int i = 0; i < lines.length; i++)
 		{
-			0,
-			(int) (-11 * biOut.getWidth()/PlayTable.TABLE_WIDTH),
-			(int) (11 * biOut.getWidth()/PlayTable.TABLE_WIDTH)
-		};
-		
-		yPointsDown = new int[]
-		{
-			-(scaleHeight/2)-(int) (21 * biOut.getHeight()/PlayTable.TABLE_HEIGHT),
-			-(scaleHeight/2),-(scaleHeight/2)
-		};
-		
-		xPointsUp = new int[] 
-		{
-			0,
-			(int) (-10 * biOut.getWidth()/PlayTable.TABLE_WIDTH),
-			(int) (10 * biOut.getWidth()/PlayTable.TABLE_WIDTH)
-		};
-		
-		yPointsUp = new int[] 
-		{
-			-(scaleHeight/2)-(int) (20 * biOut.getHeight()/PlayTable.TABLE_HEIGHT),
-			-(scaleHeight/2),-(scaleHeight/2)
-		};
-	
-		x1Points = new int[3];
-		y1Points = new int[3];
-
-
-		/**Se calculan los puntos de acuerdo al tamaño de la mesa y
-		 *la posicion del jugador y se dibuja el dialogo negro(el de fondo)*/		
-		for (int j=0; j<3; j++)
-		{ 
-			x1Points[j] =(int) (Math.cos(triAng)*xPointsDown[j] - Math.sin(triAng)*yPointsDown[j]);
-			y1Points[j] = (int) (Math.sin(triAng)*xPointsDown[j] + Math.cos(triAng)*yPointsDown[j]);
-			x1Points[j] += x+triOffset;
-			y1Points[j] += y;
-		}
-	
-		//se dibuja el triangulito
-		grOut.setColor(Color.BLACK);
-		grOut.fillPolygon(x1Points,y1Points,3);
-		
-		//se dibuja la elipse de abajo en color negro
-		grOut.setColor(Color.BLACK);
-		grOut.fillOval((int)x-scaleWidth/2-1,(int)y-scaleHeight/2-1,scaleWidth+2,scaleHeight+2);
-		
-		
-		/**Se calculan los puntos de acuerdo al tamaño de la mesa y
-		 *la posicion del jugador y se dibuja el dialogo amarillo*/			
-		for (int j=0; j<3; j++){ 
-			x1Points[j] =(int) (Math.cos(triAng)*xPointsUp[j] - Math.sin(triAng)*yPointsUp[j]);
-			y1Points[j] = (int) (Math.sin(triAng)*xPointsUp[j] + Math.cos(triAng)*yPointsUp[j]);
-			x1Points[j] += x+triOffset;
-			y1Points[j] += y;
+			lineWidth = fMetrics.stringWidth(lines[i]);
+			if (lineWidth > textWidth)
+				textWidth = lineWidth;
 		}
 		
-		//se dibuja el triangulito
-		grOut.setColor(Color.yellow);
-		grOut.fillPolygon(x1Points,y1Points,3);
+		lineHeight = fMetrics.getHeight();
+		textHeight = lineHeight * lines.length;
+		lineAscent = fMetrics.getAscent();
+			
+		// añade 50 puntos al ancho y al alto
+		width = textWidth + 50;
+		height = textHeight + 50;
+
+		grBall.translate
+		(
+			(width * .5 + 40) * Math.sin(ballAng), 
+			(height * .5 + 40) * Math.cos(ballAng)
+		);
+		grTri.rotate(-ballAng);
+		grTri.translate(0, 40);
+		grTri.scale((double) height / width, 1);
 		
-		//se dibuja la elipse	
-		grOut.setColor(Color.yellow.brighter().brighter());
-		grOut.fillOval((int)x-scaleWidth/2,(int)y-scaleHeight/2,scaleWidth,scaleHeight);
+		// se establece el color negro
+		grTri.setColor(Color.BLACK);
+		grBall.setColor(Color.BLACK);
 		
-		//Se coloca la accion al globito
-		grOut.setColor(Color.black);	
-		//Tamaño del texto de acuerdo al tamaño de la mesa y estilo de letra
-		grOut.drawString(accion,(int)x - (int) ((4*accion.length()-1)* biOut.getWidth()/PlayTable.TABLE_WIDTH),y+(5*biOut.getHeight()/PlayTable.TABLE_HEIGHT));
+
+		// se dibuja la elipse y el triangulito
+		grBall.fillOval
+		(
+			-width / 2,
+			-height / 2,
+			width, 
+			height
+		);
+		grTri.fillPolygon(triPoints[0][0], triPoints[0][1], 3);
+
+		// se establece el color a amarillo
+		grBall.setColor(Color.YELLOW);
+		grTri.setColor(Color.YELLOW);
+
+		// se dibuja la elipse y el triangulito
+		grTri.fillPolygon(triPoints[1][0], triPoints[1][1], 3);
+		grBall.fillOval
+		(
+			(int) (-width / 2.0 + 1),
+			(int) (-height / 2.0 + 1), 
+			width - 2, height - 2
+		);
+
+		// resaltar el texto o no
+		if (highlighted)
+			grBall.setColor(Color.RED.darker());	
+		else
+			grBall.setColor(Color.BLACK);
+		
+		// se dibujas las líneas de texto
+		for (int i = 0; i < lines.length; i++)
+			grBall.drawString
+			(
+				lines[i],
+				(int) (-textWidth / 2),
+				lineHeight * i - textHeight / 2 + lineAscent
+			);
 	}
 
 
 	
-	//obtiene la imagen de la carita
-	public ImageIcon getFaceImage(int sign)
+	/** 
+	 * Establece el nombre de la carita
+	 * @param name	nombre de la carita
+	 */
+	public void setName(String name)
 	{
-		return new ImageIcon("/home/aalliana/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/" + sign + ".jpg");
+		playerName = name;
 	}
+	 
 	
-	// dibuja 'bfIn' en 'bfOut' en la posición 
-	// (x, y) con un ángulo de rotación 'rotAngle' 
-	private void drawFace
+	/**
+     * Obtiene la cantidad de caracteres de un texto que entran 
+     * en una cierta cantidad de píxeles a lo largo del texto.
+     * @param text	Texto a analizar.
+     * @param start	Posición inicial del análisis.
+     * @param width	Tamaño máximo en píxeles.
+     * @param grOut	Contexto de dibujo del texto
+     */
+	private int getNChars
 	(
-		BufferedImage bfIn, BufferedImage bfOut, 
-		float rotAngle, float scale,
-		AffineTransform afTrans
+		String text, int start, int width, Graphics2D grOut
 	)
 	{
+		FontMetrics fMetrics;
+		int max, shown, currWidth;
+		char[] chars;
 
-		int x;
-		int y;
+		// obtiene las medidas de la fuente actual
+		fMetrics = grOut.getFontMetrics();
+
+		// carga el tamaño actual y la cantidad 
+		// de caracteres mostrados actualmente
+		currWidth = 0;
+		shown = 0;
+
+		try
+		{
+			while(currWidth < width) 
+			{
+				currWidth += fMetrics.charWidth
+				(
+					text.charAt(start + shown++)
+				);
+			}
+		}
+		catch(IndexOutOfBoundsException ex) {}
 		
+		shown --;
 		
-		x = chairBounds[0] + chairBounds[2] / 2;
-
-		y = (int) (chairBounds[1] + chairBounds[3] - nameShownDescent - chairInnerOffset);
-		y = Math.max(y, 0);
-		y = Math.min(y, biOut.getHeight() - nameShownDescent);
-		y -= (int) ((bfIn.getHeight() + 3) * scale / 2);
-		y -= nameShownAscent;
-
-				
-		AffineTransformOp afTransOp;	// Dibujador de la imagen
-		int centX, centY;
-
-		// obtiene el centro de 'bfIn'
-		centX = bfIn.getWidth() / 2;
-		centY =	bfIn.getHeight() / 2;
-		
-		// limpia la transformación 
-		afTrans.setToIdentity();
+	   	return shown;
+	}
 	
-		afTrans.translate
-		(
-			(int) (x), 
-			(int) (y)
-		);		
-		afTrans.scale(scale, scale);
-		afTrans.rotate(rotAngle);
+	/**
+     * Retorna un vector de Strings que es un texto separado
+     * en varias líneas de manera que su ancho no sea mayor
+     * que <code>width</code>.
+     * @param text	Texto a analizar
+     * @param width	Tamaño máximo en puntos
+     * @param grOut	contexto de dibujo de la fuente
+     */
+	private String[] getLines
+	(
+		String text, int width, Graphics2D grOut
+	)
+	{
+		LinkedList lines;
+		StringTokenizer strTok;
+		FontMetrics fMetrics;
+		int lineSize = 0, tokWidth;
+		String token, currLine;
+		String[] strLines;
+		int len;
+		
+		// crea la lista enlazada de líneas
+		lines = new LinkedList();
+		
+		// obtiene los tókens (palabras) de 'text'
+		strTok = new StringTokenizer(text, " ", true);
+		
+		// obtiene las medidas de la fuente de 'grOut'
+		fMetrics = grOut.getFontMetrics();
+		
+		// inicializa el tamaño actual de la línea como para 
+		// que al principio sobrepase el tamaño máximo
+		lineSize = 0;
+		
+		// inicaliza la línea actual
+		currLine = new String();
+		
+		// carga las líneas de texto
+		while(strTok.hasMoreElements())
+		{
+			// obtiene el tóken y su tamaño
+			token = (String) strTok.nextElement();
+			tokWidth = fMetrics.stringWidth(token);
+			
+			// si el tamaño del tóken es mayor que 'width'
+			while (tokWidth > width)
+			{
+				len = getNChars(token, 0, width, grOut);
 
+				lines.add(token.substring(0, len - 1));
+				token = token.substring(len, token.length() - 1);
+				tokWidth = fMetrics.stringWidth(token);
+			}
+
+			// incrementa el tamaño actual de la línea
+			lineSize += tokWidth;
+			
+			// si ha excedido el tamaño, habilitar una nueva línea
+			if (lineSize > width)
+			{
+				lineSize = tokWidth;
+				lines.add(currLine);
+				currLine = new String(token);
+			}
+			// si no, agregar el tóken a la línea
+			else currLine = currLine.concat(token);
+		}
+		
+		lines.add(currLine);
+		
+		// crea el vector de Strings y lo carga
+		strLines = new String[lines.size()];
+		System.arraycopy(lines.toArray(), 0, strLines, 0, lines.size());
+
+		return strLines;
+	}
+	
+	synchronized public void clear(Graphics2D grOut) 
+	{
+		FaceState cState;
+		int w, h;
+		
+		// obtiene el estado anterior
+		cState = (FaceState) states[0].getCurrState();
+		
+		// si no hay estado anterior, salir
+		if (cState == null) return;
+		
+		grOut.setColor(Color.GREEN.darker());
+//		grOut.setColor(new Color((int) (Math.random() * Math.pow(2, 24))));
+		grOut.fillRect
+		(
+			(int) (cState.x - WIDTH / 2 - 5), 
+			(int) (cState.y - HEIGHT / 2 - 5),
+			(int) WIDTH + 10, (int) HEIGHT + 10
+		);
+	}
+
+	synchronized public boolean advance() 
+	{
+		states[0].advance();
+		states[1].advance();
+		states[2].advance();
+		return true;
+	}
+
+	synchronized public boolean isEnabled() 
+	{
+		return true;
+	}
+	
+	/**
+     * Retorna una copia del estado actual
+     */
+	private FaceState getCurrState()
+	{
+		return (FaceState) states[0].getCurrState();
+	}
+	
+	/**
+     * Carta todas las caritas en un vector y lo retorna
+     */
+	private BufferedImage[] loadFaces()
+	{
+		BufferedImage[] ret;
+		ImageIcon fIcon;
+		
+		ret = new BufferedImage[10];
+		
+		for (int i = 0; i < ret.length; i++)
+		{
+			fIcon = new ImageIcon
+			(
+				"c:/pablo/toluca/py/edu/uca/fcyt/toluca/images/faces/standard/" + i + ".jpg"
+			);
+
+			ret[i] = new BufferedImage
+			(
+				fIcon.getIconWidth(), fIcon.getIconHeight(),
+				BufferedImage.TYPE_3BYTE_BGR
+			);
+
+			Util.copyImage(fIcon, ret[i]);
+		}
+		
+		return ret;
+	}
+	
+
+	/**
+     * Dibuja la carita 
+     * @param biOut		lugar donde se dibujará la carita
+     * @param afTrans	AffineTransform a utizar
+     */
+	private void drawFace
+	(
+		BufferedImage biOut, AffineTransform afTrans
+	) 
+	{
+		int sign;
+		SignState sState;
+		
+		sState = (SignState) states[1].getCurrState();
+		
+		if (sState == null) return;
+		
+		// obtiene la seña
+		sign = sState.getSign();
+		
+		// crea una copia de 'afTrans'
+		afTrans = new AffineTransform(afTrans);
+
+		afTrans.scale(.8, .8);
+		
+		// translada la carita a su posición
 		afTrans.translate
 		(
-			(int) - centX, 
-			(int) - centY
+			-faces[sign].getWidth() / 2,
+			-faces[sign].getHeight() / 2
 		);
 		
-		// dibuja la imagen 'bfIn' en 'bfOut
+
+		// dibuja la imagen 'bfIn' en 'biOut
 		new AffineTransformOp
 		(
 			afTrans, AffineTransformOp.TYPE_BILINEAR
-		).filter(bfIn, bfOut);
-	}
-
-	/**Carga el imageIcon de la carita en un BufferedImage para
-	 *la carita
-	 */
-	private BufferedImage createFace(int sign)
-	{
-		BufferedImage face;
-		
-		ImageIcon f = getFaceImage(sign);
-//		System.out.println (f.getIconWidth());
-//		System.out.println (f.getIconWidth());
-		
-		face = new BufferedImage
-		(	
-			f.getIconWidth(),f.getIconHeight(),
-			/*(int) (f.getIconWidth()*(biOut.getWidth()/PlayTable.TABLE_WIDTH)),
-			(int) (f.getIconHeight()*(biOut.getHeight()/PlayTable.TABLE_HEIGHT)),*/
-			BufferedImage.TYPE_3BYTE_BGR
-		);		
-		
-		Util.copyImage(f,face);
-
-		return face;
+		).filter(faces[sign], biOut);
 	}
 	
-	public void setName(String name)
-	{
-		FontMetrics fMetrics;
-		int nameCharsShown;
-		int max;
-		char[] nameChars;
+	/**
+     * Retorna el tiempo restante de animación
+     */
+    synchronized public long getRemainingTime()
+    {
+    	return states[0].getRemainingTime();
+    }
+    
+    /**
+     * Retorna un Graphics2D con transformación 
+     * afTrans y antialiasing
+     */
+    private Graphics2D getGraphics2D
+    (
+    	BufferedImage biOut, AffineTransform afTrans
+    )
+    {
+    	Graphics2D ret;
 
-                System.out.println("name = " + name);
-		playerName = name;
+		ret = biOut.createGraphics();
+		ret.setTransform(afTrans);
+
+		// establece el antialiasing al Graphics2D
+		ret.setRenderingHint
+		(
+			RenderingHints.KEY_ANTIALIASING,
+			RenderingHints.VALUE_ANTIALIAS_ON
+		);
 		
-		max = Math.max(biOut.getWidth(), biOut.getHeight());
-
-		fMetrics = grOut.getFontMetrics(font);
-
-		nameChars = playerName.toCharArray();
-		
-		nameShownWidth = fMetrics.stringWidth(playerName);
-		nameShownAscent = fMetrics.getAscent();
-		nameShownDescent = fMetrics.getDescent();
-		
-		nameCharsShown = nameChars.length;
-
-		while(nameShownWidth > max * .14)
-		{
-			nameShownWidth -= fMetrics.charWidth
-			(
-				nameChars[--nameCharsShown]
-			);
-	   	}
-	   	nameShown = playerName.substring(0, nameCharsShown);
-                System.out.println("termino setName");
+		return ret;
 	}
 }
 

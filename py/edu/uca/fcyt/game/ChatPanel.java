@@ -48,11 +48,11 @@ public class ChatPanel extends JPanel implements ActionListener
 		mensajes = new JEditorPane();
 		eleditor = new HTMLEditorKit();
 		mensajes.setEditorKit(eleditor);
-		mensajes.setPreferredSize(new Dimension(350,300));
+		mensajes.setPreferredSize(new Dimension(300,80));
 		mensajes.setEditable(false);		
 		//
 		editor = new JScrollPane();
-		editor.setPreferredSize(new Dimension(350, 320));	
+		editor.setPreferredSize(new Dimension(350, 80));	
 		editor.setViewportView(mensajes);
 		//
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));

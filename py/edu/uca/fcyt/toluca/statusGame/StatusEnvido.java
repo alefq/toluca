@@ -15,9 +15,9 @@ public class StatusEnvido extends StatusFlor {
     /** Busca quien tiene el envido mayor
      * @return 0 si hay un empate, 1 si la flor mayor esta en el equipo 1 o 2 si esta en el equipo 2
      */    
-     public int envidoMayor()
+     public int envidoMayor(int equipoMano)
     {
-        return super.florMayor();
+        return super.florMayor(equipoMano);
      }
     
      /** Guarda el valor d eun envido
