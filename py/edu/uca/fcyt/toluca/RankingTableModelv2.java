@@ -112,6 +112,8 @@ public class RankingTableModelv2 extends AbstractTableModel {
            System.out.println("EL jugador que se quiere eliminar no se encuentra!");
     }
     
+    //Nuevo agregado bola
+    
     /*
      * Se modifican los datos del jugador "player" en la tabla del Ranking.
      */
