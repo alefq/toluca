@@ -143,6 +143,7 @@ public class RoomClient extends Room
      */
     private void fireTableCreateRequested() {        /** lock-end */
         RoomEvent re = new RoomEvent();
+        re.setUser("Fernando");
         Iterator iter = roomListeners.listIterator();
         while(iter.hasNext()) {
             RoomListener ltmp = (RoomListener)iter.next();
@@ -201,7 +202,7 @@ public class RoomClient extends Room
         super.addPlayer(player);
         System.out.println("Gol de Cerro!!");
         if (rankTable == null) System.out.println("Nulooooo!!!");
-        rankTable.addPlayer(player.getName(), player.getRating());
+        rankTable.addPlayer(player);
     }
     
      /**
