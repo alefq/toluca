@@ -75,6 +75,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     public void sitPlayer(TrucoPlayer player, int chair) {
         try
 		{
+            
     	logger.log(Level.WARNING, "Sit player "+player+" chair "+chair);
     	pManager.sitPlayer(player, chair);
     	asientos.put(player.getName(),new Integer(chair));

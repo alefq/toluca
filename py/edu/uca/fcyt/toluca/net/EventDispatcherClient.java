@@ -374,6 +374,28 @@ public class EventDispatcherClient extends EventDispatcher {
 
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "La silla de
         // "+playerClient.getName()+" es "+table.getChair(playerClient));
+        try
+        {
+            TrucoPlayer trucoP=table.getPlayer(chair);
+            /*
+             *Esto se hace para resolver el problema en el cual 2 usuarios al mismo tiempo se quieren sentar en una silla
+             *En el gui a los 2 se le da como sentados y se envia el request al servidor.
+             *El servidor envia la respuesta y al llegar al cliente que alguien esta sentado en la silla n
+             *se produce un TableException ya que en mi gui, yo estoy sentado.
+             *Aca se fuerza para que se levante y manda lo que está en el server
+             *  
+             * */
+            if(trucoP!=null)
+            {
+                table.standPlayer(chair);
+                table.showSystemMessage("Alguien se sento antes, te ganaron, sorry. Sentate en otra silla");
+            }
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"ArrayIndexOutOfBoundsException:  "+e.getMessage());
+        }
+        
         table.sitPlayer(playerClient, chair);
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "ya se hizo el
         // table.sitPlayer");

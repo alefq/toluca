@@ -265,7 +265,7 @@ implements ChatPanelContainer {
     {
     	tablesServers[table.getTableNumber()]=null;
     }
-    public int getAvailableKey()
+    public synchronized int getAvailableKey()
     {
     	
     	for(int key=0;key<MAX_TABLES;key++)

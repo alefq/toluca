@@ -17,7 +17,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
 import org.apache.log4j.xml.DOMConfigurator;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
@@ -131,7 +131,10 @@ implements ChatPanelContainer, TableListener {
         //ya se esta haciendo un addPlayer, osea esto esta alpedo
         //Table table = new Table(player, true);
         //vTables.add(tableServer);
+        
+        
         int key = getAvailableKey();
+        
         if (key >= 0) {
             tableServer.setTableNumber(key);
             addTable(tableServer);
@@ -394,9 +397,9 @@ implements ChatPanelContainer, TableListener {
      *            </p>
      */
     public static void main(String[] args) {
-        /*DOMConfigurator.configure(System.getProperty("user.dir")
-                + System.getProperty("file.separator") + "log.xml");*/
-        PropertyConfigurator.configure("logConfigure.txt");
+        DOMConfigurator.configure(System.getProperty("user.dir")
+                + System.getProperty("file.separator") + "log.xml");
+       // PropertyConfigurator.configure("logConfigure.txt");
         RoomServer rs = new RoomServer();
         List params = Arrays.asList(args);
         if (!params.isEmpty()) {

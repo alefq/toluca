@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-import java.awt.FlowLayout;
+
 import javax.swing.JLabel;
 /**
  * @author Dani Cricco
@@ -17,12 +17,21 @@ import javax.swing.JLabel;
 public class ConexionTestPanel extends JPanel{
     
 	private JLabel jLabel = null;
+	private JLabel labelConexion;
+	private int intervalo=5;
+	private int cont=0;
+	private float test[];
+	
+	
+	
     public ConexionTestPanel()
     {
         super();
- 		initialize();
-       actualizar(20);
+ 		
+       test=new float[intervalo];
+       initialize();
     }
+    
     
 
 	/**
@@ -35,12 +44,12 @@ public class ConexionTestPanel extends JPanel{
         this.setLayout(new BorderLayout());
         
         setBorder(BorderFactory.createEtchedBorder());
-        this.add(getJLabel(), BorderLayout.CENTER);
-        this.add(new JLabel("Conexión"),BorderLayout.NORTH);
+        this.add(getJLabel(), BorderLayout.EAST);
+        this.add(new JLabel("Conexión"),BorderLayout.CENTER);
         
 			
 	}
-	private Color getColorForMs(long ms)
+	private Color getColorForMs(double ms)
 	{
 	    if(ms<30)
 	        return Color.GREEN;
@@ -51,7 +60,16 @@ public class ConexionTestPanel extends JPanel{
 	    return Color.RED;
 	        
 	}
-	private String getStringForMs(long ms)
+	private JLabel getLabelConexion()
+	{
+	    if(labelConexion==null)
+	    {
+	        labelConexion=new JLabel("Conexión: ",JLabel.RIGHT);
+	        
+	    }
+	    return labelConexion;
+	}
+	private String getStringForMs(double ms)
 	{
 	    if(ms<30)
 	        return "Excelente";
@@ -61,12 +79,26 @@ public class ConexionTestPanel extends JPanel{
 	        return "Buena";
 	    return "Aceptable";
 	}
-	public void actualizar(long ms)
+	public void actualizar(float ms)
 	{
-	    System.out.println("Se va a actualizar el ms: "+ms);
-	 getJLabel().setBackground(getColorForMs(ms));
-	 getJLabel().setOpaque(true);
-	 getJLabel().setText(getStringForMs(ms)+" - "+ms+"ms.");
+
+	    getJLabel().setOpaque(true);
+		 getJLabel().setText("           ");
+		 for(int i=0;i<test.length;i++)
+		     ms+=test[i];
+		 
+		 ms=ms/intervalo;
+		 String text=getStringForMs(ms)+" - "+ms+"ms.";
+		 getJLabel().setToolTipText(text);
+		 getJLabel().setBackground(getColorForMs(ms));
+		 getLabelConexion().setToolTipText(text);
+		 
+		 
+	    if(cont>=intervalo-1)
+	        cont=0;
+	    else
+	        test[cont++]=ms;
+	    
 	}
 	private JLabel getJLabel()
 	{
@@ -76,4 +108,10 @@ public class ConexionTestPanel extends JPanel{
 	    }
 	    return jLabel;
 	}
+    public int getIntervalo() {
+        return intervalo;
+    }
+    public void setIntervalo(int intervaloDeAct) {
+        this.intervalo = intervaloDeAct;
+    }
 }
