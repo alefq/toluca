@@ -199,6 +199,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 		}
 		
 		jFrame.addWindowListener(this);
+		jtTable.jpChat.setCpc(this);
 		jtTable.jpChat.showChatMessage(actualPlayer,
 				"Inicia tus mensajes con \\ si no quieres que "
 						+ "salgan en la mesa.", new String[] { "[", "]" });

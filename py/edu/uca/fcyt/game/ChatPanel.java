@@ -66,7 +66,7 @@ public class ChatPanel extends javax.swing.JPanel {
         getChatArea().append(
                 bounds[0] + player.getName() + bounds[1] + ": " + htmlMessage
                         + "\n");
-        getChatArea().setCaretPosition(getChatArea().getText().length());
+        getChatArea().setCaretPosition(getChatArea().getText() != null ? getChatArea().getText().length() : 0);
     }
 
     private void sendChatMessage() {
