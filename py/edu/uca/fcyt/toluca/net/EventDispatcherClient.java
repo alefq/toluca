@@ -436,12 +436,17 @@ public class EventDispatcherClient extends EventDispatcher {
     public void playerKicked(TableEvent event) {
 
         //TableServer tableServer = event.getTableServer();
-        TrucoPlayer playerServer = event.getPlayer()[0];
+        TrucoPlayer playerChutadoLadoServer = event.getPlayer()[0];
 
         Table table = room.getTable(event.getTableBeanRepresentation().getId());
-        TrucoPlayer playerClient = room.getPlayer(playerServer.getName());
+        TrucoPlayer playerChutadoLadoCliente = room.getPlayer(playerChutadoLadoServer.getName());
 
-        table.kickPlayer(playerClient);
+        table.kickPlayer(playerChutadoLadoCliente);
+        if(event.getTableBeanRepresentation().getHostPlayer().equals(playerChutadoLadoServer))
+        {
+           //Salió el HOST y hay que autoeliminarse de esa mesa
+            table.selfKick();
+        }
     }
 
     /*

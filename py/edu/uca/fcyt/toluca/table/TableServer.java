@@ -367,21 +367,24 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 			((TableListener) tableListeners.get(i)).signSent(event);
 	}
 	
-	public void kickPlayer(TrucoPlayer tptmp) 
+	public void kickPlayer(TrucoPlayer playerKicked) 
 	{
 
+	    TableBeanRepresentation tBean = null;
+	    TableEvent tEvent = null;
+	    
 		//System.out.println("Se fue: " + tptmp.getName());
-		int chair=getChair(tptmp);
+		int chair=getChair(playerKicked);
 		if(chair>=0)
 		{//si estaba sentado primero que se pare
 			TableEvent e=new TableEvent();
 			e.setEvent(TableEvent.EVENT_playerStandRequest);
 			e.setTableServer(this);
-			e.setPlayer(new TrucoPlayer[]{tptmp,null});
+			e.setPlayer(new TrucoPlayer[]{playerKicked,null});
 			e.setValue(chair);
 			standPlayer(e);
 		}
-		getPlayers().remove(tptmp);
+		getPlayers().remove(playerKicked);
 		
 //TODO: Agregado por aa, quito el jugador de entre los listeners del trucogame
 //		TrucoGame tg = getTrucoGame();
@@ -391,11 +394,13 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		//TODO PP total. Cambiamos porque del lado del cliente al recibir el XML se cambiaba
 		// el user que debia salir de la mesa. El caso del host saliendo de la mesa 
 		// que dejaba su usuario en la mesa de todos los demas
-		TableEvent te = new TableEvent();
-		te.setPlayer(new TrucoPlayer[]{tptmp,null});
-		te.setEvent(TableEvent.EVENT_playerKicked);
-		te.setTableBeanRepresentation(new TableBeanRepresentation(getTableNumber(), null));
-		firePlayerKicked(te);
+		tEvent = new TableEvent();
+		tBean = new TableBeanRepresentation(getTableNumber(), null);
+		tBean.setHostPlayer(getHost());
+		tEvent.setPlayer(new TrucoPlayer[]{playerKicked,null});
+		tEvent.setEvent(TableEvent.EVENT_playerKicked);
+		tEvent.setTableBeanRepresentation(tBean);
+		firePlayerKicked(tEvent);
 		comprobarTable();
 	}
 	public void comprobarTable()

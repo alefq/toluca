@@ -7,6 +7,9 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 public class TableBeanRepresentation {
 
 	private TrucoPlayer player;
+	
+	private TrucoPlayer hostPlayer;
+	
 	public TableBeanRepresentation()
 	{
 		
@@ -45,4 +48,10 @@ public class TableBeanRepresentation {
 		this.player = player;
 	}
 
+    public TrucoPlayer getHostPlayer() {
+        return hostPlayer;
+    }
+    public void setHostPlayer(TrucoPlayer hostPlayer) {
+        this.hostPlayer = hostPlayer;
+    }
 }
