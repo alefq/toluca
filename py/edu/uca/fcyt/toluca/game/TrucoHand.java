@@ -1525,6 +1525,8 @@ public class TrucoHand
 			displayFinDeMano();
 			finDeManoSetearEnvido();
 			game.fireEndOfHandEvent();
+			game.EndOfHandEvent();
+			//TODO: Ver con Julio que tiene esto que ver con el findemano
 		} else 
 			playTurn();
 	}
