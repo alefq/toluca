@@ -151,7 +151,7 @@ class TrucoFrontEndTester extends JFrame implements TableListener {
         while (tEnum.hasMoreElements())
             ((Table) tEnum.nextElement()).addPlayer(player);
         
-        table.show();
+        table.initResources();
     }
     
     

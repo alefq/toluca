@@ -160,7 +160,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 		animator.addAnim(tFrame);
 	}
 
-	public void show() {
+	public void initResources() {
 		Face face;
 		TrucoPlayer player;
 
@@ -198,8 +198,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 						.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
 			}
 		}
-
-		jFrame.show();
+		
 		jFrame.addWindowListener(this);
 		jtTable.jpChat.showChatMessage(actualPlayer,
 				"Inicia tus mensajes con \\ si no quieres que "
@@ -902,5 +901,17 @@ public class Table implements PTableListener, ChatPanelContainer,
 
 	}
 
+    /**
+     * @return Returns the jFrame.
+     */
+    public JFrame getJFrame() {
+        return jFrame;
+    }
+    /**
+     * @param frame The jFrame to set.
+     */
+    public void setJFrame(JFrame frame) {
+        jFrame = frame;
+    }
 }
 
