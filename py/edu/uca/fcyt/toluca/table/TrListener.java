@@ -97,7 +97,7 @@ class TrListener implements TrucoListener
 		switch (type)
 		{
 			case TrucoEvent.JUGAR_CARTA:
-				PlaySound.play(PlaySound.CARD_PLAYED_SOUND_URL);
+				PlaySound.play(PlaySound.CARD_PLAYED_SOUND);
 				card = event.getCard();
 				cManager.playCard(pos, card);
 				// Somos la estirpe guaran�
@@ -195,6 +195,7 @@ class TrListener implements TrucoListener
 		// establece el estado de la mesa
 		if (event.getPlayer() == getAssociatedPlayer())
 		{
+			PlaySound.play(PlaySound.TURN_SOUND);			
 			getTable().flash(true);
 			
 			if (event.getTypeEvent() == TrucoEvent.TURNO_JUGAR_CARTA)
@@ -345,7 +346,7 @@ class TrListener implements TrucoListener
 		
 		cManager.gatherCards(dealPos);
 
-		PlaySound.play(PlaySound.DEAL_SOUND_URL);		
+		PlaySound.play(PlaySound.DEAL_SOUND);		
 		cManager.deal(dealPos, false);
 		cManager.take();
 		cManager.putDeckInTable

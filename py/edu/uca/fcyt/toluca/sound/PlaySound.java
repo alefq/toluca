@@ -19,9 +19,14 @@ import java.net.URL;
 
 public class PlaySound {
 
-	public static final String CARD_PLAYED_SOUND_URL = "http://truco.com.py/audio/carta.au";
-	public static final String DEAL_SOUND_URL = "http://truco.com.py/audio/deal.au";
+//	public static final String CARD_PLAYED_SOUND_URL = "http://truco.com.py/audio/carta.au";
+//	public static final String DEAL_SOUND_URL = "http://truco.com.py/audio/deal.au";
 	
+	public static final String CARD_PLAYED_SOUND = "/py/edu/uca/fcyt/toluca/sounds/carta.wav";
+	public static final String DEAL_SOUND = "/py/edu/uca/fcyt/toluca/sounds/deal.wav";
+	public static final String TURN_SOUND = "/py/edu/uca/fcyt/toluca/sounds/turno.wav";
+	public static final String ENTER_SOUND = "/py/edu/uca/fcyt/toluca/sounds/entra.wav";
+	public static final String LEAVE_SOUND = "/py/edu/uca/fcyt/toluca/sounds/salir.wav";
 	
 	
 	public static void play(final String url) {
@@ -33,11 +38,12 @@ public class PlaySound {
 				URL completeURL;
 
 				try {
-					completeURL = new URL(url); // The Location of the file
+					//completeURL = new URL(url); // The Location of the file
+					completeURL = getClass().getResource(url);
 					onceClip = Applet.newAudioClip(completeURL);
 					onceClip.play();
 			
-				} catch (MalformedURLException e) {
+				} catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
 			}

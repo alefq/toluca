@@ -26,6 +26,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+import py.edu.uca.fcyt.toluca.sound.PlaySound;
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
 
@@ -331,7 +332,13 @@ public class EventDispatcherClient extends EventDispatcher {
             table.initResources();
             table.getJFrame().setVisible(true);
         }
-
+        
+        /*
+         * Play sound if the player is inside. 
+         */
+        if (table.isInside(playerClient.getName())) {
+        	PlaySound.play(PlaySound.ENTER_SOUND);
+        }
     }
 
     /*
@@ -436,6 +443,11 @@ public class EventDispatcherClient extends EventDispatcher {
      */
     public void playerKicked(TableEvent event) {
 
+    	/*
+    	 * Play a sound for player left. 
+    	 */
+    	PlaySound.play(PlaySound.LEAVE_SOUND);
+    	
         //TableServer tableServer = event.getTableServer();
         TrucoPlayer playerChutadoLadoServer = event.getPlayer()[0];
 
