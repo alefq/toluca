@@ -922,8 +922,10 @@ public class CommunicatorClient extends Communicator
 			System.out.println("El player del evento: " + event.getPlayer().getName());
 			System.out.println("El player asociado: " + getAssociatedPlayer().getName());
 			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			Document doc = event.toTrucoPlay().toXml();
-			super.sendXmlPackage(doc);
+			super.sendXmlPackage
+			(
+				event.toTrucoPlay().toXml()
+			);
 		}
 		
 	}

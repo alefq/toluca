@@ -351,13 +351,15 @@ public class CommunicatorServer extends Communicator
 			}
 			if (aux.compareTo("TrucoPlay") == 0)
 			{
-				TrucoPlay tp =
-				new TrucoPlay(
-				tableIdAux,
-				elPlayerDeAcaOtraVez,
-				(byte) typeAux,
-				cardAux,
-				valueAux);
+				// chila
+				TrucoPlay tp = new TrucoPlay
+				(
+					tableIdAux,
+					elPlayerDeAcaOtraVez,
+					(byte) typeAux,
+					cardAux,
+					valueAux
+				);
 				
 				System.out.println("Tabla :" + tp.getTableNumber());
 				System.out.println(
@@ -446,11 +448,69 @@ public class CommunicatorServer extends Communicator
 		{
 			xmlReadGameStartRequest(child);
 		}
-		if (aux.compareTo("TrucoPlay") == 0)
-		{
+		if (aux.compareTo("TrucoPlay")== 0){
 			xmlReadTrucoPlay(child);
 		}
 		
+		if (aux.compareTo("TrucoGameInfo")== 0){
+			xmlReadTrucoGameInfo(child);
+		}
+		
+	}
+	public void xmlReadTrucoGameInfo (Object o){
+		TableServer tabela =  (TableServer) getTables().get(String.valueOf(tableIdAux));
+		TrucoGame tgame = tabela.getTrucoGame();
+		String aux;
+		if (o instanceof Element)
+		{
+			Element element = (Element) o;
+			aux = element.getName();
+			if (aux.compareTo("Type") == 0)
+			{
+				typeAux = Integer.parseInt(element.getAttributeValue("id"));
+			}
+			if (aux.compareTo("Table") == 0)
+			{
+				//System.out.println("MESSAGE:"+element.getText());
+				tableIdAux = Integer.parseInt(element.getAttributeValue("id"));
+			}
+			if (aux.compareTo("Player") == 0)
+			{
+				//System.out.println("PLAYER:"+element.getText());
+				userAux = element.getAttributeValue("name");
+				elPlayerDeAcaOtraVez = pieza.getPlayer(userAux);
+			}
+			if (aux.compareTo("Carta") == 0)
+			{
+				String kind = element.getAttributeValue("kind");
+				String value = element.getAttributeValue("value");
+				cardAux = tgame.getCard(Byte.parseByte(kind),Byte.parseByte(value));
+			}
+			if (aux.compareTo("Value") == 0)
+			{
+				valueAux = Integer.parseInt(element.getAttributeValue("val"));
+			}
+			List children = element.getContent();
+			Iterator iterator = children.iterator();
+			while (iterator.hasNext())
+			{
+				Object child = iterator.next();
+				xmlReadTrucoGameInfo(child);
+			}
+			if (aux.compareTo("TrucoGameInfo") == 0)
+			{
+				tgame.startHand(elPlayerDeAcaOtraVez);
+				//ESTO HAY QUE DESCOMENTAR PARA QUE FUNCIONE ESTA COMENTADO PORQUE TODAVIA NO EXISTEN los metodos para el TableServer
+				/*try
+				{
+				} catch (java.lang.NullPointerException e)
+				{
+					System.out.println("LA TABLA ES NULL EN EL COMUNICATOR SERVER Método xmlReadTrucoPlay");
+					e.printStackTrace(System.out);
+					//					throw e;
+						}
+					*/}				
+			}
 	}
 	public void xmlReadGameStartRequest(Object o)
 	{ // PAULO

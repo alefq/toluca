@@ -125,10 +125,10 @@ public class TrucoGameClient extends TrucoGame
 			throw e;
 		}
 	}
-	public void StartHand(TrucoPlayer tPlayer)
+	public void startHand(TrucoPlayer tPlayer)
 	{
-		System.out.println("trucoGame-StartHand se quiere Preparar!!!"+tPlayer.getName());
-		
+		System.out.println("startHAND !!!!!!! EN trucoGame Cliente");
+		firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 	}
 	public void startHandClient(TrucoPlayer tPlayer)
 	{

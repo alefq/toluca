@@ -12,7 +12,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoCard;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
-
+import java.util.*;
 
 public class TrucoEvent
 {
@@ -216,12 +216,14 @@ public class TrucoEvent
 	}
 	public TrucoPlay toTrucoPlay()
 	{
-		
 		TrucoPlay tp = new TrucoPlay();
 		tp.setPlayer(player);
 		tp.setTableNumber(tableNumber);
 		byte typeevent = 0;
 		TrucoCard carta = null;
+		
+
+		
 		switch (type)
 		{
 			case 1:
@@ -285,9 +287,9 @@ public class TrucoEvent
 			case FIN_DE_MANO:
 				typeevent = FIN_DE_MANO;
 				break;
-			case PLAYER_CONFIRMADO:
+			case 110:
 				System.out.println("Vino el Player Confirmado: " + tp.getPlayer());
-				typeevent = PLAYER_CONFIRMADO;
+				typeevent = 110;
 				break;
 			default :
 				typeevent = -1;

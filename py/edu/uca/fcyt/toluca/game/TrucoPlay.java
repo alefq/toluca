@@ -229,8 +229,12 @@ public class TrucoPlay
 	}
 	public Document toXml()
 	{
-		Element ROOT =new Element("TrucoPlay");
-		
+		Element ROOT;
+		if (type == TrucoPlay.PLAYER_CONFIRMADO)
+			ROOT = new Element("TrucoGameInfo");
+		else
+			ROOT = new Element("TrucoPlay");
+			
 		Element TABLE=new Element("Table");
 		TABLE.setAttribute("id",String.valueOf(getTableNumber()));
 		ROOT.addContent(TABLE);
