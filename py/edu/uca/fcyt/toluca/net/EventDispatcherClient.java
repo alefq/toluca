@@ -426,7 +426,7 @@ public class EventDispatcherClient extends EventDispatcher{
 		}
 		Table table=room.getTable(event.getTableNumber());
 		TrucoGameClient trucoGameClient=(TrucoGameClient) table.getTGame();
-//		System.out.println(" Table "+table.getTableNumber());
+		System.out.println(" Table "+table.getTableNumber());
 //		System.out.println("Hands "+event.getNumberOfHand());
 		if(event.getPlayer()!=null)
 		{
@@ -447,7 +447,7 @@ public class EventDispatcherClient extends EventDispatcher{
 
 		
 		int tableId=event.getTableNumber();
-//		System.out.println("Se reciben las cartas para el juego de la tabla "+tableId);
+		System.out.println("Se reciben las cartas para el juego de la tabla "+tableId);
 //		System.out.println(" cards "+event.getCards().length);
 //		System.out.println(" hand "+event.getNumberOfHand());
 //		System.out.println(" cartas del player "+event.getPlayer().getName());

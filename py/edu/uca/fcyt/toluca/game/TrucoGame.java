@@ -193,6 +193,7 @@ public class TrucoGame extends Game
 	{ //avisar quien juega con type el tipo de turno, ronda de cartas, ronda de envidos o flores etc
 		
 		TrucoEvent event = new TrucoEvent(this, numberOfHand, pl, type); //crear el evento
+		event.setTableNumber(getTableNumber());
 		for (int i=0; i<listenerlist.size(); i++)
 		{ //enviarle a todos el evento
 			((TrucoListener)(listenerlist.get(i))).turn(event);
@@ -202,6 +203,8 @@ public class TrucoGame extends Game
 	{ //avisar el Turno con envio del value of envido
 		TrucoEvent event1 = new TrucoEvent(this, numberOfHand, pl, type, value ); //crear el evento1
 		TrucoEvent event2 = new TrucoEvent(this, numberOfHand, pl, type); //crear el evento2
+		event1.setTableNumber(getTableNumber());
+		event2.setTableNumber(getTableNumber());
 		for (int i=0; i<listenerlist.size(); i++)
 		{
 			if (((TrucoListener)listenerlist.get(i)).getAssociatedPlayer()==pl)
@@ -217,6 +220,7 @@ public class TrucoGame extends Game
 	public void firePlayEvent(TrucoPlayer pl, byte type)
 	{ //eventos de juego sin carta o canto
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			//			((TrucoListener)(listenerlist.get(i))).play(event);
@@ -234,6 +238,7 @@ public class TrucoGame extends Game
 	{ //eventos de juego con carta
 		System.out.println("se envia el mensaje de PlayEvent");
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type,card);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			System.out.println("firePlayEvent para: " + listenerlist.get(i).getClass().getName());
@@ -249,6 +254,7 @@ public class TrucoGame extends Game
 	public void firePlayEvent(TrucoPlayer pl, byte type, int value)
 	{//eventos de canto de tanto
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl, type, value);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).play(event);
@@ -263,6 +269,7 @@ public class TrucoGame extends Game
 	public void firePlayResponseEvent(TrucoPlayer pl, byte type)
 	{ //eventos de juego sin carta o canto
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			//			((TrucoListener)(listenerlist.get(i))).play(event);
@@ -280,6 +287,7 @@ public class TrucoGame extends Game
 	{ //eventos de juego con carta
 		//System.out.println("se envia el mensaje de PlayEvent");
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl,type,card);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			//System.out.println("firePlayEvent para: " + listenerlist.get(i).getClass().getName());
@@ -295,6 +303,7 @@ public class TrucoGame extends Game
 	public void firePlayResponseEvent(TrucoPlayer pl, byte type, int value)
 	{//eventos de canto de tanto
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,pl, type, value);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			//			((TrucoListener)(listenerlist.get(i))).play(event);
@@ -315,6 +324,7 @@ public class TrucoGame extends Game
 		teams[0].setPoints(points[0]);
 		teams[1].setPoints(points[1]);
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.FIN_DE_MANO);
+		event.setTableNumber(getTableNumber());
 		detalleDelPuntaje = trucoHand.getPointsDetail();
 		for(int i=0; i<listenerlist.size();i++)
 		{
@@ -338,6 +348,8 @@ public class TrucoGame extends Game
 	public void fireEndOfGameEvent()
 	{
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.FIN_DE_JUEGO);
+		event.setTableNumber(getTableNumber());
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).endOfGame(event);
@@ -350,6 +362,7 @@ public class TrucoGame extends Game
 	public void fireCardsDealt()
 	{
 		TrucoEvent event = new TrucoEvent(this,TrucoEvent.ENVIAR_CARTAS);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).play(event);
@@ -359,11 +372,13 @@ public class TrucoGame extends Game
 	 */
 	public void fireHandStarted()
 	{
-		System.out.println("el equipo es null"+teams[0]==null );
+		System.out.println(" fireHandStarted "+ getNumberOfHand());
+		System.out.println("el equipo es null"+teams[0]);
 		System.out.println(teams[1]==null);
 		System.out.println("numero de players de los equipos ="+teams[0].getNumberOfPlayers()+"y"+teams[0].getNumberOfPlayers());
 		TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,TrucoEvent.INICIO_DE_MANO);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).handStarted(event);
@@ -374,6 +389,7 @@ public class TrucoGame extends Game
 	public void fireGameStarted()
 	{
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,TrucoEvent.INICIO_DE_JUEGO);
+		event.setTableNumber(getTableNumber());
 		for(int i=0; i<listenerlist.size();i++)
 		{
 			((TrucoListener)(listenerlist.get(i))).gameStarted(event);

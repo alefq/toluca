@@ -351,20 +351,7 @@ class TrListener implements TrucoListener
 	
 	public void endOfGame(TrucoEvent event)
 	{
-		System.out.println(getClass().getName()+"End of game for player " + table.getPlayer());
-		table.getJTrucoTable().getJButton("Ayuda").setEnabled(true);
-
-		if (table.getJTrucoTable() != null)
-			table.getJTrucoTable().buttons[JTrucoTable.BUTTON_INICIAR_OK].setEnabled
-			(
-				table.getPManager().evenTeams() &&
-				(table.getPManager().getActualChair() == 0) &&
-				table.getPManager().isSitted(getAssociatedPlayer())
-			);
-
-		table.getJTrucoTable().getJButton("Ok").setText("Iniciar");
-
-		table.getTEventMan().fireGameFinished();
+		table.endOfGame(event);
 	}
 	
 	public TrucoPlayer getAssociatedPlayer()

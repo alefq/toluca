@@ -310,7 +310,9 @@ public class TrucoEvent
 		this.tableNumber=tableNumber;
 	}
 	public int getTableNumber()
-	{return tableNumber;}
+	{
+		return tableNumber;
+	}
 	
 	
 	
@@ -505,6 +507,7 @@ public class TrucoEvent
 		event.setTypeEvent((byte)33);
 		event.setValue(3);
 		 
+		
 		XMLEncoder e=	new XMLEncoder(		new BufferedOutputStream(System.out));
 		e.writeObject(event);
 		e.close();
@@ -559,6 +562,7 @@ public class TrucoEvent
 	public void setType(byte b) {
 		type = b;
 	}
+
 
 } // end TrucoEvent
 

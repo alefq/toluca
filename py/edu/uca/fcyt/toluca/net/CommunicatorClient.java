@@ -49,7 +49,7 @@ public class CommunicatorClient extends Communicator{
 		try
 		{
 			
-			setSocket(new Socket("localhost", 6767));
+			setSocket(new Socket("192.168.16.25", 6767));
 			
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 			System.out.println("Se establecio la coneccion con el servidor");

@@ -146,7 +146,10 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     }
     
     public void endOfGame(TrucoEvent event) {
-		pManager = new PlayerManager(6);
+		//pManager = new PlayerManager(6);
+    	//con el PlayerManager viejo van a seguir sentados en el mismo lugar
+    	//esto caga porque no se pueden cambiar de lugar nada mas
+    	//TODO Ver la opcion para que los player se puedan parar
 		tGame = null;
     }
     

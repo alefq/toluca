@@ -93,7 +93,7 @@ public abstract class XmlPackagesSession implements Runnable
 					
 						//String trimPacket=rawPacket.trim();
 						//System.out.println("Se recibe el paquete \n"+trimPacket);
-						System.out.println("se recibe un \n"+sBuff.toString());
+						//System.out.println("se recibe un \n"+sBuff.toString());
 						
 						ByteArrayInputStream bais = new ByteArrayInputStream(sBuff.toString().getBytes());
 						

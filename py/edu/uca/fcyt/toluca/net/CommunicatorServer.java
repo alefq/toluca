@@ -132,6 +132,8 @@ public class CommunicatorServer extends Communicator{
 	}
 	public void gameStarted(TableEvent event) {
 		TrucoGame trucoGame=event.getTableServer().getTrucoGame();
+		TableServer tableServer=event.getTableServer();
+		trucoGame.setTableNumber(tableServer.getTableNumber());
 		trucoGame.addTrucoListener(this);
 		super.sendXmlPackage(event);
 		
