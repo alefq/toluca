@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2004/09/22 12:44:47 $
- * @version $Revision: 1.6 $ 
+ * Last modified: $Date: 2004/09/22 20:55:11 $
+ * @version $Revision: 1.7 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -108,7 +108,7 @@ public class RoomUING extends JApplet {
             panelTitle.setStartColor(new Color(50, 255, 50));
             panelTitle.setLargo(50);
             panelTitle.setNombre("Dani Cricco");
-            panelTitle.setInc(200);
+            
             panelTitle.setMinimumSize(new Dimension(logo.getIconWidth(), logo
                     .getIconHeight()));
 
@@ -166,8 +166,10 @@ public class RoomUING extends JApplet {
         if (panelControl == null) {
             panelControl = new JPanel();
             panelControl.setLayout(new BorderLayout());
-            panelControl.add(getPanelComandos(), java.awt.BorderLayout.NORTH);
-            
+            panelControl.add(getPanelComandos(), java.awt.BorderLayout.CENTER);
+            panelControl.setBackground(RoomUING.COLOR_DE_FONDO);
+            panelControl.setOpaque(true);
+            panelControl.add(Box.createRigidArea(new Dimension(margen, 0)),BorderLayout.EAST);
         }
         return panelControl;
     }
@@ -197,6 +199,9 @@ public class RoomUING extends JApplet {
             scrollRanking = new JPanel();
             scrollRanking.setLayout(new BorderLayout());
             //scrollRanking.setPreferredSize(new Dimension(150, 2000));
+            scrollRanking.add(Box.createRigidArea(new Dimension(margen,0)),BorderLayout.WEST);
+            scrollRanking.setOpaque(true);
+            scrollRanking.setBackground(RoomUING.COLOR_DE_FONDO);
             scrollRanking.add(getJScrollPane(), java.awt.BorderLayout.CENTER);
         }
         return scrollRanking;
@@ -210,8 +215,8 @@ public class RoomUING extends JApplet {
     private PanelComandos getPanelComandos() {
         if (panelComandos == null) {
             panelComandos = new PanelComandos();
-            panelComandos.add(Box.createRigidArea(new Dimension(margen, 0)),
-                    BorderLayout.EAST);
+          //  panelComandos.add(Box.createRigidArea(new Dimension(margen, 0)),
+            //        BorderLayout.EAST);
             panelComandos.setBackground(RoomUING.COLOR_DE_FONDO);
             panelComandos.setTableGame(getTableGame());
         }

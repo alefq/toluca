@@ -49,7 +49,7 @@ public class PanelGradiente extends JComponent{
         setStartColor(new Color(50, 255, 50));
         setLargo(50);
         setNombre("Dani Cricco");
-        setInc(200);
+        setInc(50);
         setMinimumSize(new Dimension(logo.getIconWidth(), logo.getIconHeight()));
     }
     public Dimension getMinimumSize()
@@ -62,6 +62,7 @@ public class PanelGradiente extends JComponent{
 	  protected void paintComponent(Graphics g) {
 	    
 	    int margen=5;
+	    
 	    //Rectangle r = getBounds(null);
 	  	
 	  	Rectangle r=g.getClipBounds();

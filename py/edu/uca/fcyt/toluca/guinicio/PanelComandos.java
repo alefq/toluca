@@ -56,7 +56,7 @@ public class PanelComandos extends JPanel{
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		panel.setBackground(PanelComandos.COLOR_DE_FONDO);
 		panel.add(button);
-		panel.add(new JLabel(text));
+		//panel.add(new JLabel(text));
 		return  panel;
 	}
 	private JPanel getPanelBotonesJugar()
@@ -111,12 +111,13 @@ public class PanelComandos extends JPanel{
 	
 	private void initComponents()
 	{	    
-	    ImageIcon icon = RoomUI.loadImage("icon2.gif");
-        ImageIcon controlIcon = RoomUI.loadImage("controlpanel.gif");
-        ImageIcon salirIcon = RoomUI.loadImage("salir.gif");
+	    ImageIcon icon = RoomUI.loadImage("btnCrearMesa.gif");
+	    ImageIcon icon2 = RoomUI.loadImage("btnUnirse.gif");
+        ImageIcon controlIcon = RoomUI.loadImage("btnAyuda.gif");
+        ImageIcon salirIcon = RoomUI.loadImage("btnSalir.gif");
         ImageIcon puntajeIcon = RoomUI.loadImage("puntaje.gif");
         botonJugar=new JButton(icon);
-		botonUnirse=new JButton(icon);
+		botonUnirse=new JButton(icon2);
 		botonSalir=new JButton(salirIcon);
 		botonAyuda=new JButton(controlIcon);
 		this.puntaje=new JLabel(puntajeIcon);

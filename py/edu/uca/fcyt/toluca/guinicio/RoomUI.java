@@ -84,9 +84,9 @@ public class RoomUI extends JApplet {
     }
 
     private JPanel getPanelControl() {
-        ImageIcon icon = RoomUI.loadImage("icon2.gif");
-        ImageIcon controlIcon = RoomUI.loadImage("controlpanel.gif");
-        ImageIcon salirIcon = RoomUI.loadImage("salir.gif");
+        ImageIcon icon = RoomUI.loadImage("btnCrearMesa.gif");
+        ImageIcon controlIcon = RoomUI.loadImage("btnAyuda.gif");
+        ImageIcon salirIcon = RoomUI.loadImage("btnSalir.gif");
         ImageIcon puntajeIcon = RoomUI.loadImage("puntaje.gif");
 
         JPanel panel = new PanelComandos(icon, controlIcon, salirIcon,
