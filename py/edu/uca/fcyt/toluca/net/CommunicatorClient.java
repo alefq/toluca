@@ -655,6 +655,7 @@ public class CommunicatorClient extends Communicator {
         }
     }
     public void play(TrucoEvent event) {
+    	//TODO. ver por que aca se usa TrucoEvent.jugar_carta y no truco play.jugar_carta !!!!!
                 /*
                  * En el java console se sigue viendo q reparte por separado para cada table
                  */
@@ -671,7 +672,7 @@ public class CommunicatorClient extends Communicator {
             tp =
             new TrucoPlay(
             event.getPlayer(),
-            TrucoEvent.JUGAR_CARTA,
+            TrucoPlay.JUGAR_CARTA,
             event.getCard());
         else {
             new Exception(
