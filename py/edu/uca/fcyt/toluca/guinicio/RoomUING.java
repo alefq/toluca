@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/03/10 22:03:15 $
- * @version $Revision: 1.28 $ 
+ * Last modified: $Date: 2005/03/15 13:10:40 $
+ * @version $Revision: 1.29 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -88,6 +88,9 @@ public class RoomUING extends JApplet {
 
     private JTextArea jTextArea = null;
 
+	private JPanel jPanel = null;
+	private ConexionTestPanel conexionTestPanel = null;
+	private JPanel jPanel1 = null;
     /**
      * This method initializes panelPrincipal
      * 
@@ -179,7 +182,7 @@ public class RoomUING extends JApplet {
             panelPaneles.setLayout(new BorderLayout());
             panelPaneles.add(getPanelControl(), java.awt.BorderLayout.WEST);
             panelPaneles.add(getPanelCentral(), java.awt.BorderLayout.CENTER);
-            panelPaneles.add(getScrollRanking(), java.awt.BorderLayout.EAST);
+            panelPaneles.add(getJPanel(), java.awt.BorderLayout.EAST);
         }
         return panelPaneles;
     }
@@ -348,7 +351,49 @@ public class RoomUING extends JApplet {
         return jTextArea;
     }
 
-    public static void main(String[] args) {
+	/**
+	 * This method initializes jPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */    
+	private JPanel getJPanel() {
+		if (jPanel == null) {
+			jPanel = new JPanel();
+			jPanel.setLayout(new BorderLayout());
+			jPanel.add(getScrollRanking(), java.awt.BorderLayout.CENTER);
+			jPanel.add(getJPanel1(), java.awt.BorderLayout.SOUTH);
+		}
+		return jPanel;
+	}
+	/**
+	 * This method initializes conexionTestPanel	
+	 * 	
+	 * @return py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel	
+	 */    
+	private ConexionTestPanel getConexionTestPanel() {
+		if (conexionTestPanel == null) {
+			conexionTestPanel = new ConexionTestPanel();
+		}
+		return conexionTestPanel;
+	}
+	/**
+	 * This method initializes jPanel1	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */    
+	private JPanel getJPanel1() {
+		if (jPanel1 == null) {
+			jPanel1 = new JPanel();
+			jPanel1.setLayout(new BorderLayout());
+			jPanel1.add(getConexionTestPanel(), java.awt.BorderLayout.CENTER);
+			jPanel1.add(Box.createRigidArea(new Dimension(margen, 0)),
+                    BorderLayout.WEST);
+			jPanel1.setOpaque(true);
+			jPanel1.setBackground(RoomUING.COLOR_DE_FONDO);
+		}
+		return jPanel1;
+	}
+       public static void main(String[] args) {
     }
 
     /**
@@ -552,6 +597,10 @@ public class RoomUING extends JApplet {
     public void actualzarRanking(TrucoPlayer trucoPlayer)
     {
     	tableRanking.actualizarPuntaje(trucoPlayer);
+    }
+    public void actualizarTestConexion(long ms)
+    {
+        getConexionTestPanel().actualizar(ms);
     }
 
 } //  @jve:decl-index=0:visual-constraint="10,30"

@@ -206,13 +206,13 @@ public class RoomEvent {
 	public static final int TYPE_TABLE_CREATED_SERVER = 13;
 	public static final int TYPE_TABLE_DESTROYED=14;
 	public static final int TYPE_RANKING_CHANGED=15;
-    
+    public static final int TYPE_TEST_CONEXION=16;
 	/** Holds value of property player. */
 	private TrucoPlayer player;
     
 	/** Holds value of property tableServer. */
 	private TableServer tableServer;
-    
+    private long msSend;
 	public RoomEvent(){
 		//codigo agregado por el CIT MASTER
 	   tables = new HashMap();
@@ -386,6 +386,12 @@ public class RoomEvent {
 	public void setTablesServers(TableServer[] tablesServers) {
 		this.tablesServers = tablesServers;
 	}
+    public long getMsSend() {
+        return msSend;
+    }
+    public void setMsSend(long msSend) {
+        this.msSend = msSend;
+    }
 } 
 
 

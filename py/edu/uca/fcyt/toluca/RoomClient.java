@@ -19,6 +19,7 @@ import py.edu.uca.fcyt.toluca.guinicio.RoomUING;
 import py.edu.uca.fcyt.toluca.guinicio.TableGame;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 import py.edu.uca.fcyt.toluca.net.CommunicatorClient;
+import py.edu.uca.fcyt.toluca.net.ConexionTester;
 import py.edu.uca.fcyt.toluca.table.Table;
 
 /**
@@ -39,7 +40,7 @@ public class RoomClient extends Room implements ChatPanelContainer,
     private RoomUING roomUING;
 
     private CommunicatorClient cc;
-
+    private ConexionTester ct;
     private TrucoPlayer roomPlayer;
 
     ///////////////////////////////////////
@@ -51,18 +52,30 @@ public class RoomClient extends Room implements ChatPanelContainer,
         // roomClient");
         String serverString = rui.getParameter("serverString");
         String portNumberString = rui.getParameter("portNumber");
+        String intervaloTestString=rui.getParameter("intervaloTest");
         int portNumber;
+        long intervaloTest;
         try {
             portNumber = Integer.parseInt(portNumberString);
         } catch (java.lang.NumberFormatException e) {
             portNumber = 6767;
         }
+        try
+        {
+           intervaloTest=Long.parseLong(intervaloTestString);
+        }
+        catch(NumberFormatException e)
+        {
+            intervaloTest=5000;
+        }
         try {
             cc = new CommunicatorClient(this, serverString, portNumber);
+            ct=new ConexionTester(cc,intervaloTest);
             setRoomUING(rui);
             addRoomListener(cc);
             //SwingUtilities.invokeLater(cc);
             new Thread(cc, "comm-client").start();
+            new Thread(ct,"conn-tester").start();
         } catch (IOException e) {
             rui.getLoginPanel().getJLestado().setText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
             rui.getLoginPanel().getJLestado().setToolTipText("<html><font color=\"ff0000\">Problemas al iniciar la conexión: " + e.getMessage() + "</font>");
@@ -603,5 +616,9 @@ public class RoomClient extends Room implements ChatPanelContainer,
      */
     public void setRoomUING(RoomUING uiNG) {
         this.roomUING = uiNG;
+    }
+    public void testConexionReceive(long milisegundos)
+    {
+        getRoomUING().actualizarTestConexion(milisegundos);
     }
 } // end RoomClient

@@ -17,6 +17,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import py.edu.uca.fcyt.game.ChatPanelContainer;
@@ -393,8 +394,9 @@ implements ChatPanelContainer, TableListener {
      *            </p>
      */
     public static void main(String[] args) {
-        DOMConfigurator.configure(System.getProperty("user.dir")
-                + System.getProperty("file.separator") + "log.xml");
+        /*DOMConfigurator.configure(System.getProperty("user.dir")
+                + System.getProperty("file.separator") + "log.xml");*/
+        PropertyConfigurator.configure("logConfigure.txt");
         RoomServer rs = new RoomServer();
         List params = Arrays.asList(args);
         if (!params.isEmpty()) {

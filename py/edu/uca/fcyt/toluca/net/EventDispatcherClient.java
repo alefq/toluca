@@ -825,10 +825,20 @@ public class EventDispatcherClient extends EventDispatcher {
 		roomClient.actualizarRanking(playerClient);
 		
 		Table table = room.getTable(event.getTableNumber());
+		
         table.actualizarRanking(playerClient);        
         table.showSystemMessage("Jugador: "+event.getPlayer().getName()+" - Ranking viejo: "+
         		event.getPlayer().getOldRating()+"- Ranking nuevo: "+event.getPlayer().getRating());
 
 		
 	}
+
+    public void testConexion(RoomEvent event) {
+        
+        long intervalo=System.currentTimeMillis()-event.getMsSend();
+        logeador.info("Se recibe la respuesta "+intervalo);
+        System.out.println("Se recibe la respuesta "+intervalo);
+        RoomClient roomClient=(RoomClient) room;
+        roomClient.testConexionReceive(intervalo);
+    }
 }

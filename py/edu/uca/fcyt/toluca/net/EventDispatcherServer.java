@@ -352,6 +352,10 @@ public class EventDispatcherServer extends EventDispatcher{
 		// TODO Auto-generated method stub
 		
 	}
+    public void testConexion(RoomEvent event) {
+        logger.info("Se resive un test de conexion");
+        communicatorServer.sendXmlPackage(event);
+    }
 	
 	
 }

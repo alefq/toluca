@@ -44,7 +44,8 @@ public abstract class EventDispatcher {
 			case RoomEvent.TYPE_TABLE_CREATED_SERVER:break;
 			case RoomEvent.TYPE_TABLE_JOIN_REQUESTED:tableJoinRequested(event);break;
 			case RoomEvent.TYPE_TABLE_JOINED:tableJoined(event);break;
-			case RoomEvent.TYPE_RANKING_CHANGED:rankingChanged(event);
+			case RoomEvent.TYPE_RANKING_CHANGED:rankingChanged(event);break;
+			case RoomEvent.TYPE_TEST_CONEXION:testConexion(event);break;
 		}
 	}
 	public void dispatchEvent(TableEvent event)
@@ -198,7 +199,7 @@ public abstract class EventDispatcher {
 	public abstract void tableJoined(RoomEvent event);
 	public abstract void rankingChanged(RoomEvent event);
 	
-	
+	public abstract void testConexion(RoomEvent event);
 	
 	//METODOS CORRESPONDIENTES A LA TABLA
 	public abstract void playerSitRequest(TableEvent event);
