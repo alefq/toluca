@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.NumberFormat;
@@ -125,6 +126,7 @@ public class ConexionTestPanel extends JPanel{
 		 ms=ms/intervalo;
 		 NumberFormat format=NumberFormat.getNumberInstance();
 		 format.setMaximumFractionDigits(2);
+		 format.setGroupingUsed(false);
 		 getJLabel().setText("  "+format.format(ms)+"  ");
 		 String text=getStringForMs(ms)+" - "+ms+"ms.";
 		 getJLabel().setToolTipText(text);
@@ -143,6 +145,11 @@ public class ConexionTestPanel extends JPanel{
 	    if(jLabel==null)
 	    {
 	        jLabel = new JLabel();
+	        Dimension dim = new Dimension(80,20);
+            jLabel.setMaximumSize(dim);
+            jLabel.setMinimumSize(dim);
+            jLabel.setPreferredSize(dim);
+            jLabel.setHorizontalAlignment(JLabel.RIGHT);            
 	    }
 	    return jLabel;
 	}
