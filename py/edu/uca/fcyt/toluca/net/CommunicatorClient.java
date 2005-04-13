@@ -31,6 +31,8 @@ public class CommunicatorClient extends Communicator{
 	private String serverString;
 	private int portNumber;
 	private boolean loggedIn = false;
+	private static final int SOCKET_TIMEOUT = 60000;
+	
 	public CommunicatorClient(RoomClient client,String serverString,int portNumber) throws IOException {
 		
 		this(serverString,portNumber);
@@ -51,6 +53,8 @@ public class CommunicatorClient extends Communicator{
 		int ret = -1;
 		
 			setSocket(new Socket(getServerString(), portNumber));
+			/*Agregado por aa para cortar la comunicación*/
+			getSocket().setSoTimeout(CommunicatorClient.SOCKET_TIMEOUT);
 			
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 			logeador.log(Level.FINEST,"Se establecio la coneccion con el servidor");		
