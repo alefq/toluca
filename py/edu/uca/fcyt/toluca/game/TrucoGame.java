@@ -7,8 +7,10 @@ package py.edu.uca.fcyt.toluca.game;
  */
 import java.util.LinkedList;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.game.Game;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoListener;
 
@@ -18,7 +20,7 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
  */
 public class TrucoGame extends Game
 {
-	
+	private static Logger logger=Logger.getLogger(TrucoGame.class.getName());
 	/** Creates a new instance of trucoGame */
 	LinkedList listenerlist; //lista de todos los listener
 	private int tableNumber;
@@ -346,7 +348,22 @@ public class TrucoGame extends Game
 	}
 	public void EndOfHandEvent()
 	{
+	    logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"End of hand shaque termina la mano");
+	    
+	    /*
+	     * Esto fue agregado por Cricco. Se pretende controlar si termina el juego que salgan nomas
+	     * */
+	    if(points[0] >= 30 || points[1] >= 30 && !(this instanceof TrucoGameClient))
+		{
+	        System.out.println("se teeeermin el jueeeego");
+	        logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Se teeermina el jueeeeego");
+			fireEndOfGameEvent();
+		}
+	    else
+	    {
 		newHand();
+	    }
+	    //newHand();
 	}
 	/** Enviar mensaje a todos los oyentes sobre el final del juego.
 	 */

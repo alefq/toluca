@@ -601,6 +601,7 @@ public class EventDispatcherClient extends EventDispatcher {
         }
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
         // "******************************************************");
+        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"trucoGameClient = "+trucoGameClient);
         trucoGameClient.play(event);
 
     }
