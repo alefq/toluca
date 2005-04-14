@@ -471,10 +471,15 @@ public class EventDispatcherClient extends EventDispatcher {
         {
             
            //Salió el HOST y hay que autoeliminarse de esa mesa
+            if(table.getPlayers().contains(trucoPlayer))
+            {//solamente si la tabla le tiene al player del cliente
+                
+            
             table.selfKick();
             ((RoomClient)getRoom()).getRoomUING().getChatPanel().showSystemMessage("La mesa " + 
             		table.getTableNumber()	
             		+ " se ha cerrado porque el creador la ha abandonado", new String[] { "[", "]" });
+            }
 			
         }
     }
