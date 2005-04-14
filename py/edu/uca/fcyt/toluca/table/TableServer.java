@@ -384,6 +384,27 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 			e.setPlayer(new TrucoPlayer[]{playerKicked,null});
 			e.setValue(chair);
 			standPlayer(e);
+			
+			TrucoGame trucoGame=getTrucoGame();
+			if(trucoGame!=null)
+			{//que vea si hay juego
+			    
+			    if(trucoGame.getTeam(0).getPlayer(playerKicked.getName()) != null)
+			    {//si el team 0 le tenia tiene que ganar el team 1
+			        
+			        
+			        trucoGame.setTeamGanador(1);
+			        
+			    }
+			    if(trucoGame.getTeam(1).getPlayer(playerKicked.getName()) != null)
+			    {//si el team 1 le tenia tiene que ganar el team 0
+			        
+			        trucoGame.setTeamGanador(0);
+			        
+			    }
+			    
+				getTrucoGame().fireEndOfGameEvent();
+			}
 		}
 		getPlayers().remove(playerKicked);
 		
@@ -408,6 +429,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	{
 		if(getPlayers().size()==0)
 		{//hay que eliminar la tabla
+		    logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Se va a destruir la tabla: "+getTableNumber());
 			fireTableDestroyed();
 			
 		}

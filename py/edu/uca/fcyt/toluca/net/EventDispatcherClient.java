@@ -466,8 +466,10 @@ public class EventDispatcherClient extends EventDispatcher {
         TrucoPlayer playerChutadoLadoCliente = room.getPlayer(playerChutadoLadoServer.getName());
 
         table.kickPlayer(playerChutadoLadoCliente);
+        
         if(event.getTableBeanRepresentation().getHostPlayer().equals(playerChutadoLadoServer))
         {
+            
            //Salió el HOST y hay que autoeliminarse de esa mesa
             table.selfKick();
             ((RoomClient)getRoom()).getRoomUING().getChatPanel().showSystemMessage("La mesa " + 

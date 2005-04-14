@@ -5,10 +5,12 @@ package py.edu.uca.fcyt.toluca.net;
 
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.net.XmlPackagesSession;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
@@ -19,6 +21,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
+import sun.java2d.pipe.NullPipe;
 
 
 /**
@@ -29,6 +32,7 @@ import py.edu.uca.fcyt.toluca.table.TableServer;
 public abstract class  Communicator extends XmlPackagesSession
 implements RoomListener,TrucoListener,TableListener
 {
+    private Logger logger=Logger.getLogger(Communicator.class.getName());
 	private TrucoPlayer trucoPlayer;
 	/**
 	 * @return Returns the trucoPlayer.
@@ -95,7 +99,14 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void receiveObject(Object bean) {
 			
-		
+	    try
+	    {
+		logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"El Communicator de: "+trucoPlayer.getName());
+	    }
+	    catch(NullPointerException e)
+	    {
+	        logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Truco Player "+trucoPlayer);
+	    }
 		if(bean instanceof RoomEvent)
 		{
 			eventDispatcher.dispatchEvent((RoomEvent)bean);

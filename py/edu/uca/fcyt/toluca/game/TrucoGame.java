@@ -580,4 +580,21 @@ public class TrucoGame extends Game
 		return points[0] > points[1] ? 0 : 1;
 		
 	}
+	/**
+	 * Permite forzar para que un team tenga puntos de ganador
+	 * */
+	public void setTeamGanador(int team)
+	{
+	    if(team==0)
+	        points[0]=points[1]+1;
+	    else
+	        points[1]=points[0]+1;
+	}
+	
+    public int[] getPoints() {
+        return points;
+    }
+    public void setPoints(int[] points) {
+        this.points = points;
+    }
 }

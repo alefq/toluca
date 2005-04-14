@@ -216,15 +216,16 @@ public class EventDispatcherServer extends EventDispatcher{
 	 */
 	public void playerLeft(TableEvent event) {
 
-		logger.info("Se recibe un playerLeft");
+		logger.info("Se recibe un playerLeft communicator de: ");
 		TableBeanRepresentation tableClient=event.getTableBeanRepresentation();
 		TrucoPlayer playerCliente=event.getPlayer()[0];
 		
 		TableServer tableServer=room.getTableServer(tableClient.getId());
 		TrucoPlayer playerServidor=room.getPlayer(playerCliente.getName());
 		
-		logger.debug("Player : "+playerServidor.getName());
-		logger.debug("Table :  "+tableServer.getTableNumber());
+		logger.info("Player : "+playerServidor.getName());
+		logger.info("TableServer: "+tableServer);
+		logger.info("Table :  "+tableServer.getTableNumber());
 		tableServer.kickPlayer(playerServidor);
 	}
 	/* (non-Javadoc)

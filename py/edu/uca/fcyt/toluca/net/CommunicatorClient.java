@@ -115,6 +115,7 @@ public class CommunicatorClient extends Communicator{
 		
 	}
 	public void playerLeft(TableEvent event) {
+	    logeador.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"playerLeft "+event.getPlayer()[0]);
 		super.sendXmlPackage(event);
 		
 	}
