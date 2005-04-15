@@ -1570,7 +1570,7 @@ public class TrucoHand {
 
         sePuedeCantarEnvido = false; /* ya no se puede cantar envido */
 
-        jugadoresFloridos.add(tp.getPlayer());
+        jugadoresFloridos.add(tp.getPlayer().getName());
         if (playTurnNumber % 2 == 0)
             equipo1_canto_flor = true;
         else
