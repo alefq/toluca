@@ -114,7 +114,7 @@ public class TrucoGame extends Game
 		event.setTableNumber(getTableNumber());
 		for (int i=0; i<listenerlist.size(); i++)
 		{
-			System.out.println(i+"ejecutando cardsDEal de:" + getClass().getName());
+//			System.out.println(i+"ejecutando cardsDEal de:" + getClass().getName());
 			((TrucoListener)listenerlist.get(i)).cardsDeal(event);
 		}
 	}

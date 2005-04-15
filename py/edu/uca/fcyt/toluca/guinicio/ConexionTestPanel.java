@@ -145,7 +145,7 @@ public class ConexionTestPanel extends JPanel{
 	    if(jLabel==null)
 	    {
 	        jLabel = new JLabel();
-	        Dimension dim = new Dimension(70,20);
+	        Dimension dim = new Dimension(65,20);
             jLabel.setMaximumSize(dim);
             jLabel.setMinimumSize(dim);
             jLabel.setPreferredSize(dim);

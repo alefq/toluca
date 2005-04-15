@@ -136,7 +136,7 @@ implements TrucoListener{
 	}
     
     public void playResponse(TrucoEvent event){
-        System.out.println(elSpinner.getValue());
+//        System.out.println(elSpinner.getValue());
         if(event.getTypeEvent() == TrucoEvent.JUGAR_CARTA){
             System.out.println("queria jugar carta"+event.getTypeEvent());
             icon = aIcono(event.getCard());
@@ -149,7 +149,7 @@ implements TrucoListener{
         }
     }
     public void turn (TrucoEvent event){
-        System.out.println(asociado.getName());
+//        System.out.println(asociado.getName());
         turno.setText((event.getPlayer()).getName());
         
         if(event.getPlayer() == asociado)
@@ -164,7 +164,7 @@ implements TrucoListener{
     }
     public void endOfGame(TrucoEvent event){
         textfield.setText(textfield.getText() + "\nfin de juego");
-        System.out.println("end of game");
+//        System.out.println("end of game");
     }
     public void cardsDeal(TrucoEvent event){
         TrucoCard[] Tcards = event.getCards();
@@ -185,11 +185,11 @@ implements TrucoListener{
 
         nCartasJugadas=0;
         textfield.setText("\nempieza mano..");
-        System.out.println("hand Started");
+//        System.out.println("hand Started");
     }
     public void gameStarted(TrucoEvent event){
                 textfield.setText(textfield.getText() + "\nempieza juego");
-        System.out.println("Game Started");
+//        System.out.println("Game Started");
     }
     public TrucoPlayer getAssociatedPlayer(){
         return asociado;
