@@ -6,6 +6,7 @@
 
 package py.edu.uca.fcyt.toluca.game;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -70,6 +71,9 @@ public class TrucoHand {
                                                    */
 
     protected boolean equipo2_canto_flor = false;
+    
+    /** Contiene los nombres de los que ya cantaron flor*/
+    protected ArrayList jugadoresFloridos = new ArrayList();
 
     protected boolean florFlor = false; //si se canto flor flor
 
@@ -842,7 +846,7 @@ public class TrucoHand {
             if (statusTable.jugoPrimeraCarta(getNumberOfPlayer(tp.getPlayer())))
                 return false;//el player ya jugo su primera carta
 
-            //Parche porcino, le caga si el mismo equipo tiene más de una Flor
+            /*//Parche porcino, le caga si el mismo equipo tiene más de una Flor
             //Pero evita que se cante N veces la flor
             if (playTurnNumber % 2 == 0) {
                 if (equipo1_canto_flor)
@@ -850,7 +854,9 @@ public class TrucoHand {
             } else {
                 if (equipo2_canto_flor)
                     return false;
-            }
+            }*/
+            if(jugadoresFloridos.contains(tp.getPlayer().getName()))
+                return false;
 
             break;
 
@@ -1564,6 +1570,7 @@ public class TrucoHand {
 
         sePuedeCantarEnvido = false; /* ya no se puede cantar envido */
 
+        jugadoresFloridos.add(tp.getPlayer());
         if (playTurnNumber % 2 == 0)
             equipo1_canto_flor = true;
         else
