@@ -28,7 +28,7 @@ public abstract class EventDispatcher {
 	public void dispatchEvent(RoomEvent event)
 	{
 		
-	log.log(Level.WARNING,"DispatchEvent: Se recive un evento RoomEvent " + event.getClass() + " tipo " + event.getType());
+	//log.log(Level.WARNING,"DispatchEvent: Se recive un evento RoomEvent " + event.getClass() + " tipo " + event.getType());
 		switch(event.getType())
 		{
 			case RoomEvent.TYPE_CHAT_REQUESTED:chatRequested(event);break;
@@ -50,7 +50,7 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TableEvent event)
 	{
-		log.log(Level.WARNING,"se recibe un tableevent");
+		//log.log(Level.WARNING,"se recibe un tableevent");
 		switch(event.getEvent())
 		{
 			case TableEvent.EVENT_gameFinished:break;
@@ -74,7 +74,7 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TrucoEvent event)
 	{
-		log.log(Level.WARNING," se resive un trucoEvent de tipo "+event.getType());
+		//log.log(Level.WARNING," se recibe un trucoEvent de tipo "+event.getType());
 		switch(event.getType())
 		{
 			case TrucoEvent.CANTO_ENVIDO:cantarTanto(event);break;
@@ -132,7 +132,7 @@ public abstract class EventDispatcher {
 	}
 	public void dispatchEvent(TrucoPlay event)
 	{
-		log.log(Level.WARNING,"Se resive un trucoPlay de tipo "+event.getType());
+		//log.log(Level.WARNING,"Se recibe un trucoPlay de tipo "+event.getType());
 		switch(event.getType())
 		{
 			case TrucoPlay.CANTO_ENVIDO:play(event);break;

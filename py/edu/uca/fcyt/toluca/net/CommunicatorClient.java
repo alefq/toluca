@@ -127,10 +127,10 @@ public class CommunicatorClient extends Communicator{
 	//METODOS CORRESPONDIENTES AL TRUCO_GAME
 	
 	public void play(TrucoEvent event) {
-		System.out.println("play");
+		/*System.out.println("play");
 		System.out.println("El trucoplayer de este comm es  "+getTrucoPlayer());
 		System.out.println("El play hizo "+event.getPlayer());
-		System.out.println("eS DE TIPO "+event.getType());
+		System.out.println("eS DE TIPO "+event.getType());*/
 		if(event.getPlayer().getName().equals(getTrucoPlayer().getName()))
 		{
 			

@@ -92,7 +92,7 @@ public class TrucoPlayer {
         }
     public String toString()
     {
-    	return new String(getName()+ " "+getRating());
+    	return new String(getName()+ "("+getRating()+")");
     }
     
     /* (non-Javadoc)

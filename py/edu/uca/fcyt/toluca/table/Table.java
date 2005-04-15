@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -18,6 +20,7 @@ import javax.swing.event.ChangeListener;
 import py.edu.uca.fcyt.game.Card;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.toluca.RoomClient;
+import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
@@ -29,7 +32,6 @@ import py.edu.uca.fcyt.toluca.game.TrucoGameClient;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
-import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 import py.edu.uca.fcyt.toluca.table.animation.Animator;
 
 /**
@@ -71,7 +73,8 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     private PlayerManager pManager; // manejador de jugadores
 
-    private TrucoPlayer actualPlayer; // jugador actual
+    /** El player que pertenece al login actual, o sea el "dueño" de este RoomClient */
+    private TrucoPlayer playerLocal; 
 
     private int tableNumber; // nï¿½mero de mesa
 
@@ -116,7 +119,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     /** Crea un Table asociado con 'player' */
     public Table(TrucoPlayer player, boolean host) {
-        actualPlayer = player;
+        playerLocal = player;
         this.host = host;
         players = new Vector(0, 1);
         playerCount = 6;
@@ -169,9 +172,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         animator.addAnim(tFrame);
     }
 
-    public void initResources() {
-        Face face;
-        TrucoPlayer player;
+    public void initResources() {        
 
         // crea los objetos
         trucoTable = new TrucoTable();
@@ -182,7 +183,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         ttAnimator = new TTextAnimator();
 
         jFrame = new JFrame();
-        jFrame.setTitle("Toluca: " + actualPlayer.getName()
+        jFrame.setTitle("Toluca: " + playerLocal.getName()
                 + (host ? " (host)" : ""));
         jFrame.getContentPane().add(trucoTable);
         jFrame.setSize(600, 500);
@@ -204,6 +205,8 @@ public class Table implements PTableListener, ChatPanelContainer,
 
         // agrega los nombres y las caritas de los players
         for (int i = 0; i < pManager.getPlayerCount(); i++) {
+            Face face;
+            TrucoPlayer player;
             face = fManager.getFace(i);
             player = pManager.getPlayer(i);
             if (player != null) {
@@ -298,7 +301,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         long rem;
 
         // verificaciones
-        Util.verifParam(actualPlayer != null, "No hay jugador actual");
+        Util.verifParam(playerLocal != null, "No hay jugador local");
         Util.verifParam(game != null, "TrucoGame nulo");
         Util.verifParam(players != null, "Vector de Players nulo");
 
@@ -319,7 +322,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         fManager.removeFaces();
 
         // agrega las caritas pero en el orden correcto
-        fManager.addFaces(pManager, !pManager.isSitted(actualPlayer));
+        fManager.addFaces(pManager, !pManager.isSitted(playerLocal));
         fManager.pushGeneralPause(100);
         fManager.hideFaces();
         rem = Math.max(cManager.getRemainigTime(), fManager.getRemaninigTime());
@@ -353,9 +356,9 @@ public class Table implements PTableListener, ChatPanelContainer,
         Face face;
         pManager.sitPlayer(player, chair);
 
-        if (player.getName().equals(actualPlayer.getName())) {
-            actualPlayer = player;
-            pManager.setActualPlayer(player);
+        if (player.getName().equals(playerLocal.getName())) {
+            playerLocal = player;
+            pManager.setPlayerLocal(player);
         }
 
         if (fManager != null) {
@@ -366,19 +369,29 @@ public class Table implements PTableListener, ChatPanelContainer,
         }
 
         //		System.out.println("----------------- TABLA DE: " +
-        // actualPlayer.getName() + "-----------------");
+        // playerLocal.getName() + "-----------------");
         //		System.out.println("evenTeams: " + pManager.evenTeams());
         //		System.out.println("getActualChair: " + pManager.getActualChair());
-        //		System.out.println("isSitted: " + pManager.isSitted(actualPlayer));
+        //		System.out.println("isSitted: " + pManager.isSitted(playerLocal));
 
         if (trucoTable != null)
             //			jtTable.buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(pManager
             //					.evenTeams()
             //					&& (pManager.getActualChair() == 0)
-            //					&& pManager.isSitted(actualPlayer));
-            trucoTable.enableAction(pManager, actualPlayer);
+            //					&& pManager.isSitted(playerLocal));
+            trucoTable.enableAction(pManager, playerLocal);
         // avisa que le player se sentï¿½ correctamente
         tEventMan.firePlayerSit();
+        StringBuffer sb = new StringBuffer();
+        sb.append("Sentados: ");
+        for (int i = 0; i < pManager.sittedPlayers.size(); i++) {            
+            sb.append("silla(");
+            sb.append(i);
+            sb.append("): ");
+            sb.append(pManager.sittedPlayers.get(i) != null ? pManager.sittedPlayers.get(i).toString() : ">> VACIA <<");
+            sb.append("   ");
+        }        
+        TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, sb.toString());
     }
 
     /**
@@ -405,7 +418,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     /** Retorna el TrucoPlayer propietario de esta mesa */
     public TrucoPlayer getPlayer() {
-        return actualPlayer;
+        return playerLocal;
     }
 
     /**
@@ -446,7 +459,7 @@ public class Table implements PTableListener, ChatPanelContainer,
                     if (card != null) {
                         setCursor(Cursor.WAIT_CURSOR);
                         tGame
-                                .play(new TrucoPlay(actualPlayer,
+                                .play(new TrucoPlay(playerLocal,
                                         (byte) TrucoPlay.JUGAR_CARTA,
                                         (TrucoCard) card));
                     }
@@ -484,7 +497,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         // si existe dicha posiciï¿½n...
         if (pos != -1) {
             TrucoPlayer player;
-            int chair, actualChair;
+            int chair, localChair;
 
             // obtiene la silla en esa posiciï¿½n
             chair = pManager.getChair(pos);
@@ -492,7 +505,7 @@ public class Table implements PTableListener, ChatPanelContainer,
             // obtiene el player sentado en esa silla
             player = pManager.getPlayer(chair);
 
-            if (player == actualPlayer) {
+            if (player == playerLocal) {
                 tEventMan.firePlayerStandRequest(chair);
                 return true;
             }
@@ -502,11 +515,11 @@ public class Table implements PTableListener, ChatPanelContainer,
                 return false;
 
             // obtiene la silla actual
-            actualChair = pManager.getChair(actualPlayer);
+            localChair = pManager.getChair(playerLocal);
 
             // si el TrucoPlayer actual ya estï¿½ sentado ret. con falso
-            if (actualChair != -1) {
-                tEventMan.firePlayerStandRequest(actualChair);
+            if (localChair != -1) {
+                tEventMan.firePlayerStandRequest(localChair);
                 tEventMan.firePlayerSitRequest(chair);
                 return true;
             }
@@ -529,10 +542,10 @@ public class Table implements PTableListener, ChatPanelContainer,
         switch (say) {
         case TrucoPlay.CANTO_ENVIDO:
             intPts = envidoPoints;
-            tGame.play(new TrucoPlay(actualPlayer, (byte) say, intPts));
+            tGame.play(new TrucoPlay(playerLocal, (byte) say, intPts));
             break;
         default:
-            tGame.play(new TrucoPlay(actualPlayer, say));
+            tGame.play(new TrucoPlay(playerLocal, say));
             break;
         }
     }
@@ -584,7 +597,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         dest = event.getPlayer(1);
 
         // muestra la seï¿½a
-        if (dest == actualPlayer)
+        if (dest == playerLocal)
             fManager.showSign(pManager.getPos(src) - 1, event.getValue());
 
         // avisa que la seï¿½a fue enviada correctamente
@@ -750,7 +763,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         } else if (text.equals("Ok")) {
             trucoTable.buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(false);
             ttAnimator.clearAll();
-            tGame.startHand(actualPlayer);
+            tGame.startHand(playerLocal);
         } else if (text.equals("Echar")) {
             new Thread() {
                 public void run() {
@@ -768,13 +781,17 @@ public class Table implements PTableListener, ChatPanelContainer,
              * pName = trucoTable.getJpWatchers().getSelection();
              * 
              * for (int i = 0; i < players.size(); i++) { tPlayer =
-             * (TrucoPlayer) players.get(i); if (tPlayer != actualPlayer &&
+             * (TrucoPlayer) players.get(i); if (tPlayer != playerLocal &&
              * tPlayer.getName().equals(pName))
              * tEventMan.firePlayerKickRequest(tPlayer); }
              */
         } else if (text.equals("Ayuda")) {
-            
-            ttAnimator.showIndications();
+            try {
+                getRoom().getRoomUING().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "_blank");
+            } catch (MalformedURLException e1) {            
+                e1.printStackTrace(System.err);
+            }
+            /*ttAnimator.showIndications();
             new Thread() {
                 public void run() {
                     trucoTable.buttons[TrucoTable.BUTTON_AYUDA]
@@ -783,7 +800,7 @@ public class Table implements PTableListener, ChatPanelContainer,
                     trucoTable.buttons[TrucoTable.BUTTON_AYUDA]
                             .setEnabled(true);
                 }
-            }.start();
+            }.start();*/
         }
     }
 
@@ -964,7 +981,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         if (getJTrucoTable() != null)
             getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK]
                     .setEnabled(getPManager().evenTeams()
-                            && (getPManager().getActualChair() == 0)
+                            && (getPManager().getLocalChair() == 0)
                             && getPManager().isSitted(
                                     trListener.getAssociatedPlayer()));
 

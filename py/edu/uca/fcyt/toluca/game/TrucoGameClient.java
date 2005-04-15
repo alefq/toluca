@@ -26,7 +26,7 @@ public class TrucoGameClient extends TrucoGame
 	public TrucoGameClient(TrucoTeam t1, TrucoTeam t2)
 	{
 		super(t1, t2);
-		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea un nuevo truco Game Client");
+//		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea un nuevo truco Game Client");
 		
 	}
 	public void startGameClient()
@@ -136,13 +136,13 @@ public class TrucoGameClient extends TrucoGame
 	}
 	public void startHand(TrucoPlayer tPlayer)
 	{
-		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "startHAND !!!!!!! EN trucoGame Cliente");
+//		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "startHAND !!!!!!! EN trucoGame Cliente");
 		firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 	}
 	public void startHandClient(TrucoPlayer tPlayer)
 	{
 		int i; //
-		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "cantidad de players preparados="+cantidadDePlayersPreparados);
+//		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "cantidad de players preparados="+cantidadDePlayersPreparados);
 		int numOfPlayer = teams[0].getNumberOfPlayer(tPlayer)*2;
 		if (numOfPlayer >= 0)
 		{
@@ -151,7 +151,7 @@ public class TrucoGameClient extends TrucoGame
 				playersPreparados[numOfPlayer] = true;
 				firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 				cantidadDePlayersPreparados++;
-				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, tPlayer.getName()+"confirmado");
+//				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, tPlayer.getName()+"confirmado");
 			}
 			else
 				return;
@@ -164,7 +164,7 @@ public class TrucoGameClient extends TrucoGame
 				playersPreparados[numOfPlayer] = true;
 				firePlayEvent(tPlayer,TrucoEvent.PLAYER_CONFIRMADO);
 				cantidadDePlayersPreparados++;
-				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, tPlayer.getName()+"confirmado");
+//				logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, tPlayer.getName()+"confirmado");
 			}
 			else
 				return;
@@ -241,13 +241,13 @@ public class TrucoGameClient extends TrucoGame
 		{
 			((TrucoListener)(getListaListeners().get(i))).endOfHand(event);
 		}
-		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "------------------------------------------------------------------------");
+/*		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "------------------------------------------------------------------------");
 		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "--------------------------------------Puntajes--------------------------");
 		for (int i=0; i<2; i++)
 			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, teams[i].getName()+" :"+teams[i].getPoints()+"puntos.");
 		
 		for (int i=0; i<detalleDelPuntaje.size(); i++)
-			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, ((PointsDetail)detalleDelPuntaje.get(i)).aString());
+			logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, ((PointsDetail)detalleDelPuntaje.get(i)).aString());*/
 		
 	}
 }

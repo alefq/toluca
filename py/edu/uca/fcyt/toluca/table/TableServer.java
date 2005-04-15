@@ -76,15 +76,20 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         try
 		{
             
-    	logger.log(Level.WARNING, "Sit player "+player+" chair "+chair);
-    	pManager.sitPlayer(player, chair);
+//    	logger.log(Level.WARNING, "Sit player "+player+" chair "+chair);
+
+            //Aca parece que esta el error de las sentadas
+            //Despues se vuelve a intentar sentar en el pManager
+            //No se xq el tableServer tiene q sentar, siendo q esto es chilista :?
+        pManager.sitPlayer(player, chair);
+            
     	asientos.put(player.getName(),new Integer(chair));
         firePlayerSat(player, chair);
         
         if (player == getHost())
-            pManager.setActualPlayer(getHost());
+            pManager.setPlayerLocal(getHost());
         
-        logger.log(Level.WARNING, player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
+//        logger.log(Level.WARNING, player.getName() + " sitted in server chair " + chair + " in table of " + getHost().getName());
 		}
         catch(TableException e)
 		{
@@ -277,7 +282,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
         Iterator iter = tableListeners.listIterator();
         int i =0;
-        logger.log(Level.WARNING, "tableListeners.size() = "+tableListeners.size());
+//        logger.log(Level.WARNING, "tableListeners.size() = "+tableListeners.size());
         while(iter.hasNext()) {
             TableListener ltmp = (TableListener)iter.next();
             //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());

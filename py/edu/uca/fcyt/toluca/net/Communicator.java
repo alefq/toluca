@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import py.edu.uca.fcyt.game.ChatMessage;
 import py.edu.uca.fcyt.game.ChatPanelContainer;
 import py.edu.uca.fcyt.net.XmlPackagesSession;
-import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
@@ -21,7 +20,6 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.table.Table;
 import py.edu.uca.fcyt.toluca.table.TableServer;
-import sun.java2d.pipe.NullPipe;
 
 
 /**
@@ -99,14 +97,14 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void receiveObject(Object bean) {
 			
-	    try
+/*	    try
 	    {
 		logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"El Communicator de: "+trucoPlayer.getName());
 	    }
 	    catch(NullPointerException e)
 	    {
 	        logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Truco Player "+trucoPlayer);
-	    }
+	    }*/
 		if(bean instanceof RoomEvent)
 		{
 			eventDispatcher.dispatchEvent((RoomEvent)bean);
@@ -153,14 +151,14 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void tableRemoved(RoomEvent re) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#tableModified(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void tableModified(RoomEvent ev) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#tableJoined(py.edu.uca.fcyt.toluca.event.RoomEvent)
@@ -180,7 +178,7 @@ implements RoomListener,TrucoListener,TableListener
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#tableJoinRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void tableJoinRequested(RoomEvent ev) {
-
+	    
 			//System.out.println("Se dispara un tableJoinRequest");
 	}
 	/* (non-Javadoc)
@@ -189,27 +187,27 @@ implements RoomListener,TrucoListener,TableListener
 	public void loginCompleted(RoomEvent ev) {
 
 		
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#loginRequested(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void loginRequested(RoomEvent ev) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#loginFailed(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void loginFailed(RoomEvent ev) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#playerLeft(py.edu.uca.fcyt.toluca.event.RoomEvent)
 	 */
 	public void playerLeft(RoomEvent ev) {
-		
+	    
 		
 	}
 	/* (non-Javadoc)
@@ -217,14 +215,14 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void playerJoined(TrucoPlayer player) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#playerLeft(py.edu.uca.fcyt.toluca.game.TrucoPlayer)
 	 */
 	public void playerLeft(TrucoPlayer player) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.SpaceListener#chatMessageRequested(py.edu.uca.fcyt.game.ChatPanelContainer, py.edu.uca.fcyt.toluca.game.TrucoPlayer, java.lang.String)
@@ -262,56 +260,56 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void play(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#playResponse(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void playResponse(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#turn(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void turn(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#endOfHand(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void endOfHand(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#cardsDeal(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void cardsDeal(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#handStarted(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void handStarted(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#gameStarted(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void gameStarted(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#endOfGame(py.edu.uca.fcyt.toluca.event.TrucoEvent)
 	 */
 	public void endOfGame(TrucoEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TrucoListener#getAssociatedPlayer()
@@ -325,21 +323,21 @@ implements RoomListener,TrucoListener,TableListener
 	 */
 	public void gameStartRequest(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#gameStarted(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void gameStarted(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#gameFinished(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void gameFinished(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerStandRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
@@ -347,70 +345,70 @@ implements RoomListener,TrucoListener,TableListener
 	public void playerStandRequest(TableEvent event) {
 		
 		//System.out.println("player stand request");
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerStanded(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerStanded(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    //
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerKickRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerKickRequest(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    //
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerKicked(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerKicked(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    //
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerLeft(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerLeft(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    //
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerSitRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerSitRequest(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    //
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#playerSit(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void playerSit(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    //
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#signSendRequest(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void signSendRequest(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#signSent(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void signSent(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.event.TableListener#showPlayed(py.edu.uca.fcyt.toluca.event.TableEvent)
 	 */
 	public void showPlayed(TableEvent event) {
 		// TODO Auto-generated method stub
-		
+	    
 	}
 
 	public String toString() {

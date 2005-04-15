@@ -155,9 +155,9 @@ public class RoomClient extends Room implements ChatPanelContainer,
      */
     private synchronized void fireTableJoinRequested(int tableNumber) {
         /** lock-end */
-        System.out
+        /*System.out
                 .println("Voy a disparar el tableJoinRequest sobre la tabla: "
-                        + tableNumber);
+                        + tableNumber);*/
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_JOIN_REQUESTED);
         re.setTableNumber(tableNumber);
@@ -489,8 +489,8 @@ public class RoomClient extends Room implements ChatPanelContainer,
     }
 
     public void setearPlayerTable(TrucoPlayer player, Table tabela, int chair) {
-        System.out
-                .println("Se va a sentar al player Parche de Redes el CommunicatorClient le llama a este");
+        /*System.out
+                .println("Se va a sentar al player Parche de Redes el CommunicatorClient le llama a este");*/
 
         mainTable.addPlayer(player, tabela.getTableNumber(), chair);
     }

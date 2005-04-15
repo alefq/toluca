@@ -122,8 +122,8 @@ implements ChatPanelContainer, TableListener {
      */
     public void createTable(TrucoPlayer player) {
         // your code here
-        logger.debug("Dentor del create table del room server: "
-                + player.getName());
+        /*logger.debug("Dentor del create table del room server: "
+                + player.getName());*/
         TableServer tableServer = new TableServer(player);
         tableServer.guardarRoomServer(this);
         //tableServer.addPlayer(player);Comentado porque en el constructor del
@@ -161,9 +161,8 @@ implements ChatPanelContainer, TableListener {
     protected synchronized void fireTableCreated(TableServer table) {
         //
         //tHashTable().put(new
-        // Integer(table.getTableNumber()),table);//Agregado por Cricco
-
-        logger.debug("dentro del firetalbe created del room server");
+        // Integer(table.getTableNumber()),table);//Agregado por Cricco        
+        logger.debug("Creado table (" + table.getTableNumber()+ "), creador: "  + table.getHost());
         //Vector players = table.getPlayers();
         //ector playerstmp = new Vector();
         //ayerstmp.add(table.getHost());
@@ -359,7 +358,7 @@ implements ChatPanelContainer, TableListener {
             //jogador = new Player("CIT", 108);
             jogador = dbOperations.authenticatePlayer(username, password);
 
-            logger.debug("Se creo el jugador: " + jogador.getName());
+            //logger.debug("Se creo el jugador: " + jogador.getName());
 
             cs.setTrucoPlayer(jogador);
 
@@ -524,8 +523,7 @@ implements ChatPanelContainer, TableListener {
          * RoomListener ltmp = (py.edu.uca.fcyt.toluca.RoomListener)iter.next();
          * ltmp.playerJoined(jogador); ltmp.loginCompleted(re); }
          */
-        logger.debug("Dentro de fire user joined (Room Server) , jugador = "
-                + jogador.getName());
+        logger.info("Jugador se unio al Room: "+  jogador);
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_PLAYER_JOINED);
         if (jogador == null)
@@ -563,8 +561,7 @@ implements ChatPanelContainer, TableListener {
             addPlayer(jogador);
         	
         	
-            logger.debug("Dentro de fire login completed , jugador = "
-                    + jogador.getName());
+            logger.info("Incio de sesion: " + jogador);
             RoomEvent re = new RoomEvent();
             re.setType(RoomEvent.TYPE_LOGIN_COMPLETED);
             re.setPlayer(jogador);
@@ -581,7 +578,7 @@ implements ChatPanelContainer, TableListener {
                 throw e;
             }
 
-            logger.debug("Se disparo login Completed");
+//            logger.debug("Se disparo login Completed");
             pendingConnections.remove(jogador.getName());
 
         } catch (java.lang.NullPointerException npe) {

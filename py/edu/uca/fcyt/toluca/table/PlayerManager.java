@@ -11,7 +11,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
  */
 class PlayerManager {
 
-	protected TrucoPlayer actualPlayer;
+	protected TrucoPlayer playerLocal;
 
 	private HashMap asientos = new HashMap();
 	
@@ -44,6 +44,7 @@ class PlayerManager {
 			throw new TableException("Silla ocupada");
 
 		sittedPlayers.set(chair, p);
+		System.out.println("Sentado " + p + ", en silla " + chair);
 //		asientos.put(new Integer(chair), p);
 	}
 
@@ -61,8 +62,8 @@ class PlayerManager {
 		if (player == null)
 			throw new TableException("Silla vacía");
 
-		if (actualPlayer == player)
-			actualPlayer = null;
+		if (playerLocal == player)
+			playerLocal = null;
 
 		//Este da un AIOBE por la morgueada que se hace al iniciar el juego :( - Ale 200502010
 		// de colocar los jugadores al comienzo del vector ?!?!?!?!
@@ -71,19 +72,19 @@ class PlayerManager {
 		return player;
 	}
 
-	public void setActualPlayer(TrucoPlayer p) {
+	public void setPlayerLocal(TrucoPlayer p) {
 		Util.verifParam(p != null, "Parámetro 'p' nulo");
 		Util.verif(sittedPlayers.contains(p), "Jugador " + p.getName()
 				+ " no agregado");
 
-		actualPlayer = p;
+		playerLocal = p;
 	}
 
-	public int getActualChair() {
-		if (actualPlayer == null)
+	public int getLocalChair() {
+/*		if (playerLocal == null)
 			return 0;
-		else
-			return getChair(actualPlayer);
+		else*/
+			return getChair(playerLocal);
 	}
 
 	/**
@@ -155,8 +156,13 @@ class PlayerManager {
 	 */
 
 	public TrucoPlayer getPlayer(int chair) {
-		// verificaciones
-		return (TrucoPlayer) sittedPlayers.get(chair);
+	    TrucoPlayer ret = null;
+	    try {
+	        ret = (TrucoPlayer) sittedPlayers.get(chair);
+        } catch (Exception e) {
+            //TODO PP, daba un AIOBE :(
+        }	    
+		return ret;
 	}
 
 	public int getChair(TrucoPlayer player) {
@@ -171,7 +177,7 @@ class PlayerManager {
 	 */
 	public int getPos(int chair) {
 		if (started)
-			return (getPlayerCount() + chair - getActualChair())
+			return (getPlayerCount() + chair - getLocalChair())
 					% getPlayerCount();
 		else
 			return chair;
@@ -187,7 +193,7 @@ class PlayerManager {
 
 	public int getChair(int pos) {
 		if (started)
-			return (getActualChair() + pos) % getPlayerCount();
+			return (getLocalChair() + pos) % getPlayerCount();
 		else
 			return pos;
 	}
@@ -253,9 +259,9 @@ class PlayerManager {
 	}
 
 	/**
-	 * @return Returns the actualPlayer.
+	 * @return Returns the playerLocal.
 	 */
-	public TrucoPlayer getActualPlayer() {
-		return actualPlayer;
+	public TrucoPlayer getPlayerLocal() {
+		return playerLocal;
 	}
 }

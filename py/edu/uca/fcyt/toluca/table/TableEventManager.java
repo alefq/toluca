@@ -84,6 +84,7 @@ class TableEventManager
 
         Iterator iter = tableListeners.iterator();
         TableEvent event=new TableEvent();
+        event.setPlayer(new TrucoPlayer[]{table.getPlayer()});
 		event.setEvent(TableEvent.EVENT_gameStartRequest);
 		event.setTableBeanRepresentation(table.getTableBeanRepresentation());
 		

@@ -165,7 +165,7 @@ public class TrucoTable extends JPanel implements ComponentListener {
      * @param manager
      */
     public void enableAction(PlayerManager manager, TrucoPlayer actualPlayer) {
-        boolean ena = manager.evenTeams() && (manager.getActualChair() == 0)
+        boolean ena = manager.evenTeams() && (manager.getLocalChair() == 0)
                 && manager.isSitted(actualPlayer);
         buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(ena);
     }

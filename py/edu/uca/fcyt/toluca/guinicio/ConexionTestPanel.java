@@ -49,13 +49,13 @@ public class ConexionTestPanel extends JPanel{
        
        try {
         properties.load(ConexionTestPanel.class.getResource("/py/edu/uca/fcyt/toluca/resources/conexion.properties").openStream());
-        System.out.println("Propiedades d conexion");
+        //System.out.println("Propiedades d conexion");
         
         valExelente=Integer.parseInt((String) properties.get("EXCELENTE"));
         valBuena=Integer.parseInt((String) properties.get("BUENA"));
         valAceptable=Integer.parseInt((String) properties.get("ACEPTABLE"));
         
-       System.out.println("Val d conexion: "+valExelente+" - "+valBuena+" - "+valAceptable);
+       //System.out.println("Val d conexion: "+valExelente+" - "+valBuena+" - "+valAceptable);
     } catch (IOException e) {
        logger.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,"IOException "+e.getMessage());
     }
@@ -145,7 +145,7 @@ public class ConexionTestPanel extends JPanel{
 	    if(jLabel==null)
 	    {
 	        jLabel = new JLabel();
-	        Dimension dim = new Dimension(80,20);
+	        Dimension dim = new Dimension(70,20);
             jLabel.setMaximumSize(dim);
             jLabel.setMinimumSize(dim);
             jLabel.setPreferredSize(dim);

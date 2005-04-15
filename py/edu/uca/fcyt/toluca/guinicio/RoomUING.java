@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/04/05 12:24:03 $
- * @version $Revision: 1.32 $ 
+ * Last modified: $Date: 2005/04/15 09:33:57 $
+ * @version $Revision: 1.33 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -13,7 +13,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -22,9 +21,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.text.html.HTMLEditorKit;
 
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
@@ -44,7 +41,7 @@ public class RoomUING extends JApplet {
     //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
     //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20050404-2115";
+    public static final String VERSION = "20050415-0106";
 
     public static final String CLAVE_LOGIN = "claveLogin";
 

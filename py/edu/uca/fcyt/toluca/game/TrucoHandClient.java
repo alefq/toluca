@@ -84,10 +84,10 @@ public class TrucoHandClient extends TrucoHand {
         cantidadDeCartasDePlayersRecibidas++;
         if (cantidadDeCartasDePlayersRecibidas == cantidadDePlayers)
             runTrucoHandClient = true;
-        logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
+        /*logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
                 "TrucoHandCLIENTE recibe cartas :)");
         logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "para: "
-                + tp.getName());
+                + tp.getName());*/
     }
 
     public boolean isRunHand() {
