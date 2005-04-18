@@ -5,13 +5,10 @@ package py.edu.uca.fcyt.toluca.db;
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Connection;
 import java.sql.Types;
 import java.util.List;
 import java.util.Properties;
@@ -21,6 +18,10 @@ import py.edu.uca.fcyt.toluca.LoginFailedException;
 import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoTeam;
+import py.edu.uca.fcyt.util.ConnectionInfo;
+import py.edu.uca.fcyt.util.ConnectionPool;
+import py.edu.uca.fcyt.util.exception.InvalidPoolException;
+import py.edu.uca.fcyt.util.exception.InitializationExeption;
 
 /**
  * <p>
@@ -39,14 +40,6 @@ public class DbOperations {
     ///////////////////////////////////////
     // attributes
 
-    /**
-     * <p>
-     * Representa la conexi&#243;n al servidor de datos (SQL Server)
-     * </p>
-     *  
-     */
-    private Connection conn;
-
     ///////////////////////////////////////
     // associations
 
@@ -56,6 +49,8 @@ public class DbOperations {
      * </p>
      */
     private RoomServer roomServer;
+    
+    private ConnectionPool connPool;
 
 	public static final String DBURL = "dburl";
 	public static final String USER_NAME = "uname";
@@ -229,7 +224,15 @@ public class DbOperations {
     	
     	final String sqlLogin = "SELECT \"PASSWORD\", PUNTAJE from JUGADORES where JUGADOR = ?";
     	
-    	PreparedStatement ps = conn.prepareStatement(sqlLogin);
+    	PreparedStatement ps = null;
+    	try {
+    		ps = connPool.getConnection().prepareStatement(sqlLogin);
+    	} catch (ClassNotFoundException e) {
+    		throw new SQLException("Class not found " + e.getMessage());
+    	} catch (InvalidPoolException e) {
+    		throw new SQLException("Invalid Pool" + e.getMessage());
+    	}
+    	
     	ps.setString(1, uname);
     	ResultSet rs = ps.executeQuery();
     	
@@ -248,7 +251,14 @@ public class DbOperations {
     public int getTrucoPlayerRanking(TrucoPlayer trucoPlayer) throws SQLException
     {
     	final String sql="select jugadores.puntaje FROM jugadores where JUGADOR=?";
-    	PreparedStatement ps = conn.prepareStatement(sql);
+    	PreparedStatement ps = null;
+    	try {
+    		ps = connPool.getConnection().prepareStatement(sql);
+    	} catch (ClassNotFoundException e) {
+    		throw new SQLException("Class not found " + e.getMessage());
+    	} catch (InvalidPoolException e) {
+    		throw new SQLException("Invalid Pool" + e.getMessage());
+    	}
     	ps.setString(1, trucoPlayer.getName());
     	ResultSet rs = ps.executeQuery();
     	int ranking=0;
@@ -284,11 +294,14 @@ public class DbOperations {
 		String username = properties.getProperty(USER_NAME);
 		String password = properties.getProperty(PASSWORD);
 		
-		if (dburl == null || username == null || password == null) 
-			throw new SQLException();
 		
-		Class.forName("org.firebirdsql.jdbc.FBDriver");
-		conn = DriverManager.getConnection(	dburl,	username,	password);
+		ConnectionInfo cinfo = new ConnectionInfo("org.firebirdsql.jdbc.FBDriver", dburl, username, password);
+		try {
+			connPool = new ConnectionPool(cinfo, 5);
+    	} catch (InitializationExeption e) {
+    		throw new SQLException("Invalid Pool" + e.getMessage());
+    	}
+		
 		
 	}
 
@@ -311,8 +324,16 @@ public class DbOperations {
 	 */
 	private void calcularNuevoRating(int numeroPartida) throws SQLException {
 
-		String procedure = "{call calcularating ?  }";		
-		CallableStatement cs = conn.prepareCall(procedure);
+		String procedure = "{call calcularating ?  }";
+		CallableStatement cs = null;
+		try {
+			cs = connPool.getConnection().prepareCall(procedure);
+    	} catch (ClassNotFoundException e) {
+    		throw new SQLException("Class not found " + e.getMessage());
+    	} catch (InvalidPoolException e) {
+    		throw new SQLException("Invalid Pool" + e.getMessage());
+    	}		
+		
 		cs.setInt(1, numeroPartida);
 		cs.execute();
 		cs.close();
@@ -335,7 +356,15 @@ public class DbOperations {
 		" (JUGADOR,PARTIDA,EQUIPO,MARCANTE)" +
 		" VALUES (?, ?, ?, ?)";
 		
-		PreparedStatement insertStmt = conn.prepareStatement(sqlInsert);
+		
+		PreparedStatement insertStmt = null;
+		try {
+			insertStmt = connPool.getConnection().prepareStatement(sqlInsert);
+    	} catch (ClassNotFoundException e) {
+    		throw new SQLException("Class not found " + e.getMessage());
+    	} catch (InvalidPoolException e) {
+    		throw new SQLException("Invalid Pool" + e.getMessage());
+    	}		
 
 		for (int i = 0; i < lp1.size() ; i++) {
 			TrucoPlayer tp1 = (TrucoPlayer)lp1.get(i);
@@ -367,9 +396,16 @@ public class DbOperations {
 	 * @throws SQLException
 	 */
 	private int nuevaPartida(int teamGanador) throws SQLException {
-	
-		String procedure = "{call GET_PARTIDA_ID returning_values ? }";		
-		CallableStatement cs = conn.prepareCall(procedure);
+		Connection conn = null;
+		String procedure = "{call GET_PARTIDA_ID returning_values ? }";
+		try {
+			conn = connPool.getConnection();
+    	} catch (ClassNotFoundException e) {
+    		throw new SQLException("Class not found " + e.getMessage());
+    	} catch (InvalidPoolException e) {
+    		throw new SQLException("Invalid Pool" + e.getMessage());
+    	}		
+    	CallableStatement cs = conn.prepareCall(procedure);
 		cs.registerOutParameter(1, Types.INTEGER);
 		cs.execute();
 		int partidaNro = cs.getInt(1);
