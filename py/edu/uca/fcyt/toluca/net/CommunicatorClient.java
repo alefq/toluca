@@ -54,7 +54,7 @@ public class CommunicatorClient extends Communicator{
 		
 			setSocket(new Socket(getServerString(), portNumber));
 			/*Agregado por aa para cortar la comunicación*/
-			getSocket().setSoTimeout(CommunicatorClient.SOCKET_TIMEOUT);
+			//getSocket().setSoTimeout(CommunicatorClient.SOCKET_TIMEOUT);
 			
 			ret = XmlPackagesSession.XML_PACKAGE_SESSION_INIT_OK;
 			logeador.log(Level.FINEST,"Se establecio la coneccion con el servidor");		

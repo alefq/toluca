@@ -1,6 +1,7 @@
 package py.edu.uca.fcyt.toluca.net;
 
 import java.io.IOException;
+import java.net.SocketException;
 
 import org.apache.log4j.Logger;
 
@@ -74,7 +75,14 @@ public class CommunicatorServer extends Communicator {
 	}
 	public void loginCompleted(RoomEvent event)
 	{
-//		logger.debug("Login completed");
+		logger.debug("Login completed");
+		
+		try {
+			getSocket().setSoTimeout(CommunicatorServer.SOCKET_TIMEOUT);
+		} catch (SocketException e) {
+			logger.error("Error en el socket en login Completed", e);
+			e.printStackTrace();
+		}
 		super.sendXmlPackage(event);
 		TableServer[] tablesServers=event.getTablesServers();
 		for(int i=0;i<tablesServers.length;i++)
