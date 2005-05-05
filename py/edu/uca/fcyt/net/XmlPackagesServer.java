@@ -60,7 +60,7 @@ public class XmlPackagesServer extends ServerSocket implements Runnable {
                 logger.info("el descriptor de socket es: " + socket);
                 XmlPackagesSession xps = (XmlPackagesSession)theClass.newInstance();
                 //socket.setSoTimeout(RoomServer.TIME_OUT);
-                socket.setSoTimeout(CommunicatorServer.SOCKET_TIMEOUT);
+                //socket.setSoTimeout(CommunicatorServer.SOCKET_TIMEOUT);
                 xps.setSocket(socket);
                 
                 int retinit = xps.init();
