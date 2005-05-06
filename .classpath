@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="LIBS/log4j-1.2.8.jar"/>
-	<classpathentry kind="var" path="LIBS/firebirdsql-full.jar"/>
-	<classpathentry kind="var" path="LIBS/junit.jar"/>
+	<classpathentry exported="true" kind="var" path="LIBS/log4j-1.2.8.jar"/>
+	<classpathentry exported="true" kind="var" path="LIBS/firebirdsql-full.jar"/>
+	<classpathentry exported="true" kind="var" path="LIBS/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
