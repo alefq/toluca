@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/05/05 13:17:55 $
- * @version $Revision: 1.35 $ 
+ * Last modified: $Date: 2005/05/06 05:34:19 $
+ * @version $Revision: 1.36 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -13,16 +13,23 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+import py.com.roshka.game.gui.UserListSelection;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.RoomClient;
 import py.edu.uca.fcyt.toluca.TolucaConstants;
@@ -363,7 +370,7 @@ public class RoomUING extends JApplet {
             } catch (IOException e) {
                 TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
                         "error cargando anuncios");
-            }            
+            }
 
         }
         return jEPanuncios;
@@ -622,6 +629,25 @@ public class RoomUING extends JApplet {
 
     public void actualizarTestConexion(long ms) {
         getConexionTestPanel().actualizar(ms);
+    }
+
+    public List getPlayers() {
+        return getTableRanking().getPlayers();        
+    }
+
+    /**
+     * @return
+     */
+    public TrucoPlayer selectUserFromList() {
+        UserListSelection jd = new UserListSelection();        
+        DefaultListModel lm = new DefaultListModel();
+        Iterator it = getPlayers().iterator();
+        while (it.hasNext()) {
+            lm.addElement(it.next());            
+        }
+        jd.getJLplayres().setModel(lm);        
+        jd.setVisible(true);
+        return (TrucoPlayer) jd.getJLplayres().getSelectedValue();
     }
 
 } //  @jve:decl-index=0:visual-constraint="10,30"

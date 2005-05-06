@@ -1,8 +1,8 @@
 /* TolucaConstants.java
  * Created on Sep 22, 2004
  *
- * Last modified: $Date: 2005/04/02 21:05:12 $
- * @version $Revision: 1.6 $ 
+ * Last modified: $Date: 2005/05/06 05:34:19 $
+ * @version $Revision: 1.7 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca;
@@ -24,6 +24,8 @@ public class TolucaConstants {
     public static final Level CLIENT_INFO_LOG_LEVEL = Level.WARNING;
 
     public static final Level CLIENT_ERROR_LOG_LEVEL = Level.SEVERE;
+    
+    public static final Level DEFAULT_LOG_LEVEL = Level.WARNING;
 
     /**
      * @param result
@@ -110,6 +112,13 @@ public class TolucaConstants {
         //			System.out.println("stes[" +i+ "],getClassName()" +
         // stes[i].getClassName());
         return stes[2].getMethodName();
+    }
+
+    /**
+     * @param string
+     */
+    public static void log(String string) {
+        log(DEFAULT_LOG_LEVEL, string);
     }
 
 }

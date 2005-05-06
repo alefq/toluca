@@ -46,6 +46,7 @@ class TrListener implements TrucoListener
 //		new Throwable("").printStackTrace(System.out);
 		getTable().getJTrucoTable().buttons[TrucoTable.BUTTON_INICIAR_OK].setText("Ok"); 
 		getTable().getJTrucoTable().getJButton("Ayuda").setEnabled(false);
+		getTable().getJTrucoTable().getJBinvitar().setEnabled(false);
 	}
 	
 	/**

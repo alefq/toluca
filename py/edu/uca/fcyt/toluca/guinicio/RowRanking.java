@@ -42,9 +42,15 @@ public class RowRanking {
 	public void setUser(String user) {
 		this.user = user;
 	}
+	
 	public Integer getRankingStatus()
 	{
-		int rank=ranking.intValue();
+	    return getRankingStatus(ranking.intValue());
+	}
+	
+	public static Integer getRankingStatus(int rank)
+	{
+		
 		if(rank>2100)
 			return RANKING_ROJO;
 		else if(rank >1800)

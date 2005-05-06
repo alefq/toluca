@@ -3,13 +3,20 @@ package py.edu.uca.fcyt.toluca.table;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
@@ -17,10 +24,9 @@ import javax.swing.border.EtchedBorder;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 
-import java.awt.GridLayout;
-import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 /** Panel principal de juego */
 public class TrucoTable extends JPanel implements ComponentListener {
     public static final int BUTTON_INICIAR_OK = 0;
@@ -42,7 +48,7 @@ public class TrucoTable extends JPanel implements ComponentListener {
 
     private Table table;
 
-    private PlayTable playTable = null;  //  @jve:decl-index=0:visual-constraint="387,56"
+    private PlayTable playTable = null; //  @jve:decl-index=0:visual-constraint="387,56"
 
     private ChatPanel chatPanel = null;
 
@@ -54,10 +60,16 @@ public class TrucoTable extends JPanel implements ComponentListener {
 
     private TableRanking tableRanking = null;
 
-	private JPanel jPmedio = null;
-	private JPanel jPbotonesJugadas = null;
-	private JPanel jPanel = null;
-	private ConexionTestPanel conexionTestPanel = null;
+    private JPanel jPmedio = null;
+
+    private JPanel jPbotonesJugadas = null;
+
+    private JPanel jPanel = null;
+
+    private ConexionTestPanel conexionTestPanel = null;
+
+    private JButton jBinvitar;
+
     /**
      * Construye un TrucoTable con ptListener como listener de eventos de la
      * mesa
@@ -89,7 +101,9 @@ public class TrucoTable extends JPanel implements ComponentListener {
             score = new Score(30);
             score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
             score.add(new JLabel(" ------ Puntaje ------ "));
-            score.add(new JLabel("    Rojo        "+ (TolucaConstants.isWindowFamily() ? "" : "   ")+"Azul   "));
+            score.add(new JLabel("    Rojo        "
+                    + (TolucaConstants.isWindowFamily() ? "" : "   ")
+                    + "Azul   "));
             score.setBorder(new EtchedBorder());
         }
         return score;
@@ -179,8 +193,49 @@ public class TrucoTable extends JPanel implements ComponentListener {
         getPlayTable().inicializar();
         getChatPanel().setCpc(table);
         getChatPanel().setPlayer(table.getPlayer());
-        getJpLeftPanel().add(actions = new Actions(buttons, table, table));
-//        ((TableRanking)getTableRanking()).setTable(table);
+        getJpLeftPanel().add(getJBinvitar());
+        getJpLeftPanel().add(actions = new Actions(buttons, table, table));        
+        //        ((TableRanking)getTableRanking()).setTable(table);
+    }
+
+    /**
+     * @return
+     */
+    JButton getJBinvitar() {
+        if (jBinvitar == null) {            
+            jBinvitar = new JButton();
+            jBinvitar.setText("Invitar");
+            jBinvitar.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    jBinvitarActionPerformed(e);
+
+                }
+            });
+            jBinvitar.setPreferredSize(Actions.DEFAULT_BUTTON_SIZE);
+            jBinvitar.setMaximumSize(Actions.DEFAULT_BUTTON_SIZE);
+            jBinvitar.setMinimumSize(Actions.DEFAULT_BUTTON_SIZE);
+        }
+        return jBinvitar;
+    }
+
+    /**
+     * @param e
+     */
+    protected void jBinvitarActionPerformed(ActionEvent e) {
+        TrucoPlayer tp = getTable().getRoom().getRoomUING().selectUserFromList();
+        if(tp != null)
+            sendInvitation(tp);
+    }
+
+    /**
+     * @param tp
+     * 
+     */
+    private void sendInvitation(TrucoPlayer tp) {
+        //TODO enviar el pacochi. Debe contener el player que invita
+        // a quien se invita y el nro. de mesa
+        TolucaConstants.log(getTable().getPlayer() + " de la mesa #" + getTable().getTableNumber() + " esta invitando al jugador " + tp);
     }
 
     public Table getTable() {
@@ -236,11 +291,11 @@ public class TrucoTable extends JPanel implements ComponentListener {
      */
     private JPanel getJpCantos() {
         if (jpCantos == null) {
-            Dimension dim = new Dimension(300,50);
+            Dimension dim = new Dimension(300, 50);
             jpCantos = new JPanel();
             jpCantos.setMinimumSize(dim);
             jpCantos.setPreferredSize(dim);
-            jpCantos.setMaximumSize(new Dimension(1024,50));
+            jpCantos.setMaximumSize(new Dimension(1024, 50));
             jpCantos.add(jlSaying = new JLabel("Canto: "));
             jpCantos.setBorder(new EtchedBorder());
         }
@@ -267,7 +322,7 @@ public class TrucoTable extends JPanel implements ComponentListener {
      */
     TableRanking getTableRanking() {
         if (tableRanking == null) {
-            tableRanking = new TableRanking();       
+            tableRanking = new TableRanking();
         }
         return tableRanking;
     }
@@ -287,32 +342,36 @@ public class TrucoTable extends JPanel implements ComponentListener {
         //getJpWatchers().removePlayer(player.getName());
         getTableRanking().removeplayer(player);
     }
-	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */    
-	private JPanel getJPmedio() {
-		if (jPmedio == null) {
-			jPmedio = new JPanel();
-			jPmedio.setLayout(new BoxLayout(jPmedio, BoxLayout.Y_AXIS));
-			jPmedio.add(getPlayTable());
-			//jPmedio.add(getJSPbotonesJugadas(), java.awt.BorderLayout.SOUTH);
-			jPmedio.add(getJPbotonesJugadas());
-		}
-		return jPmedio;
-	}
-	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */    
-	public JPanel getJPbotonesJugadas() {
-		if (jPbotonesJugadas == null) {
-		    Dimension dim = new Dimension(300,50);
-			java.awt.GridLayout gridLayout1 = new GridLayout();
-			jPbotonesJugadas = new JPanel() {
-			    /* (non-Javadoc)
+
+    /**
+     * This method initializes jPanel
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJPmedio() {
+        if (jPmedio == null) {
+            jPmedio = new JPanel();
+            jPmedio.setLayout(new BoxLayout(jPmedio, BoxLayout.Y_AXIS));
+            jPmedio.add(getPlayTable());
+            //jPmedio.add(getJSPbotonesJugadas(), java.awt.BorderLayout.SOUTH);
+            jPmedio.add(getJPbotonesJugadas());
+        }
+        return jPmedio;
+    }
+
+    /**
+     * This method initializes jPanel
+     * 
+     * @return javax.swing.JPanel
+     */
+    public JPanel getJPbotonesJugadas() {
+        if (jPbotonesJugadas == null) {
+            Dimension dim = new Dimension(300, 50);
+            java.awt.GridLayout gridLayout1 = new GridLayout();
+            jPbotonesJugadas = new JPanel() {
+                /*
+                 * (non-Javadoc)
+                 * 
                  * @see java.awt.Component#repaint()
                  */
                 public void repaint() {
@@ -320,47 +379,59 @@ public class TrucoTable extends JPanel implements ComponentListener {
                     super.repaint();
                     validateTree();
                 }
-			};
-			jPbotonesJugadas.setLayout(gridLayout1);
-			jPbotonesJugadas.setMinimumSize(dim);
-			jPbotonesJugadas.setPreferredSize(dim);
-			jPbotonesJugadas.setMaximumSize(new Dimension(1024,50));
-			jPbotonesJugadas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Jugadas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12), java.awt.Color.blue));					
-			gridLayout1.setRows(1);			
-		}
-		return jPbotonesJugadas;
-	}
+            };
+            jPbotonesJugadas.setLayout(gridLayout1);
+            jPbotonesJugadas.setMinimumSize(dim);
+            jPbotonesJugadas.setPreferredSize(dim);
+            jPbotonesJugadas.setMaximumSize(new Dimension(1024, 50));
+            jPbotonesJugadas
+                    .setBorder(javax.swing.BorderFactory
+                            .createTitledBorder(
+                                    null,
+                                    "Jugadas",
+                                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                                    javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                                    new java.awt.Font("Dialog",
+                                            java.awt.Font.PLAIN, 12),
+                                    java.awt.Color.blue));
+            gridLayout1.setRows(1);
+        }
+        return jPbotonesJugadas;
+    }
+
     public JLabel getJlSaying() {
         return jlSaying;
     }
-	/**
-	 * This method initializes jPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */    
-	private JPanel getJPanel() {
-		if (jPanel == null) {
-			jPanel = new JPanel();
-			jPanel.setLayout(new BorderLayout());
-			jPanel.add(getScore(), java.awt.BorderLayout.CENTER);
-			jPanel.add(getConexionTestPanel(), java.awt.BorderLayout.SOUTH);
-		}
-		return jPanel;
-	}
-	/**
-	 * This method initializes conexionTestPanel	
-	 * 	
-	 * @return py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel	
-	 */    
-	private ConexionTestPanel getConexionTestPanel() {
-		if (conexionTestPanel == null) {
-			conexionTestPanel = new ConexionTestPanel();
-			conexionTestPanel.setBorder(BorderFactory.createEtchedBorder());
-		}
-		return conexionTestPanel;
-	}
-	public void actualizarConexionStatus(float ms)
-	{
-	    getConexionTestPanel().actualizar(ms);
-	}
+
+    /**
+     * This method initializes jPanel
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJPanel() {
+        if (jPanel == null) {
+            jPanel = new JPanel();
+            jPanel.setLayout(new BorderLayout());
+            jPanel.add(getScore(), java.awt.BorderLayout.CENTER);
+            jPanel.add(getConexionTestPanel(), java.awt.BorderLayout.SOUTH);
+        }
+        return jPanel;
     }
+
+    /**
+     * This method initializes conexionTestPanel
+     * 
+     * @return py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel
+     */
+    private ConexionTestPanel getConexionTestPanel() {
+        if (conexionTestPanel == null) {
+            conexionTestPanel = new ConexionTestPanel();
+            conexionTestPanel.setBorder(BorderFactory.createEtchedBorder());
+        }
+        return conexionTestPanel;
+    }
+
+    public void actualizarConexionStatus(float ms) {
+        getConexionTestPanel().actualizar(ms);
+    }
+}

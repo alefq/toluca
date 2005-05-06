@@ -2,7 +2,9 @@ package py.edu.uca.fcyt.toluca.guinicio;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
@@ -18,7 +20,9 @@ public class TableRanking extends JTable {
     //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
     //            .getLogger(TableRanking.class);
 
+    public static final HashMap coloresRanking = new HashMap();
     private Table table = null;
+    private HashMap players = new HashMap();
 
     public TableRanking() {
         super(new TableModelRanking());
@@ -38,8 +42,7 @@ public class TableRanking extends JTable {
         TableColumn puntajeCol = getColumn("Puntaje");
         puntajeCol.setPreferredWidth(60);
         puntajeCol.setMaxWidth(60);
-        setRowHeight(25);
-        HashMap coloresRanking = new HashMap();
+        setRowHeight(25);       
 
         /*
          * coloresRanking.put(RowRanking.RANKING_AZUL, new
@@ -106,15 +109,16 @@ public class TableRanking extends JTable {
         TableModelRanking model = (TableModelRanking) getModel();
         model.insertRow(new RowRanking(player.getName(), new Integer(player
                 .getRating())));
+        players.put(player.getName(), player);
     }
 
     /**
      * @param player
      */
     public void removeplayer(TrucoPlayer player) {
-
         TableModelRanking model = (TableModelRanking) getModel();
         model.deletePlayer(player.getName());
+        players.remove(player.getName());
     }
 
     /**
@@ -144,6 +148,14 @@ public class TableRanking extends JTable {
         name.setTable(table);
         setModel(name);                
         initComponents();*/
+    }
+
+    /**
+     * 
+     */
+    public List getPlayers() {
+        ArrayList ret = new ArrayList(players.values());
+        return ret;
     }
        
 }

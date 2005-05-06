@@ -9,48 +9,46 @@ import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-class Actions extends JButton implements ChangeListener
-{
-//	JSlider jSlider;
-//	JLabel fps; 
+class Actions extends JButton implements ChangeListener {
+    public static final Dimension DEFAULT_BUTTON_SIZE = new Dimension(100, 22);
 
-	//Constructor	
-	public Actions
-	(
-		JButton[] buttons, ActionListener actListener,
-		ChangeListener chListener
-	) 
-	{	
+    //	JSlider jSlider;
+    //	JLabel fps;
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    //Constructor
+    public Actions(JButton[] buttons, ActionListener actListener,
+            ChangeListener chListener) {
 
-		for (int i = 0; i < buttons.length; i++)
-		{
-			buttons[i].setPreferredSize(new Dimension(100, 22));
-			buttons[i].setMaximumSize(new Dimension(100, 22));
-			buttons[i].addActionListener(actListener);
-			add(buttons[i]);
-		}
-//		add(fps = new JLabel("FPS: 5"));
-		/*add(jSlider = new JSlider(1, 100, 5));
-		jSlider.addChangeListener(chListener);
-		jSlider.addChangeListener(this);*/
-		
-		setBorder(null);
-	}
-	
-	public int getValue()
-	{
-//		return jSlider.getValue();
-	    return 0;
-	}
-		
-	/* (non-Javadoc)
-	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
-	 */
-	public void stateChanged(ChangeEvent arg0)
-	{
-//		fps.setText("FPS: " + jSlider.getValue());
-	}
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setPreferredSize(DEFAULT_BUTTON_SIZE);
+            buttons[i].setMaximumSize(DEFAULT_BUTTON_SIZE);
+            buttons[i].addActionListener(actListener);
+            add(buttons[i]);
+        }
+        //		add(fps = new JLabel("FPS: 5"));
+        /*
+         * add(jSlider = new JSlider(1, 100, 5));
+         * jSlider.addChangeListener(chListener);
+         * jSlider.addChangeListener(this);
+         */
+
+        setBorder(null);
+    }
+
+    public int getValue() {
+        //		return jSlider.getValue();
+        return 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
+    public void stateChanged(ChangeEvent arg0) {
+        //		fps.setText("FPS: " + jSlider.getValue());
+    }
 
 }
