@@ -370,12 +370,14 @@ public class EventDispatcherClient extends EventDispatcher {
         TrucoPlayer playerClient = room.getPlayer(playerServer.getName());
 
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "La silla de
-
+        
         try {
             table.sitPlayer(playerClient, chair);
         } catch (TableException e) {
-            table
-                    .showSystemMessage("Alguien se sentó antes que vos. Sentate en otra silla: " + e.getMessage());
+            TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, e.getMessage());
+            TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Silla: " + chair + "Table: " + table.getTableNumber() + "Jugador: " + playerServer.getName());
+            e.printStackTrace();
+            table.showSystemMessage("Alguien se sentó antes que vos. Sentate en otra silla: " + e.getMessage());
         }
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "ya se hizo el
         // table.sitPlayer");

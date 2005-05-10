@@ -364,8 +364,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         if (fManager != null) {
             face = fManager.getFace(chair);
             face.setName(player.getName());
-            face
-                    .loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
+            face.loadFacesFromURL("/py/edu/uca/fcyt/toluca/images/faces/standard/");
         }
 
         //		System.out.println("----------------- TABLA DE: " +
