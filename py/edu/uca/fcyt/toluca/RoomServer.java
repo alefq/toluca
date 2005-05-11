@@ -27,6 +27,7 @@ import py.edu.uca.fcyt.toluca.event.RoomListener;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TableListener;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.net.Communicator;
 import py.edu.uca.fcyt.toluca.net.CommunicatorServer;
 import py.edu.uca.fcyt.toluca.net.ConnectionManager;
 import py.edu.uca.fcyt.toluca.table.TableServer;
@@ -950,6 +951,23 @@ implements ChatPanelContainer, TableListener {
         System.out.println("terminado");
 
     }
-
+    public Communicator getCommunicator(TrucoPlayer player)
+    {
+    	
+    	Iterator it=connManager.getVecSesiones().iterator();
+    	
+    	while(it.hasNext())
+    	{
+    		CommunicatorServer comm=(CommunicatorServer) it.next();
+    		if(comm.getTrucoPlayer().getName().equals(player.getName()))
+    		{
+    			return comm;
+    		}
+    	}
+    		
+		
+    	
+    	return null;
+    }
 } // end RoomServer
 

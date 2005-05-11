@@ -865,4 +865,12 @@ public class EventDispatcherClient extends EventDispatcher {
         roomClient.testConexionReceive(intervalo);
 
     }
+
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#invitacion(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void invitacion(RoomEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }

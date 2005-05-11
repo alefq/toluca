@@ -262,5 +262,13 @@ public class CommunicatorServer extends Communicator {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.event.RoomListener#sendInvitation(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void sendInvitation(RoomEvent ev) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

@@ -1,8 +1,8 @@
 /* InvitationPanel.java
  * Created on May 5, 2005
  *
- * Last modified: $Date: 2005/05/06 05:34:19 $
- * @version $Revision: 1.1 $ 
+ * Last modified: $Date: 2005/05/11 22:02:06 $
+ * @version $Revision: 1.2 $ 
  * @author afeltes
  */
 package py.com.roshka.game.gui;
@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import py.edu.uca.fcyt.toluca.event.RoomListener;
 
 /**
  * 
@@ -49,6 +51,7 @@ public class InvitationPanel extends JPanel {
 
     private JButton jButton1 = null;
 
+    private RoomListener roomListener;
     public static void main(String[] args) {
         InvitationPanel ip = new InvitationPanel();
         ip.setPlayerHost("Ale");
@@ -211,4 +214,10 @@ public class InvitationPanel extends JPanel {
         }
         return jButton1;
     }
+	/**
+	 * @param roomListener The roomListener to set.
+	 */
+	public void setRoomListener(RoomListener roomListener) {
+		this.roomListener = roomListener;
+	}
 }

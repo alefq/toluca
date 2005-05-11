@@ -451,4 +451,17 @@ public class EventDispatcherServer extends EventDispatcher {
         communicatorServer.sendXmlPackage(event);
     }
 
+	/* (non-Javadoc)
+	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#invitacion(py.edu.uca.fcyt.toluca.event.RoomEvent)
+	 */
+	public void invitacion(RoomEvent event) {
+		
+		
+		Communicator commInvitado=((RoomServer)room).getCommunicator(event.getPlayer());
+		
+		
+		
+		
+	}
+
 }

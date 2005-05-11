@@ -86,6 +86,7 @@ public interface RoomListener extends SpaceListener {
      */
     public void playerLeft(RoomEvent ev);
     public void rankingChanged(RoomEvent ev);
+    public void sendInvitation(RoomEvent ev);
 } // end RoomListener
 
 
