@@ -8,21 +8,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
 
+import py.com.roshka.game.gui.InvitationPanel;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.TolucaConstants;
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
@@ -236,6 +236,11 @@ public class TrucoTable extends JPanel implements ComponentListener {
         //TODO enviar el pacochi. Debe contener el player que invita
         // a quien se invita y el nro. de mesa
         TolucaConstants.log(getTable().getPlayer() + " de la mesa #" + getTable().getTableNumber() + " esta invitando al jugador " + tp);
+        RoomEvent re = new RoomEvent();
+        re.setType(RoomEvent.TYPE_INVITACION);
+        re.setPlayer(tp);
+        re.setTableNumber(getTable().getTableNumber());
+        getTable().fireInvitationRequest(re);
     }
 
     public Table getTable() {
@@ -433,5 +438,25 @@ public class TrucoTable extends JPanel implements ComponentListener {
 
     public void actualizarConexionStatus(float ms) {
         getConexionTestPanel().actualizar(ms);
+    }
+
+    /**
+     * @param event
+     */
+    public void showInvitation(RoomEvent event) {
+        InvitationPanel ip = new InvitationPanel();
+        ip.setTrucoTable(this);
+        ip.setPlayerHost(event.getPlayer().getName());
+        ip.setRankingHost(event.getPlayer().getRating());
+        ip.setPlayerInvited(getTable().getPlayer().getName());
+        ip.setTableHostNumber(event.getTableNumber());
+        ip.setTrucoPlayer(event.getPlayer());
+        JDialog jf = new JDialog();
+        jf.setTitle("Invitacion");
+        jf.getContentPane().add(ip);
+        ip.setDialog(jf);
+        jf.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        jf.setSize(300,200);
+        jf.setVisible(true);
     }
 }

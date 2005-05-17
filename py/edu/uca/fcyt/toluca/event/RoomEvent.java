@@ -208,12 +208,13 @@ public class RoomEvent {
 	public static final int TYPE_RANKING_CHANGED=15;
     public static final int TYPE_TEST_CONEXION=16;
     public static final int TYPE_INVITACION=17;
+    public static final int TYPE_INVITACION_REJECTED = 18;
 	/** Holds value of property player. */
 	private TrucoPlayer player;
     
 	/** Holds value of property tableServer. */
 	private TableServer tableServer;
-    private long msSend;
+    private long msSend;    
 	public RoomEvent(){
 		//codigo agregado por el CIT MASTER
 	   tables = new HashMap();

@@ -47,9 +47,11 @@ public abstract class EventDispatcher {
 			case RoomEvent.TYPE_RANKING_CHANGED:rankingChanged(event);break;
 			case RoomEvent.TYPE_TEST_CONEXION:testConexion(event);break;
 			case RoomEvent.TYPE_INVITACION:invitacion(event);break;
+			case RoomEvent.TYPE_INVITACION_REJECTED:invitacionRejected(event);break;
 		}
 	}
-	public void dispatchEvent(TableEvent event)
+	
+    public void dispatchEvent(TableEvent event)
 	{
 		//log.log(Level.WARNING,"se recibe un tableevent");
 		switch(event.getEvent())
@@ -202,6 +204,8 @@ public abstract class EventDispatcher {
 	
 	public abstract void testConexion(RoomEvent event);
 	public abstract void invitacion(RoomEvent event);
+    public abstract void invitacionRejected(RoomEvent event);
+    
 	//METODOS CORRESPONDIENTES A LA TABLA
 	public abstract void playerSitRequest(TableEvent event);
 	public abstract void playerSit(TableEvent event);

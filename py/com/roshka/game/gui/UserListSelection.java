@@ -1,24 +1,25 @@
 /* UserListSelection.java
  * Created on May 6, 2005
  *
- * Last modified: $Date: 2005/05/06 05:34:19 $
- * @version $Revision: 1.1 $ 
+ * Last modified: $Date: 2005/05/17 22:01:48 $
+ * @version $Revision: 1.2 $ 
  * @author afeltes
  */
 package py.com.roshka.game.gui;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
-
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
-import javax.swing.JList;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 
@@ -59,6 +60,7 @@ public class UserListSelection extends JDialog {
      */
     private void initialize() {
         this.setSize(300, 200);
+        setTitle("Lista de usuarios conectados");
         setModal(true);
         this.setContentPane(getJContentPane());
     }
@@ -117,7 +119,16 @@ public class UserListSelection extends JDialog {
         if (jLplayres == null) {
             jLplayres = new JList();
             jLplayres.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            jLplayres.setCellRenderer(new UserListRenderer(TableRanking.coloresRanking));
+            jLplayres.setCellRenderer(new UserListRenderer(
+                    TableRanking.coloresRanking));
+            jLplayres.addMouseListener(new MouseAdapter() {                
+                public void mouseClicked(MouseEvent e) {
+                    if(e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
+                    {
+                        getJBinvitar().doClick();
+                    }
+                }
+            });
         }
         return jLplayres;
     }

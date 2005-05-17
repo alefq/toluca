@@ -633,4 +633,20 @@ public class RoomClient extends Room implements ChatPanelContainer,
             }
         }
     }
+
+    /* (non-Javadoc)
+     * @see py.edu.uca.fcyt.toluca.event.TableListener#invitationRequest(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void invitationRequest(RoomEvent event) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see py.edu.uca.fcyt.toluca.event.TableListener#invitationRejected(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void invitationRejected(RoomEvent re) {
+        // TODO Auto-generated method stub
+        
+    }
 } // end RoomClient

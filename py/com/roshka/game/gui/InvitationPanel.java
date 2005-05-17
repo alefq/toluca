@@ -1,22 +1,28 @@
 /* InvitationPanel.java
  * Created on May 5, 2005
  *
- * Last modified: $Date: 2005/05/11 22:02:06 $
- * @version $Revision: 1.2 $ 
+ * Last modified: $Date: 2005/05/17 22:01:48 $
+ * @version $Revision: 1.3 $ 
  * @author afeltes
  */
 package py.com.roshka.game.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.RoomListener;
+import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.table.TrucoTable;
 
 /**
  * 
@@ -52,6 +58,11 @@ public class InvitationPanel extends JPanel {
     private JButton jButton1 = null;
 
     private RoomListener roomListener;
+    private TrucoTable table;
+    private JDialog dialog;
+    
+    private TrucoPlayer trucoPlayer = null;
+    
     public static void main(String[] args) {
         InvitationPanel ip = new InvitationPanel();
         ip.setPlayerHost("Ale");
@@ -91,7 +102,8 @@ public class InvitationPanel extends JPanel {
     }
 
     public void setPlayerHost(String playerHost) {
-        this.playerHost = playerHost;        
+        this.playerHost = playerHost;   
+        getJTFplayer().setText(getJTFplayer().getText() + " " + playerHost);
     }
 
     public String getPlayerInvited() {
@@ -108,6 +120,8 @@ public class InvitationPanel extends JPanel {
 
     public void setRankingHost(int rankingHost) {
         this.rankingHost = rankingHost;
+        getJTFplayer().setText(getJTFplayer().getText() + " (" + rankingHost + ")");
+        getJTFplayer().setToolTipText(getJTFplayer().getText());
     }
 
     public int getTableHostNumber() {
@@ -116,6 +130,7 @@ public class InvitationPanel extends JPanel {
 
     public void setTableHostNumber(int tableHostNumber) {
         this.tableHostNumber = tableHostNumber;
+        getJTFmesaNro().setText("lo invita a unirse a la mesa Nro. : " + tableHostNumber);
     }
 
     /**
@@ -198,8 +213,21 @@ public class InvitationPanel extends JPanel {
         if (jButton == null) {
             jButton = new JButton();
             jButton.setText("Aceptar");
+            jButton.addActionListener(new java.awt.event.ActionListener() { 
+            	public void actionPerformed(java.awt.event.ActionEvent e) {    
+            		jButtonAceptarActionPerformed(e);
+            	}
+            });
         }
         return jButton;
+    }
+
+    /**
+     * @param e
+     */
+    protected void jButtonAceptarActionPerformed(ActionEvent e) {
+        getTrucoTable().getTable().getRoom().joinTableRequest(getTableHostNumber());
+        getDialog().setVisible(false);
     }
 
     /**
@@ -211,13 +239,57 @@ public class InvitationPanel extends JPanel {
         if (jButton1 == null) {
             jButton1 = new JButton();
             jButton1.setText("Rechazar");
+            jButton1.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    jButtonCancelActionPerformed(e);
+                }
+            });
         }
         return jButton1;
     }
 	/**
+     * @param e
+     */
+    protected void jButtonCancelActionPerformed(ActionEvent e) {
+        RoomEvent re = new RoomEvent();
+        re.setPlayer(getTrucoPlayer());
+        re.setType(RoomEvent.TYPE_INVITACION_REJECTED);
+        re.setErrorMsg(getJTFmotivo().getText());
+        getTrucoTable().getTable().sendInvitationRejected(re);
+        getDialog().setVisible(false);
+    }
+
+    /**
 	 * @param roomListener The roomListener to set.
 	 */
 	public void setRoomListener(RoomListener roomListener) {
 		this.roomListener = roomListener;
 	}
+
+    /**
+     * @param table
+     */
+    public void setTrucoTable(TrucoTable table) {
+        this.table = table;
+    }
+    
+    public TrucoTable getTrucoTable(){
+        return this.table;
+    }
+
+    /**
+     * @param jf
+     */
+    public void setDialog(JDialog jf) {
+        this.dialog = jf;
+    }
+    public JDialog getDialog() {
+        return dialog;
+    }
+    public TrucoPlayer getTrucoPlayer() {
+        return trucoPlayer;
+    }
+    public void setTrucoPlayer(TrucoPlayer trucoPlayer) {
+        this.trucoPlayer = trucoPlayer;
+    }
 }

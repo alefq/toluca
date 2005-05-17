@@ -1083,6 +1083,20 @@ public class Table implements PTableListener, ChatPanelContainer,
             primerTurno = 2;
     }
 
+    /**
+     * @param re
+     */
+    public void fireInvitationRequest(RoomEvent re) {
+        tEventMan.fireInvitationRequest(re);        
+    }
+
+    /**
+     * @param re
+     */
+    public void sendInvitationRejected(RoomEvent re) {
+        tEventMan.fireInvitationRejected(re);
+    }
+
     
 }
 

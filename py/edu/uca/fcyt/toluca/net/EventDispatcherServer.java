@@ -7,6 +7,7 @@ import py.edu.uca.fcyt.toluca.RoomServer;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.event.TableEvent;
 import py.edu.uca.fcyt.toluca.event.TrucoEvent;
+import py.edu.uca.fcyt.toluca.game.TPlayer;
 import py.edu.uca.fcyt.toluca.game.TrucoGame;
 import py.edu.uca.fcyt.toluca.game.TrucoPlay;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
@@ -293,7 +294,8 @@ public class EventDispatcherServer extends EventDispatcher {
         TableServer tableServer = room.getTableServer(tableClient.getId());
 
         logger.info("solicitud para iniciar el juego en la mesa "
-                + tableServer.getTableNumber() + " echa por el jugador: " + event.getPlayer()[0]);
+                + tableServer.getTableNumber() + " echa por el jugador: "
+                + event.getPlayer()[0]);
 
         tableServer.startGame();
     }
@@ -451,17 +453,44 @@ public class EventDispatcherServer extends EventDispatcher {
         communicatorServer.sendXmlPackage(event);
     }
 
-	/* (non-Javadoc)
-	 * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#invitacion(py.edu.uca.fcyt.toluca.event.RoomEvent)
-	 */
-	public void invitacion(RoomEvent event) {
-		
-		
-		Communicator commInvitado=((RoomServer)room).getCommunicator(event.getPlayer());
-		
-		
-		
-		
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#invitacion(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void invitacion(RoomEvent event) {
 
+        Communicator commInvitado = ((RoomServer) room).getCommunicator(event
+                .getPlayer());
+
+        logger.debug(getCommunicatorServer().getTrucoPlayer()
+                + " invitacion  a la mesa" + event.getTableNumber() + " para: "
+                + event.getPlayer());
+        
+        event.setPlayer(getCommunicatorServer().getTrucoPlayer());
+        commInvitado.invitationRequest(event);
+    }
+
+    public CommunicatorServer getCommunicatorServer() {
+        return communicatorServer;
+    }
+
+    public void setCommunicatorServer(CommunicatorServer communicatorServer) {
+        this.communicatorServer = communicatorServer;
+    }
+
+    /* (non-Javadoc)
+     * @see py.edu.uca.fcyt.toluca.net.EventDispatcher#invitacionRejected(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void invitacionRejected(RoomEvent event) {
+
+        Communicator commHost = ((RoomServer) room).getCommunicator(event
+                .getPlayer());
+
+        logger.debug(getCommunicatorServer().getTrucoPlayer()
+                + " rechazó la invitación a la mesa" + event.getTableNumber() + " MOTIVO: "
+                + event.getErrorMsg());        
+        event.setPlayer(getCommunicatorServer().getTrucoPlayer());
+        commHost.invitationRejected(event);   
+    }
 }

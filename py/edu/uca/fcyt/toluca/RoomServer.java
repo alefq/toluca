@@ -418,7 +418,8 @@ implements ChatPanelContainer, TableListener {
                 ret.load(fis);
                 rs.setProperties(ret);
                 rs.init();
-                rs.leerComandos();
+                if(params.contains("--console"))
+                    rs.leerComandos();
             } catch (Exception e) {
                 logger.error("no hya beleza", e);
                 System.err.println(e.getMessage());
@@ -968,6 +969,22 @@ implements ChatPanelContainer, TableListener {
 		
     	
     	return null;
+    }
+
+    /* (non-Javadoc)
+     * @see py.edu.uca.fcyt.toluca.event.TableListener#invitationRequest(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void invitationRequest(RoomEvent event) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see py.edu.uca.fcyt.toluca.event.TableListener#invitationRejected(py.edu.uca.fcyt.toluca.event.RoomEvent)
+     */
+    public void invitationRejected(RoomEvent re) {
+        // TODO Auto-generated method stub
+        
     }
 } // end RoomServer
 

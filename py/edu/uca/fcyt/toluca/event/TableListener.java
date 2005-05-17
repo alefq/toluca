@@ -11,6 +11,8 @@ public interface TableListener extends SpaceListener
 	public void gameStartRequest(TableEvent event);
 	public void gameStarted(TableEvent event);
 	public void gameFinished(TableEvent event);
+	public void invitationRequest(RoomEvent event);
+    public void invitationRejected(RoomEvent re);
 //	public void tableLocked(TableEvent event);
 //	public void tableUnlocked (TableEvent event);
 	public void playerStandRequest(TableEvent event);
@@ -24,6 +26,7 @@ public interface TableListener extends SpaceListener
     public void signSent(TableEvent event);
     public void showPlayed(TableEvent event);
     public void tableDestroyed(TableEvent event);
+
 } 
 
 
