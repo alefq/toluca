@@ -25,6 +25,7 @@
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.util"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.webmanager"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Espada"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.util.exception"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.db"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.game"/>
@@ -32,8 +33,8 @@
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.game"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.images.Oro"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.table"/>
-<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.guinicio"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.statusGame.statusGameCliente"/>
+<javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca.guinicio"/>
 <javaElement handleIdentifier="=toluca/&lt;py.edu.uca.fcyt.toluca"/>
 </selectedElements>
 </jardesc>
