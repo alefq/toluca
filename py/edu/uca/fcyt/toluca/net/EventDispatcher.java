@@ -25,6 +25,7 @@ public abstract class EventDispatcher {
 
 	protected Room room;
 	private Logger log=Logger.getLogger(EventDispatcher.class.getName());
+	
 	public void dispatchEvent(RoomEvent event)
 	{
 		
@@ -50,7 +51,6 @@ public abstract class EventDispatcher {
 			case RoomEvent.TYPE_INVITACION_REJECTED:invitacionRejected(event);break;
 		}
 	}
-	
     public void dispatchEvent(TableEvent event)
 	{
 		//log.log(Level.WARNING,"se recibe un tableevent");

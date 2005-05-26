@@ -65,7 +65,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     private PopupTrucoPlays pTrucoPlays; // popup de jugadas
 
-    private Vector players;
+    private Vector players; // Jugadores en la mesa, sentados o no
 
     private TrucoGameClient tGame; // juego de truco asociado
 
@@ -234,7 +234,11 @@ public class Table implements PTableListener, ChatPanelContainer,
 
     /** Agrega el jugador 'player' a la mesa */
     public void addPlayer(TrucoPlayer player) {
-        players.add(player);
+        
+    	//agregamos a la mesa
+    	players.add(player);
+        
+        // Ahora agregamos al table ranking.
         if (trucoTable != null)
             trucoTable.addPlayer(player);
         tEventMan.firePlayerJoined(player);
@@ -352,7 +356,7 @@ public class Table implements PTableListener, ChatPanelContainer,
      */
     public void sitPlayer(TrucoPlayer player, int chair) {
         //System.out.println("Mesa de " + getPlayer() + ": sentando a " +
-        // player + " en la mesa " + chair);
+    	// player + " en la mesa " + chair);
         Face face;
         pManager.sitPlayer(player, chair);
 

@@ -22,7 +22,7 @@ public class TableRanking extends JTable {
 
     public static final HashMap coloresRanking = new HashMap();
     private Table table = null;
-    private HashMap players = new HashMap();
+    private HashMap players = new HashMap(); // Jugadores en la mesa, sentados o no.
 
     public TableRanking() {
         super(new TableModelRanking());

@@ -95,7 +95,7 @@ implements RoomListener,TrucoListener,TableListener
 	/* (non-Javadoc)
 	 * @see py.edu.uca.fcyt.toluca.net.XmlPackagesSession#receiveObject(java.lang.Object)
 	 */
-	public void receiveObject(Object bean) {
+	synchronized public void receiveObject(Object bean) {
 			
 /*	    try
 	    {

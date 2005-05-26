@@ -38,7 +38,7 @@ class PlayerManager {
 	 */
 	public synchronized void sitPlayer(TrucoPlayer p, int chair) {
 		if (sittedPlayers.contains(p))
-			throw new TableException("Jugador ya está sentado");
+			throw new TableException("Jugador ya está sentado: " + p.getName());
 
 		if (getPlayer(chair) != null)
 			throw new TableException("Silla ocupada");

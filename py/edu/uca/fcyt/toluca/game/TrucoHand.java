@@ -205,6 +205,9 @@ public class TrucoHand {
      * Inicia el TrucoHand.
      */
     public void startHand() {
+    	
+    	System.out.println("---------------------------------------");
+    	System.out.println("---- EMPIEZA LA MANO  ----");    	
         playTurn(); //asignar turno
     }
 
