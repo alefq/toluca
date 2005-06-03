@@ -12,7 +12,7 @@ import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
 public class TableModelRanking extends AbstractTableModel{
 
 	private ArrayList datos;
-	private final String [] columnNames={"User","Puntaje"};
+	private final String [] columnNames={"Jugador","Puntaje"};
     
 	public TableModelRanking()
 	{
