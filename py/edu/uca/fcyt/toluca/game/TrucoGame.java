@@ -20,6 +20,12 @@ import py.edu.uca.fcyt.toluca.event.TrucoListener;
  */
 public class TrucoGame extends Game
 {
+
+	//TODO: Poner estos 2 en un constructor. 
+	private final int gameTotalPoints = 30;
+	private final int gameBuenaPoints = gameTotalPoints / 2;
+	
+	
 	private static Logger logger=Logger.getLogger(TrucoGame.class.getName());
 	/** Creates a new instance of trucoGame */
 	LinkedList listenerlist; //lista de todos los listener
@@ -353,7 +359,7 @@ public class TrucoGame extends Game
 	    /*
 	     * Esto fue agregado por Cricco. Se pretende controlar si termina el juego que salgan nomas
 	     * */
-	    if(points[0] >= 30 || points[1] >= 30 && !(this instanceof TrucoGameClient))
+	    if(points[0] >= this.gameTotalPoints || points[1] >= this.gameTotalPoints && !(this instanceof TrucoGameClient))
 		{
 	        System.out.println("se teeeermin el jueeeego");
 	        logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Se teeermina el jueeeeego");
@@ -460,7 +466,7 @@ public class TrucoGame extends Game
 	protected void startHandConfirmated()
 	{
 		System.out.println("enviando starthand a todos!!");
-		if(points[0] >= 30 || points[1] >= 30)
+		if(points[0] >= this.gameTotalPoints || points[1] >= this.gameTotalPoints)
 		{
 			fireEndOfGameEvent();
 		}
@@ -507,9 +513,9 @@ public class TrucoGame extends Game
 		int i=0;
 		if(points[1] > points[0])
 			i=1;
-		if(points[i]>=15)
-			return (30-points[i]);
-		return (15-points[i]);
+		if(points[i]>= this.gameBuenaPoints)
+			return (this.gameTotalPoints - points[i]);
+		return (this.gameBuenaPoints - points[i]);
 	}
 	/** Retorna la cantidad de puntos que se juegan, en caso de jugar Al Resto.
 	 * @return Retorna la cantidad de puntos.
@@ -517,8 +523,8 @@ public class TrucoGame extends Game
 	public int alResto()
 	{
 		if (points[0]>points[1])
-			return (30-points[0]);
-		return (30-points[1]);
+			return (this.gameTotalPoints - points[0]);
+		return (this.gameTotalPoints - points[1]);
 	}
 	public Vector getDetallesDeLaMano()
 	{
@@ -576,7 +582,7 @@ public class TrucoGame extends Game
 	 * 
 	 */
 	public int getTeamGanador() {
-		//TODO: Ver que el partido termine cuando alguno de los dos llega a 30
+		//TODO: Ver que el partido termine cuando alguno de los dos llega a this.gameTotalPoints
 		return points[0] > points[1] ? 0 : 1;
 		
 	}
