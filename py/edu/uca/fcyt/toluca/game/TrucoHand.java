@@ -79,8 +79,7 @@ public class TrucoHand {
 
     protected boolean contraFlor = false; //si se canto contra flor
 
-    protected boolean contraFlorAlResto = false; //si se canto contra flor al
-                                                 // resto
+    protected boolean contraFlorAlResto = false; //si se canto contra flor al resto
 
     protected boolean flor = false; /* ya se canto flor */
 
@@ -1414,7 +1413,8 @@ public class TrucoHand {
                 && estadoActual != ENVIDO && estadoActual != REAL_ENVIDO
                 && estadoActual != FALTA_ENVIDO)
             return 6;
-        return 0;
+        
+        return 0;// si se puede.
     }
 
     /* El Player canta envido, real envido o falta envido>>>>>>> */
@@ -1703,8 +1703,8 @@ public class TrucoHand {
         //puntos obtenidos por envido.
         int[] resultEnvido = finDeMano_controlarEnvido();
 
-        if (game.getGameTotalPoints(teams[0]) + resultEnvido[0] >= 30
-                || game.getGameTotalPoints(teams[1]) + resultEnvido[1] >= 30) {
+        if (game.getGameTotalPoints(teams[0]) + resultEnvido[0] >= game.getGamePoints()
+                || game.getGameTotalPoints(teams[1]) + resultEnvido[1] >= game.getGamePoints()) {
             seTerminoLaMano = true;
             displayFinDeMano();
             finDeManoSetearEnvido();

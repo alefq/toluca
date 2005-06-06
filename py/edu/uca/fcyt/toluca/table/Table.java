@@ -39,6 +39,9 @@ import py.edu.uca.fcyt.toluca.table.animation.Animator;
  */
 public class Table implements PTableListener, ChatPanelContainer,
         ActionListener, WindowListener, ChangeListener {
+	
+	private int gamePoints;
+	
     public static final int SIT = 0;
 
     public static final int PLAY = 1;
@@ -117,20 +120,31 @@ public class Table implements PTableListener, ChatPanelContainer,
         this.tableNumber = tableNumber;
     }
 
-    /** Crea un Table asociado con 'player' */
+    /**
+     *  @deprecated
+     *  Crea un Table asociado con 'player' */
     public Table(TrucoPlayer player, boolean host) {
+    	this(player, host, 30);
+    }
+
+    /** Crea un Table asociado con 'player' */
+    public Table(TrucoPlayer player, boolean host, int points) {
         playerLocal = player;
         this.host = host;
         players = new Vector(0, 1);
         playerCount = 6;
-
+        
+        //guardamos el total de puntos del partido
+        setGamePoints(points);
+        
         // crea un nuevo manejador de eventos de tabla
         tEventMan = new TableEventManager(this);
 
         // crea el manejador de jugadores
         pManager = new PlayerManager(6);
     }
-
+    
+    
     /**
      * Inicializa los manejadores
      */
@@ -184,7 +198,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 
         jFrame = new JFrame();
         jFrame.setTitle("Toluca: " + playerLocal.getName()
-                + (host ? " (host)" : ""));
+                + (host ? " (Anfitrion)" : "") + " - Partida a : " + getGamePoints() + " puntos");
         jFrame.getContentPane().add(trucoTable);
         jFrame.setSize(600, 500);
 
@@ -1101,6 +1115,15 @@ public class Table implements PTableListener, ChatPanelContainer,
         tEventMan.fireInvitationRejected(re);
     }
 
-    
+    /**
+     * 
+     * @return
+     */
+	public int getGamePoints() {
+		return gamePoints;
+	}
+	public void setGamePoints(int gamePoints) {
+		this.gamePoints = gamePoints;
+	}
 }
 

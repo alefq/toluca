@@ -110,7 +110,7 @@ public class EventDispatcherServer extends EventDispatcher {
         //		logger.debug("Llego un Create Table");
 
         TrucoPlayer player = communicatorServer.getTrucoPlayer();
-        ((RoomServer) room).createTable(player);
+        ((RoomServer) room).createTable(player, event.getGamePoints());
 
     }
 

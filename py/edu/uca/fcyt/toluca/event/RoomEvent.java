@@ -214,7 +214,8 @@ public class RoomEvent {
     
 	/** Holds value of property tableServer. */
 	private TableServer tableServer;
-    private long msSend;    
+    private long msSend;
+	private int gamePoints;    
 	public RoomEvent(){
 		//codigo agregado por el CIT MASTER
 	   tables = new HashMap();
@@ -394,6 +395,13 @@ public class RoomEvent {
     public void setMsSend(long msSend) {
         this.msSend = msSend;
     }
+
+	public int getGamePoints() {
+		return gamePoints;
+	}
+	public void setGamePoints(int points) {
+		this.gamePoints = points;
+	}
 } 
 
 

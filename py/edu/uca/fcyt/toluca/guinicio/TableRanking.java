@@ -36,7 +36,7 @@ public class TableRanking extends JTable {
         rowSelectionAllowed = false;
         cellSelectionEnabled = false;
         setMaximumSize(new Dimension(100, 400));
-        TableColumn userCol = getColumn("User");
+        TableColumn userCol = getColumn("Jugador");
         userCol.setPreferredWidth(90);
         userCol.setMaxWidth(200);
         TableColumn puntajeCol = getColumn("Puntaje");

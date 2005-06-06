@@ -22,13 +22,26 @@ public class TrucoGameClient extends TrucoGame
 	/** Creates a new instance of TrucoClient */
 	protected TrucoHandClient trucoHandCli;
 	
-	
+	/**
+	 * @deprecated
+	 * 
+	 * @param t1
+	 * @param t2
+	 */
 	public TrucoGameClient(TrucoTeam t1, TrucoTeam t2)
 	{
-		super(t1, t2);
+		this(t1, t2, 30);
 //		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea un nuevo truco Game Client");
 		
 	}
+	
+	public TrucoGameClient(TrucoTeam t1, TrucoTeam t2, int points)
+	{
+		super(t1, t2, points);
+//		logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "Se crea un nuevo truco Game Client");
+		
+	}
+	
 	public void startGameClient()
 	{
 		numberOfPlayers = teams[0].getNumberOfPlayers()*2;
@@ -178,7 +191,7 @@ public class TrucoGameClient extends TrucoGame
 	private void startHandConfirmatedClient()
 	{
 		
-		if(points[0] >= 30 || points[1] >= 30)
+		if(points[0] >= getGamePoints() || points[1] >= getGamePoints())
 		{
 			fireEndOfGameEvent();
 		}

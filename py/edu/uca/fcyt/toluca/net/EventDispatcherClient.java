@@ -107,8 +107,7 @@ public class EventDispatcherClient extends EventDispatcher {
                 // cliente
                 TrucoPlayer playerCreador = room.getPlayer(playerOwner
                         .getName());
-                Table table = addTable(playerCreador, tables[i]
-                        .getTableNumber());
+                Table table = addTable(playerCreador, tables[i].getTableNumber(), tables[i].getGamePoints());
 
                 Vector vec = tables[i].getPlayers();
                 Iterator iterator = vec.iterator();
@@ -260,7 +259,7 @@ public class EventDispatcherClient extends EventDispatcher {
                 // ref en el cliente
                 TrucoPlayer playerCreador = room.getPlayer(playerOwner
                         .getName());
-                addTable(playerCreador, tableServer.getTableNumber());
+                addTable(playerCreador, tableServer.getTableNumber(), event.getGamePoints());
             } else
                 System.out
                         .println("NO salieron las cosas con el RoomEvent-tableServer :((");
@@ -269,7 +268,18 @@ public class EventDispatcherClient extends EventDispatcher {
 
     }
 
-    private Table addTable(TrucoPlayer playerCreador, int tableNumber) {//crea
+    /**
+     * 
+     * @param playerCreador
+     * @param tableNumber
+     * @return
+     * 
+     * @deprecated
+     */
+    private Table addTable(TrucoPlayer playerCreador, int tableNumber) {
+    	return addTable(playerCreador, tableNumber, 30);
+    }
+    private Table addTable(TrucoPlayer playerCreador, int tableNumber, int points) {//crea
         // una
         // Tabla
         // y
@@ -286,10 +296,10 @@ public class EventDispatcherClient extends EventDispatcher {
             // RECIBIR
             // EL MSG
 
-            table = new Table(playerCreador, true);
+            table = new Table(playerCreador, true, points);
             mostrar = true;
         } else {//fue otro el que creo
-            table = new Table(trucoPlayer, false);
+            table = new Table(trucoPlayer, false, points);
         }
 
         table.setTableNumber(tableNumber);
@@ -521,7 +531,7 @@ public class EventDispatcherClient extends EventDispatcher {
 
         TrucoTeam[] trucoTeam = table.createTeams();
         TrucoGameClient trucoGameClient = new TrucoGameClient(trucoTeam[0],
-                trucoTeam[1]);
+        		trucoTeam[1], table.getGamePoints());
         trucoGameClient.setTableNumber(tableServer.getTableNumber());
         trucoGameClient.addTrucoListener(commClient);
 

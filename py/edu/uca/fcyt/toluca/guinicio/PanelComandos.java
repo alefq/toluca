@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import py.edu.uca.fcyt.toluca.RoomClient;
@@ -26,236 +27,249 @@ import py.edu.uca.fcyt.toluca.TolucaConstants;
  */
 public class PanelComandos extends JPanel {
 
-    private RoomClient roomClient = null;
+	private RoomClient roomClient = null;
 
-    private TableGame tableGame = null;
+	private TableGame tableGame = null;
 
-    private JButton botonJugar;
+	private JButton botonJugar;
 
-    private JButton botonUnirse;
+	private JButton botonUnirse;
 
-    private JButton botonSalir;
+	private JButton botonSalir;
 
-    private JButton botonAyuda;
+	private JButton botonAyuda;
 
-    private JLabel puntaje;
+	private JLabel puntaje;
 
-    public static final Color COLOR_DE_FONDO = new Color(235, 238, 183);
+	public static final Color COLOR_DE_FONDO = new Color(235, 238, 183);
 
-    private JLabel version = null;
+	private JLabel version = null;
 
-    private JApplet applet;
+	private JApplet applet;
 
-    public PanelComandos() {
-        initComponents();
-    }
+	public PanelComandos() {
+		initComponents();
+	}
 
-    /**
-     * @deprecated Se usa como bean ahora
-     * */
-    public PanelComandos(ImageIcon iconJugar, ImageIcon control,
-            ImageIcon salir, ImageIcon puntaje) {
+	/**
+	 * @deprecated Se usa como bean ahora
+	 */
+	public PanelComandos(ImageIcon iconJugar, ImageIcon control,
+			ImageIcon salir, ImageIcon puntaje) {
 
-       
-        setPanel();
-    }
+		setPanel();
+	}
 
-    /**
-     * @param e
-     */
-    protected void botonAyudaActionPerformed(ActionEvent e) {
-        try {        	
-            TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, "A mostrar la ayuda...");
-            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/ayuda.html"), "_blank");            
-        } catch (MalformedURLException e1) {
-           TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, e1.getMessage());           
-        }        
-    }
+	/**
+	 * @param e
+	 */
+	protected void botonAyudaActionPerformed(ActionEvent e) {
+		try {
+			TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
+					"A mostrar la ayuda...");
+			getApplet().getAppletContext().showDocument(
+					new URL("http://www.truco.com.py/ayuda.html"), "_blank");
+		} catch (MalformedURLException e1) {
+			TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, e1
+					.getMessage());
+		}
+	}
 
-    /**
-     * @param e
-     */
-    protected void botonSalirActionPerformed(ActionEvent e) {
-        getApplet().setVisible(false);
-        try {
-        	System.out.println("Saliendo del applet mmmmmmmmmm");
-            getApplet().getAppletContext().showDocument(new URL("http://www.truco.com.py/close.html"));
-        } catch (MalformedURLException e1) {
-            System.out.println(e1.getMessage());
-        }
-    }
+	/**
+	 * @param e
+	 */
+	protected void botonSalirActionPerformed(ActionEvent e) {
+		getApplet().setVisible(false);
+		try {
+			System.out.println("Saliendo del applet mmmmmmmmmm");
+			getApplet().getAppletContext().showDocument(
+					new URL("http://www.truco.com.py/close.html"));
+		} catch (MalformedURLException e1) {
+			System.out.println(e1.getMessage());
+		}
+	}
 
-    private JPanel getPanelBoton(JButton button, String text) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panel.setBackground(PanelComandos.COLOR_DE_FONDO);
-        panel.add(button);
-        //panel.add(new JLabel(text));
-        return panel;
-    }
+	private JPanel getPanelBoton(JButton button, String text) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		panel.setBackground(PanelComandos.COLOR_DE_FONDO);
+		panel.add(button);
+		//panel.add(new JLabel(text));
+		return panel;
+	}
 
-    private JPanel getPanelBotonesJugar() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(version);
-        panel.add(getPanelBoton(botonJugar, "Crear mesa"));
-        panel.add(getPanelBoton(botonUnirse, "Unirse"));
-        return panel;
-    }
+	private JPanel getPanelBotonesJugar() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(version);
+		panel.add(getPanelBoton(botonJugar, "Crear mesa"));
+		panel.add(getPanelBoton(botonUnirse, "Unirse"));
+		return panel;
+	}
 
-    private JPanel getPanelControlGral() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(getPanelBoton(botonAyuda, "Ayuda"));
-        panel.add(getPanelBoton(botonSalir, "Salir"));
-        return panel;
-    }
+	private JPanel getPanelControlGral() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(getPanelBoton(botonAyuda, "Ayuda"));
+		panel.add(getPanelBoton(botonSalir, "Salir"));
+		return panel;
+	}
 
-    private JPanel getPuntaje() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.add(Box.createVerticalGlue());
-        panel.setBackground(PanelComandos.COLOR_DE_FONDO);
-        panel.setOpaque(true);
-        JPanel center = new JPanel();
-        center.setLayout(new FlowLayout(FlowLayout.CENTER));
-        center.add(puntaje);
-        center.setBackground(PanelComandos.COLOR_DE_FONDO);
-        center.setOpaque(true);
-        panel.add(center);
-        return panel;
+	private JPanel getPuntaje() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(Box.createVerticalGlue());
+		panel.setBackground(PanelComandos.COLOR_DE_FONDO);
+		panel.setOpaque(true);
+		JPanel center = new JPanel();
+		center.setLayout(new FlowLayout(FlowLayout.CENTER));
+		center.add(puntaje);
+		center.setBackground(PanelComandos.COLOR_DE_FONDO);
+		center.setOpaque(true);
+		panel.add(center);
+		return panel;
 
-    }
+	}
 
-    private void setPanel() {
-        setBackground(PanelComandos.COLOR_DE_FONDO);
-        setOpaque(true);
-        setLayout(new BorderLayout());
+	private void setPanel() {
+		setBackground(PanelComandos.COLOR_DE_FONDO);
+		setOpaque(true);
+		setLayout(new BorderLayout());
 
-        add(getPanelBotonesJugar(), BorderLayout.NORTH);
+		add(getPanelBotonesJugar(), BorderLayout.NORTH);
 
-        add(getPuntaje(), BorderLayout.CENTER);
-        add(getPanelControlGral(), BorderLayout.SOUTH);
+		add(getPuntaje(), BorderLayout.CENTER);
+		add(getPanelControlGral(), BorderLayout.SOUTH);
 
-    }
+	}
 
-    private void initComponents() {
-        version = new JLabel(RoomUING.VERSION);
-        version.setHorizontalTextPosition(JLabel.LEFT);
-        version.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        ImageIcon icon = new ImageIcon(getClass().getResource(
-                RoomUING.IMAGE_DIR + "btnCrearMesa.gif"));
-        ImageIcon icon2 = new ImageIcon(getClass().getResource(
-                RoomUING.IMAGE_DIR + "btnUnirse.gif"));
-        ImageIcon controlIcon = new ImageIcon(getClass().getResource(
-                RoomUING.IMAGE_DIR + "btnAyuda.gif"));
-        ImageIcon salirIcon = new ImageIcon(getClass().getResource(
-                RoomUING.IMAGE_DIR + "btnSalir.gif"));
-        ImageIcon puntajeIcon = new ImageIcon(getClass().getResource(
-                RoomUING.IMAGE_DIR + "puntaje.gif"));
-        botonJugar = new JButton(icon);
-        botonUnirse = new JButton(icon2);
-        botonSalir = new JButton(salirIcon);
-        botonAyuda = new JButton(controlIcon);
-        this.puntaje = new JLabel(puntajeIcon);
-        botonJugar.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonJugar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                botonJugarActionPerformed(e);
-            }
-        });
-        botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonUnirse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                botonUnirseActionPerformed(e);
-            }
-        });
-        botonSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                botonSalirActionPerformed(e);
-            }
-        });
-        
-                
-        botonAyuda.setToolTipText("Ayuda sobre las reglas y el uso en general");
-        botonJugar.setToolTipText("Crea una nueva mesa para iniciar un juego");
-        botonUnirse.setToolTipText("Seleccione una mesa de la lista de la derecha");
-        botonSalir.setToolTipText("Sale del servidor y cierra la ventana");
-        botonJugar.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
-        botonAyuda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                botonAyudaActionPerformed(e);
-            }
-        });               
-        setPanel();
-    }
+	private void initComponents() {
+		version = new JLabel(RoomUING.VERSION);
+		version.setHorizontalTextPosition(JLabel.LEFT);
+		version.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		ImageIcon icon = new ImageIcon(getClass().getResource(
+				RoomUING.IMAGE_DIR + "btnCrearMesa.gif"));
+		ImageIcon icon2 = new ImageIcon(getClass().getResource(
+				RoomUING.IMAGE_DIR + "btnUnirse.gif"));
+		ImageIcon controlIcon = new ImageIcon(getClass().getResource(
+				RoomUING.IMAGE_DIR + "btnAyuda.gif"));
+		ImageIcon salirIcon = new ImageIcon(getClass().getResource(
+				RoomUING.IMAGE_DIR + "btnSalir.gif"));
+		ImageIcon puntajeIcon = new ImageIcon(getClass().getResource(
+				RoomUING.IMAGE_DIR + "puntaje.gif"));
+		botonJugar = new JButton(icon);
+		botonUnirse = new JButton(icon2);
+		botonSalir = new JButton(salirIcon);
+		botonAyuda = new JButton(controlIcon);
+		this.puntaje = new JLabel(puntajeIcon);
+		botonJugar.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonJugar.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				botonJugarActionPerformed(e);
+			}
+		});
+		botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonUnirse.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				botonUnirseActionPerformed(e);
+			}
+		});
+		botonSalir.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				botonSalirActionPerformed(e);
+			}
+		});
 
-    /**
-     * @param e
-     */
-    protected void botonJugarActionPerformed(ActionEvent e) {
-        getRoomClient().createTableRequest();
-    }
+		botonAyuda.setToolTipText("Ayuda sobre las reglas y el uso en general");
+		botonJugar.setToolTipText("Crea una nueva mesa para iniciar un juego");
+		botonUnirse
+				.setToolTipText("Seleccione una mesa de la lista de la derecha");
+		botonSalir.setToolTipText("Sale del servidor y cierra la ventana");
+		botonJugar.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonUnirse.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonSalir.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonAyuda.setBackground(PanelComandos.COLOR_DE_FONDO);
+		botonAyuda.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				botonAyudaActionPerformed(e);
+			}
+		});
+		setPanel();
+	}
 
-    /**
-     * @param e
-     */
-    protected void botonUnirseActionPerformed(ActionEvent e) {
-        int numeroDeFila = getTableGame().getSelectedRow();
-        //System.out.println("numeroDeFila=" + numeroDeFila);
-        if (numeroDeFila >= 0) {
-            numeroDeFila = getTableGame().getNumeroDeMesa(numeroDeFila);
-            // System.out.println("////////////// JOINNN /////////////");
-            //System.out.println("Se presiono el join..." + numeroDeFila);
-            roomClient.joinTableRequest(numeroDeFila);
-        }
-    }
+	/**
+	 * @param e
+	 */
+	protected void botonJugarActionPerformed(ActionEvent e) {
+		String[] opciones = { "18", "30" };
+		int opcion = JOptionPane.showOptionDialog(getApplet(),"Escoja la cantidad de Puntos para el Juego", "Nuevo Juego",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+				null, opciones, opciones[0]);
+		
+		if(opcion == 0 ) {
+			getRoomClient().createTableRequest(18);
+		} else
+			getRoomClient().createTableRequest(30);
+						
+	}
 
-    /**
-     * @return Returns the roomClient.
-     */
-    public RoomClient getRoomClient() {
-        return roomClient;
-    }
+	/**
+	 * @param e
+	 */
+	protected void botonUnirseActionPerformed(ActionEvent e) {
+		int numeroDeFila = getTableGame().getSelectedRow();
+		//System.out.println("numeroDeFila=" + numeroDeFila);
+		if (numeroDeFila >= 0) {
+			numeroDeFila = getTableGame().getNumeroDeMesa(numeroDeFila);
+			// System.out.println("////////////// JOINNN /////////////");
+			//System.out.println("Se presiono el join..." + numeroDeFila);
+			roomClient.joinTableRequest(numeroDeFila);
+		}
+	}
 
-    /**
-     * @param roomClient
-     *            The roomClient to set.
-     */
-    public void setRoomClient(RoomClient roomClient) {
-        this.roomClient = roomClient;
-    }
+	/**
+	 * @return Returns the roomClient.
+	 */
+	public RoomClient getRoomClient() {
+		return roomClient;
+	}
 
-    /**
-     * @return Returns the tableGame.
-     */
-    public TableGame getTableGame() {
-        return tableGame;
-    }
+	/**
+	 * @param roomClient
+	 *            The roomClient to set.
+	 */
+	public void setRoomClient(RoomClient roomClient) {
+		this.roomClient = roomClient;
+	}
 
-    /**
-     * @param tableGame
-     *            The tableGame to set.
-     */
-    public void setTableGame(TableGame tableGame) {
-        this.tableGame = tableGame;
-    }
+	/**
+	 * @return Returns the tableGame.
+	 */
+	public TableGame getTableGame() {
+		return tableGame;
+	}
 
-    /**
-     * @param roomUI
-     */
-    public void setApplet(JApplet roomUI) {
-        applet = roomUI;
-    }
-    /**
-     * @return Returns the applet.
-     */
-    public JApplet getApplet() {
-        return applet;
-    }
+	/**
+	 * @param tableGame
+	 *            The tableGame to set.
+	 */
+	public void setTableGame(TableGame tableGame) {
+		this.tableGame = tableGame;
+	}
+
+	/**
+	 * @param roomUI
+	 */
+	public void setApplet(JApplet roomUI) {
+		applet = roomUI;
+	}
+
+	/**
+	 * @return Returns the applet.
+	 */
+	public JApplet getApplet() {
+		return applet;
+	}
 }

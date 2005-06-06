@@ -22,8 +22,8 @@ public class TrucoGame extends Game
 {
 
 	//TODO: Poner estos 2 en un constructor. 
-	private final int gameTotalPoints = 30;
-	private final int gameBuenaPoints = gameTotalPoints / 2;
+	private int gamePoints = 30;
+	private int buenaPoints = gamePoints / 2;
 	
 	
 	private static Logger logger=Logger.getLogger(TrucoGame.class.getName());
@@ -62,16 +62,29 @@ public class TrucoGame extends Game
 	/** Constructor con dos equipos, asi crea un TrucoGame
 	 * @param tm1 Equipo 1 que jugar� el TrucoGame.
 	 * @param tm2 Equipo 1 que jugar� el TrucoGame.
+	 * 
+	 * @deprecated
 	 */
 	public TrucoGame(TrucoTeam tm1, TrucoTeam tm2)
 	{ //contructor con los teams
+		this(tm1, tm2, 30);
+	}
+	
+	/** Constructor con dos equipos, asi crea un TrucoGame
+	 * @param tm1 Equipo 1 que jugar� el TrucoGame.
+	 * @param tm2 Equipo 1 que jugar� el TrucoGame.
+	 */
+	public TrucoGame(TrucoTeam tm1, TrucoTeam tm2, int points)
+	{ //contructor con los teams
 		
+		setGamePoints(points);
 		listenerlist = new LinkedList(); //instancia de la lista de Trucolistener
 		teams[0] = tm1;
 		teams[1] = tm2;
 		numberOfHand = 0;
 		newGame();
 	}
+	
 	/** Dispara el inicio del juego
 	 */
 	public void startGame()
@@ -359,7 +372,7 @@ public class TrucoGame extends Game
 	    /*
 	     * Esto fue agregado por Cricco. Se pretende controlar si termina el juego que salgan nomas
 	     * */
-	    if(points[0] >= this.gameTotalPoints || points[1] >= this.gameTotalPoints && !(this instanceof TrucoGameClient))
+	    if(points[0] >= this.gamePoints || points[1] >= this.gamePoints && !(this instanceof TrucoGameClient))
 		{
 	        System.out.println("se teeeermin el jueeeego");
 	        logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Se teeermina el jueeeeego");
@@ -466,7 +479,7 @@ public class TrucoGame extends Game
 	protected void startHandConfirmated()
 	{
 		System.out.println("enviando starthand a todos!!");
-		if(points[0] >= this.gameTotalPoints || points[1] >= this.gameTotalPoints)
+		if(points[0] >= this.gamePoints || points[1] >= this.gamePoints)
 		{
 			fireEndOfGameEvent();
 		}
@@ -513,9 +526,9 @@ public class TrucoGame extends Game
 		int i=0;
 		if(points[1] > points[0])
 			i=1;
-		if(points[i]>= this.gameBuenaPoints)
-			return (this.gameTotalPoints - points[i]);
-		return (this.gameBuenaPoints - points[i]);
+		if(points[i]>= this.buenaPoints)
+			return (this.gamePoints - points[i]);
+		return (this.buenaPoints - points[i]);
 	}
 	/** Retorna la cantidad de puntos que se juegan, en caso de jugar Al Resto.
 	 * @return Retorna la cantidad de puntos.
@@ -523,8 +536,8 @@ public class TrucoGame extends Game
 	public int alResto()
 	{
 		if (points[0]>points[1])
-			return (this.gameTotalPoints - points[0]);
-		return (this.gameTotalPoints - points[1]);
+			return (this.gamePoints - points[0]);
+		return (this.gamePoints - points[1]);
 	}
 	public Vector getDetallesDeLaMano()
 	{
@@ -603,4 +616,17 @@ public class TrucoGame extends Game
     public void setPoints(int[] points) {
         this.points = points;
     }
+	public int getBuenaPoints() {
+		return buenaPoints;
+	}
+	public void setBuenaPoints(int buenaPoints) {
+		this.buenaPoints = buenaPoints;
+	}
+	public int getGamePoints() {
+		return gamePoints;
+	}
+	public void setGamePoints(int gamePoints) {
+		this.gamePoints = gamePoints;
+		setBuenaPoints( gamePoints / 2);
+	}
 }

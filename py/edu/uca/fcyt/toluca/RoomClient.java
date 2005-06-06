@@ -169,20 +169,35 @@ public class RoomClient extends Room implements ChatPanelContainer,
         }
     } // end fireTableJoinRequested /** lock-begin */
 
+    /**
+     * @deprecated
+     */
     public void createTableRequest() {
-        fireTableCreateRequested();
+        createTableRequest(30);
+    }
+    
+    public void createTableRequest(int points) {
+        fireTableCreateRequested(points);
     }
 
     /**
+	 * @param points
+	 */
+	private void fireTableCreateRequested() {
+		fireTableCreateRequested(30);
+	}
+
+	/**
      * <p>
      * Informa a todos los <i>listeners </i> registrados que se esta intentando
      * crear una tabla nueva en el Room.
      */
-    private synchronized void fireTableCreateRequested() {
+    private synchronized void fireTableCreateRequested(int points) {
         /** lock-end */
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_CREATE_TABLE_REQUESTED);
         re.setPlayer(roomPlayer);
+        re.setGamePoints(points);
 
         Iterator iter = roomListeners.listIterator();
         while (iter.hasNext()) {

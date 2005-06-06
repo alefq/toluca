@@ -114,6 +114,16 @@ implements ChatPanelContainer, TableListener {
     }
 
     /**
+     * 
+     * @param player
+     * @deprecated
+     */
+    public void createTable(TrucoPlayer player) {
+    	createTable(player, 30);
+    	
+    }
+    
+    /**
      * <p>
      * Does ...
      * </p>
@@ -121,11 +131,11 @@ implements ChatPanelContainer, TableListener {
      * 
      * </p>
      */
-    public void createTable(TrucoPlayer player) {
+    public void createTable(TrucoPlayer player, int points) {
         // your code here
         /*logger.debug("Dentor del create table del room server: "
                 + player.getName());*/
-        TableServer tableServer = new TableServer(player);
+        TableServer tableServer = new TableServer(player, points);
         tableServer.guardarRoomServer(this);
         //tableServer.addPlayer(player);Comentado porque en el constructor del
         // TableServer
@@ -173,6 +183,7 @@ implements ChatPanelContainer, TableListener {
         //re.setTableNumber(-108);
         //re.addTables(table);
         re.setTableServer(table);
+        re.setGamePoints(table.getGamePoints());
         //re.setPlayers(playerstmp);
 
         re.setTableNumber(table.getTableNumber());

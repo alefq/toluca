@@ -29,7 +29,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	static Logger logger = Logger.getLogger(TableServer.class.getName());
     /** Holds value of property host. */
     private TrucoPlayer host;
-    
+	private int gamePoints;    
     protected Vector tableListeners; // of type Vector
     protected Vector players;
     
@@ -51,12 +51,26 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         //System.out.println("El HOST de la tabela es: " + getHost().getName());
         asientos=new HashMap();
     }
+   
+    /**
+     * 
+     * @param host
+     * @deprecated
+     */
     public TableServer(TrucoPlayer host)
     {
-        this();
-        setHost(host);
+        this(host, 30);
     }
     
+	/**
+	 * @param player
+	 * @param points
+	 */
+	public TableServer(TrucoPlayer player, int points) {
+		this();
+        setHost(player);
+        setGamePoints(points);
+	}
 	/**
 	 * @return Returns the pManager.
 	 */
@@ -512,5 +526,11 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	}
 	public void guardarRoomServer(RoomServer roomServer) {
 		this.roomServer = roomServer;
+	}
+	public int getGamePoints() {
+		return gamePoints;
+	}
+	public void setGamePoints(int gamePoints) {
+		this.gamePoints = gamePoints;
 	}
 }
