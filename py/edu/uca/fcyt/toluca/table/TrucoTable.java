@@ -96,14 +96,13 @@ public class TrucoTable extends JPanel implements ComponentListener {
     /**
      * @return
      */
-    private Component getScore() {
+    private Score getScore() {
         if (score == null) {
-            score = new Score(30);
+            score = new Score();
             score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
             score.add(new JLabel(" ------ Puntaje ------ "));
             score.add(new JLabel("    Rojo        "
-                    + (TolucaConstants.isWindowFamily() ? "" : "   ")
-                    + "Azul   "));
+                    + "   Azul   "));
             score.setBorder(new EtchedBorder());
         }
         return score;
@@ -189,6 +188,7 @@ public class TrucoTable extends JPanel implements ComponentListener {
      */
     public void setTable(Table table) {
         this.table = table;
+        getScore().setGamePoints(table.getGamePoints());
         getPlayTable().setPtListener(getTable());
         getPlayTable().inicializar();
         getChatPanel().setCpc(table);

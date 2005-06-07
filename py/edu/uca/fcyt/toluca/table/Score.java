@@ -7,8 +7,6 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
-import py.edu.uca.fcyt.toluca.TolucaConstants;
-
 class Score extends JPanel {
 	
 	protected static final int ABAJO = 0;
@@ -17,17 +15,16 @@ class Score extends JPanel {
 	protected static final int DERECHA = 1;
 	protected int ptsTeam1 = 30;
 	protected int ptsTeam2 = 30;
-	protected int puntos;
+	private int gamePoints;
 	int ballDim = 9;
 	
-	public Score(int totalPts)
+	public void setGamePoints(int totalPts)
 	{
-		super();
-		puntos = totalPts;
+	    gamePoints = totalPts;
 
 		Util.verifParam
 		(
-			puntos == 30 || puntos == 20, 
+		        getGamePoints() == 30 || getGamePoints() == 18, 
 			"Parámetro 'totalPts' inválido"
 		);
 		
@@ -41,7 +38,7 @@ class Score extends JPanel {
 		gr = (Graphics2D) g;
 
 		//se pintan las lìneas divisorias del puntaje
-		drawHorizontalLine(gr, puntos);
+		drawHorizontalLine(gr, getGamePoints()+1);
 		drawVerticalLine(gr);
 		
 		gr.translate(2, 46);
@@ -55,7 +52,7 @@ class Score extends JPanel {
 		
 		//se pintan los puntajes representados por fósforos
 		drawMatch(18,0,gr,ptsTeam1);
-		drawMatch((TolucaConstants.isWindowFamily() ? 68 : 95),0,gr,ptsTeam2);
+		drawMatch(95,0,gr,ptsTeam2);
 	}
 	//------------------------------------------
 	//este metodo es llamado cuando se actualizan los puntajes		
@@ -76,10 +73,15 @@ class Score extends JPanel {
 		int cont2 = 0;
 		y += 2;
 		
-		if (pts == 0) return;
+		//Programacion porcina total
+		if(getGamePoints() == 18 && pts>9)
+		    pts = pts+1;
+		
+		if (pts == 0) return;		
 		
 		label:  //goto
-		while(true){ 
+		while(true){
+		    	System.out.println("(pts, cont1, cont2): " + pts + "," + cont1 + "," + cont2);
 				horizontal(x,y+(53*cont2),g,ARRIBA);
 				if (++cont1==pts)
 					break label;
@@ -92,7 +94,10 @@ class Score extends JPanel {
 				vertical(x+19,(y+15)+(53*cont2),g,DERECHA);
 				if (++cont1==pts)
 					break label;
-				diagonal(x-5,(y+28)+(53*cont2),g);	
+				if(getGamePoints() == 18 && cont1!=9)				
+				    diagonal(x-5,(y+28)+(53*cont2),g);	
+				else
+				    System.out.println("No hay diagonal para (pts, cont1, cont2): " + pts + "," + cont1 + "," + cont2);
 				if (++cont1==pts)
 					break label;
 				cont2++;
@@ -179,7 +184,8 @@ class Score extends JPanel {
 
 	//------------------------------------------
 	private void diagonal(int x,int y,Graphics g)
-	{
+	{	    
+		    
 		//dibuja el palito en degrade
 		for(int i=0;i<5;i++){
 			if (i==0 || i == 4)
@@ -247,4 +253,7 @@ class Score extends JPanel {
 		g.drawLine(0, y + 2, w, y + 2);
 	}
 
+    public int getGamePoints() {
+        return gamePoints;
+    }
 }

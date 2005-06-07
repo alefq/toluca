@@ -96,6 +96,7 @@ implements ChatPanelContainer, TableListener {
     public RoomServer() {
         // your code here
         logger.info("Se creo el RoomServer");
+        System.out.println("RoomServer: Alive and kicking!");
 
     } // end RoomServer
 
