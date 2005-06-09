@@ -94,7 +94,7 @@ class Score extends JPanel {
 				vertical(x+19,(y+15)+(53*cont2),g,DERECHA);
 				if (++cont1==pts)
 					break label;
-				if(getGamePoints() == 18 && cont1!=9)				
+				if((getGamePoints() == 18 && cont1!=9) || getGamePoints() == 30)				
 				    diagonal(x-5,(y+28)+(53*cont2),g);	
 				else
 				    System.out.println("No hay diagonal para (pts, cont1, cont2): " + pts + "," + cont1 + "," + cont2);
