@@ -372,7 +372,7 @@ public class TrucoGame extends Game
 	    /*
 	     * Esto fue agregado por Cricco. Se pretende controlar si termina el juego que salgan nomas
 	     * */
-	    if(points[0] >= this.gamePoints || points[1] >= this.gamePoints && !(this instanceof TrucoGameClient))
+	    if(!(this instanceof TrucoGameClient) && (points[0] >= this.gamePoints || points[1] >= this.gamePoints) )
 		{
 	        System.out.println("se teeeermin el jueeeego");
 	        logger.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,"Se teeermina el jueeeeego");

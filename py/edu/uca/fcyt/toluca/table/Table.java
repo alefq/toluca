@@ -973,6 +973,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         TableBeanRepresentation tableBean = new TableBeanRepresentation();
         tableBean.setId(getTableNumber());
         tableBean.setPlayer(getPlayer());
+        tableBean.setGamePoints(getGamePoints());
         return tableBean;
 
     }

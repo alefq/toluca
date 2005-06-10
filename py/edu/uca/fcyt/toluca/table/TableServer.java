@@ -111,7 +111,14 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		}
     }
     
+    /**
+     * @deprecated
+     *
+     */
     public void startGame() {
+    	startGame(30);
+    }
+    public void startGame(int points) {
         
         //TrucoGame tGame;
         TrucoTeam tTeams[];
@@ -120,7 +127,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
         tTeams = createTeams();
         
         // se crea el TrucoGame con los teams creados
-        tGame = new TrucoGame(tTeams[0], tTeams[1]);
+        tGame = new TrucoGame(tTeams[0], tTeams[1], points);
         tGame.addTrucoListener(this);  
 
 		//primero disparamos el evento, asi los cc se registran

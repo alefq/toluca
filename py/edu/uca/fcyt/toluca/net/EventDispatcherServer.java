@@ -297,7 +297,7 @@ public class EventDispatcherServer extends EventDispatcher {
                 + tableServer.getTableNumber() + " echa por el jugador: "
                 + event.getPlayer()[0]);
 
-        tableServer.startGame();
+        tableServer.startGame(tableClient.getGamePoints());
     }
 
     /*
