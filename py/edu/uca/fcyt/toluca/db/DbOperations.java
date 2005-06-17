@@ -306,12 +306,21 @@ public class DbOperations {
 	}
 
 	/**
-	 * @param team1
+	 * 
+	 * Este metodo calcula los nuevos puntajes de los jugadores despues de terminado
+	 * un partido.  
+	 * 
+	 * Es sincronizado para serializar el acceso a la base de datos.  Ya se tuvo problemas
+	 * problemas por no sincronizar
+	 * 
+	 * Llama a un procedimiento de base de datos.
+	 * 
+	 * @param team1 Equipo 1
 	 * @param team2
-	 * @param teamGanador
+	 * @param teamGanador 0 o 1
 	 * @throws SQLException
 	 */
-	public void updateGameData(TrucoTeam team1, TrucoTeam team2, int teamGanador) throws SQLException {
+	synchronized public void updateGameData(TrucoTeam team1, TrucoTeam team2, int teamGanador) throws SQLException {
 		int numeroPartida = nuevaPartida(teamGanador);
 		System.out.println("Partida: "+numeroPartida);
 		nuevaPartidaDetalle(team1, team2, numeroPartida);
