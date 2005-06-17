@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/06/10 00:15:09 $
- * @version $Revision: 1.39 $ 
+ * Last modified: $Date: 2005/06/17 00:58:06 $
+ * @version $Revision: 1.40 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -48,7 +48,7 @@ public class RoomUING extends JApplet {
     //    protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
     //            .getLogger(RoomUING.class);
 
-    public static final String VERSION = "20050607-1945";
+    public static final String VERSION = "20050613-2142";
 
     public static final String CLAVE_LOGIN = "claveLogin";
 
@@ -103,7 +103,7 @@ public class RoomUING extends JApplet {
 
     private JPanel jPanel1 = null;
 
-    private static final String URL_ANUNCIOS;
+    private static String URL_ANUNCIOS;
 
     static {
         //TODO Deberia cargarse de un .properties
@@ -365,7 +365,10 @@ public class RoomUING extends JApplet {
     public JEditorPane getJEPanuncios() {
         if (jEPanuncios == null) {
             try {
-                jEPanuncios = new JEditorPane(URL_ANUNCIOS);
+            	if(URL_ANUNCIOS==null)
+            		jEPanuncios = new JEditorPane();
+            	else 
+            		jEPanuncios = new JEditorPane(URL_ANUNCIOS);
                 //jEPanuncios.setEditorKit(new HTMLEditorKit());
             } catch (IOException e) {
                 TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
@@ -512,8 +515,14 @@ public class RoomUING extends JApplet {
         //  dir = (at != null) ? at : "/images";
         try {
             String imagedir = getParameter("IMAGEDIR");
+            URL_ANUNCIOS = getParameter("urlanuncios");
             // logger.debug("La dire de imagenes es " + imagedir);
         } catch (Exception e) {
+        }
+        if(URL_ANUNCIOS == null)
+        {
+        	URL_ANUNCIOS = "";
+        	TolucaConstants.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL, "Falta el parametro para el applet: urlanuncios");
         }
     }
 
