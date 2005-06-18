@@ -51,16 +51,16 @@ public class RowRanking {
 	public static Integer getRankingStatus(int rank)
 	{
 		
-		if(rank>2100)
+		if(rank>1999)
 			return RANKING_ROJO;
-		else if(rank >1800)
-				return RANKING_NARANJA;
-		else if(rank >1500)
-			return RANKING_LILA;
-		else if(rank> 1200)
-			return RANKING_AZUL;
-		else if(rank>0 )
-			return RANKING_VERDE;
+		else if(rank >1849)
+		    return RANKING_LILA;
+		else if(rank >1749)
+		    return RANKING_NARANJA;			
+		else if(rank> 1649)
+		    return RANKING_VERDE;			
+		else if(rank>1549 )
+		    return RANKING_AZUL;
 		else 
 			return RANKING_GRIS;
 		
