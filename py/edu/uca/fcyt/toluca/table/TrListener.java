@@ -138,6 +138,7 @@ class TrListener implements TrucoListener
 						" " + val + (team == 0 ? "(R)" : "(A)") 
 					);*/
 					getTable().addJugada(team, val);
+					getTable().getJTrucoTable().addLog(event.getPlayer(), team, val);
 				}
 
 				break;
@@ -160,6 +161,7 @@ class TrListener implements TrucoListener
 						" " + name + (team == 0 ? "(R)" : "(A)") 
 					);*/
 					getTable().addJugada(team, name);
+					getTable().getJTrucoTable().addLog(event.getPlayer(), team, name);
 				}
 				catch(InvalidParameterException ex)
 				{

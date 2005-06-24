@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,17 +19,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.html.HTMLEditorKit;
 
 import py.com.roshka.game.gui.InvitationPanel;
 import py.edu.uca.fcyt.game.ChatPanel;
 import py.edu.uca.fcyt.toluca.TolucaConstants;
 import py.edu.uca.fcyt.toluca.event.RoomEvent;
 import py.edu.uca.fcyt.toluca.game.TrucoPlayer;
+import py.edu.uca.fcyt.toluca.game.TrucoTeam;
 import py.edu.uca.fcyt.toluca.guinicio.ConexionTestPanel;
 import py.edu.uca.fcyt.toluca.guinicio.TableRanking;
 
+import javax.swing.JEditorPane;
 /** Panel principal de juego */
 public class TrucoTable extends JPanel implements ComponentListener {
+    
+    private SimpleAttributeSet style = new SimpleAttributeSet();
     public static final int BUTTON_INICIAR_OK = 0;
 
     public static final int BUTTON_HECHAR = 1;
@@ -70,6 +77,10 @@ public class TrucoTable extends JPanel implements ComponentListener {
 
     private JButton jBinvitar;
 
+    private JPanel logChatPanel;
+
+	private JScrollPane jScrollPane1 = null;
+	private JEditorPane jEditorPane = null;  //  @jve:decl-index=0:
     /**
      * Construye un TrucoTable con ptListener como listener de eventos de la
      * mesa
@@ -86,11 +97,30 @@ public class TrucoTable extends JPanel implements ComponentListener {
      */
     private void initialize() {
         this.setLayout(new BorderLayout());
-        this.add(getChatPanel(), java.awt.BorderLayout.SOUTH);
+        //this.add(getChatPanel(), java.awt.BorderLayout.SOUTH);
+        this.add(getLogChatPanel(), java.awt.BorderLayout.SOUTH);
         this.add(getJpLeftPanel(), java.awt.BorderLayout.WEST);
         this.add(getJpCantos(), java.awt.BorderLayout.NORTH);
         this.add(getJPmedio(), java.awt.BorderLayout.CENTER);
         this.add(getJPanel(), java.awt.BorderLayout.EAST);
+    }
+
+    /**
+     * @return
+     */
+    private JPanel getLogChatPanel() {
+        if(logChatPanel == null)
+        {
+            Dimension dim = new Dimension(240,100);
+            logChatPanel = new JPanel();
+            logChatPanel.setMaximumSize(dim);
+            logChatPanel.setMinimumSize(dim);
+            logChatPanel.setPreferredSize(dim);
+            logChatPanel.setLayout(new BoxLayout(logChatPanel, BoxLayout.X_AXIS));
+            logChatPanel.add(getJScrollPane1(), null);
+            logChatPanel.add(getChatPanel(), null);            
+        }
+        return logChatPanel;
     }
 
     /**
@@ -459,4 +489,71 @@ public class TrucoTable extends JPanel implements ComponentListener {
         jf.setSize(300,200);
         jf.setVisible(true);
     }
-}
+	/**
+	 * This method initializes jScrollPane1	
+	 * 	
+	 * @return javax.swing.JScrollPane	
+	 */    
+	private JScrollPane getJScrollPane1() {
+		if (jScrollPane1 == null) {
+			jScrollPane1 = new JScrollPane();
+			jScrollPane1.setViewportView(getJEditorPane());
+			jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informaciones del Juego", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, null));
+	}
+		return jScrollPane1;
+	}
+	/**
+	 * This method initializes jEditorPane	
+	 * 	
+	 * @return javax.swing.JEditorPane	
+	 */    
+	private JEditorPane getJEditorPane() {
+		if (jEditorPane == null) {
+			jEditorPane = new JEditorPane();
+//			jEditorPane.setEditorKit(new HTMLEditorKit());
+			jEditorPane.setPreferredSize(new java.awt.Dimension(240,100));
+			jEditorPane.setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 10));
+		}
+		return jEditorPane;
+	}
+	public void addLog(TrucoPlayer player, int team, String htmlMessage)
+	{
+	    String msg = player.getName() + "(" + (team == TrucoTeam.ROJO ? "Rojo): " : "Azul): ") + htmlMessage + "\n";
+		appendLog(msg);
+	}
+
+    /**
+     * @param msg
+     */
+    private void appendLog(String msg) {
+        try
+		{
+			String s = getJEditorPane().getDocument().getText(0,getJEditorPane().getDocument().getLength());
+			int d1 = s.length();
+			getJEditorPane().getDocument().insertString(getJEditorPane().getDocument().getLength(), msg, style);
+			getJEditorPane().setEditable(true);
+			
+			getJEditorPane().setEditable(false);
+			// Temporary patch code.
+			getJEditorPane().getDocument().insertString(getJEditorPane().getDocument().getLength(), "", style);
+			getJEditorPane().setCaretPosition(getJEditorPane().getDocument().getLength());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+    }
+
+    /**
+     * 
+     */
+    public void startGame() {
+        appendLog("------------------------\n");
+        appendLog(new Date().toString() + ": Nuevo Juego\n" );
+    }
+    
+    public void endOfGame() {        
+        appendLog(new Date().toString() + ": Fin del Juego\n" );
+    }
+		
+  }

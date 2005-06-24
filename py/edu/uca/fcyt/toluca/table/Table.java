@@ -355,7 +355,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         animator.toTop(fManager);
         animator.toTop(ttAnimator);
         animator.toTop(tFrame);
-
+        getJTrucoTable().startGame();
         // avista que el juego iniciï¿½ correctamente
         tEventMan.fireGameStarted();
     }
@@ -608,14 +608,18 @@ public class Table implements PTableListener, ChatPanelContainer,
      */
     public void showSign(TableEvent event) {
         TrucoPlayer src, dest;
-
+        StringBuffer log = new StringBuffer("señas -> ");
+               
         // obtiene el TrucoPlayer emisor y el receptor
         src = event.getPlayer(0);
         dest = event.getPlayer(1);
 
         // muestra la seï¿½a
-        if (dest == playerLocal)
+        if (dest == playerLocal) {
             fManager.showSign(pManager.getPos(src) - 1, event.getValue());
+            log.append(Sign.getName(event.getValue()));            
+            getJTrucoTable().addLog(src, pManager.getChair(playerLocal)%2, log.toString());
+        }
 
         // avisa que la seï¿½a fue enviada correctamente
         tEventMan.fireSignSent(event.getPlayer(1));
@@ -1007,6 +1011,7 @@ public class Table implements PTableListener, ChatPanelContainer,
 
         getTEventMan().fireGameFinished();
         initialize();
+        getJTrucoTable().endOfGame();
         if (isHost())
             trucoTable.buttons[TrucoTable.BUTTON_INICIAR_OK].setEnabled(true);
 
@@ -1085,7 +1090,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         txt = txt + "<font color=\""
                 + (team == TrucoTeam.ROJO ? "ff0000" : "0000ff") + "\"> - "
                 + val + "</font>";
-        getJTrucoTable().getJlSaying().setText(txt);
+        getJTrucoTable().getJlSaying().setText(txt);        
     }
 
     public void handStarted() {

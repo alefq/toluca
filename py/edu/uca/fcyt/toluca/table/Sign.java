@@ -77,8 +77,8 @@ public class Sign
 		ret.put(new Integer(ESPADA_7), "7 de espada");
 		ret.put(new Integer(ORO_7), "7 de oro");
 		ret.put(new Integer(VAL_3), "Tricota");
-		ret.put(new Integer(VAL_2), "Turbo Explorer");
-		ret.put(new Integer(VAL_1), "Explorer");
+		ret.put(new Integer(VAL_2), "Duquesa");
+		ret.put(new Integer(VAL_1), "Guempe");
 		ret.put(new Integer(ENVIDO), "Tanto");
 		ret.put(new Integer(SECA), "Seca");
 		
