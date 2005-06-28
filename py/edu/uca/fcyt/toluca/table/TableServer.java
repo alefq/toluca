@@ -85,8 +85,15 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
      * lock-end */
         tableListeners.add(tableListener);
     } // end addRoomListener        /** lock-begin */
-    
-    public void sitPlayer(TrucoPlayer player, int chair) {
+
+    /**
+     * 
+     * Sincronizamos el metodo para ver si arregla el bug de las sentadas.
+     * 
+     * @param player
+     * @param chair
+     */
+    public synchronized void sitPlayer(TrucoPlayer player, int chair) {
         try
 		{
             
