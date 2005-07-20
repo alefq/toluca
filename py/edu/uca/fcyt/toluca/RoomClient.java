@@ -5,6 +5,7 @@ package py.edu.uca.fcyt.toluca;
  *  Generated with <A HREF="http://jakarta.apache.org/velocity/">velocity</A> template engine.
  */
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -663,5 +664,12 @@ public class RoomClient extends Room implements ChatPanelContainer,
     public void invitationRejected(RoomEvent re) {
         // TODO Auto-generated method stub
         
+    }
+
+    /**
+     * @param string
+     */
+    public void showSystemMessage(String string) {
+        getRoomUING().getChatPanel().showSystemMessage(string, null);
     }
 } // end RoomClient

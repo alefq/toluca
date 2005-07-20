@@ -148,11 +148,12 @@ public class EventDispatcherClient extends EventDispatcher {
 
         //si es el playerJoined despues del loginCompleted entonces se agrega
         //el trucoPlayer nomas que fue creado en loginCompleted
-        if (!trucoPlayer.getName().equals(event.getPlayer().getName()))
+        if (!trucoPlayer.getName().equals(event.getPlayer().getName())) {
             room.addPlayer(event.getPlayer());
+            ((RoomClient)room).showSystemMessage(event.getPlayer().getName() + " se ha unido al Room");
+        }
         else
             room.addPlayer(trucoPlayer);
-
     }
 
     /*
@@ -164,6 +165,7 @@ public class EventDispatcherClient extends EventDispatcher {
 
         //logeador.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL, " salioooooo
         // "+event.getPlayer());
+        ((RoomClient)room).showSystemMessage(event.getPlayer().getName() + " se ha retirado del Room");
         TrucoPlayer playerServer = event.getPlayer();
 
         room.removePlayer(room.getPlayer(playerServer.getName()));
@@ -297,7 +299,7 @@ public class EventDispatcherClient extends EventDispatcher {
             // EL MSG
 
             table = new Table(playerCreador, true, points);
-            mostrar = true;
+            mostrar = true;            
         } else {//fue otro el que creo
             table = new Table(trucoPlayer, false, points);
         }
@@ -313,6 +315,7 @@ public class EventDispatcherClient extends EventDispatcher {
 
         if (mostrar) {
             table.getJFrame().setVisible(true);
+            table.getJTrucoTable().addSystemLog("Para sentarte, haz Click en uno de los cuadrados vacios");
         }
         return table;
     }
@@ -342,6 +345,7 @@ public class EventDispatcherClient extends EventDispatcher {
         if (playerClient.getName().equals(trucoPlayer.getName())) {
             table.initResources();
             table.getJFrame().setVisible(true);
+            table.getJTrucoTable().addSystemLog("Para sentarte, haz Click en uno de los cuadrados vacios");
         }
 
         /*

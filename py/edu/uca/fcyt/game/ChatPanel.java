@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -73,7 +74,7 @@ public void showSystemMessage(String htmlMessage,     String[] bounds)
 	  if (bounds == null)
         bounds = new String[] { "**", "**" };
     getChatArea().append(
-            bounds[0] + "System" + bounds[1] + ": " + htmlMessage
+            bounds[0] + "System" + bounds[1] + " " + htmlMessage
                     + "\n");
     //getChatArea().setCaretPosition(getChatArea().getText() != null ? getChatArea().getText().length() : 0);
 }

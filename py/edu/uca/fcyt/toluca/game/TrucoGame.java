@@ -414,9 +414,9 @@ public class TrucoGame extends Game
 	public void fireHandStarted()
 	{
 		System.out.println(" fireHandStarted "+ getNumberOfHand());
-		System.out.println("el equipo es: " + teams[0]);
+		System.out.println(" el equipo es: " + teams[0]);
 		System.out.println(teams[1]==null);
-		System.out.println("numero de players de los equipos ="+teams[0].getNumberOfPlayers()+"y"+teams[0].getNumberOfPlayers());
+		System.out.println(" numero de players de los equipos = "+teams[0].getNumberOfPlayers()+"y"+teams[0].getNumberOfPlayers());
 		TrucoPlayer tp = teams[(numberOfHand+1)%2].getTrucoPlayerNumber((numberOfHand-1)%numberOfPlayers/2);
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,tp,TrucoEvent.INICIO_DE_MANO);
 		event.setTableNumber(getTableNumber());

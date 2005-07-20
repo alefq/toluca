@@ -555,5 +555,12 @@ public class TrucoTable extends JPanel implements ComponentListener {
     public void endOfGame() {        
         appendLog(new Date().toString() + ": Fin del Juego\n" );
     }
+
+    /**
+     * @param string
+     */
+    public void addSystemLog(String string) {
+        appendLog(string);
+    }
 		
   }

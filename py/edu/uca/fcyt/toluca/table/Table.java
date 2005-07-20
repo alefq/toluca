@@ -238,9 +238,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         at.start();
     }
 
-    public void showSystemMessage(String message) {
-        TrucoPlayer trucoPlayer = new TrucoPlayer();
-        trucoPlayer.setName("System");
+    public void showSystemMessage(String message) {        
         trucoTable.getChatPanel().showSystemMessage(message,
                 new String[] { "[", "]" });
 
@@ -256,6 +254,7 @@ public class Table implements PTableListener, ChatPanelContainer,
         if (trucoTable != null)
             trucoTable.addPlayer(player);
         tEventMan.firePlayerJoined(player);
+        showSystemMessage(player + " se ha unido a la mesa");
     }
 
     /**

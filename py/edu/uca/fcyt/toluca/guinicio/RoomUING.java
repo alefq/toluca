@@ -1,8 +1,8 @@
 /* RoomUING.java
  * Created on Sep 10, 2004
  *
- * Last modified: $Date: 2005/06/28 15:25:47 $
- * @version $Revision: 1.42 $ 
+ * Last modified: $Date: 2005/07/20 21:18:57 $
+ * @version $Revision: 1.43 $ 
  * @author afeltes
  */
 package py.edu.uca.fcyt.toluca.guinicio;
@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,13 +21,10 @@ import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
-import javax.swing.JDialog;
 import javax.swing.JEditorPane;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import py.com.roshka.game.gui.UserListSelection;
@@ -307,7 +305,10 @@ public class RoomUING extends JApplet {
      */
     private JPanel getPanelSur() {
         if (panelSur == null) {
+            Dimension dim = new Dimension(300,180);
             panelSur = new JPanel();
+            panelSur.setMinimumSize(dim);
+            panelSur.setPreferredSize(dim);
             panelSur.setLayout(new BorderLayout());
             panelSur.setOpaque(true);
             panelSur.setBackground(RoomUING.COLOR_DE_FONDO);
@@ -365,10 +366,10 @@ public class RoomUING extends JApplet {
     public JEditorPane getJEPanuncios() {
         if (jEPanuncios == null) {
             try {
-            	if(URL_ANUNCIOS==null)
-            		jEPanuncios = new JEditorPane();
-            	else 
-            		jEPanuncios = new JEditorPane(URL_ANUNCIOS);
+                if (URL_ANUNCIOS == null)
+                    jEPanuncios = new JEditorPane();
+                else
+                    jEPanuncios = new JEditorPane(URL_ANUNCIOS);
                 //jEPanuncios.setEditorKit(new HTMLEditorKit());
             } catch (IOException e) {
                 TolucaConstants.log(TolucaConstants.CLIENT_DEBUG_LOG_LEVEL,
@@ -519,10 +520,10 @@ public class RoomUING extends JApplet {
             // logger.debug("La dire de imagenes es " + imagedir);
         } catch (Exception e) {
         }
-        if(URL_ANUNCIOS == null)
-        {
-        	URL_ANUNCIOS = "";
-        	TolucaConstants.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL, "Falta el parametro para el applet: urlanuncios");
+        if (URL_ANUNCIOS == null) {
+            URL_ANUNCIOS = "";
+            TolucaConstants.log(TolucaConstants.CLIENT_INFO_LOG_LEVEL,
+                    "Falta el parametro para el applet: urlanuncios");
         }
     }
 
@@ -618,7 +619,7 @@ public class RoomUING extends JApplet {
     public void loginFailed(RoomEvent event) {
         getLoginPanel().getJLestado().setForeground(Color.RED);
         getLoginPanel().getJLestado().setText(
-                ">  " + event.getErrorMsg() + "  <");
+                new Date().toString() + " :   " + event.getErrorMsg());
         getLoginPanel().getJLestado().setToolTipText(event.getErrorMsg());
     }
 
@@ -626,10 +627,15 @@ public class RoomUING extends JApplet {
      * @param player
      */
     public void loginCompleted(TrucoPlayer player) {
+        TrucoPlayer tp = new TrucoPlayer("macho");
         getContentPane().removeAll();
         getContentPane().add(getRoomPanel());
         setOwner(player);
         validateTree();
+        getChatPanel()
+                .showSystemMessage("Para iniciar un juego presiona \"Crear Mesa\" y sientate en un cuadro Libre", null);
+        getChatPanel()
+                .showSystemMessage("Para unirte a una mesa seleciona una de la tabla del medio y presiona \"Unirse\"", null);
     }
 
     public void actualzarRanking(TrucoPlayer trucoPlayer) {
@@ -641,20 +647,20 @@ public class RoomUING extends JApplet {
     }
 
     public List getPlayers() {
-        return getTableRanking().getPlayers();        
+        return getTableRanking().getPlayers();
     }
 
     /**
      * @return
      */
     public TrucoPlayer selectUserFromList() {
-        UserListSelection jd = new UserListSelection();        
+        UserListSelection jd = new UserListSelection();
         DefaultListModel lm = new DefaultListModel();
         Iterator it = getPlayers().iterator();
         while (it.hasNext()) {
-            lm.addElement(it.next());            
+            lm.addElement(it.next());
         }
-        jd.getJLplayres().setModel(lm);        
+        jd.getJLplayres().setModel(lm);
         jd.setVisible(true);
         return (TrucoPlayer) jd.getJLplayres().getSelectedValue();
     }
