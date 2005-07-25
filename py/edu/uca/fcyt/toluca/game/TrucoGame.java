@@ -341,7 +341,8 @@ public class TrucoGame extends Game
 	/*public void fireEventType(byte type){
 		TrucoEvent event = new TrucoEvent(this,numberOfHand,type);
 	}*/
-	/** Enviar mensaje a todos los oyentes sobre el final de la mano
+	/** 
+	 * Enviar mensaje a todos los oyentes sobre el final de la mano
 	 */
 	public void fireEndOfHandEvent()
 	{
