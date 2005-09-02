@@ -30,6 +30,7 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     /** Holds value of property host. */
     private TrucoPlayer host;
 	private int gamePoints;    
+	//TODO: sincronizar los table listeners
     protected Vector tableListeners; // of type Vector
     protected Vector players;
     
@@ -83,7 +84,10 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 
     public void addTableServerListener(TableListener tableListener) {        /**
      * lock-end */
-        tableListeners.add(tableListener);
+    	synchronized(tableListener) {//added by aa
+            tableListeners.add(tableListener);    		
+    	}
+
     } // end addRoomListener        /** lock-begin */
 
     /**
@@ -287,36 +291,41 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
      * Dispara el evento de chatMessageSent
      */
     protected void fireChatMessageSent(TrucoPlayer jogador, String htmlMessage) {
-        Iterator iter = tableListeners.listIterator();
-        int i =0;
-        while(iter.hasNext()) {
-            TableListener ltmp = (TableListener)iter.next();
-            //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
-            ltmp.chatMessageSent(this, jogador, htmlMessage);
-        }
+    	synchronized(tableListeners) {//added by aa
+            Iterator iter = tableListeners.listIterator();
+            int i =0;
+            while(iter.hasNext()) {
+                TableListener ltmp = (TableListener)iter.next();
+                //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+                ltmp.chatMessageSent(this, jogador, htmlMessage);
+            }
+    	}
     }
     
     protected void fireGameStarted(TableEvent te) {
-
-    	Iterator iter = tableListeners.listIterator();
-        
-        while(iter.hasNext()) {
-            TableListener ltmp = (TableListener)iter.next();
-            //System.out.println("VOY A DISPARAR UN GAME STARTED EN EL SERVA. -> " + ltmp.getClass().getName());
-            ltmp.gameStarted(te);
-        }
+    	synchronized( tableListeners) {
+        	Iterator iter = tableListeners.listIterator();
+            
+            while(iter.hasNext()) {
+                TableListener ltmp = (TableListener)iter.next();
+                //System.out.println("VOY A DISPARAR UN GAME STARTED EN EL SERVA. -> " + ltmp.getClass().getName());
+                ltmp.gameStarted(te);
+            }
+    	}
     }
     
     protected void firePlayerSat(TrucoPlayer jogador, int chair ) {
-        Iterator iter = tableListeners.listIterator();
-        int i =0;
-//        logger.log(Level.WARNING, "tableListeners.size() = "+tableListeners.size());
-        while(iter.hasNext()) {
-            TableListener ltmp = (TableListener)iter.next();
-            //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
-            TableEvent te= new TableEvent(TableEvent.EVENT_playerSit,this, jogador, null,chair);
-            ltmp.playerSit(te);
-        }
+    	synchronized( tableListeners) {
+            Iterator iter = tableListeners.listIterator();
+            int i =0;
+//            logger.log(Level.WARNING, "tableListeners.size() = "+tableListeners.size());
+            while(iter.hasNext()) {
+                TableListener ltmp = (TableListener)iter.next();
+                //System.out.println(jogador.getName() + " enviando message sent al listener #" + (i++) + " clase:" + ltmp.getClass().getName());
+                TableEvent te= new TableEvent(TableEvent.EVENT_playerSit,this, jogador, null,chair);
+                ltmp.playerSit(te);
+            }
+    	}
     }
     
     public void showChatMessage(TrucoPlayer player, String htmlMessage) {
@@ -391,14 +400,18 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 		asientos.remove(player.getName());
 		event.setEvent(TableEvent.EVENT_playerStanded);
 		// avisa que el player se levant� correctamente
-		for (int i = 0; i < tableListeners.size(); i++)
-			((TableListener) tableListeners.get(i)).playerStanded(event);
+		synchronized (tableListeners) {
+			for (int i = 0; i < tableListeners.size(); i++)
+				((TableListener) tableListeners.get(i)).playerStanded(event);
+		}
 	}
 
 	public void showSign(TableEvent event)
 	{
-		for (int i = 0; i < tableListeners.size(); i++)
-			((TableListener) tableListeners.get(i)).signSent(event);
+		synchronized(tableListeners) {
+			for (int i = 0; i < tableListeners.size(); i++)
+				((TableListener) tableListeners.get(i)).signSent(event);
+		}
 	}
 	
 	public void kickPlayer(TrucoPlayer playerKicked) 
@@ -470,19 +483,23 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
 	}
 	private void fireTableDestroyed()
 	{
-		Iterator iter=tableListeners.listIterator();
-		TableEvent event=new TableEvent();
-		event.setTableServer(this);
-		event.setEvent(TableEvent.EVENT_TABLE_DESTROYED);
-		while(iter.hasNext())
-			((TableListener)iter.next()).tableDestroyed(event);
+		synchronized(tableListeners) {
+			Iterator iter=tableListeners.listIterator();
+			TableEvent event=new TableEvent();
+			event.setTableServer(this);
+			event.setEvent(TableEvent.EVENT_TABLE_DESTROYED);
+			while(iter.hasNext())
+				((TableListener)iter.next()).tableDestroyed(event);
+		}
 	}
 	private void firePlayerKicked(TableEvent te) {
-		Iterator iter = tableListeners.listIterator();
-		int i =0;
-		while(iter.hasNext()) {
-			TableListener ltmp = (TableListener)iter.next();
-			ltmp.playerKicked(te);
+		synchronized(tableListeners){
+			Iterator iter = tableListeners.listIterator();
+			int i =0;
+			while(iter.hasNext()) {
+				TableListener ltmp = (TableListener)iter.next();
+				ltmp.playerKicked(te);
+			}
 		}
 	}
 	
