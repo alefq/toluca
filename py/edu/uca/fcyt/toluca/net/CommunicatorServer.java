@@ -20,7 +20,7 @@ import py.edu.uca.fcyt.toluca.table.TableServer;
  *  
  */
 public class CommunicatorServer extends Communicator {
-    public static final int SOCKET_TIMEOUT = 60000;
+    public static final int SOCKET_TIMEOUT = 180000;
 
     static Logger logger = Logger.getLogger(CommunicatorServer.class);
 

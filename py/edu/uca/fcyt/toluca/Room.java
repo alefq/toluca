@@ -32,6 +32,8 @@ implements ChatPanelContainer {
 	}
     protected Vector roomListeners; // of type Vector
     //Unlike the new collection implementations, Vector is synchronized.
+    // throws Concurrent modification exception.  
+    // Blocks synchronized by aa
     
     protected Table [] tables; // of type Table
     protected TableServer [] tablesServers;
@@ -71,30 +73,35 @@ implements ChatPanelContainer {
     private synchronized void fireTableCreated() {
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_CREATED);
-        Iterator iter = roomListeners.listIterator();
-        while(iter.hasNext()) {
-            RoomListener ltmp = (RoomListener)iter.next();
-            ltmp.tableCreated(re);
-        }
+    	synchronized (roomListeners) {
+			Iterator iter = roomListeners.listIterator();
+			while (iter.hasNext()) {
+				RoomListener ltmp = (RoomListener) iter.next();
+				ltmp.tableCreated(re);
+			}
+		}
     }
     
     /**
-     *
-     * Recorre el vector de listeners y ejecuta en cada uno de los
-     * objetos del mismo, el metodo chatMessageRequested
-     *
-     * @param player El jugador que intenta enviar el mensaje
-     *
-     * @param htmlMessage El mensaje que se intenta enviar
-     *
-     */
+	 * 
+	 * Recorre el vector de listeners y ejecuta en cada uno de los objetos del
+	 * mismo, el metodo chatMessageRequested
+	 * 
+	 * @param player
+	 *            El jugador que intenta enviar el mensaje
+	 * 
+	 * @param htmlMessage
+	 *            El mensaje que se intenta enviar
+	 *  
+	 */
     private synchronized void fireChatMessageSent(TrucoPlayer player, String htmlMessage) {
         /** lock-end */
-        
-        Iterator iter = roomListeners.listIterator();
-        while(iter.hasNext()) {
-            RoomListener ltmp = (RoomListener)iter.next();
-            ltmp.chatMessageRequested(this, player, htmlMessage);
+        synchronized(roomListeners) {
+            Iterator iter = roomListeners.listIterator();
+            while(iter.hasNext()) {
+                RoomListener ltmp = (RoomListener)iter.next();
+                ltmp.chatMessageRequested(this, player, htmlMessage);
+            }
         }
     } // end fireChatMessageSent        /** lock-begin */
     
@@ -128,7 +135,9 @@ implements ChatPanelContainer {
      */
     public synchronized void addRoomListener(RoomListener roomListener) {        /**
      * lock-end */
-        roomListeners.add(roomListener);
+        synchronized(roomListeners) {
+        	roomListeners.add(roomListener);
+        }
     } // end addRoomListener        /** lock-begin */
     
     /**
@@ -159,10 +168,12 @@ implements ChatPanelContainer {
         
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_TABLE_JOINED);
-        Iterator iter = roomListeners.listIterator();
-        while(iter.hasNext()) {
-            RoomListener ltmp = (RoomListener)iter.next();
-            ltmp.tableJoined(re);
+        synchronized(roomListeners) {
+        	Iterator iter = roomListeners.listIterator();
+        	while(iter.hasNext()) {
+        		RoomListener ltmp = (RoomListener)iter.next();
+        		ltmp.tableJoined(re);
+        	}
         }
     } // end fireTableJoined
     

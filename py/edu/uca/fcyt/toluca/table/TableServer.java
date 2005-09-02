@@ -30,8 +30,8 @@ public class TableServer  implements TrucoListener, ChatPanelContainer {
     /** Holds value of property host. */
     private TrucoPlayer host;
 	private int gamePoints;    
-	//TODO: sincronizar los table listeners
     protected Vector tableListeners; // of type Vector
+    // blocks synchronized added by aa 20050902
     protected Vector players;
     
     protected PlayerManager pManager;

@@ -52,7 +52,7 @@ implements ChatPanelContainer, TableListener {
      */
     private java.util.Properties properties;
 
-    public final static int TIME_OUT = 10000;
+    //public final static int TIME_OUT = 10000;
 
     /**
      * <p>
@@ -188,10 +188,12 @@ implements ChatPanelContainer, TableListener {
         //re.setPlayers(playerstmp);
 
         re.setTableNumber(table.getTableNumber());
-        Iterator iter = roomListeners.listIterator();
-        while (iter.hasNext()) {
-            RoomListener ltmp = (RoomListener) iter.next();
-            ltmp.tableCreated(re);
+        synchronized(roomListeners) {
+	        Iterator iter = roomListeners.listIterator();
+	        while (iter.hasNext()) {
+	            RoomListener ltmp = (RoomListener) iter.next();
+	            ltmp.tableCreated(re);
+	        }
         }
     } // end fireTableCreated
 
@@ -221,12 +223,13 @@ implements ChatPanelContainer, TableListener {
      *            </p>
      */
     private synchronized void fireTableJoined(RoomEvent re) {
-        Iterator iter = roomListeners.listIterator();
-        while (iter.hasNext()) {
-            RoomListener ltmp = (RoomListener) iter.next();
-            ltmp.tableJoined(re);
+        synchronized(roomListeners) {
+	        Iterator iter = roomListeners.listIterator();
+	        while (iter.hasNext()) {
+	            RoomListener ltmp = (RoomListener) iter.next();
+	            ltmp.tableJoined(re);
+	        }
         }
-
     } // end fireTableJoined
 
     /**
@@ -303,20 +306,24 @@ implements ChatPanelContainer, TableListener {
             //vPlayers.remove(player);
             firePlayerLeft(player);
         } catch (NullPointerException e) {
-            logger.debug("Se elimino un player que era nulo");
+            logger.debug("Se elimino un player que era nulo" + player);
+            new Exception().printStackTrace();
         }
 
     }
 
     protected synchronized void firePlayerLeft(TrucoPlayer player) {
-        Iterator iter = roomListeners.listIterator();
+
 
         RoomEvent re = new RoomEvent();
         re.setType(RoomEvent.TYPE_PLAYER_LEFT);
         re.setPlayer(player);
-        while (iter.hasNext()) {
-            RoomListener ltmp = (RoomListener) iter.next();
-            ltmp.playerLeft(re);
+        synchronized(roomListeners) {
+            Iterator iter = roomListeners.listIterator();        
+	        while (iter.hasNext()) {
+	            RoomListener ltmp = (RoomListener) iter.next();
+	            ltmp.playerLeft(re);
+	        }
         }
 
         // your code here
