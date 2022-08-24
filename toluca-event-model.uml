@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>py.edu.uca.fcyt.toluca.event</OriginalElement>
+  <nodes>
+    <node x="229.72727272727275" y="79.0">py.edu.uca.fcyt.toluca.event.TableListener</node>
+    <node x="0.0" y="168.0">py.edu.uca.fcyt.toluca.RoomServer</node>
+    <node x="628.75" y="247.0">py.edu.uca.fcyt.toluca.net.CommunicatorClient</node>
+    <node x="722.25" y="168.0">py.edu.uca.fcyt.toluca.table.TrListener</node>
+    <node x="854.25" y="-9.0">py.edu.uca.fcyt.toluca.event.TrucoListener</node>
+    <node x="867.25" y="168.0">py.edu.uca.fcyt.toluca.table.TableServer</node>
+    <node x="159.0" y="168.0">py.edu.uca.fcyt.toluca.RoomClient</node>
+    <node x="1025.25" y="168.0">py.edu.uca.fcyt.toluca.game.TPlayer</node>
+    <node x="539.0" y="168.0">py.edu.uca.fcyt.toluca.net.Communicator</node>
+    <node x="309.75" y="173.0">py.edu.uca.fcyt.toluca.table.TrucoFrontEndTester</node>
+    <node x="357.0" y="321.0">py.edu.uca.fcyt.toluca.event.TrucoEvent</node>
+    <node x="328.22727272727275" y="0.0">py.edu.uca.fcyt.toluca.event.SpaceListener</node>
+    <node x="541.5" y="79.0">py.edu.uca.fcyt.toluca.event.RoomListener</node>
+    <node x="14.227272727272748" y="79.0">py.edu.uca.fcyt.toluca.Room</node>
+    <node x="0.0" y="321.0">py.edu.uca.fcyt.toluca.event.RoomEvent</node>
+    <node x="179.0" y="321.0">py.edu.uca.fcyt.toluca.event.TableEvent</node>
+    <node x="403.75" y="247.0">py.edu.uca.fcyt.toluca.net.CommunicatorServer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="py.edu.uca.fcyt.toluca.net.Communicator" target="py.edu.uca.fcyt.toluca.event.RoomListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.RoomClient" target="py.edu.uca.fcyt.toluca.event.TableListener" relationship="REALIZATION">
+      <point x="34.0" y="-14.5" />
+      <point x="261.0" y="138.0" />
+      <point x="305.72727272727275" y="138.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.RoomClient" target="py.edu.uca.fcyt.toluca.Room" relationship="GENERALIZATION">
+      <point x="-34.0" y="-14.5" />
+      <point x="193.0" y="148.0" />
+      <point x="60.22727272727275" y="148.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.net.CommunicatorServer" target="py.edu.uca.fcyt.toluca.net.Communicator" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="506.25" y="222.0" />
+      <point x="618.0" y="222.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.game.TPlayer" target="py.edu.uca.fcyt.toluca.event.TrucoListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1077.25" y="148.0" />
+      <point x="929.75" y="148.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.event.TableListener" target="py.edu.uca.fcyt.toluca.event.SpaceListener" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="305.72727272727275" y="54.0" />
+      <point x="406.22727272727275" y="54.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.net.Communicator" target="py.edu.uca.fcyt.toluca.event.TrucoListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="618.0" y="138.0" />
+      <point x="929.75" y="138.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.table.TableServer" target="py.edu.uca.fcyt.toluca.event.TrucoListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="936.25" y="148.0" />
+      <point x="929.75" y="148.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.RoomServer" target="py.edu.uca.fcyt.toluca.event.TableListener" relationship="REALIZATION">
+      <point x="34.75" y="-14.5" />
+      <point x="104.25" y="138.0" />
+      <point x="305.72727272727275" y="138.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.RoomServer" target="py.edu.uca.fcyt.toluca.Room" relationship="GENERALIZATION">
+      <point x="-34.75" y="-14.5" />
+      <point x="34.75" y="148.0" />
+      <point x="60.22727272727275" y="148.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.event.RoomListener" target="py.edu.uca.fcyt.toluca.event.SpaceListener" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="618.0" y="54.0" />
+      <point x="406.22727272727275" y="54.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.table.TrListener" target="py.edu.uca.fcyt.toluca.event.TrucoListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="784.75" y="148.0" />
+      <point x="929.75" y="148.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.table.TrucoFrontEndTester" target="py.edu.uca.fcyt.toluca.event.TableListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="411.75" y="138.0" />
+      <point x="305.72727272727275" y="138.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.net.Communicator" target="py.edu.uca.fcyt.toluca.event.TableListener" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="618.0" y="128.0" />
+      <point x="305.72727272727275" y="128.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="py.edu.uca.fcyt.toluca.net.CommunicatorClient" target="py.edu.uca.fcyt.toluca.net.Communicator" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="729.75" y="222.0" />
+      <point x="618.0" y="222.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="417.0" y="182.5" />
+  <SelectedNodes>
+    <node>py.edu.uca.fcyt.toluca.table.TrucoFrontEndTester</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
